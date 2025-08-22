@@ -1,0 +1,492 @@
+[
+  {
+    "id": 1,
+    "section": "Science & Technology",
+    "strand": "BSIT",
+    "question": "Solving logic puzzles, writing algorithms, or debugging code.",
+    "codes": ["I"]
+  },
+  {
+    "id": 2,
+    "section": "Arts & Communication",
+    "strand": "BLIS",
+    "question": "Creating digital art, designing graphics, or editing videos.",
+    "codes": ["A"]
+  },
+  {
+    "id": 3,
+    "section": "Social & Behavioral Sciences",
+    "strand": "BSP",
+    "question": "Helping others cope with personal problems or emotional challenges.",
+    "codes": ["S"]
+  },
+  {
+    "id": 4,
+    "section": "Business & Entrepreneurship",
+    "strand": "BSBA MM",
+    "question": "Organizing events, leading teams, or managing group projects.",
+    "codes": ["E", "S"]
+  },
+  {
+    "id": 5,
+    "section": "Technical & Practical Skills",
+    "strand": "BSCPE",
+    "question": "Taking apart machines, fixing gadgets, or understanding how things work.",
+    "codes": ["R", "I"]
+  },
+  {
+    "id": 6,
+    "section": "Health & Human Services",
+    "strand": "BEED",
+    "question": "Taking care of children, guiding students, or supporting learning.",
+    "codes": ["S"]
+  },
+  {
+    "id": 7,
+    "section": "Science & Technology",
+    "strand": "BSIS",
+    "question": "Working with computers, managing databases, or building software tools.",
+    "codes": ["I", "C"]
+  },
+  {
+    "id": 8,
+    "section": "Business & Entrepreneurship",
+    "strand": "BSENTREP",
+    "question": "Starting a business, creating a brand, or developing a product idea.",
+    "codes": ["E"]
+  },
+  {
+    "id": 9,
+    "section": "Hospitality & Tourism",
+    "strand": "BSHM",
+    "question": "Preparing food, plating dishes, or serving guests in a restaurant.",
+    "codes": ["R", "S"]
+  },
+  {
+    "id": 10,
+    "section": "Education & Teaching",
+    "strand": "BSED english",
+    "question": "Teaching lessons, tutoring peers, or explaining difficult topics.",
+    "codes": ["S", "E"]
+  },
+  {
+    "id": 11,
+    "section": "Hospitality & Tourism",
+    "strand": "BSTM",
+    "question": "Guiding tours, planning trips, or introducing visitors to new places.",
+    "codes": ["S", "E"]
+  },
+  {
+    "id": 12,
+    "section": "Business & Entrepreneurship",
+    "strand": "BSBA FM",
+    "question": "Managing budgets, tracking expenses, or analyzing financial reports.",
+    "codes": ["C", "I"]
+  },
+  {
+    "id": 13,
+    "section": "Public Service & Justice",
+    "strand": "BSCRIM",
+    "question": "Understanding laws, investigating crimes, or ensuring public safety.",
+    "codes": ["I", "S"]
+  },
+  {
+    "id": 14,
+    "section": "Arts & Communication",
+    "strand": "BSED filipino",
+    "question": "Writing stories, poems, or giving speeches in public.",
+    "codes": ["A", "E"]
+  },
+  {
+    "id": 15,
+    "section": "Technical & Practical Skills",
+    "strand": "BSCPE",
+    "question": "Designing circuits, building robots, or assembling electronic systems.",
+    "codes": ["R", "I"]
+  },
+  {
+    "id": 16,
+    "section": "Science & Technology",
+    "strand": "BSIT",
+    "question": "Analyzing data, identifying patterns, or using spreadsheets and tools.",
+    "codes": ["I", "C"]
+  },
+  {
+    "id": 17,
+    "section": "Arts & Communication",
+    "strand": "BLIS",
+    "question": "Expressing ideas through art, music, or creative digital projects.",
+    "codes": ["A"]
+  },
+  {
+    "id": 18,
+    "section": "Health & Human Services",
+    "strand": "BPE",
+    "question": "Staying calm in emergencies or helping others during crises.",
+    "codes": ["S", "R"]
+  },
+  {
+    "id": 19,
+    "section": "Business & Entrepreneurship",
+    "strand": "BSBA HRM",
+    "question": "Working in teams, motivating others, or resolving conflicts.",
+    "codes": ["S", "E"]
+  },
+  {
+    "id": 20,
+    "section": "Technical & Practical Skills",
+    "strand": "BSCPE",
+    "question": "Understanding technical manuals, fixing equipment, or operating tools.",
+    "codes": ["R", "I"]
+  },
+  {
+    "id": 21,
+    "section": "Social & Behavioral Sciences",
+    "strand": "BSP",
+    "question": "Listening to others, showing empathy, or supporting emotional well-being.",
+    "codes": ["S"]
+  },
+  {
+    "id": 22,
+    "section": "Science & Technology",
+    "strand": "BSIS",
+    "question": "Learning new software, using digital tools, or troubleshooting tech issues.",
+    "codes": ["I", "C"]
+  },
+  {
+    "id": 23,
+    "section": "Business & Entrepreneurship",
+    "strand": "BSBA MM",
+    "question": "Selling products, promoting brands, or negotiating deals.",
+    "codes": ["E"]
+  },
+  {
+    "id": 24,
+    "section": "Hospitality & Tourism",
+    "strand": "BSHM",
+    "question": "Ensuring high standards in food presentation, cleanliness, and service.",
+    "codes": ["C", "S"]
+  },
+  {
+    "id": 25,
+    "section": "Education & Teaching",
+    "strand": "BSED math",
+    "question": "Solving math problems, explaining equations, or helping others learn numbers.",
+    "codes": ["I", "S"]
+  },
+  {
+    "id": 26,
+    "section": "Hospitality & Tourism",
+    "strand": "BSTM",
+    "question": "Communicating with guests, handling complaints, or providing excellent service.",
+    "codes": ["S", "E"]
+  },
+  {
+    "id": 27,
+    "section": "Business & Entrepreneurship",
+    "strand": "BSAIS",
+    "question": "Handling financial records, organizing data, or checking accuracy in reports.",
+    "codes": ["C"]
+  },
+  {
+    "id": 28,
+    "section": "Business & Entrepreneurship",
+    "strand": "BSOA",
+    "question": "Following procedures, managing schedules, or maintaining office systems.",
+    "codes": ["C"]
+  },
+  {
+    "id": 29,
+    "section": "Arts & Communication",
+    "strand": "BSED filipino",
+    "question": "Reading books, analyzing literature, or expanding vocabulary.",
+    "codes": ["A", "I"]
+  },
+  {
+    "id": 30,
+    "section": "Science & Technology",
+    "strand": "BSIT",
+    "question": "Focusing on coding, research, or complex technical tasks for long periods.",
+    "codes": ["I"]
+  },
+  {
+    "id": 31,
+    "section": "Business & Entrepreneurship",
+    "strand": "BSOA",
+    "question": "Working in structured environments with clear rules and routines.",
+    "codes": ["C"]
+  },
+  {
+    "id": 32,
+    "section": "Research & Academics",
+    "strand": "BSED science",
+    "question": "Solving problems independently or working on tasks without supervision.",
+    "codes": ["I"]
+  },
+  {
+    "id": 33,
+    "section": "Education & Teaching",
+    "strand": "BEED",
+    "question": "Collaborating with others, joining group discussions, or team teaching.",
+    "codes": ["S", "E"]
+  },
+  {
+    "id": 34,
+    "section": "Technical & Practical Skills",
+    "strand": "BTLED",
+    "question": "Learning through hands-on practice rather than just reading or listening.",
+    "codes": ["R"]
+  },
+  {
+    "id": 35,
+    "section": "Research & Academics",
+    "strand": "BSP",
+    "question": "Exploring new ideas, adapting to change, or trying innovative methods.",
+    "codes": ["I", "A"]
+  },
+  {
+    "id": 36,
+    "section": "Research & Academics",
+    "strand": "BSED social studies",
+    "question": "Researching topics, reading articles, or investigating social issues.",
+    "codes": ["I", "S"]
+  },
+  {
+    "id": 37,
+    "section": "Business & Entrepreneurship",
+    "strand": "BSBA FM",
+    "question": "Preferring predictable and organized situations over chaotic ones.",
+    "codes": ["C"]
+  },
+  {
+    "id": 38,
+    "section": "Social & Behavioral Sciences",
+    "strand": "BSED values",
+    "question": "Feeling motivated when helping others achieve their goals.",
+    "codes": ["S"]
+  },
+  {
+    "id": 39,
+    "section": "Science & Technology",
+    "strand": "BSIS",
+    "question": "Working with data, systems, or numbers rather than direct social interaction.",
+    "codes": ["C", "I"]
+  },
+  {
+    "id": 40,
+    "section": "Arts & Communication",
+    "strand": "BLIS",
+    "question": "Valuing creativity, freedom, and self-expression in your work.",
+    "codes": ["A"]
+  },
+  {
+    "id": 41,
+    "section": "Science & Technology",
+    "strand": "BSCPE",
+    "question": "Preferring science and math over literature or history subjects.",
+    "codes": ["I"]
+  },
+  {
+    "id": 42,
+    "section": "Arts & Communication",
+    "strand": "BSED english",
+    "question": "Enjoying performances, presentations, or speaking in front of an audience.",
+    "codes": ["E", "A"]
+  },
+  {
+    "id": 43,
+    "section": "Technical & Practical Skills",
+    "strand": "BTLED",
+    "question": "Preferring practical, hands-on tasks over theoretical discussions.",
+    "codes": ["R"]
+  },
+  {
+    "id": 44,
+    "section": "Arts & Communication",
+    "strand": "BSED filipino",
+    "question": "Expressing yourself better through writing than through calculations.",
+    "codes": ["A", "I"]
+  },
+  {
+    "id": 45,
+    "section": "Social & Behavioral Sciences",
+    "strand": "BSP",
+    "question": "Learning about human behavior, emotions, or what drives people.",
+    "codes": ["I", "S"]
+  },
+  {
+    "id": 46,
+    "section": "Public Service & Justice",
+    "strand": "BSCRIM",
+    "question": "Responding to emergencies, enforcing rules, or maintaining order.",
+    "codes": ["R", "S"]
+  },
+  {
+    "id": 47,
+    "section": "Research & Academics",
+    "strand": "BSED science",
+    "question": "Conducting experiments, collecting data, or testing hypotheses.",
+    "codes": ["I", "R"]
+  },
+  {
+    "id": 48,
+    "section": "Arts & Communication",
+    "strand": "BLIS",
+    "question": "Creating content for social media, blogs, or digital platforms.",
+    "codes": ["A", "C"]
+  },
+  {
+    "id": 49,
+    "section": "Business & Entrepreneurship",
+    "strand": "BSENTREP",
+    "question": "Taking initiative, leading projects, or innovating new ideas.",
+    "codes": ["E"]
+  },
+  {
+    "id": 50,
+    "section": "Education & Teaching",
+    "strand": "BPED",
+    "question": "Teaching sports, leading physical activities, or coaching teams.",
+    "codes": ["S", "E"]
+  },
+  {
+    "id": 51,
+    "section": "Education & Teaching",
+    "strand": "CPE",
+    "question": "Preparing for professional teaching exams or studying advanced education topics.",
+    "codes": ["I", "S"]
+  },
+  {
+    "id": 52,
+    "section": "Hospitality & Tourism",
+    "strand": "BTVTED",
+    "question": "Managing food service operations, catering events, or supervising kitchen staff.",
+    "codes": ["S", "C"]
+  },
+  {
+    "id": 53,
+    "section": "Education & Teaching",
+    "strand": "BPED",
+    "question": "Designing fitness programs, training athletes, or promoting physical wellness.",
+    "codes": ["S", "R"]
+  },
+  {
+    "id": 54,
+    "section": "Business & Entrepreneurhip",
+    "strand": "BSAIS",
+    "question": "Using accounting software, managing financial systems, or auditing records.",
+    "codes": ["C", "I"]
+  },
+  {
+    "id": 55,
+    "section": "Business & Entrepreneurship",
+    "strand": "BSBA HRM",
+    "question": "Training employees, managing workplace culture, or conducting interviews.",
+    "codes": ["S", "E"]
+  },
+  {
+    "id": 56,
+    "section": "Education & Teaching",
+    "strand": "BSED values",
+    "question": "Discussing ethics, moral values, or guiding others in personal development.",
+    "codes": ["S", "A"]
+  },
+  {
+    "id": 57,
+    "section": "Technical & Practical Skills",
+    "strand": "BTVTED",
+    "question": "Teaching technical skills, demonstrating livelihood projects, or managing workshops.",
+    "codes": ["S", "R"]
+  },
+  {
+    "id": 58,
+    "section": "Research & Academics",
+    "strand": "CPE",
+    "question": "Studying teaching methodologies, classroom management, or education research.",
+    "codes": ["I", "S"]
+  },
+  {
+    "id": 59,
+    "section": "Education & Teaching",
+    "strand": "BEED",
+    "question": "Developing lesson plans, using creative teaching methods, or assessing student progress.",
+    "codes": ["S", "A"]
+  },
+  {
+    "id": 60,
+    "section": "Social & Behavioral Sciences",
+    "strand": "BSED social studies",
+    "question": "Discussing history, politics, or current social issues in depth.",
+    "codes": ["S", "I"]
+  },
+  {
+    "id": 61,
+    "section": "Science & Technology",
+    "strand": "BSIT",
+    "question": "Building websites, mobile apps, or full-stack software solutions.",
+    "codes": ["I", "A"]
+  },
+  {
+    "id": 62,
+    "section": "Business & Entrepreneurship",
+    "strand": "BSOA",
+    "question": "Handling office correspondence, managing records, or coordinating meetings.",
+    "codes": ["C"]
+  },
+  {
+    "id": 63,
+    "section": "Education & Teaching",
+    "strand": "BSED math",
+    "question": "Analyzing patterns, solving equations, or applying math to real-life problems.",
+    "codes": ["I"]
+  },
+  {
+    "id": 64,
+    "section": "Education & Teaching",
+    "strand": "BSED science",
+    "question": "Explaining scientific concepts, using lab equipment, or demonstrating experiments.",
+    "codes": ["I", "S"]
+  },
+  {
+    "id": 65,
+    "section": "Business & Entrepreneurship",
+    "strand": "BSBA HRM",
+    "question": "Supporting employee growth, resolving workplace issues, or building team morale.",
+    "codes": ["S", "E"]
+  },
+  {
+    "id": 66,
+    "section": "Social & Behavioral Sciences",
+    "strand": "BSP",
+    "question": "Conducting psychological assessments or interpreting human behavior.",
+    "codes": ["I", "S"]
+  },
+  {
+    "id": 67,
+    "section": "Health & Human Services",
+    "strand": "BPE",
+    "question": "Promoting health awareness, leading wellness seminars, or guiding exercise routines.",
+    "codes": ["S", "E"]
+  },
+  {
+    "id": 68,
+    "section": "Technical & Practical Skills",
+    "strand": "BTLED",
+    "question": "Repairing appliances, installing systems, or mastering technical tools.",
+    "codes": ["R"]
+  },
+  {
+    "id": 69,
+    "section": "Arts & Communication",
+    "strand": "BSED english",
+    "question": "Analyzing literature, teaching grammar, or improving communication skills.",
+    "codes": ["A", "S"]
+  },
+  {
+    "id": 70,
+    "section": "Hospitality & Tourism",
+    "strand": "BSHM",
+    "question": "Managing hotel operations, supervising staff, or improving guest experience.",
+    "codes": ["C", "E"]
+  }
+]
