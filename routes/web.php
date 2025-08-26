@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\CollegeQuizController;
+use App\Http\Controllers\EnrollmentController; // 👈 Added: Enrollment Controller
 
 // ===================================================
 // === 🏠 Landing Pages (Public) ===
@@ -59,6 +60,22 @@ Route::get('/college/quiz', [CollegeQuizController::class, 'showQuiz'])->name('c
 Route::post('/college/quiz', [CollegeQuizController::class, 'submit'])->name('college.quiz.submit');
 
 // ===================================================
+// === 📝 COLLEGE ENROLLMENT ROUTES ===
+// ===================================================
+
+// Show the enrollment form
+Route::get('/college-enrollment/form', [EnrollmentController::class, 'showForm'])
+    ->name('enrollment.form');
+
+// Handle form submission
+Route::post('/college-enrollment/submit', [EnrollmentController::class, 'submit'])
+    ->name('enrollment.submit');
+
+// Success page after submission
+Route::get('/college-enrollment/success', [EnrollmentController::class, 'success'])
+    ->name('enrollment.success');
+
+// ===================================================
 // === 🔐 Auth & Dashboard (Protected) ===
 // ===================================================
 
@@ -97,7 +114,6 @@ require __DIR__.'/auth.php';
 // ===================================================
 // === 🔐 OVERRIDE: Logout Redirect to /login ===
 // ===================================================
-// This ensures user goes to /login after logout, not homepage
 Route::post('/logout', function () {
     auth()->logout();
     session()->invalidate();
