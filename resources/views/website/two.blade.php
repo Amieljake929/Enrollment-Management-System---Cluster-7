@@ -696,7 +696,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p>Pay a small reservation fee via GCash, bank deposit, or online payment to secure your slot for enrollment.</p>
+                <p>Pay a small reservation fee via HMA, AUB, or Main Cashier to secure your slot for enrollment.</p>
             </div>
         </div>
     </div>
@@ -812,7 +812,7 @@
                 </h2>
                 <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        Yes, all incoming college students must take the College Entrance Exam. SHS students are exempt.
+                        No, the College Entrance Exam is not required both for SHS & College students.
                     </div>
                 </div>
             </div>
@@ -836,7 +836,7 @@
                 </h2>
                 <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                     <div class="accordion-body">
-                        We accept GCash, bank deposit, and over-the-counter payments via accredited partners.
+                        We accept HMA, AUB, and over-the-counter payments.
                     </div>
                 </div>
             </div>

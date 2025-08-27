@@ -809,68 +809,68 @@
 
       const courseOptions = {
         "1": [
-          "BLIS - Bachelor in Library Information Science",
-          "BPED - Bachelor in Physical Education",
-          "BEED - Bachelor of Elementary Education",
-          "BSAIS - BS in Accounting Information System",
-          "BSBA FM - BSBA major in Financial Management",
-          "BSBA HRM - BSBA major in Human Resource Management",
-          "BSBA MM - BSBA major in Marketing Management",
-          "BSCPE - BS in Computer Engineering",
-          "BSCRIM - BS in Criminology",
-          "BSENTREP - BS in Entrepreneurship",
-          "BSHM - BS in Hospitality Management",
-          "BSIT - BS in Information Technology",
-          "BSOA - BS in Office Administration",
-          "BSP - BS in Psychology",
-          "BSTM - BS in Tourism Management",
-          "BSED english - BSEd major in English",
-          "BSED filipino - BSEd major in Filipino",
-          "BSED math - BSEd major in Mathematics",
-          "BSED science - BSEd major in Science",
-          "BSED social studies - BSEd major in Social Studies",
-          "BSED values - BSEd major in Values",
-          "BTLED - Bachelor of Technology and Livelihood Education",
-          "CPE - Certificate of Professional Education"
+          { course_id: 1, name: "BLIS - Bachelor in Library Information Science" },
+          { course_id: 2, name: "BPED - Bachelor in Physical Education" },
+          { course_id: 3, name: "BEED - Bachelor of Elementary Education" },
+          { course_id: 4, name: "BSAIS - BS in Accounting Information System" },
+          { course_id: 5, name: "BSBA FM - BSBA major in Financial Management" },
+          { course_id: 6, name: "BSBA HRM - BSBA major in Human Resource Management" },
+          { course_id: 7, name: "BSBA MM - BSBA major in Marketing Management" },
+          { course_id: 8, name: "BSCPE - BS in Computer Engineering" },
+          { course_id: 9, name: "BSCRIM - BS in Criminology" },
+          { course_id: 10, name: "BSENTREP - BS in Entrepreneurship" },
+          { course_id: 11, name: "BSHM - BS in Hospitality Management" },
+          { course_id: 12, name: "BSIT - BS in Information Technology" },
+          { course_id: 13, name: "BSOA - BS in Office Administration" },
+          { course_id: 14, name: "BSP - BS in Psychology" },
+          { course_id: 15, name: "BSTM - BS in Tourism Management" },
+          { course_id: 16, name: "BSED english - BSEd major in English" },
+          { course_id: 17, name: "BSED filipino - BSEd major in Filipino" },
+          { course_id: 18, name: "BSED math - BSEd major in Mathematics" },
+          { course_id: 19, name: "BSED science - BSEd major in Science" },
+          { course_id: 20, name: "BSED social studies - BSEd major in Social Studies" },
+          { course_id: 21, name: "BSED values - BSEd major in Values" },
+          { course_id: 22, name: "BTLED - Bachelor of Technology and Livelihood Education" },
+          { course_id: 23, name: "CPE - Certificate of Professional Education" }
         ],
         "2": [
-          "Bulacan BTVTED - BTVTED major in Food Service Management",
-          "Bulacan BPE - Bachelor of Physical Education major in School PE",
-          "Bulacan BSAIS - Bachelor of Science in Accounting Information System",
-          "Bulacan BSCPE - Bachelor of Science in Computer Engineering",
-          "Bulacan BSCRIM - Bachelor of Science in Criminology",
-          "Bulacan BSENTREP - Bachelor of Science in Entrepreneurship",
-          "Bulacan BSIS - Bachelor of Science in Information System",
-          "Bulacan BSP - Bachelor of Science in Psychology",
-          "Bulacan BSTM - Bachelor of Science in Tourism Management"
+          { course_id: 24, name: "Bulacan BTVTED - BTVTED major in Food Service Management" },
+          { course_id: 25, name: "Bulacan BPE - Bachelor of Physical Education major in School PE" },
+          { course_id: 26, name: "Bulacan BSAIS - Bachelor of Science in Accounting Information System" },
+          { course_id: 27, name: "Bulacan BSCPE - Bachelor of Science in Computer Engineering" },
+          { course_id: 28, name: "Bulacan BSCRIM - Bachelor of Science in Criminology" },
+          { course_id: 29, name: "Bulacan BSENTREP - Bachelor of Science in Entrepreneurship" },
+          { course_id: 30, name: "Bulacan BSIS - Bachelor of Science in Information System" },
+          { course_id: 31, name: "Bulacan BSP - Bachelor of Science in Psychology" },
+          { course_id: 32, name: "Bulacan BSTM - Bachelor of Science in Tourism Management" }  // ✅ Tama na!
         ]
       };
 
       const requiredDocuments = {
         'New Regular': [
-          'Form 138 (Report Card)',
-          'Form 137',
-          'Certificate of Good Moral',
-          'PSA Authenticated Birth Certificate',
-          'Passport Size ID Picture (White Background, Formal Attire) - 2 pcs',
-          'Barangay Clearance'
-        ],
+           { doc_id: 1, name: 'Form 138 (Report Card)' },
+           { doc_id: 3, name: 'Form 137' },
+           { doc_id: 5, name: 'Certificate of Good Moral' },
+           { doc_id: 7, name: 'PSA Authenticated Birth Certificate' },
+           { doc_id: 9, name: 'Passport Size ID Picture (White Background, Formal Attire) - 2 pcs' },
+           { doc_id: 11, name: 'Barangay Clearance' }
+      ],
         'Returnee': [
-          'Form 138 (Report Card)',
-          'Form 137',
-          'Certificate of Good Moral',
-          'PSA Authenticated Birth Certificate',
-          'Passport Size ID Picture (White Background, Formal Attire) - 2 pcs',
-          'Barangay Clearance'
-        ],
+           { doc_id: 2, name: 'Form 138 (Report Card)' },
+           { doc_id: 4, name: 'Form 137' },
+           { doc_id: 6, name: 'Certificate of Good Moral' },
+           { doc_id: 8, name: 'PSA Authenticated Birth Certificate' },
+           { doc_id: 10, name: 'Passport Size ID Picture (White Background, Formal Attire) - 2 pcs' },
+           { doc_id: 12, name: 'Barangay Clearance' }
+      ],
         'Transferee': [
-          'Transcript of Records from Previous School',
-          'Honorable Dismissal',
-          'Certificate of Good Moral',
-          'PSA Authenticated Birth Certificate',
-          'Passport Size ID Picture (White Background, Formal Attire) - 2 pcs',
-          'Barangay Clearance'
-        ]
+          { doc_id: 13, name: 'Transcript of Records from Previous School' },
+          { doc_id: 14, name: 'Honorable Dismissal' },
+          { doc_id: 15, name: 'Certificate of Good Moral' },
+          { doc_id: 16, name: 'PSA Authenticated Birth Certificate' },
+          { doc_id: 17, name: 'Passport Size ID Picture (White Background, Formal Attire) - 2 pcs' },
+          { doc_id: 18, name: 'Barangay Clearance' }
+       ]
       };
 
       function updateYearLevelOptions() {
@@ -903,70 +903,76 @@
         const branch = preferredBranchSelect.value;
         const courses = courseOptions[branch] || [];
         preferredCourseSelect.innerHTML = '<option value="" selected disabled>Choose preferred course</option>';
-        courses.forEach((course, index) => {
-          const option = document.createElement('option');
-          option.value = index + 1;
-          option.textContent = course;
-          preferredCourseSelect.appendChild(option);
-        });
+        courses.forEach(course => {
+               const option = document.createElement('option');
+               option.value = course.course_id;  // ✅ Totoong course_id
+               option.textContent = course.name;
+               preferredCourseSelect.appendChild(option);
+});
       });
 
       function updateDocumentUploadList() {
-        const studentType = studentTypeSelect.value;
-        const docs = requiredDocuments[studentType] || [];
-        documentUploadList.innerHTML = '';
-        docs.forEach((doc, index) => {
-          const docGroup = document.createElement('div');
-          docGroup.className = 'mb-4';
-          docGroup.innerHTML = `
-            <label class="form-label">
-              <i class="fas fa-file-upload text-primary me-1"></i>
-              ${doc} <span class="required-star">*</span>
-            </label>
-            <input type="file" class="form-control" name="documents[]" accept=".pdf,.jpg,.jpeg,.png" required />
-            <div class="invalid-feedback">Please upload a valid copy of ${doc}.</div>
-            <div class="mt-2 preview-container" style="display: none;">
-              <strong>Preview:</strong>
-              <div class="border rounded p-2 bg-light" style="max-height: 200px; overflow: auto;">
-                <img src="" alt="Preview" class="img-fluid mb-2 d-none" style="max-height: 150px;" />
-                <a href="#" class="pdf-preview d-none text-danger" target="_blank"><i class="fas fa-file-pdf me-1"></i>View PDF</a>
-              </div>
-            </div>
-          `;
-          documentUploadList.appendChild(docGroup);
+  const studentType = studentTypeSelect.value;
+  const docs = requiredDocuments[studentType] || [];
+  documentUploadList.innerHTML = '';
+  docs.forEach((doc, index) => {
+    const docGroup = document.createElement('div');
+    docGroup.className = 'mb-4';
+    docGroup.innerHTML = `
+      <label class="form-label">
+        <i class="fas fa-file-upload text-primary me-1"></i>
+        ${doc.name} <span class="required-star">*</span>
+      </label>
+      <input type="file" class="form-control" name="documents[]" accept=".pdf,.jpg,.jpeg,.png" required />
+      <div class="invalid-feedback">Please upload a valid copy of ${doc.name}.</div>
+      <div class="mt-2 preview-container" style="display: none;">
+        <strong>Preview:</strong>
+        <div class="border rounded p-2 bg-light" style="max-height: 200px; overflow: auto;">
+          <img src="" alt="Preview" class="img-fluid mb-2 d-none" style="max-height: 150px;" />
+          <a href="#" class="pdf-preview d-none text-danger" target="_blank"><i class="fas fa-file-pdf me-1"></i>View PDF</a>
+        </div>
+      </div>
+    `;
 
-          const fileInput = docGroup.querySelector('input[type="file"]');
-          const previewContainer = docGroup.querySelector('.preview-container');
-          const imgPreview = docGroup.querySelector('img');
-          const pdfPreview = docGroup.querySelector('.pdf-preview');
+    // Inside the document group
+         const hiddenDocId = document.createElement('input');
+         hiddenDocId.type = 'hidden';
+         hiddenDocId.name = 'document_doc_id[]';
+         hiddenDocId.value = doc.doc_id;
+         docGroup.appendChild(hiddenDocId);
 
-          fileInput.addEventListener('change', function () {
-            const file = this.files[0];
-            if (!file) return;
+    documentUploadList.appendChild(docGroup);
+    const fileInput = docGroup.querySelector('input[type="file"]');
+    const previewContainer = docGroup.querySelector('.preview-container');
+    const imgPreview = docGroup.querySelector('img');
+    const pdfPreview = docGroup.querySelector('.pdf-preview');
 
-            if (file.size > 5 * 1024 * 1024) {
-              alert(`File too large: ${file.name}. Maximum is 5MB.`);
-              this.value = '';
-              previewContainer.style.display = 'none';
-              return;
-            }
+    // Store doc_id in data attribute for later use
+    fileInput.dataset.docId = doc.doc_id;
 
-            const fileURL = URL.createObjectURL(file);
-            previewContainer.style.display = 'block';
-            imgPreview.classList.add('d-none');
-            pdfPreview.classList.add('d-none');
-
-            if (file.type.startsWith('image/')) {
-              imgPreview.src = fileURL;
-              imgPreview.classList.remove('d-none');
-            } else if (file.type === 'application/pdf') {
-              pdfPreview.href = fileURL;
-              pdfPreview.classList.remove('d-none');
-            }
-          });
-        });
+    fileInput.addEventListener('change', function () {
+      const file = this.files[0];
+      if (!file) return;
+      if (file.size > 5 * 1024 * 1024) {
+        alert(`File too large: ${file.name}. Maximum is 5MB.`);
+        this.value = '';
+        previewContainer.style.display = 'none';
+        return;
       }
-
+      const fileURL = URL.createObjectURL(file);
+      previewContainer.style.display = 'block';
+      imgPreview.classList.add('d-none');
+      pdfPreview.classList.add('d-none');
+      if (file.type.startsWith('image/')) {
+        imgPreview.src = fileURL;
+        imgPreview.classList.remove('d-none');
+      } else if (file.type === 'application/pdf') {
+        pdfPreview.href = fileURL;
+        pdfPreview.classList.remove('d-none');
+      }
+    });
+  });
+}
       function showStep(index) {
         steps.forEach(s => s.classList.remove('active'));
         stepperSteps.forEach(s => s.classList.remove('active', 'completed'));

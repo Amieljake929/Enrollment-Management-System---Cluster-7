@@ -151,22 +151,22 @@ class EnrollmentController extends Controller
 
             // 6. Save Documents
             if ($request->hasFile('documents')) {
-                foreach ($request->file('documents') as $index => $file) {
+            $docIds = $request->input('document_doc_id'); // Array of correct doc_ids
+
+               foreach ($request->file('documents') as $index => $file) {
                     $path = $file->store('enrollment_documents', 'public');
                     $extension = $file->getClientOriginalExtension();
 
-                    // Optional: Get correct doc_id from college_documents table
-                    $docId = $index + 1; // You can improve this later
+                  CollegeUploadedDocument::create([
+                     'student_id' => $student->student_id,
+                     'doc_id' => $docIds[$index], // ✅ Correct doc_id from hidden input
+                     'file_path' => $path,
+                     'file_type' => $extension,
+                ]);
+             }
+           }
 
-                    CollegeUploadedDocument::create([
-                        'student_id' => $student->student_id,
-                        'doc_id' => $docId,
-                        'file_path' => $path,
-                        'file_type' => $extension,
-                    ]);
-                }
-            }
-
+           
             DB::commit();
 
             // ✅ Return JSON for AJAX, redirect for regular form
