@@ -9,12 +9,11 @@ set the .env or .env.example
 (hindi po namin sinama sa pag push ang .env or .env.example file dahil sa mga sentibo po nitong mga info, gayunpaman pwede po naming ibigay ito for testing 
 nasa baba po ang aming social media account)
 
-1. Please try the College enrollment form to see if it can insert data. SHS enrollment form still developing.
+1. Please try the College enrollment & SHS enrollment form to see if it can insert data.
 2. Migration or migrate the database
    - Database name "enrollment_ems" configuration in .env or .env.example.
    - migrate the all migration files "php artisan migrate"
    - also the seeders "php artisan migrate:fresh --seed"
-   - then run the "php artisan db:seed"
 
 3. also try the login page just type "http://127.0.0.1:8000/login or https://ems.jampzdev.com/login"
 4. try to register and login
