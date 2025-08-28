@@ -21,6 +21,13 @@ class DatabaseSeeder extends Seeder
         CollegeCoursesSeeder::class,
         CollegeDocumentsSeeder::class,
         // Add others if needed later
+
+        // SHS seeders
+            ShsStudentTypesSeeder::class,
+            ShsBranchesSeeder::class,
+            ShsYearLevelSeeder::class,
+            ShsCoursesSeeder::class,
+            ShsDocumentSeeder::class,
     ]);
 }
 }

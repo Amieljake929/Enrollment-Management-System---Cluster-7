@@ -6,7 +6,8 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\CollegeQuizController;
-use App\Http\Controllers\EnrollmentController; // 👈 Added: Enrollment Controller
+use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\ShsEnrollmentController; // 👈 Added: SHS Enrollment Controller
 
 // ===================================================
 // === 🏠 Landing Pages (Public) ===
@@ -74,6 +75,16 @@ Route::post('/college-enrollment/submit', [EnrollmentController::class, 'submit'
 // Success page after submission
 Route::get('/college-enrollment/success', [EnrollmentController::class, 'success'])
     ->name('enrollment.success');
+
+// ===================================================
+// === 📚 SHS ENROLLMENT ROUTES ===
+// ===================================================
+// routes/web.php
+Route::prefix('shs')->name('shs.')->middleware('web')->group(function () {
+    Route::get('/enrollment', [ShsEnrollmentController::class, 'showForm'])->name('enrollment');
+    Route::post('/enrollment/submit', [ShsEnrollmentController::class, 'submit'])->name('enrollment.submit');
+    Route::get('/enrollment/success', [ShsEnrollmentController::class, 'success'])->name('enrollment.success');
+});
 
 // ===================================================
 // === 🔐 Auth & Dashboard (Protected) ===

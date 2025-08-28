@@ -1,3 +1,4 @@
+<!-- resources/views/website/ShsEnrollment.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -323,6 +324,7 @@
     /* File Preview Styling */
     .preview-container {
       font-size: 0.85rem;
+      margin-top: 10px;
     }
     .preview-container .border {
       border-width: 1px !important;
@@ -345,15 +347,15 @@
   </style>
 </head>
 <body>
-  <!-- Navigation Bar -->
   <!-- Hero Section -->
   <section class="hero-section">
     <div class="container" style="margin-top: 2%;">
-     <img src="../images/bcp.png" alt="Bestlink College Of The Philippines" class="img-fluid" width="100"  height="100">
-      <h1 class="display-4 fw-bold">SHS Enrollment</h1>
-      <p class="lead">Start your Senior High School journey with Bestlink College of the Philippines.</p>
+      <img src="../images/bcp.png" alt="Bestlink College Of The Philippines" class="img-fluid" width="100" height="100">
+      <h1 class="display-4 fw-bold">Senior High School Enrollment</h1>
+      <p class="lead">Start your Senior High School journey with Bestlink College of the Philippines. Complete your enrollment process quickly and efficiently.</p>
     </div>
   </section>
+
   <div class="container py-5" id="enrollment-form">
     <div class="row justify-content-center mb-5">
       <div class="col-lg-8 text-center">
@@ -375,26 +377,33 @@
               <div class="step disabled" data-step="6">Step 6: Documents</div>
               <div class="step disabled" data-step="7">Step 7: Summary</div>
             </div>
+
+            <!-- FORM -->
             <form id="registrationForm" novalidate>
+              @csrf
+
               <!-- STEP 1 -->
               <section class="form-section active" data-step="1">
                 <h3 class="stepper-header mb-4">Step 1: Student Information</h3>
                 <div class="row g-3">
                   <div class="col-md-6">
                     <label for="studentType" class="form-label">Student Type<span class="required-star">*</span></label>
-                    <select class="form-select" id="studentType" name="studentType" required>
+                    <select class="form-select" id="studentType" name="studentType" required aria-describedby="studentTypeHelp">
                       <option value="" selected disabled>Choose student type</option>
                       <option value="New Regular">New Regular</option>
                       <option value="Transferee">Transferee</option>
                       <option value="Returnee">Returnee</option>
                     </select>
                     <div class="invalid-feedback">Please select a student type.</div>
+                    <div id="studentTypeHelp" class="form-text d-none">Selected: <span id="studentTypeValue"></span></div>
                   </div>
+
                   <div class="col-md-6 d-none" id="previousIdContainer">
                     <label for="previousStudentId" class="form-label">Previous Student ID No (8 digits)<span class="required-star">*</span></label>
                     <input type="text" class="form-control" id="previousStudentId" name="previousStudentId" pattern="^\d{8}$" maxlength="8" />
                     <div class="invalid-feedback">Please enter a valid 8-digit Previous Student ID.</div>
                   </div>
+
                   <div class="col-md-4">
                     <label for="firstName" class="form-label">First Name<span class="required-star">*</span></label>
                     <input type="text" class="form-control" id="firstName" name="firstName" required />
@@ -457,6 +466,7 @@
                   </div>
                 </div>
               </section>
+
               <!-- STEP 2 -->
               <section class="form-section" data-step="2">
                 <h3 class="stepper-header mb-4">Step 2: Address</h3>
@@ -475,21 +485,22 @@
                     <label for="region" class="form-label">Region<span class="required-star">*</span></label>
                     <select class="form-select" id="region" name="region" required>
                       <option value="" selected disabled>Choose region</option>
-                      <option>Region I - Ilocos Region</option>
-                      <option>Region II - Cagayan Valley</option>
-                      <option>Region III - Central Luzon</option>
-                      <option>Region IV-A - CALABARZON</option>
-                      <option>Region IV-B - MIMAROPA</option>
-                      <option>Region V - Bicol Region</option>
-                      <option>Region VI - Western Visayas</option>
-                      <option>Region VII - Central Visayas</option>
-                      <option>Region VIII - Eastern Visayas</option>
-                      <option>Region IX - Zamboanga Peninsula</option>
-                      <option>Region X - Northern Mindanao</option>
-                      <option>Region XI - Davao Region</option>
-                      <option>Region XII - SOCCSKSARGEN</option>
-                      <option>Region XIII - Caraga</option>
-                      <option>BARMM</option>
+                      <option value="1">NCR - National Capital Region</option>
+                      <option value="2">Region I - Ilocos Region</option>
+                      <option value="3">Region II - Cagayan Valley</option>
+                      <option value="4">Region III - Central Luzon</option>
+                      <option value="5">Region IV-A - CALABARZON</option>
+                      <option value="6">Region IV-B - MIMAROPA</option>
+                      <option value="7">Region V - Bicol Region</option>
+                      <option value="8">Region VI - Western Visayas</option>
+                      <option value="9">Region VII - Central Visayas</option>
+                      <option value="10">Region VIII - Eastern Visayas</option>
+                      <option value="11">Region IX - Zamboanga Peninsula</option>
+                      <option value="12">Region X - Northern Mindanao</option>
+                      <option value="13">Region XI - Davao Region</option>
+                      <option value="14">Region XII - SOCCSKSARGEN</option>
+                      <option value="15">Region XIII - Caraga</option>
+                      <option value="16">BARMM</option>
                     </select>
                     <div class="invalid-feedback">Please select your region.</div>
                   </div>
@@ -519,12 +530,13 @@
                     <div class="invalid-feedback">Please enter a valid contact number.</div>
                   </div>
                   <div class="col-md-6">
-                    <label for="socialMedia" class="form-label">Social Media Account<span class="required-star">*</span></label>
+                    <label for="socialMedia" class="form-label">Social Media Account / Facebook<span class="required-star">*</span></label>
                     <input type="text" class="form-control" id="socialMedia" name="socialMedia" required />
                     <div class="invalid-feedback">Please enter your social media account.</div>
                   </div>
                 </div>
               </section>
+
               <!-- STEP 3 -->
               <section class="form-section" data-step="3">
                 <h3 class="stepper-header mb-4">Step 3: Parents Information</h3>
@@ -560,6 +572,7 @@
                     <input type="email" class="form-control" id="motherEmail" name="motherEmail" required />
                     <div class="invalid-feedback">Please enter a valid email address.</div>
                   </div>
+
                   <h5 class="mb-3 mt-4" style="color: var(--primary-dark); font-weight: 700;">Father's Information</h5>
                   <div class="col-md-4">
                     <label for="fatherFirstName" class="form-label">First Name<span class="required-star">*</span></label>
@@ -591,39 +604,37 @@
                     <input type="email" class="form-control" id="fatherEmail" name="fatherEmail" required />
                     <div class="invalid-feedback">Please enter a valid email address.</div>
                   </div>
+
                   <h5 class="mb-3 mt-4" style="color: var(--primary-dark); font-weight: 700;">Guardian's Information (If not living with parents)</h5>
                   <div class="col-md-4">
-                    <label for="guardianFirstName" class="form-label">First Name<span class="required-star">*</span></label>
+                    <label for="guardianFirstName" class="form-label">First Name</label>
                     <input type="text" class="form-control" id="guardianFirstName" name="guardianFirstName" />
-                    <div class="invalid-feedback">Please enter guardian's first name.</div>
                   </div>
                   <div class="col-md-4">
-                    <label for="guardianMiddleName" class="form-label">Middle Name<span class="required-star">*</span></label>
+                    <label for="guardianMiddleName" class="form-label">Middle Name</label>
                     <input type="text" class="form-control" id="guardianMiddleName" name="guardianMiddleName" />
-                    <div class="invalid-feedback">Please enter guardian's middle name.</div>
                   </div>
                   <div class="col-md-4">
-                    <label for="guardianLastName" class="form-label">Last Name<span class="required-star">*</span></label>
+                    <label for="guardianLastName" class="form-label">Last Name</label>
                     <input type="text" class="form-control" id="guardianLastName" name="guardianLastName" />
-                    <div class="invalid-feedback">Please enter guardian's last name.</div>
                   </div>
                   <div class="col-md-3">
-                    <label for="guardianDob" class="form-label">Date of Birth<span class="required-star">*</span></label>
+                    <label for="guardianDob" class="form-label">Date of Birth</label>
                     <input type="date" class="form-control" id="guardianDob" name="guardianDob" max="" />
-                    <div class="invalid-feedback">Please enter guardian's date of birth.</div>
                   </div>
                   <div class="col-md-6">
-                    <label for="guardianContact" class="form-label">Contact Number<span class="required-star">*</span></label>
+                    <label for="guardianContact" class="form-label">Contact Number</label>
                     <input type="tel" class="form-control" id="guardianContact" name="guardianContact" pattern="^\+?\d{7,15}$" />
                     <div class="invalid-feedback">Please enter a valid contact number.</div>
                   </div>
                   <div class="col-md-3">
-                    <label for="guardianEmail" class="form-label">Email<span class="required-star">*</span></label>
+                    <label for="guardianEmail" class="form-label">Email</label>
                     <input type="email" class="form-control" id="guardianEmail" name="guardianEmail" />
                     <div class="invalid-feedback">Please enter a valid email address.</div>
                   </div>
                 </div>
               </section>
+
               <!-- STEP 4 -->
               <section class="form-section" data-step="4">
                 <h3 class="stepper-header mb-4">Step 4: Preferences</h3>
@@ -632,8 +643,8 @@
                     <label for="preferredBranch" class="form-label">Preferred Branch<span class="required-star">*</span></label>
                     <select class="form-select" id="preferredBranch" name="preferredBranch" required>
                       <option value="" selected disabled>Choose preferred branch</option>
-                      <option value="Main Branch">Main Branch</option>
-                      <option value="Bulacan Branch">Bulacan Branch</option>
+                      <option value="1">Main Branch</option>
+                      <option value="2">Bulacan Branch</option>
                     </select>
                     <div class="invalid-feedback">Please select a preferred branch.</div>
                   </div>
@@ -653,6 +664,7 @@
                   </div>
                 </div>
               </section>
+
               <!-- STEP 5 -->
               <section class="form-section" data-step="5">
                 <h3 class="stepper-header mb-4">Step 5: Educational Background</h3>
@@ -690,15 +702,13 @@
                 </div>
               </section>
 
-              <!-- STEP 6: Softcopy of Document Submission -->
+              <!-- STEP 6 -->
               <section class="form-section" data-step="6">
                 <h3 class="stepper-header mb-4">Step 6: Softcopy of Document Submission</h3>
                 <p class="mb-4 text-muted">Please upload clear and legible scanned copies of the following required documents. Acceptable formats: PDF, JPG, PNG (max 5MB each).</p>
-
                 <div id="documentUploadList">
-                  <!-- Documents will be populated by JavaScript -->
+                  <!-- Dynamically populated -->
                 </div>
-
                 <div class="mt-4">
                   <div class="alert alert-warning d-flex align-items-center" role="alert">
                     <i class="fas fa-exclamation-triangle me-3"></i>
@@ -709,14 +719,14 @@
                 </div>
               </section>
 
-              <!-- STEP 7: Summary -->
+              <!-- STEP 7 -->
               <section class="form-section" data-step="7">
                 <h3 class="stepper-header mb-4">Step 7: Summary</h3>
                 <div class="alert alert-info mb-4">
                   <strong><i class="fas fa-info-circle me-2"></i>Please review your information carefully before submitting.</strong>
                 </div>
                 <div id="summaryContent" class="mb-4">
-                  <!-- Summary content will be populated by JavaScript -->
+                  <!-- Populated by JS -->
                 </div>
                 <div class="form-check mb-4">
                   <input class="form-check-input" type="checkbox" id="agreement" required>
@@ -728,73 +738,20 @@
 
               <!-- Navigation Buttons -->
               <div class="d-flex justify-content-between mt-4">
-                <button type="button" class="btn btn-secondary" id="prevBtn" disabled><i class="fas fa-arrow-left me-2"></i>Previous</button>
-                <button type="button" class="btn btn-primary" id="nextBtn">Next<i class="fas fa-arrow-right ms-2"></i></button>
+                <button type="button" class="btn btn-secondary" id="prevBtn" disabled>
+                  <i class="fas fa-arrow-left me-2"></i>Previous
+                </button>
+                <button type="button" class="btn btn-primary" id="nextBtn">
+                  Next<i class="fas fa-arrow-right ms-2"></i>
+                </button>
               </div>
             </form>
           </div>
         </div>
       </div>
     </div>
-    <!-- Features Section -->
-    <div class="row justify-content-center my-5">
-      <div class="col-lg-8 text-center mb-5">
-        <h2 class="fw-bold text-primary-custom mb-3 section-title">Why Choose Bestlink?</h2>
-        <p class="lead">Discover the advantages of studying at Bestlink College of the Philippines</p>
-      </div>
-    </div>
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="feature-box">
-          <i class="fas fa-award"></i>
-          <h4>Accredited Programs</h4>
-          <p>Our courses are recognized by CHED and industry partners for quality education.</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="feature-box">
-          <i class="fas fa-chalkboard-teacher"></i>
-          <h4>Expert Faculty</h4>
-          <p>Learn from experienced professionals and educators in your field of study.</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="feature-box">
-          <i class="fas fa-laptop"></i>
-          <h4>Modern Facilities</h4>
-          <p>State-of-the-art classrooms, laboratories, and learning resources.</p>
-        </div>
-      </div>
-    </div>
-    <div class="row justify-content-center mb-5 mt-5">
-      <div class="col-lg-8">
-        <h2 class="fw-bold text-primary-custom mb-4 section-title">Enrollment Requirements</h2>
-        <p class="mb-4">Prepare the following documents based on your student category to ensure smooth enrollment process.</p>
-      </div>
-    </div>
-    <div class="row justify-content-center g-4">
-      <div class="col-md-6">
-        <div class="card requirements-card shadow-sm">
-          <div class="card-header card-header-custom">
-            <h3 class="h4 mb-0"><i class="fas fa-user-graduate me-2"></i>SHS Students</h3>
-          </div>
-          <div class="card-body">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item"><i class="fas fa-file-contract me-2 text-primary"></i>Form 138 (Report Card)</li>
-              <li class="list-group-item"><i class="fas fa-file-alt me-2 text-primary"></i>Form 137</li>
-              <li class="list-group-item"><i class="fas fa-certificate me-2 text-primary"></i>Certificate of Good Moral</li>
-              <li class="list-group-item"><i class="fas fa-portrait me-2 text-primary"></i>2"x2" ID Picture (White Background) - 2 pcs</li>
-              <li class="list-group-item"><i class="fas fa-file-medical me-2 text-primary"></i>Photocopy of NCAE Result</li>
-              <li class="list-group-item"><i class="fas fa-file-medical me-2 text-primary"></i>ESC Certificate, if a graduate of a private Junior High School</li>
-              <li class="list-group-item"><i class="fas fa-file-certificate me-2 text-primary"></i>PSA Authenticated Birth Certificate</li>
-              <li class="list-group-item"><i class="fas fa-shield-alt me-2 text-primary"></i>Barangay Clearance</li>
-              <li class="list-group-item"><i class="fas fa-file-alt me-2 text-primary"></i>Photocopy of Diploma</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
+
   <!-- Footer -->
   <footer>
     <div class="container">
@@ -833,340 +790,370 @@
       </div>
     </div>
   </footer>
+
+  <!-- Define route for JS -->
+  <script>
+    const SUBMIT_ENROLLMENT_URL = "{{ route('shs.enrollment.submit') }}";
+  </script>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    (() => {
-      const form = document.getElementById('registrationForm');
-      const steps = Array.from(form.querySelectorAll('section.form-section'));
-      const stepperSteps = Array.from(document.querySelectorAll('#stepper .step'));
-      const prevBtn = document.getElementById('prevBtn');
-      const nextBtn = document.getElementById('nextBtn');
-      let currentStep = 0;
+  (() => {
+    const form = document.getElementById('registrationForm');
+    const steps = Array.from(form.querySelectorAll('section.form-section'));
+    const stepperSteps = Array.from(document.querySelectorAll('#stepper .step'));
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    let currentStep = 0;
+    const today = new Date().toISOString().split('T')[0];
 
-      // Set max date for DOB fields to today
-      const today = new Date().toISOString().split('T')[0];
-      form.querySelectorAll('input[type="date"]').forEach(input => input.setAttribute('max', today));
+    // Set max date to today
+    form.querySelectorAll('input[type="date"]').forEach(input => input.setAttribute('max', today));
 
-      // Show/hide Previous Student ID No. based on Student Type
-      const studentTypeSelect = document.getElementById('studentType');
-      const previousIdContainer = document.getElementById('previousIdContainer');
-      const previousStudentIdInput = document.getElementById('previousStudentId');
-      const yearLevelStep4 = document.getElementById('yearLevelStep4');
+    const studentTypeSelect = document.getElementById('studentType');
+    const previousIdContainer = document.getElementById('previousIdContainer');
+    const yearLevelStep4 = document.getElementById('yearLevelStep4');
+    const preferredBranchSelect = document.getElementById('preferredBranch');
+    const preferredCourseSelect = document.getElementById('preferredCourse');
+    const documentUploadList = document.getElementById('documentUploadList');
 
-      // Course options for each branch
-      const courseOptions = {
-        "Main Branch": [
-          "ABM - Accountancy, Business and Management",
-          "GAS - General Academic Strand",
-          "HECF - Home Economics - Culinary Arts and Food Services",
-          "HEHRS - Home Economics - Hotel and Restaurant Services",
-          "HEHO - Home Economics - Hotel Operation",
-          "HETEM - Home Economics - Tourism and Event Management",
-          "HUMSS - Humanities and Social Sciences",
-          "ICT-HW - ICT - Hardware",
-          "ICT-CP - ICT - Programming",
-          "ICT Animation - ICT - Animation",
-          "ICT CCS - ICT - Contact Center Services",
-          "ICT Visual Graphics - ICT - Visual Graphics",
-          "STEM - Science, Technology, Engineering and Mathematics",
-          "STEM PBM - STEM - Pre-Baccalaureate Maritime"
+    // SHS COURSES
+    const courseOptions = {
+      "1": [
+        { course_id: 1, name: "ABM - Accountancy, Business and Management" },
+        { course_id: 2, name: "GAS - General Academic Strand" },
+        { course_id: 3, name: "HECT - Home Economics - Culinary Arts and Food Services" },
+        { course_id: 4, name: "HEHRS - Home Economics Hotel and Restaurant Services" },
+        { course_id: 5, name: "HEHO - Home Economics Hotel Operation" },
+        { course_id: 6, name: "HETEM - Home Economics Tourism and Event Management" },
+        { course_id: 7, name: "HUMSS - Humanities and Social Sciences" },
+        { course_id: 8, name: "ICT-HW - ICT Hardware" },
+        { course_id: 9, name: "JCT-CP - ICT-Programming" },
+        { course_id: 10, name: "ICT Animation - ICT Animation" },
+        { course_id: 11, name: "ICT CCS - ICT-Contact Center Services" },
+        { course_id: 12, name: "ICT Visual Graphics - ICT Visual Graphics" },
+        { course_id: 13, name: "STEM - Science, Technology, Engineering and Mathematics" },
+        { course_id: 14, name: "STEM PBM - STEM-Pre-Baccalaureate Maritime" }
+      ],
+      "2": [
+        { course_id: 15, name: "Bulacan ARM - Accountancy, Business and Management" },
+        { course_id: 16, name: "Bulacan HUMSS - Humanities and Social Sciences" },
+        { course_id: 17, name: "Bulacan GAS - General Academic Strand" },
+        { course_id: 18, name: "Bulacan SMAW - Shielded Metal Arc Welding" },
+        { course_id: 19, name: "Bulacan SPORTS - Sport Track" },
+        { course_id: 20, name: "Bulacan AUTO - Automotive" },
+        { course_id: 21, name: "Bulacan ICT - Information and Communications Technology" },
+        { course_id: 22, name: "Bulacan HE - Home Economics" },
+        { course_id: 23, name: "Bulacan STEM - Science, Technology, Engineering and Mathematics" }
+      ]
+    };
 
-        ],
-        "Bulacan Branch": [
-          "Bulacan ABM - Accountancy, Business and Management",
-          "Bulacan HUMSS - Humanities and Social Sciences",
-          "Bulacan GAS - General Academic Strand",
-          "Bulacan SMAW - Shielded Metal Arc Welding",
-          "Bulacan SPORTS - Sport Track",
-          "Bulacan AUTO - Automotive",
-          "Bulacan ICT - Information and Communications Technology",
-          "Bulacan HE - Home Economics",
-          "Bulacan STEM - Science, Technology, Engineering and Mathematics"
+    // SHS REQUIRED DOCUMENTS
+    const requiredDocuments = {
+      'New Regular': [
+        { doc_id: 1, name: 'Form 138 (Report Card)' },
+        { doc_id: 2, name: 'Form 137' },
+        { doc_id: 3, name: 'Certificate of Good Moral' },
+        { doc_id: 4, name: '2"x2" ID Picture (White Background) - 2 pcs' },
+        { doc_id: 5, name: 'Photocopy of NCAE Result' },
+        { doc_id: 6, name: 'ESC Certificate, if a graduate of a private Junior High School' },
+        { doc_id: 7, name: 'PSA Authenticated Birth Certificate' },
+        { doc_id: 8, name: 'Barangay Clearance' },
+        { doc_id: 9, name: 'Photocopy of Diploma' }
+      ],
+      'Returnee': [
+        { doc_id: 1, name: 'Form 138 (Report Card)' },
+        { doc_id: 2, name: 'Form 137' },
+        { doc_id: 3, name: 'Certificate of Good Moral' },
+        { doc_id: 4, name: '2"x2" ID Picture (White Background) - 2 pcs' },
+        { doc_id: 5, name: 'Photocopy of NCAE Result' },
+        { doc_id: 6, name: 'ESC Certificate, if a graduate of a private Junior High School' },
+        { doc_id: 7, name: 'PSA Authenticated Birth Certificate' },
+        { doc_id: 8, name: 'Barangay Clearance' },
+        { doc_id: 9, name: 'Photocopy of Diploma' }
+      ],
+      'Transferee': [
+        { doc_id: 1, name: 'Form 138 (Report Card)' },
+        { doc_id: 2, name: 'Form 137' },
+        { doc_id: 3, name: 'Certificate of Good Moral' },
+        { doc_id: 4, name: '2"x2" ID Picture (White Background) - 2 pcs' },
+        { doc_id: 5, name: 'Photocopy of NCAE Result' },
+        { doc_id: 6, name: 'ESC Certificate, if a graduate of a private Junior High School' },
+        { doc_id: 7, name: 'PSA Authenticated Birth Certificate' },
+        { doc_id: 8, name: 'Barangay Clearance' },
+        { doc_id: 9, name: 'Photocopy of Diploma' }
+      ]
+    };
 
-        ]
-      };
-
-      // Handle student type change
-      studentTypeSelect.addEventListener('change', () => {
-        const studentType = studentTypeSelect.value;
-        // Show/hide Previous Student ID
-        if (studentType === 'Returnee') {
-          previousIdContainer.classList.remove('d-none');
-          previousStudentIdInput.setAttribute('required', 'required');
-        } else {
-          previousIdContainer.classList.add('d-none');
-          previousStudentIdInput.removeAttribute('required');
-          previousStudentIdInput.value = '';
-          previousStudentIdInput.classList.remove('is-invalid');
-        }
-        // Update year level options
-        updateYearLevelOptions();
-        // Update document list if Step 6 exists
-        if (typeof updateDocumentUploadList === 'function') {
-          updateDocumentUploadList();
-        }
-      });
-
-      // Update year level options based on student type
-      function updateYearLevelOptions() {
-        const studentType = studentTypeSelect.value;
-        yearLevelStep4.innerHTML = '<option value="" selected disabled>Choose year level</option>';
-        if (studentType === 'New Regular') {
-          yearLevelStep4.innerHTML += '<option value="G11">G11</option>';
-        } else if (studentType === 'Transferee' || studentType === 'Returnee') {
-          yearLevelStep4.innerHTML += '<option value="G11">G11</option>';
-          yearLevelStep4.innerHTML += '<option value="G12">G12</option>';
-        }
+    function updateYearLevelOptions() {
+      const studentType = studentTypeSelect.value;
+      yearLevelStep4.innerHTML = '<option value="" selected disabled>Choose year level</option>';
+      if (studentType === 'New Regular') {
+        yearLevelStep4.innerHTML += '<option value="11">Grade 11</option>';
+      } else if (['Transferee', 'Returnee'].includes(studentType)) {
+        yearLevelStep4.innerHTML += '<option value="11">Grade 11</option>';
+        yearLevelStep4.innerHTML += '<option value="12">Grade 12</option>';
       }
+    }
 
-      // Handle preferred branch change
-      const preferredBranchSelect = document.getElementById('preferredBranch');
-      const preferredCourseSelect = document.getElementById('preferredCourse');
-      preferredBranchSelect.addEventListener('change', () => {
-        const branch = preferredBranchSelect.value;
-        const courses = courseOptions[branch] || [];
-        preferredCourseSelect.innerHTML = '<option value="" selected disabled>Choose preferred course</option>';
-        courses.forEach(course => {
-          const option = document.createElement('option');
-          option.value = course;
-          option.textContent = course;
-          preferredCourseSelect.appendChild(option);
+    studentTypeSelect.addEventListener('change', function () {
+      if (studentTypeSelect.value === 'Returnee') {
+        previousIdContainer.classList.remove('d-none');
+        document.getElementById('previousStudentId').setAttribute('required', 'required');
+      } else {
+        previousIdContainer.classList.add('d-none');
+        const prevInput = document.getElementById('previousStudentId');
+        prevInput.removeAttribute('required');
+        prevInput.value = '';
+      }
+      updateYearLevelOptions();
+      updateDocumentUploadList();
+    });
+
+    preferredBranchSelect.addEventListener('change', function () {
+      const branch = preferredBranchSelect.value;
+      const courses = courseOptions[branch] || [];
+      preferredCourseSelect.innerHTML = '<option value="" selected disabled>Choose preferred course</option>';
+      courses.forEach(function (course) {
+        const option = document.createElement('option');
+        option.value = course.course_id;
+        option.textContent = course.name;
+        preferredCourseSelect.appendChild(option);
+      });
+    });
+
+    function updateDocumentUploadList() {
+      const studentType = studentTypeSelect.value;
+      const docs = requiredDocuments[studentType] || [];
+      documentUploadList.innerHTML = '';
+      docs.forEach(function (doc, index) {
+        const docGroup = document.createElement('div');
+        docGroup.className = 'mb-4';
+        docGroup.innerHTML = `
+          <label class="form-label">
+            <i class="fas fa-file-upload text-primary me-1"></i>
+            ${doc.name} <span class="required-star">*</span>
+          </label>
+          <input type="file" class="form-control" name="documents[]" accept=".pdf,.jpg,.jpeg,.png" required />
+          <div class="invalid-feedback">Please upload a valid copy of ${doc.name}.</div>
+          <div class="mt-2 preview-container" style="display: none;">
+            <strong>Preview:</strong>
+            <div class="border rounded p-2 bg-light" style="max-height: 200px; overflow: auto;">
+              <img src="" alt="Preview" class="img-fluid mb-2 d-none" style="max-height: 150px;" />
+              <a href="#" class="pdf-preview d-none text-danger" target="_blank"><i class="fas fa-file-pdf me-1"></i>View PDF</a>
+            </div>
+          </div>
+        `;
+        const hiddenDocId = document.createElement('input');
+        hiddenDocId.type = 'hidden';
+        hiddenDocId.name = 'document_doc_id[]';
+        hiddenDocId.value = doc.doc_id;
+        docGroup.appendChild(hiddenDocId);
+        documentUploadList.appendChild(docGroup);
+
+        const fileInput = docGroup.querySelector('input[type="file"]');
+        const previewContainer = docGroup.querySelector('.preview-container');
+        const imgPreview = docGroup.querySelector('img');
+        const pdfPreview = docGroup.querySelector('.pdf-preview');
+
+        fileInput.addEventListener('change', function () {
+          const file = this.files[0];
+          if (!file) return;
+          if (file.size > 5 * 1024 * 1024) {
+            alert('File too large: ' + file.name + '. Maximum is 5MB.');
+            this.value = '';
+            previewContainer.style.display = 'none';
+            return;
+          }
+          const fileURL = URL.createObjectURL(file);
+          previewContainer.style.display = 'block';
+          imgPreview.classList.add('d-none');
+          pdfPreview.classList.add('d-none');
+          if (file.type.startsWith('image/')) {
+            imgPreview.src = fileURL;
+            imgPreview.classList.remove('d-none');
+          } else if (file.type === 'application/pdf') {
+            pdfPreview.href = fileURL;
+            pdfPreview.classList.remove('d-none');
+          }
         });
       });
+    }
 
-      // Show specific step
-      function showStep(stepIndex) {
-        steps.forEach(step => step.classList.remove('active'));
-        stepperSteps.forEach(step => step.classList.remove('active', 'completed'));
-        steps[stepIndex].classList.add('active');
-        stepperSteps[stepIndex].classList.add('active');
-        for (let i = 0; i < stepIndex; i++) {
-          stepperSteps[i].classList.add('completed');
-        }
-        prevBtn.disabled = stepIndex === 0;
-        nextBtn.textContent = stepIndex === steps.length - 1 ? 'Submit' : 'Next';
-        nextBtn.innerHTML = stepIndex === steps.length - 1 ? '<i class="fas fa-paper-plane me-2"></i>Submit' : 'Next<i class="fas fa-arrow-right ms-2"></i>';
-        currentStep = stepIndex;
-        document.querySelector('.card').scrollIntoView({ behavior: 'smooth' });
+    function showStep(index) {
+      steps.forEach(s => s.classList.remove('active'));
+      stepperSteps.forEach(s => s.classList.remove('active', 'completed'));
+      steps[index].classList.add('active');
+      stepperSteps[index].classList.add('active');
+      for (let i = 0; i < index; i++) {
+        stepperSteps[i].classList.add('completed');
       }
+      prevBtn.disabled = index === 0;
+      nextBtn.innerHTML = index === steps.length - 1 
+        ? '<i class="fas fa-paper-plane me-2"></i>Submit' 
+        : 'Next<i class="fas fa-arrow-right ms-2"></i>';
+      currentStep = index;
+      setTimeout(() => {
+        document.querySelector('.card').scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
 
-      // Validate current step
-      function validateStep(index) {
-        const step = steps[index];
-        const inputs = step.querySelectorAll('input, select, textarea');
-        let valid = true;
-        inputs.forEach(input => {
-          input.classList.remove('is-invalid');
-          if (input.hasAttribute('required')) {
-            if (input.type === 'checkbox') {
-              if (!input.checked) {
-                input.classList.add('is-invalid');
-                valid = false;
-              }
-            } else if (input.type === 'text' || input.type === 'number' || input.type === 'email' || input.type === 'tel' || input.tagName === 'SELECT') {
-              if (!input.value || !input.checkValidity()) {
-                input.classList.add('is-invalid');
-                valid = false;
-              }
-            }
-          } else if (input.type === 'text' || input.type === 'number' || input.type === 'email' || input.type === 'tel') {
-            if (input.value && !input.checkValidity()) {
-              input.classList.add('is-invalid');
-              valid = false;
-            }
-          }
-          if (input.id === 'lrn' && !input.value) {
+    function validateStep(index) {
+      const step = steps[index];
+      const inputs = step.querySelectorAll('input, select');
+      let valid = true;
+      inputs.forEach(input => {
+        input.classList.remove('is-invalid');
+        if (input.hasAttribute('required') && !input.value) {
+          input.classList.add('is-invalid');
+          valid = false;
+        }
+      });
+      if (index === 5) {
+        const fileInputs = document.querySelectorAll('#documentUploadList input[type="file"]');
+        fileInputs.forEach(input => {
+          if (!input.files || input.files.length === 0) {
             input.classList.add('is-invalid');
             valid = false;
           }
-          if (input.id === 'previousStudentId' && !previousIdContainer.classList.contains('d-none')) {
-            if (input.value.length !== 8 || !/^\d{8}$/.test(input.value)) {
-              input.classList.add('is-invalid');
-              valid = false;
-            }
-          }
         });
+      }
+      return valid;
+    }
 
-        // Validate document uploads in Step 6
-        if (index === 5) {
-          const fileInputs = document.querySelectorAll('#documentUploadList input[type="file"]');
-          fileInputs.forEach(input => {
-            if (!input.files || input.files.length === 0) {
-              input.classList.add('is-invalid');
-              valid = false;
+    function populateSummary() {
+      const data = new FormData(form);
+      let html = '<div class="row g-3">';
+      html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Student Information</h5></div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Student Type:</span> ${data.get('studentType') || ''}</div>`;
+      if (data.get('studentType') === 'Returnee') {
+        html += `<div class="col-md-6"><span class="summary-label">Previous Student ID No:</span> ${data.get('previousStudentId') || ''}</div>`;
+      }
+      html += `<div class="col-md-4"><span class="summary-label">First Name:</span> ${data.get('firstName') || ''}</div>`;
+      html += `<div class="col-md-4"><span class="summary-label">Middle Name:</span> ${data.get('middleName') || ''}</div>`;
+      html += `<div class="col-md-4"><span class="summary-label">Last Name:</span> ${data.get('lastName') || ''}</div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Extension Name:</span> ${data.get('extensionName') || ''}</div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Civil Status:</span> ${data.get('civilStatus') || ''}</div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Gender:</span> ${data.get('gender') || ''}</div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Date of Birth:</span> ${data.get('dob') || ''}</div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Place of Birth:</span> ${data.get('placeOfBirth') || ''}</div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Nationality:</span> ${data.get('nationality') || ''}</div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Learner Reference Number (LRN):</span> ${data.get('lrn') || ''}</div>`;
+      html += `<div class="col-12"><hr></div>`;
+      html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Address & Contact</h5></div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Current Address:</span> ${data.get('currentAddress') || ''}</div>`;
+      html += `<div class="col-md-6"><span class="summary-label">City/Municipality:</span> ${data.get('cityMunicipality') || ''}</div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Province:</span> ${data.get('province') || ''}</div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Region:</span> ${document.querySelector('#region option:checked')?.text || ''}</div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Zip Code:</span> ${data.get('zipCode') || ''}</div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Religion:</span> ${data.get('religion') || ''}</div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Email:</span> ${data.get('email') || ''}</div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Contact Number:</span> ${data.get('contactNumber') || ''}</div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Social Media:</span> ${data.get('socialMedia') || ''}</div>`;
+      html += `<div class="col-12"><hr></div>`;
+      html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Parents Information</h5></div>`;
+      html += `<div class="col-md-4"><span class="summary-label">Mother's First Name:</span> ${data.get('motherFirstName') || ''}</div>`;
+      html += `<div class="col-md-4"><span class="summary-label">Middle Name:</span> ${data.get('motherMiddleName') || ''}</div>`;
+      html += `<div class="col-md-4"><span class="summary-label">Last Name:</span> ${data.get('motherLastName') || ''}</div>`;
+      html += `<div class="col-md-4"><span class="summary-label">Occupation:</span> ${data.get('motherOccupation') || ''}</div>`;
+      html += `<div class="col-md-4"><span class="summary-label">Contact Number:</span> ${data.get('motherContact') || ''}</div>`;
+      html += `<div class="col-md-4"><span class="summary-label">Email:</span> ${data.get('motherEmail') || ''}</div>`;
+      html += `<div class="col-md-4"><span class="summary-label">Father's First Name:</span> ${data.get('fatherFirstName') || ''}</div>`;
+      html += `<div class="col-md-4"><span class="summary-label">Middle Name:</span> ${data.get('fatherMiddleName') || ''}</div>`;
+      html += `<div class="col-md-4"><span class="summary-label">Last Name:</span> ${data.get('fatherLastName') || ''}</div>`;
+      html += `<div class="col-md-4"><span class="summary-label">Occupation:</span> ${data.get('fatherOccupation') || ''}</div>`;
+      html += `<div class="col-md-4"><span class="summary-label">Contact Number:</span> ${data.get('fatherContact') || ''}</div>`;
+      html += `<div class="col-md-4"><span class="summary-label">Email:</span> ${data.get('fatherEmail') || ''}</div>`;
+      html += `<div class="col-12"><hr></div>`;
+      html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Preferences</h5></div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Preferred Branch:</span> ${document.querySelector('#preferredBranch option:checked')?.text || ''}</div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Preferred Course:</span> ${document.querySelector('#preferredCourse option:checked')?.text || ''}</div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Year Level:</span> ${document.querySelector('#yearLevelStep4 option:checked')?.text || ''}</div>`;
+      html += `<div class="col-12"><hr></div>`;
+      html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Educational Background</h5></div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Primary School:</span> ${data.get('primarySchool') || ''}</div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Year Graduated (Primary):</span> ${data.get('primaryYearGraduated') || ''}</div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Secondary School:</span> ${data.get('secondarySchool') || ''}</div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Year Graduated (Secondary):</span> ${data.get('secondaryYearGraduated') || ''}</div>`;
+      html += `<div class="col-md-12"><span class="summary-label">Last School Attended:</span> ${data.get('lastSchoolAttended') || ''}</div>`;
+      html += `<div class="col-md-12"><span class="summary-label">Year Graduated (Last School):</span> ${data.get('lastSchoolYearGraduated') || ''}</div>`;
+      html += '</div>';
+      document.getElementById('summaryContent').innerHTML = html;
+    }
+
+    nextBtn.addEventListener('click', function () {
+      if (validateStep(currentStep)) {
+        if (currentStep < steps.length - 1) {
+          showStep(currentStep + 1);
+          if (currentStep === 6) {
+            populateSummary();
+          }
+        } else {
+          const formData = new FormData(form);
+
+          // 🔥 DEBUG: Check what's being sent
+          console.log("📌 Submitting Form Data:");
+          for (let [key, value] of formData.entries()) {
+            console.log(key, value);
+          }
+
+          nextBtn.disabled = true;
+          nextBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+
+          fetch(SUBMIT_ENROLLMENT_URL, {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            credentials: 'same-origin'
+          })
+          .then(response => {
+            console.log("📡 Response Status:", response.status);
+            if (!response.ok) {
+              return response.json().then(data => {
+                console.error("❌ Validation Errors:", data.errors);
+                alert('Error: ' + (data.message || 'Please check console for details.'));
+                throw new Error(data.message || 'Submission failed');
+              });
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log("✅ Success Response:", data);
+            if (data.success) {
+              window.location.href = data.redirect;
             } else {
-              input.classList.remove('is-invalid');
+              alert('Error: ' + (data.message || 'Submission failed'));
             }
+          })
+          .catch(error => {
+            console.error("🚨 Fetch Error:", error);
+            alert('Network Error: ' + error.message);
+          })
+          .finally(() => {
+            nextBtn.disabled = false;
+            nextBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
           });
         }
-
-        return valid;
+      } else {
+        alert('Please fill all required fields in this step.');
       }
+    });
 
-      // === NEW: Dynamic Document Upload List with Validation & Preview ===
-      const documentUploadList = document.getElementById('documentUploadList');
-
-      // All student types have the same required documents
-      const requiredDocuments = [
-        'Form 138 (Report Card)',
-        'Form 137',
-        'Certificate of Good Moral',
-        '2"x2" ID Picture (White Background) - 2 pcs',
-        'Photocopy of NCAE Result',
-        'ESC Certificate, if a graduate of a private Junior High School',
-        'PSA Authenticated Birth Certificate',
-        'Barangay Clearance',
-        'Photocopy of Diploma'
-      ];
-
-      function updateDocumentUploadList() {
-        documentUploadList.innerHTML = '';
-        requiredDocuments.forEach((doc, index) => {
-          const docGroup = document.createElement('div');
-          docGroup.className = 'mb-4';
-          docGroup.innerHTML = `
-            <label class="form-label">
-              <i class="fas fa-file-upload text-primary me-1"></i>
-              ${doc} <span class="required-star">*</span>
-            </label>
-            <input type="file" class="form-control" name="document_${index}" accept=".pdf,.jpg,.jpeg,.png" required />
-            <div class="invalid-feedback">Please upload a valid copy of ${doc}.</div>
-            <div class="mt-2 preview-container" style="display: none;">
-              <strong>Preview:</strong>
-              <div class="border rounded p-2 bg-light" style="max-height: 200px; overflow: auto;">
-                <img src="" alt="Preview" class="img-fluid mb-2 d-none" style="max-height: 150px;" />
-                <a href="#" class="pdf-preview d-none text-danger" target="_blank"><i class="fas fa-file-pdf me-1"></i>View PDF</a>
-              </div>
-            </div>
-          `;
-          documentUploadList.appendChild(docGroup);
-
-          const fileInput = docGroup.querySelector('input[type="file"]');
-          const previewContainer = docGroup.querySelector('.preview-container');
-          const imgPreview = docGroup.querySelector('.img-fluid');
-          const pdfPreview = docGroup.querySelector('.pdf-preview');
-
-          fileInput.addEventListener('change', function () {
-            const file = this.files[0];
-            if (!file) return;
-
-            const fileURL = URL.createObjectURL(file);
-            previewContainer.style.display = 'block';
-            imgPreview.classList.add('d-none');
-            pdfPreview.classList.add('d-none');
-
-            if (file.type.startsWith('image/')) {
-              imgPreview.src = fileURL;
-              imgPreview.classList.remove('d-none');
-            } else if (file.type === 'application/pdf') {
-              pdfPreview.href = fileURL;
-              pdfPreview.classList.remove('d-none');
-            }
-          });
-        });
+    prevBtn.addEventListener('click', function () {
+      if (currentStep > 0) {
+        showStep(currentStep - 1);
       }
+    });
 
-      // Initialize document upload list
-      if (studentTypeSelect.value) {
-        updateDocumentUploadList();
-      }
-      // Update when student type changes
-      studentTypeSelect.addEventListener('change', updateDocumentUploadList);
-
-      // Populate summary
-      function populateSummary() {
-        const data = new FormData(form);
-        let html = '<div class="row g-3">';
-        html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Student Information</h5></div>`;
-        html += `<div class="col-md-6"><span class="summary-label">Student Type:</span> ${data.get('studentType') || ''}</div>`;
-        if (data.get('studentType') === 'Returnee') {
-          html += `<div class="col-md-6"><span class="summary-label">Previous Student ID No:</span> ${data.get('previousStudentId') || ''}</div>`;
-        }
-        html += `<div class="col-md-6"><span class="summary-label">LRN:</span> ${data.get('lrn') || ''}</div>`;
-        html += `<div class="col-md-4"><span class="summary-label">First Name:</span> ${data.get('firstName') || ''}</div>`;
-        html += `<div class="col-md-4"><span class="summary-label">Middle Name:</span> ${data.get('middleName') || ''}</div>`;
-        html += `<div class="col-md-4"><span class="summary-label">Last Name:</span> ${data.get('lastName') || ''}</div>`;
-        html += `<div class="col-md-6"><span class="summary-label">Extension Name:</span> ${data.get('extensionName') || ''}</div>`;
-        html += `<div class="col-md-6"><span class="summary-label">Civil Status:</span> ${data.get('civilStatus') || ''}</div>`;
-        html += `<div class="col-md-6"><span class="summary-label">Gender:</span> ${data.get('gender') || ''}</div>`;
-        html += `<div class="col-md-6"><span class="summary-label">Date of Birth:</span> ${data.get('dob') || ''}</div>`;
-        html += `<div class="col-md-6"><span class="summary-label">Place of Birth:</span> ${data.get('placeOfBirth') || ''}</div>`;
-        html += `<div class="col-md-6"><span class="summary-label">Nationality:</span> ${data.get('nationality') || ''}</div>`;
-        html += `<div class="col-12 mt-3"><h5 style="color: var(--primary-color); font-weight: 700;">Address Information</h5></div>`;
-        html += `<div class="col-md-12"><span class="summary-label">Current Address:</span> ${data.get('currentAddress') || ''}</div>`;
-        html += `<div class="col-md-6"><span class="summary-label">City/Municipality:</span> ${data.get('cityMunicipality') || ''}</div>`;
-        html += `<div class="col-md-6"><span class="summary-label">Region:</span> ${data.get('region') || ''}</div>`;
-        html += `<div class="col-md-6"><span class="summary-label">Zip Code:</span> ${data.get('zipCode') || ''}</div>`;
-        html += `<div class="col-md-6"><span class="summary-label">Province:</span> ${data.get('province') || ''}</div>`;
-        html += `<div class="col-md-6"><span class="summary-label">Religion:</span> ${data.get('religion') || ''}</div>`;
-        html += `<div class="col-md-6"><span class="summary-label">Email:</span> ${data.get('email') || ''}</div>`;
-        html += `<div class="col-md-6"><span class="summary-label">Contact Number:</span> ${data.get('contactNumber') || ''}</div>`;
-        html += `<div class="col-md-6"><span class="summary-label">Social Media:</span> ${data.get('socialMedia') || ''}</div>`;
-        html += `<div class="col-12 mt-3"><h5 style="color: var(--primary-color); font-weight: 700;">Parents Information</h5></div>`;
-        html += `<div class="col-md-4"><span class="summary-label">Mother's First Name:</span> ${data.get('motherFirstName') || ''}</div>`;
-        html += `<div class="col-md-4"><span class="summary-label">Mother's Middle Name:</span> ${data.get('motherMiddleName') || ''}</div>`;
-        html += `<div class="col-md-4"><span class="summary-label">Mother's Last Name:</span> ${data.get('motherLastName') || ''}</div>`;
-        html += `<div class="col-md-4"><span class="summary-label">Mother's Occupation:</span> ${data.get('motherOccupation') || ''}</div>`;
-        html += `<div class="col-md-4"><span class="summary-label">Mother's Contact:</span> ${data.get('motherContact') || ''}</div>`;
-        html += `<div class="col-md-4"><span class="summary-label">Mother's Email:</span> ${data.get('motherEmail') || ''}</div>`;
-        html += `<div class="col-md-4"><span class="summary-label">Father's First Name:</span> ${data.get('fatherFirstName') || ''}</div>`;
-        html += `<div class="col-md-4"><span class="summary-label">Father's Middle Name:</span> ${data.get('fatherMiddleName') || ''}</div>`;
-        html += `<div class="col-md-4"><span class="summary-label">Father's Last Name:</span> ${data.get('fatherLastName') || ''}</div>`;
-        html += `<div class="col-md-4"><span class="summary-label">Father's Occupation:</span> ${data.get('fatherOccupation') || ''}</div>`;
-        html += `<div class="col-md-4"><span class="summary-label">Father's Contact:</span> ${data.get('fatherContact') || ''}</div>`;
-        html += `<div class="col-md-4"><span class="summary-label">Father's Email:</span> ${data.get('fatherEmail') || ''}</div>`;
-        if (data.get('guardianFirstName')) {
-          html += `<div class="col-12 mt-3"><h5 style="color: var(--primary-color); font-weight: 700;">Guardian Information</h5></div>`;
-          html += `<div class="col-md-4"><span class="summary-label">Guardian's First Name:</span> ${data.get('guardianFirstName') || ''}</div>`;
-          html += `<div class="col-md-4"><span class="summary-label">Guardian's Middle Name:</span> ${data.get('guardianMiddleName') || ''}</div>`;
-          html += `<div class="col-md-4"><span class="summary-label">Guardian's Last Name:</span> ${data.get('guardianLastName') || ''}</div>`;
-          html += `<div class="col-md-6"><span class="summary-label">Guardian's Date of Birth:</span> ${data.get('guardianDob') || ''}</div>`;
-          html += `<div class="col-md-6"><span class="summary-label">Guardian's Contact:</span> ${data.get('guardianContact') || ''}</div>`;
-          html += `<div class="col-md-6"><span class="summary-label">Guardian's Email:</span> ${data.get('guardianEmail') || ''}</div>`;
-        }
-        html += `<div class="col-12 mt-3"><h5 style="color: var(--primary-color); font-weight: 700;">Preferences</h5></div>`;
-        html += `<div class="col-md-6"><span class="summary-label">Preferred Branch:</span> ${data.get('preferredBranch') || ''}</div>`;
-        html += `<div class="col-md-6"><span class="summary-label">Preferred Course:</span> ${data.get('preferredCourse') || ''}</div>`;
-        html += `<div class="col-md-6"><span class="summary-label">Year Level:</span> ${data.get('yearLevelStep4') || ''}</div>`;
-        html += `<div class="col-12 mt-3"><h5 style="color: var(--primary-color); font-weight: 700;">Educational Background</h5></div>`;
-        html += `<div class="col-md-6"><span class="summary-label">Primary School:</span> ${data.get('primarySchool') || ''}</div>`;
-        html += `<div class="col-md-6"><span class="summary-label">Year Graduated (Primary):</span> ${data.get('primaryYearGraduated') || ''}</div>`;
-        html += `<div class="col-md-6"><span class="summary-label">Secondary School:</span> ${data.get('secondarySchool') || ''}</div>`;
-        html += `<div class="col-md-6"><span class="summary-label">Year Graduated (Secondary):</span> ${data.get('secondaryYearGraduated') || ''}</div>`;
-        html += `<div class="col-md-12"><span class="summary-label">Last School Attended:</span> ${data.get('lastSchoolAttended') || ''}</div>`;
-        html += `<div class="col-md-12"><span class="summary-label">Year Graduated (Last School):</span> ${data.get('lastSchoolYearGraduated') || ''}</div>`;
-        html += '</div>';
-        document.getElementById('summaryContent').innerHTML = html;
-      }
-
-      // Navigation event listeners
-      nextBtn.addEventListener('click', () => {
-        if (validateStep(currentStep)) {
-          if (currentStep < steps.length - 1) {
-            showStep(currentStep + 1);
-            if (currentStep === 6) {
-              populateSummary();
-            }
-          } else {
-            alert('Registration submitted successfully!');
-            // Here you would normally submit the form via AJAX
-            // form.submit();
-          }
-        }
-      });
-
-      prevBtn.addEventListener('click', () => {
-        if (currentStep > 0) {
-          showStep(currentStep - 1);
-        }
-      });
-
-      // Initialize
-      updateYearLevelOptions();
-      if (studentTypeSelect.value) {
-        updateDocumentUploadList();
-      }
-    })();
-  </script>
+    // Initialize
+    updateYearLevelOptions();
+    if (studentTypeSelect.value) {
+      updateDocumentUploadList();
+    }
+    showStep(0);
+  })();
+</script>
 </body>
 </html>
