@@ -8,6 +8,8 @@ use App\Http\Controllers\QuizController;
 use App\Http\Controllers\CollegeQuizController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\ShsEnrollmentController; // 👈 Added: SHS Enrollment Controller
+use App\Http\Controllers\PendingAdmissionController;
+
 
 // ===================================================
 // === 🏠 Landing Pages (Public) ===
@@ -106,9 +108,76 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/documents', function () {
-    return view('documents');
-})->middleware(['auth', 'verified'])->name('documents');
+// Modules Routes
+// web.php
+
+// Modules Routes
+Route::prefix('modules')->middleware(['auth'])->group(function () {
+
+    // Pending Admissions
+    Route::get('/pending/college', [PendingAdmissionController::class, 'index'])->name('modules.pending.college');
+    Route::get('/pending/shs', [PendingAdmissionController::class, 'shsIndex'])->name('modules.pending.shs');
+
+    // Waiting List
+    Route::get('/waiting/college', function () {
+        if (request()->ajax()) {
+            return view('modules.waitingCollege')->render();
+        }
+        return view('modules.waitingCollege');
+    })->name('modules.waiting.college');
+
+    Route::get('/waiting/shs', function () {
+        if (request()->ajax()) {
+            return view('modules.waitingShs')->render();
+        }
+        return view('modules.waitingShs');
+    })->name('modules.waiting.shs');
+
+    // Student Records
+    Route::get('/records/college', function () {
+        if (request()->ajax()) {
+            return view('modules.recordsCollege')->render();
+        }
+        return view('modules.recordsCollege');
+    })->name('modules.records.college');
+
+    Route::get('/records/shs', function () {
+        if (request()->ajax()) {
+            return view('modules.recordsShs')->render();
+        }
+        return view('modules.recordsShs');
+    })->name('modules.records.shs');
+
+    // Uploaded Documents
+    Route::get('/documents/college', function () {
+        if (request()->ajax()) {
+            return view('modules.documentsCollege')->render();
+        }
+        return view('modules.documentsCollege');
+    })->name('modules.documents.college');
+
+    Route::get('/documents/shs', function () {
+        if (request()->ajax()) {
+            return view('modules.documentsShs')->render();
+        }
+        return view('modules.documentsShs');
+    })->name('modules.documents.shs');
+
+    // Parents Notification
+    Route::get('/parents/college', function () {
+        if (request()->ajax()) {
+            return view('modules.parentsCollege')->render();
+        }
+        return view('modules.parentsCollege');
+    })->name('modules.parents.college');
+
+    Route::get('/parents/shs', function () {
+        if (request()->ajax()) {
+            return view('modules.parentsShs')->render();
+        }
+        return view('modules.parentsShs');
+    })->name('modules.parents.shs');
+});
 
 // Profile Routes
 Route::middleware('auth')->group(function () {

@@ -23,6 +23,7 @@ class ShsEnrollmentController extends Controller
 
     public function submit(Request $request)
     {
+        // Enhanced Validation with Clear Messages
         $validator = Validator::make($request->all(), [
             'studentType' => 'required|exists:shs_student_types,type_name',
             'firstName' => 'required|string|max:100',
@@ -41,10 +42,22 @@ class ShsEnrollmentController extends Controller
             'preferredCourse' => 'required|exists:shs_courses,course_id',
             'yearLevelStep4' => 'required|exists:shs_year_levels,level_id',
             'primarySchool' => 'required|string|max:255',
+            'primaryYearGraduated' => 'required|integer|min:1900|max:2099',
             'secondarySchool' => 'required|string|max:255',
+            'secondaryYearGraduated' => 'required|integer|min:1900|max:2099',
+            'lastSchoolAttended' => 'required|string|max:255',
+            'lastSchoolYearGraduated' => 'required|integer|min:1900|max:2099',
             'documents.*' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
             'document_doc_id' => 'required|array',
             'document_doc_id.*' => 'exists:shs_documents,doc_id',
+        ], [
+            'lrn.unique' => 'LRN is already taken.',
+            'primaryYearGraduated.integer' => 'Invalid year. Must be a valid number.',
+            'secondaryYearGraduated.integer' => 'Invalid year. Must be a valid number.',
+            'lastSchoolYearGraduated.integer' => 'Invalid year. Must be a valid number.',
+            'primaryYearGraduated.between' => 'Invalid year. Must be between 1900 and 2099.',
+            'secondaryYearGraduated.between' => 'Invalid year. Must be between 1900 and 2099.',
+            'lastSchoolYearGraduated.between' => 'Invalid year. Must be between 1900 and 2099.',
         ]);
 
         if ($validator->fails()) {
@@ -52,6 +65,27 @@ class ShsEnrollmentController extends Controller
                 'success' => false,
                 'message' => 'Please fill all required fields correctly.',
                 'errors' => $validator->errors()
+            ], 422);
+        }
+
+        // Check Chronological Order of Years
+        $primaryYear = $request->primaryYearGraduated;
+        $secondaryYear = $request->secondaryYearGraduated;
+        $lastSchoolYear = $request->lastSchoolYearGraduated;
+
+        if ($primaryYear >= $secondaryYear) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid year order: Secondary graduation year must be after primary.',
+                'errors' => ['secondaryYearGraduated' => ['Secondary year must be after primary year.']]
+            ], 422);
+        }
+
+        if ($secondaryYear >= $lastSchoolYear) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid year order: Last school year must be after secondary.',
+                'errors' => ['lastSchoolYearGraduated' => ['Last school year must be after secondary.']]
             ], 422);
         }
 
@@ -105,7 +139,7 @@ class ShsEnrollmentController extends Controller
             ]);
 
             // Guardian (optional)
-            if ($request->guardianFirstName) {
+            if ($request->filled('guardianFirstName')) {
                 ShsGuardian::create([
                     'student_id' => $student->student_id,
                     'first_name' => $request->guardianFirstName,
@@ -121,11 +155,11 @@ class ShsEnrollmentController extends Controller
             ShsEducationalBackground::create([
                 'student_id' => $student->student_id,
                 'primary_school' => $request->primarySchool,
-                'primary_year_graduated' => $request->primaryYearGraduated,
+                'primary_year_graduated' => $primaryYear,
                 'secondary_school' => $request->secondarySchool,
-                'secondary_year_graduated' => $request->secondaryYearGraduated,
+                'secondary_year_graduated' => $secondaryYear,
                 'last_school_attended' => $request->lastSchoolAttended,
-                'last_school_year_graduated' => $request->lastSchoolYearGraduated,
+                'last_school_year_graduated' => $lastSchoolYear,
             ]);
 
             // Enrollment Preference
@@ -153,23 +187,18 @@ class ShsEnrollmentController extends Controller
             $success = true;
             $message = 'SHS Enrollment submitted successfully!';
             $redirect = route('shs.enrollment.success');
+
         } catch (\Exception $e) {
             DB::rollback();
-            $message = 'An error occurred: ' . $e->getMessage();
+            \Log::error('SHS Enrollment Error: ' . $e->getMessage());
+            $message = 'An error occurred during submission. Please try again.';
         }
 
         return response()->json([
-    'success' => $success,
-    'message' => $message,
-    'redirect' => $redirect,
-], $success ? 200 : 500);
-        
-
-        if ($success) {
-            return redirect($redirect)->with('success', $message);
-        }
-
-        return redirect()->back()->with('error', $message);
+            'success' => $success,
+            'message' => $message,
+            'redirect' => $redirect,
+        ], $success ? 200 : 500);
     }
 
     public function success()

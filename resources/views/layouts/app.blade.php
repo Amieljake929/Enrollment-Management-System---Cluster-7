@@ -135,52 +135,229 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
     }
 }
 
+       /* === SIDEBAR: Enhanced Spacing & Style === */
+
+/* Add space between main menu items */
+.sidebar .nav-item {
+    margin-bottom: 0.25rem; /* Gentle spacing */
+}
+
+/* Main dropdown toggle link */
+.sidebar .sidebar-dropdown-toggle {
+    color: #cbd5e0;
+    padding: 0.8rem 1.25rem;
+    border-radius: 6px;
+    transition: all 0.3s ease, background-color 0.2s ease;
+    position: relative;
+    border-left: 3px solid transparent;
+}
+
+/* Hover state */
+.sidebar .sidebar-dropdown-toggle:hover {
+    color: #ffffff;
+    background-color: #284b9a;
+    border-left: 4px solid #3B71CA;
+}
+
+/* Active/Collapsed state (when open) */
+.sidebar .sidebar-dropdown-toggle[aria-expanded="true"] {
+    color: #ffffff;
+    background-color: #284b9a;
+    border-left: 4px solid #3B71CA;
+}
+
+/* Dropdown Chevron */
+.sidebar .toggle-icon {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Rotate chevron when open */
+.sidebar .sidebar-dropdown-toggle[aria-expanded="true"] .toggle-icon {
+    transform: rotate(180deg);
+    color: #ffffff;
+}
+
+/* Submenu Items */
+.sidebar .nav-link.py-2 {
+    font-size: 0.92rem;
+    color: #e2e8f0;
+    padding: 0.75rem 0.9rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    margin-bottom: 0.25rem;
+}
+
+.sidebar .nav-link.py-2:hover,
+.sidebar .nav-link.py-2.active {
+    background-color: #2c52a0;
+    color: #ffffff;
+}
+
+/* Submenu Icons */
+.sidebar .nav-link.py-2 i {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+/* Smooth collapse animation */
+.sidebar .collapse {
+    transition: all 0.3s ease-out;
+}
+
+.sidebar .collapse.show {
+    margin-top: 0.3rem;
+}
+
+/* User Profile */
+.sidebar .user-profile {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
     </style>
 </head>
 <body>
     <div class="d-flex">
         <!-- Sidebar -->
-        <div id="sidebar" class="d-flex flex-column flex-shrink-0 sidebar">
-            <div class="user-profile">
-                @if(Auth::check())
-                    @php
-                        $user = Auth::user();
-                        $initials = strtoupper(substr($user->name, 0, 1) . (str_contains($user->name, ' ') ? substr(strrchr($user->name, ' '), 1, 1) : ''));
-                    @endphp
-                    <div class="initials">{{ $initials }}</div>
-                    <h5 class="mb-0">{{ $user->name }}</h5>
-                    <small>{{ $user->email }}</small>
-                @endif
-            </div>
+<div id="sidebar" class="d-flex flex-column flex-shrink-0 sidebar">
+    <div class="user-profile">
+        @if(Auth::check())
+            @php
+                $user = Auth::user();
+                $initials = strtoupper(substr($user->name, 0, 1) . (str_contains($user->name, ' ') ? substr(strrchr($user->name, ' '), 1, 1) : ''));
+            @endphp
+            <div class="initials">{{ $initials }}</div>
+            <h5 class="mb-0">{{ $user->name }}</h5>
+            <small>{{ $user->email }}</small>
+        @endif
+    </div>
 
-            <ul class="nav nav-pills flex-column mb-auto">
-                <li class="nav-item">
-                    <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('accreditation.dashboard') ? 'active' : '' }}">
-                        <i class="bi bi-speedometer2"></i> Dashboard
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('documents') }}" class="nav-link {{ request()->routeIs('accreditation.documents.*') ? 'active' : '' }}">
-                        <i class="bi bi-file-earmark-text"></i> Document
-                    </a>
-                </li>
+    <ul class="nav nav-pills flex-column mb-auto">
 
-                <li>
-                    <a href="#" class="nav-link {{ request()->routeIs('accreditation.compliance.index') ? 'active' : '' }}">
-                        <i class="bi bi-list-check"></i> Enrollee
+        <!-- Dashboard -->
+        <li class="nav-item mb-2">
+            <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('accreditation.dashboard') ? 'active' : '' }}">
+                <i class="bi bi-speedometer2"></i> Enrollment Dashboard
+            </a>
+        </li>
+
+        <!-- Modules Header -->
+        <li class="nav-item px-3 mt-3 mb-2">
+            <small class="text-white text-uppercase fw-bold">Modules</small>
+        </li>
+
+        <!-- Pending Admissions Dropdown -->
+<li class="nav-item mb-2">
+    <a class="nav-link d-flex align-items-center sidebar-dropdown-toggle" href="#pending-admissions-submenu" data-bs-toggle="collapse" role="button" aria-expanded="false">
+        <i class="bi bi-clock-history me-2"></i>
+        <span class="flex-grow-1">Pending Admissions</span>
+        <i class="bi bi-chevron-down toggle-icon fs-small"></i>
+    </a>
+    <ul class="nav collapse ms-3 flex-column" id="pending-admissions-submenu">
+        <li class="mb-1">
+            <a href="{{ route('modules.pending.college') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                <i class="bi bi-building me-2"></i> College
+            </a>
+        </li>
+        <li class="mb-1">
+            <a href="{{ route('modules.pending.shs') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                <i class="bi bi-mortarboard me-2"></i> SHS
+            </a>
+        </li>
+    </ul>
+</li>
+
+        <!-- Waiting List Dropdown -->
+        <li class="nav-item mb-2">
+            <a class="nav-link d-flex align-items-center sidebar-dropdown-toggle" href="#waiting-list-submenu" data-bs-toggle="collapse" role="button" aria-expanded="false">
+                <i class="bi bi-hourglass me-2"></i>
+                <span class="flex-grow-1">Waiting List</span>
+                <i class="bi bi-chevron-down toggle-icon fs-small"></i>
+            </a>
+            <ul class="nav collapse ms-3 flex-column" id="waiting-list-submenu">
+                <li class="mb-1">
+                    <a href="{{ route('modules.waiting.college') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                        <i class="bi bi-building me-2"></i> College
                     </a>
                 </li>
-            
-                <li>
-                    <a href="#" class="nav-link {{ request()->routeIs('accreditation.compliance.index') ? 'active' : '' }}">
-                        <i class="bi bi-list-check"></i> Pending Admission
+                <li class="mb-1">
+                    <a href="{{ route('modules.waiting.shs') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                        <i class="bi bi-mortarboard me-2"></i> SHS
                     </a>
                 </li>
             </ul>
-            <div class="p-3">
-                <!-- This space is intentionally left blank after removing the logout button -->
-            </div>
-        </div>
+        </li>
+
+        <!-- Student Records Dropdown -->
+        <li class="nav-item mb-2">
+            <a class="nav-link d-flex align-items-center sidebar-dropdown-toggle" href="#student-records-submenu" data-bs-toggle="collapse" role="button" aria-expanded="false">
+                <i class="bi bi-journal-text me-2"></i>
+                <span class="flex-grow-1">Student Records</span>
+                <i class="bi bi-chevron-down toggle-icon fs-small"></i>
+            </a>
+            <ul class="nav collapse ms-3 flex-column" id="student-records-submenu">
+                <li class="mb-1">
+                    <a href="{{ route('modules.records.college') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                        <i class="bi bi-building me-2"></i> College
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="{{ route('modules.records.shs') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                        <i class="bi bi-mortarboard me-2"></i> SHS
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- Uploaded Documents Dropdown -->
+        <li class="nav-item mb-2">
+            <a class="nav-link d-flex align-items-center sidebar-dropdown-toggle" href="#uploaded-docs-submenu" data-bs-toggle="collapse" role="button" aria-expanded="false">
+                <i class="bi bi-file-earmark-arrow-up me-2"></i>
+                <span class="flex-grow-1">Uploaded Documents</span>
+                <i class="bi bi-chevron-down toggle-icon fs-small"></i>
+            </a>
+            <ul class="nav collapse ms-3 flex-column" id="uploaded-docs-submenu">
+                <li class="mb-1">
+                    <a href="{{ route('modules.documents.college') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                        <i class="bi bi-building me-2"></i> College
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="{{ route('modules.documents.shs') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                        <i class="bi bi-mortarboard me-2"></i> SHS
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- Parents Notification Dropdown -->
+        <li class="nav-item mb-2">
+            <a class="nav-link d-flex align-items-center sidebar-dropdown-toggle" href="#parents-notification-submenu" data-bs-toggle="collapse" role="button" aria-expanded="false">
+                <i class="bi bi-envelope-paper me-2"></i>
+                <span class="flex-grow-1">Parents Notification</span>
+                <i class="bi bi-chevron-down toggle-icon fs-small"></i>
+            </a>
+            <ul class="nav collapse ms-3 flex-column" id="parents-notification-submenu">
+                <li class="mb-1">
+                    <a href="{{ route('modules.parents.college') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                        <i class="bi bi-building me-2"></i> College
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="{{ route('modules.parents.shs') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                        <i class="bi bi-mortarboard me-2"></i> SHS
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+    </ul>
+
+    <div class="p-3">
+        <!-- Placeholder -->
+    </div>
+</div>
 
         <!-- Main Content Wrapper -->
         <div class="main-content-wrapper">
@@ -216,10 +393,12 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
 </nav>
 
 
-            <!-- Content Area -->
-            <main class="content-area">
-                @yield('content')
-            </main>
+           <!-- Content Area -->
+               <main class="content-area">
+                 <div id="page-content">
+                    @yield('content')
+                 </div>
+               </main>
 
             <!-- Footer -->
             <footer class="footer">
@@ -230,27 +409,74 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
         <div class="sidebar-overlay"></div>
     </div>
 
-    <script>
-        // Sidebar Toggle Functionality
-        document.getElementById('sidebar-toggle').addEventListener('click', function() {
-            document.body.classList.toggle('sidebar-toggled');
-        });
+     <script>
+// Prevent full page reload and load content via AJAX
+document.addEventListener('DOMContentLoaded', function () {
+    const contentArea = document.getElementById('page-content');
 
-        // New: Close sidebar when overlay is clicked
-        document.querySelector('.sidebar-overlay').addEventListener('click', function() {
-            document.body.classList.remove('sidebar-toggled');
-        });
+    // Listen to all links with [data-load]
+    document.querySelectorAll('a[data-load]').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault(); // Huwag mag-refresh
 
-        // Clock Functionality
-        function updateTime() {
-            const timeElement = document.getElementById('current-time');
-            if (timeElement) {
-                const now = new Date();
-                timeElement.textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-            }
+            const url = this.getAttribute('href');
+
+            // Add loading state
+            contentArea.innerHTML = `
+                <div class="d-flex justify-content-center align-items-center" style="height: 50vh;">
+                    <div class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-3">Loading content...</p>
+                    </div>
+                </div>
+            `;
+
+            // Fetch the page content
+            fetch(url, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest', // Laravel detects AJAX
+                },
+            })
+            .then(response => response.text())
+            .then(html => {
+                // Extract the body content (remove <html>, <head>, etc.)
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+
+                // Kunin lang ang #page-content mula sa response
+                const newContent = doc.querySelector('#page-content')?.innerHTML;
+
+                if (newContent) {
+                    contentArea.innerHTML = newContent;
+                } else {
+                    contentArea.innerHTML = '<p>Error loading content.</p>';
+                }
+
+                // Update URL sa browser (para back button gumana)
+                window.history.pushState({}, '', url);
+            })
+            .catch(err => {
+                console.error('Fetch error:', err);
+                contentArea.innerHTML = `
+                    <div class="alert alert-danger">Failed to load content. Please try again.</div>
+                `;
+            });
+        });
+    });
+
+    // Clock Functionality (nandito na)
+    function updateTime() {
+        const timeElement = document.getElementById('current-time');
+        if (timeElement) {
+            const now = new Date();
+            timeElement.textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
         }
-        setInterval(updateTime, 1000);
-        updateTime();
-    </script>
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+});
+</script>
 </body>
 </html>
