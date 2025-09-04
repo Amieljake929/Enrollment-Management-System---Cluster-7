@@ -439,6 +439,30 @@
                     </select>
                     <div class="invalid-feedback">Please select your gender.</div>
                   </div>
+
+                  <!-- Indigenous Group -->
+<div class="col-md-6">
+    <label for="indigenous" class="form-label">Indigenous Group<span class="required-star">*</span></label>
+    <select class="form-select" id="indigenous" name="indigenous" required>
+        <option value="" selected disabled>Choose Indigenous group</option>
+        @foreach($indigenousGroups as $group)
+            <option value="{{ $group->indigenous_id }}">{{ $group->indigenous_name }}</option>
+        @endforeach
+    </select>
+    <div class="invalid-feedback">Please select an Indigenous group.</div>
+</div>
+
+<!-- Disability Type -->
+<div class="col-md-6">
+    <label for="disability" class="form-label">Disability Type<span class="required-star">*</span></label>
+    <select class="form-select" id="disability" name="disability" required>
+        <option value="" selected disabled>Choose Disability type</option>
+        @foreach($disabilityTypes as $type)
+            <option value="{{ $type->disability_id }}">{{ $type->disability_name }}</option>
+        @endforeach
+    </select>
+    <div class="invalid-feedback">Please select a Disability type.</div>
+</div>
                   <div class="col-md-6">
                     <label for="dob" class="form-label">Date of Birth<span class="required-star">*</span></label>
                     <input type="date" class="form-control" id="dob" name="dob" max="" required />

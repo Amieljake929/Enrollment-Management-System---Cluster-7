@@ -39,9 +39,9 @@ Route::get('/shs-quiz', function () {
 })->name('shs.quiz');
 
 // 🔹 Enrollment Modal Pages
-Route::get('/college-enrollment', function () {
-    return view('website.CollegeEnrollment');
-})->name('college.enrollment');
+// ✅ Use Controller to pass required data
+Route::get('/college-enrollment', [EnrollmentController::class, 'showForm'])
+    ->name('college.enrollment');
 
 Route::get('/shs-enrollment', function () {
     return view('website.ShsEnrollment');

@@ -15,7 +15,8 @@ class ShsStudent extends Model
     'civil_status', 'gender', 'dob', 'place_of_birth', 'nationality',
     'lrn', 'previous_student_id', 'current_address', 'city_municipality',
     'province', 'region_id', 'zip_code', 'religion', 'email',
-    'contact_number', 'social_media'
+    'contact_number', 'social_media','indigenous_id',
+    'disability_id'
 ];
 
     public function studentType()
@@ -47,4 +48,18 @@ class ShsStudent extends Model
     {
         return $this->hasMany(ShsUploadedDocument::class, 'student_id');
     }
+    public function enrolleeNumber()
+{
+    return $this->hasOne(ShsEnrolleeNumber::class, 'student_id', 'student_id');
+}
+public function indigenous()
+{
+    return $this->belongsTo(CollegeShsIndigenous::class, 'indigenous_id');
+}
+
+public function disability()
+{
+    return $this->belongsTo(CollegeShsDisability::class, 'disability_id');
+}
+
 }

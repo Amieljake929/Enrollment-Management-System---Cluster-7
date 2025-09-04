@@ -9,6 +9,9 @@ use App\Models\ShsEnrollmentPreference;
 use App\Models\ShsEducationalBackground;
 use App\Models\ShsUploadedDocument;
 use App\Models\ShsDocument;
+use App\Models\ShsEnrolleeNumber;
+use App\Models\CollegeShsIndigenous;
+use App\Models\CollegeShsDisability;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
@@ -16,14 +19,24 @@ use Illuminate\Support\Facades\DB;
 
 class ShsEnrollmentController extends Controller
 {
+    /**
+     * Show the enrollment form
+     */
     public function showForm()
     {
-        return view('website.ShsEnrollment');
+        // Get data from shared lookup tables (used by both College and SHS)
+        $indigenousGroups = CollegeShsIndigenous::orderBy('indigenous_name')->get();
+        $disabilityTypes = CollegeShsDisability::orderBy('disability_name')->get();
+
+        return view('website.ShsEnrollment', compact('indigenousGroups', 'disabilityTypes'));
     }
 
+    /**
+     * Handle form submission
+     */
     public function submit(Request $request)
     {
-        // Enhanced Validation with Clear Messages
+        // Enhanced Validation
         $validator = Validator::make($request->all(), [
             'studentType' => 'required|exists:shs_student_types,type_name',
             'firstName' => 'required|string|max:100',
@@ -42,22 +55,26 @@ class ShsEnrollmentController extends Controller
             'preferredCourse' => 'required|exists:shs_courses,course_id',
             'yearLevelStep4' => 'required|exists:shs_year_levels,level_id',
             'primarySchool' => 'required|string|max:255',
-            'primaryYearGraduated' => 'required|integer|min:1900|max:2099',
+            'primaryYearGraduated' => 'required|integer|min:1900|max:' . (date('Y') + 5),
             'secondarySchool' => 'required|string|max:255',
-            'secondaryYearGraduated' => 'required|integer|min:1900|max:2099',
+            'secondaryYearGraduated' => 'required|integer|min:1900|max:' . (date('Y') + 5),
             'lastSchoolAttended' => 'required|string|max:255',
-            'lastSchoolYearGraduated' => 'required|integer|min:1900|max:2099',
+            'lastSchoolYearGraduated' => 'required|integer|min:1900|max:' . (date('Y') + 5),
+            'indigenous' => 'required|exists:college_shs_indigenous,indigenous_id',
+            'disability' => 'required|exists:college_shs_disability,disability_id',
             'documents.*' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
             'document_doc_id' => 'required|array',
             'document_doc_id.*' => 'exists:shs_documents,doc_id',
         ], [
-            'lrn.unique' => 'LRN is already taken.',
-            'primaryYearGraduated.integer' => 'Invalid year. Must be a valid number.',
-            'secondaryYearGraduated.integer' => 'Invalid year. Must be a valid number.',
-            'lastSchoolYearGraduated.integer' => 'Invalid year. Must be a valid number.',
-            'primaryYearGraduated.between' => 'Invalid year. Must be between 1900 and 2099.',
-            'secondaryYearGraduated.between' => 'Invalid year. Must be between 1900 and 2099.',
-            'lastSchoolYearGraduated.between' => 'Invalid year. Must be between 1900 and 2099.',
+            'lrn.unique' => 'The LRN is already taken.',
+            'primaryYearGraduated.integer' => 'Primary graduation year must be a valid number.',
+            'secondaryYearGraduated.integer' => 'Secondary graduation year must be a valid number.',
+            'lastSchoolYearGraduated.integer' => 'Last school year must be a valid number.',
+            'primaryYearGraduated.between' => 'Primary year must be between 1900 and ' . (date('Y') + 5) . '.',
+            'secondaryYearGraduated.between' => 'Secondary year must be between 1900 and ' . (date('Y') + 5) . '.',
+            'lastSchoolYearGraduated.between' => 'Last school year must be between 1900 and ' . (date('Y') + 5) . '.',
+            'indigenous.required' => 'Please select an Indigenous group.',
+            'disability.required' => 'Please select a Disability type.',
         ]);
 
         if ($validator->fails()) {
@@ -95,8 +112,13 @@ class ShsEnrollmentController extends Controller
 
         DB::beginTransaction();
         try {
-            // Create Student
+            // Get type_id from shs_student_types
             $studentType = \App\Models\ShsStudentType::where('type_name', $request->studentType)->first();
+            if (!$studentType) {
+                throw new \Exception("Invalid student type.");
+            }
+
+            // 1. Save Student
             $student = ShsStudent::create([
                 'type_id' => $studentType->type_id,
                 'first_name' => $request->firstName,
@@ -119,9 +141,11 @@ class ShsEnrollmentController extends Controller
                 'email' => $request->email,
                 'contact_number' => $request->contactNumber,
                 'social_media' => $request->socialMedia,
+                'indigenous_id' => $request->indigenous,
+                'disability_id' => $request->disability,
             ]);
 
-            // Parent Info
+            // 2. Save Parent Info
             ShsParentInfo::create([
                 'student_id' => $student->student_id,
                 'mother_first_name' => $request->motherFirstName,
@@ -138,7 +162,7 @@ class ShsEnrollmentController extends Controller
                 'father_email' => $request->fatherEmail,
             ]);
 
-            // Guardian (optional)
+            // 3. Save Guardian (optional)
             if ($request->filled('guardianFirstName')) {
                 ShsGuardian::create([
                     'student_id' => $student->student_id,
@@ -151,7 +175,7 @@ class ShsEnrollmentController extends Controller
                 ]);
             }
 
-            // Educational Background
+            // 4. Save Educational Background
             ShsEducationalBackground::create([
                 'student_id' => $student->student_id,
                 'primary_school' => $request->primarySchool,
@@ -162,7 +186,7 @@ class ShsEnrollmentController extends Controller
                 'last_school_year_graduated' => $lastSchoolYear,
             ]);
 
-            // Enrollment Preference
+            // 5. Save Enrollment Preference
             ShsEnrollmentPreference::create([
                 'student_id' => $student->student_id,
                 'branch_id' => $request->preferredBranch,
@@ -170,7 +194,7 @@ class ShsEnrollmentController extends Controller
                 'level_id' => $request->yearLevelStep4,
             ]);
 
-            // Upload Documents
+            // 6. Upload Documents
             if ($request->hasFile('documents')) {
                 foreach ($request->file('documents') as $index => $file) {
                     $docId = $request->document_doc_id[$index];
@@ -182,6 +206,14 @@ class ShsEnrollmentController extends Controller
                     ]);
                 }
             }
+
+            // 7. Generate Enrollee Number
+            $enrolleeNo = ShsEnrolleeNumber::generateUniqueEnrolleeNo();
+
+            ShsEnrolleeNumber::create([
+                'enrollee_no' => $enrolleeNo,
+                'student_id' => $student->student_id,
+            ]);
 
             DB::commit();
             $success = true;
@@ -201,6 +233,9 @@ class ShsEnrollmentController extends Controller
         ], $success ? 200 : 500);
     }
 
+    /**
+     * Show success page
+     */
     public function success()
     {
         return view('website.enrollment_success');

@@ -15,7 +15,8 @@ class CollegeStudent extends Model
         'civil_status', 'gender', 'dob', 'place_of_birth', 'nationality',
         'previous_student_id', 'contact_number', 'email', 'social_media',
         'religion', 'current_address', 'city_municipality', 'province',
-        'zip_code', 'region_id'
+        'zip_code', 'region_id','indigenous_id',
+    'disability_id'
     ];
 
     // Relationships
@@ -48,4 +49,17 @@ class CollegeStudent extends Model
     {
         return $this->hasMany(CollegeUploadedDocument::class, 'student_id');
     }
+    public function enrolleeNumber()
+{
+    return $this->hasOne(CollegeEnrolleeNumber::class, 'student_id', 'student_id');
+}
+public function indigenous()
+{
+    return $this->belongsTo(CollegeShsIndigenous::class, 'indigenous_id');
+}
+
+public function disability()
+{
+    return $this->belongsTo(CollegeShsDisability::class, 'disability_id');
+}
 }

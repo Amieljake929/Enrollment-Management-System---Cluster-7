@@ -354,7 +354,6 @@
       <p class="lead">Start your higher education journey with Bestlink College of the Philippines. Complete your enrollment process quickly and efficiently.</p>
     </div>
   </section>
-
   <div class="container py-5" id="enrollment-form">
     <div class="row justify-content-center mb-5">
       <div class="col-lg-8 text-center">
@@ -376,7 +375,6 @@
               <div class="step disabled" data-step="6">Step 6: Documents</div>
               <div class="step disabled" data-step="7">Step 7: Summary</div>
             </div>
-
             <!-- FORM with proper Laravel integration -->
             <form id="registrationForm" novalidate>
               @csrf
@@ -440,6 +438,32 @@
                     </select>
                     <div class="invalid-feedback">Please select your gender.</div>
                   </div>
+                  
+                  <!-- Indigenous Group -->
+<div class="col-md-6">
+    <label for="indigenous" class="form-label">Indigenous Group<span class="required-star">*</span></label>
+    <select class="form-select" id="indigenous" name="indigenous" required>
+        <option value="" selected disabled>Choose Indigenous group</option>
+        @foreach($indigenousGroups as $group)
+            <option value="{{ $group->indigenous_id }}">{{ $group->indigenous_name }}</option>
+        @endforeach
+    </select>
+    <div class="invalid-feedback">Please select an Indigenous group.</div>
+</div>
+
+<!-- Disability Type -->
+<div class="col-md-6">
+    <label for="disability" class="form-label">Disability Type<span class="required-star">*</span></label>
+    <select class="form-select" id="disability" name="disability" required>
+        <option value="" selected disabled>Choose Disability type</option>
+        @foreach($disabilityTypes as $type)
+            <option value="{{ $type->disability_id }}">{{ $type->disability_name }}</option>
+        @endforeach
+    </select>
+    <div class="invalid-feedback">Please select a Disability type.</div>
+</div>
+
+                  <!-- Date of Birth -->
                   <div class="col-md-6">
                     <label for="dob" class="form-label">Date of Birth<span class="required-star">*</span></label>
                     <input type="date" class="form-control" id="dob" name="dob" max="" required />
@@ -457,7 +481,6 @@
                   </div>
                 </div>
               </section>
-
               <!-- STEP 2 -->
               <section class="form-section" data-step="2">
                 <h3 class="stepper-header mb-4">Step 2: Address</h3>
@@ -527,7 +550,6 @@
                   </div>
                 </div>
               </section>
-
               <!-- STEP 3 -->
               <section class="form-section" data-step="3">
                 <h3 class="stepper-header mb-4">Step 3: Parents Information</h3>
@@ -563,7 +585,6 @@
                     <input type="email" class="form-control" id="motherEmail" name="motherEmail" required />
                     <div class="invalid-feedback">Please enter a valid email address.</div>
                   </div>
-
                   <h5 class="mb-3 mt-4" style="color: var(--primary-dark); font-weight: 700;">Father's Information</h5>
                   <div class="col-md-4">
                     <label for="fatherFirstName" class="form-label">First Name<span class="required-star">*</span></label>
@@ -595,7 +616,6 @@
                     <input type="email" class="form-control" id="fatherEmail" name="fatherEmail" required />
                     <div class="invalid-feedback">Please enter a valid email address.</div>
                   </div>
-
                   <h5 class="mb-3 mt-4" style="color: var(--primary-dark); font-weight: 700;">Guardian's Information (If not living with parents)</h5>
                   <div class="col-md-4">
                     <label for="guardianFirstName" class="form-label">First Name</label>
@@ -625,7 +645,6 @@
                   </div>
                 </div>
               </section>
-
               <!-- STEP 4 -->
               <section class="form-section" data-step="4">
                 <h3 class="stepper-header mb-4">Step 4: Preferences</h3>
@@ -655,7 +674,6 @@
                   </div>
                 </div>
               </section>
-
               <!-- STEP 5 -->
               <section class="form-section" data-step="5">
                 <h3 class="stepper-header mb-4">Step 5: Educational Background</h3>
@@ -692,7 +710,6 @@
                   </div>
                 </div>
               </section>
-
               <!-- STEP 6 -->
               <section class="form-section" data-step="6">
                 <h3 class="stepper-header mb-4">Step 6: Softcopy of Document Submission</h3>
@@ -709,7 +726,6 @@
                   </div>
                 </div>
               </section>
-
               <!-- STEP 7 -->
               <section class="form-section" data-step="7">
                 <h3 class="stepper-header mb-4">Step 7: Summary</h3>
@@ -726,7 +742,6 @@
                   </label>
                 </div>
               </section>
-
               <!-- Navigation Buttons -->
               <div class="d-flex justify-content-between mt-4">
                 <button type="button" class="btn btn-secondary" id="prevBtn" disabled>
@@ -742,7 +757,6 @@
       </div>
     </div>
   </div>
-
   <!-- Footer -->
   <footer>
     <div class="container">
@@ -781,12 +795,10 @@
       </div>
     </div>
   </footer>
-
   <!-- Define route for JS -->
   <script>
     const SUBMIT_ENROLLMENT_URL = "{{ route('enrollment.submit') }}";
   </script>
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     (() => {
@@ -796,17 +808,14 @@
       const prevBtn = document.getElementById('prevBtn');
       const nextBtn = document.getElementById('nextBtn');
       let currentStep = 0;
-
       const today = new Date().toISOString().split('T')[0];
       form.querySelectorAll('input[type="date"]').forEach(input => input.setAttribute('max', today));
-
       const studentTypeSelect = document.getElementById('studentType');
       const previousIdContainer = document.getElementById('previousIdContainer');
       const yearLevelStep4 = document.getElementById('yearLevelStep4');
       const preferredBranchSelect = document.getElementById('preferredBranch');
       const preferredCourseSelect = document.getElementById('preferredCourse');
       const documentUploadList = document.getElementById('documentUploadList');
-
       const courseOptions = {
         "1": [
           { course_id: 1, name: "BLIS - Bachelor in Library Information Science" },
@@ -842,10 +851,9 @@
           { course_id: 29, name: "Bulacan BSENTREP - Bachelor of Science in Entrepreneurship" },
           { course_id: 30, name: "Bulacan BSIS - Bachelor of Science in Information System" },
           { course_id: 31, name: "Bulacan BSP - Bachelor of Science in Psychology" },
-          { course_id: 32, name: "Bulacan BSTM - Bachelor of Science in Tourism Management" }  // ✅ Tama na!
+          { course_id: 32, name: "Bulacan BSTM - Bachelor of Science in Tourism Management" }
         ]
       };
-
       const requiredDocuments = {
         'New Regular': [
            { doc_id: 1, name: 'Form 138 (Report Card)' },
@@ -872,7 +880,6 @@
           { doc_id: 18, name: 'Barangay Clearance' }
        ]
       };
-
       function updateYearLevelOptions() {
         const studentType = studentTypeSelect.value;
         yearLevelStep4.innerHTML = '<option value="" selected disabled>Choose year level</option>';
@@ -885,7 +892,6 @@
           }
         }
       }
-
       studentTypeSelect.addEventListener('change', () => {
         if (studentTypeSelect.value === 'Returnee') {
           previousIdContainer.classList.remove('d-none');
@@ -898,81 +904,73 @@
         updateYearLevelOptions();
         updateDocumentUploadList();
       });
-
       preferredBranchSelect.addEventListener('change', () => {
         const branch = preferredBranchSelect.value;
         const courses = courseOptions[branch] || [];
         preferredCourseSelect.innerHTML = '<option value="" selected disabled>Choose preferred course</option>';
         courses.forEach(course => {
                const option = document.createElement('option');
-               option.value = course.course_id;  // ✅ Totoong course_id
+               option.value = course.course_id;
                option.textContent = course.name;
                preferredCourseSelect.appendChild(option);
-});
+        });
       });
-
       function updateDocumentUploadList() {
-  const studentType = studentTypeSelect.value;
-  const docs = requiredDocuments[studentType] || [];
-  documentUploadList.innerHTML = '';
-  docs.forEach((doc, index) => {
-    const docGroup = document.createElement('div');
-    docGroup.className = 'mb-4';
-    docGroup.innerHTML = `
-      <label class="form-label">
-        <i class="fas fa-file-upload text-primary me-1"></i>
-        ${doc.name} <span class="required-star">*</span>
-      </label>
-      <input type="file" class="form-control" name="documents[]" accept=".pdf,.jpg,.jpeg,.png" required />
-      <div class="invalid-feedback">Please upload a valid copy of ${doc.name}.</div>
-      <div class="mt-2 preview-container" style="display: none;">
-        <strong>Preview:</strong>
-        <div class="border rounded p-2 bg-light" style="max-height: 200px; overflow: auto;">
-          <img src="" alt="Preview" class="img-fluid mb-2 d-none" style="max-height: 150px;" />
-          <a href="#" class="pdf-preview d-none text-danger" target="_blank"><i class="fas fa-file-pdf me-1"></i>View PDF</a>
-        </div>
-      </div>
-    `;
-
-    // Inside the document group
-         const hiddenDocId = document.createElement('input');
-         hiddenDocId.type = 'hidden';
-         hiddenDocId.name = 'document_doc_id[]';
-         hiddenDocId.value = doc.doc_id;
-         docGroup.appendChild(hiddenDocId);
-
-    documentUploadList.appendChild(docGroup);
-    const fileInput = docGroup.querySelector('input[type="file"]');
-    const previewContainer = docGroup.querySelector('.preview-container');
-    const imgPreview = docGroup.querySelector('img');
-    const pdfPreview = docGroup.querySelector('.pdf-preview');
-
-    // Store doc_id in data attribute for later use
-    fileInput.dataset.docId = doc.doc_id;
-
-    fileInput.addEventListener('change', function () {
-      const file = this.files[0];
-      if (!file) return;
-      if (file.size > 5 * 1024 * 1024) {
-        alert(`File too large: ${file.name}. Maximum is 5MB.`);
-        this.value = '';
-        previewContainer.style.display = 'none';
-        return;
+        const studentType = studentTypeSelect.value;
+        const docs = requiredDocuments[studentType] || [];
+        documentUploadList.innerHTML = '';
+        docs.forEach((doc, index) => {
+          const docGroup = document.createElement('div');
+          docGroup.className = 'mb-4';
+          docGroup.innerHTML = `
+            <label class="form-label">
+              <i class="fas fa-file-upload text-primary me-1"></i>
+              ${doc.name} <span class="required-star">*</span>
+            </label>
+            <input type="file" class="form-control" name="documents[]" accept=".pdf,.jpg,.jpeg,.png" required />
+            <div class="invalid-feedback">Please upload a valid copy of ${doc.name}.</div>
+            <div class="mt-2 preview-container" style="display: none;">
+              <strong>Preview:</strong>
+              <div class="border rounded p-2 bg-light" style="max-height: 200px; overflow: auto;">
+                <img src="" alt="Preview" class="img-fluid mb-2 d-none" style="max-height: 150px;" />
+                <a href="#" class="pdf-preview d-none text-danger" target="_blank"><i class="fas fa-file-pdf me-1"></i>View PDF</a>
+              </div>
+            </div>
+          `;
+          const hiddenDocId = document.createElement('input');
+          hiddenDocId.type = 'hidden';
+          hiddenDocId.name = 'document_doc_id[]';
+          hiddenDocId.value = doc.doc_id;
+          docGroup.appendChild(hiddenDocId);
+          documentUploadList.appendChild(docGroup);
+          const fileInput = docGroup.querySelector('input[type="file"]');
+          const previewContainer = docGroup.querySelector('.preview-container');
+          const imgPreview = docGroup.querySelector('img');
+          const pdfPreview = docGroup.querySelector('.pdf-preview');
+          fileInput.dataset.docId = doc.doc_id;
+          fileInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (!file) return;
+            if (file.size > 5 * 1024 * 1024) {
+              alert(`File too large: ${file.name}. Maximum is 5MB.`);
+              this.value = '';
+              previewContainer.style.display = 'none';
+              return;
+            }
+            const fileURL = URL.createObjectURL(file);
+            previewContainer.style.display = 'block';
+            imgPreview.classList.add('d-none');
+            pdfPreview.classList.add('d-none');
+            if (file.type.startsWith('image/')) {
+              imgPreview.src = fileURL;
+              imgPreview.classList.remove('d-none');
+            } else if (file.type === 'application/pdf') {
+              pdfPreview.href = fileURL;
+              pdfPreview.classList.remove('d-none');
+            }
+          });
+        });
       }
-      const fileURL = URL.createObjectURL(file);
-      previewContainer.style.display = 'block';
-      imgPreview.classList.add('d-none');
-      pdfPreview.classList.add('d-none');
-      if (file.type.startsWith('image/')) {
-        imgPreview.src = fileURL;
-        imgPreview.classList.remove('d-none');
-      } else if (file.type === 'application/pdf') {
-        pdfPreview.href = fileURL;
-        pdfPreview.classList.remove('d-none');
-      }
-    });
-  });
-}
       function showStep(index) {
         steps.forEach(s => s.classList.remove('active'));
         stepperSteps.forEach(s => s.classList.remove('active', 'completed'));
@@ -986,12 +984,10 @@
         currentStep = index;
         setTimeout(() => document.querySelector('.card').scrollIntoView({ behavior: 'smooth' }), 100);
       }
-
       function validateStep(index) {
         const step = steps[index];
         const inputs = step.querySelectorAll('input, select');
         let valid = true;
-
         inputs.forEach(input => {
           input.classList.remove('is-invalid');
           if (input.hasAttribute('required') && !input.value) {
@@ -999,7 +995,6 @@
             valid = false;
           }
         });
-
         if (index === 5) {
           const fileInputs = document.querySelectorAll('#documentUploadList input[type="file"]');
           fileInputs.forEach(input => {
@@ -1009,13 +1004,11 @@
             }
           });
         }
-
         return valid;
       }
-
       function populateSummary() {
         const data = new FormData(form);
-        let html = '<div class="row g-3">';
+        let html = '<div class="row g-3>';
         html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Student Information</h5></div>`;
         html += `<div class="col-md-6"><span class="summary-label">Student Type:</span> ${data.get('studentType')|| ''}</div>`;
         if (data.get('studentType') === 'Returnee') {
@@ -1027,11 +1020,12 @@
         html += `<div class="col-md-6"><span class="summary-label">Extension Name:</span> ${data.get('extensionName')|| ''}</div>`;
         html += `<div class="col-md-6"><span class="summary-label">Civil Status:</span> ${data.get('civilStatus')|| ''}</div>`;
         html += `<div class="col-md-6"><span class="summary-label">Gender:</span> ${data.get('gender')|| ''}</div>`;
+        html += `<div class="col-md-6"><span class="summary-label">Indigenous Group:</span> ${document.querySelector('#indigenous option:checked')?.text || ''}</div>`;
+        html += `<div class="col-md-6"><span class="summary-label">Disability Type:</span> ${document.querySelector('#disability option:checked')?.text || ''}</div>`;
         html += `<div class="col-md-6"><span class="summary-label">Date of Birth:</span> ${data.get('dob')|| ''}</div>`;
         html += `<div class="col-md-6"><span class="summary-label">Place of Birth:</span> ${data.get('placeOfBirth')|| ''}</div>`;
         html += `<div class="col-md-6"><span class="summary-label">Nationality:</span> ${data.get('nationality')|| ''}</div>`;
         html += `<div class="col-12"><hr></div>`;
-
         html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Address & Contact</h5></div>`;
         html += `<div class="col-md-6"><span class="summary-label">Current Address:</span> ${data.get('currentAddress')|| ''}</div>`;
         html += `<div class="col-md-6"><span class="summary-label">City/Municipality:</span> ${data.get('cityMunicipality')|| ''}</div>`;
@@ -1043,7 +1037,6 @@
         html += `<div class="col-md-6"><span class="summary-label">Contact Number:</span> ${data.get('contactNumber')|| ''}</div>`;
         html += `<div class="col-md-6"><span class="summary-label">Social Media:</span> ${data.get('socialMedia')|| ''}</div>`;
         html += `<div class="col-12"><hr></div>`;
-
         html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Parents Information</h5></div>`;
         html += `<div class="col-md-4"><span class="summary-label">Mother's First Name:</span> ${data.get('motherFirstName')|| ''}</div>`;
         html += `<div class="col-md-4"><span class="summary-label">Middle Name:</span> ${data.get('motherMiddleName')|| ''}</div>`;
@@ -1058,13 +1051,11 @@
         html += `<div class="col-md-4"><span class="summary-label">Contact Number:</span> ${data.get('fatherContact')|| ''}</div>`;
         html += `<div class="col-md-4"><span class="summary-label">Email:</span> ${data.get('fatherEmail')|| ''}</div>`;
         html += `<div class="col-12"><hr></div>`;
-
         html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Preferences</h5></div>`;
         html += `<div class="col-md-6"><span class="summary-label">Preferred Branch:</span> ${document.querySelector('#preferredBranch option:checked')?.text || ''}</div>`;
         html += `<div class="col-md-6"><span class="summary-label">Preferred Course:</span> ${document.querySelector('#preferredCourse option:checked')?.text || ''}</div>`;
         html += `<div class="col-md-6"><span class="summary-label">Year Level:</span> ${document.querySelector('#yearLevelStep4 option:checked')?.text || ''}</div>`;
         html += `<div class="col-12"><hr></div>`;
-
         html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Educational Background</h5></div>`;
         html += `<div class="col-md-6"><span class="summary-label">Primary School:</span> ${data.get('primarySchool')|| ''}</div>`;
         html += `<div class="col-md-6"><span class="summary-label">Year Graduated (Primary):</span> ${data.get('primaryYearGraduated')|| ''}</div>`;
@@ -1075,7 +1066,6 @@
         html += '</div>';
         document.getElementById('summaryContent').innerHTML = html;
       }
-
       // FINAL SUBMIT WITH AJAX
       nextBtn.addEventListener('click', () => {
         if (validateStep(currentStep)) {
@@ -1088,7 +1078,6 @@
             const formData = new FormData(form);
             nextBtn.disabled = true;
             nextBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
-
             fetch(SUBMIT_ENROLLMENT_URL, {
               method: 'POST',
               body: formData,
@@ -1123,11 +1112,9 @@
           }
         }
       });
-
       prevBtn.addEventListener('click', () => {
         if (currentStep > 0) showStep(currentStep - 1);
       });
-
       // Initialize
       updateYearLevelOptions();
       if (studentTypeSelect.value) updateDocumentUploadList();

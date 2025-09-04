@@ -64,6 +64,9 @@
                                     @if($student->extension_name)
                                         {{ $student->extension_name }}
                                     @endif
+                                     <div class="text-muted small mt-1">
+                                          <strong>Enrollee Number:</strong> {{ $student->enrolleeNumber->enrollee_no ?? 'N/A' }}
+                                     </div>
                                 </td>
                                 <td>{{ $student->enrollmentPreference->course->course_name ?? 'N/A' }}</td>
                                 <td>

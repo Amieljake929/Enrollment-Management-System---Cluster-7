@@ -9,6 +9,9 @@ use App\Models\CollegeEnrollmentPreference;
 use App\Models\CollegeEducationalBackground;
 use App\Models\CollegeUploadedDocument;
 use App\Models\CollegeDocument;
+use App\Models\CollegeShsIndigenous;
+use App\Models\CollegeShsDisability;
+use App\Models\CollegeEnrolleeNumber;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
@@ -16,11 +19,20 @@ use Illuminate\Support\Facades\DB;
 
 class EnrollmentController extends Controller
 {
+    /**
+     * Show the enrollment form
+     */
     public function showForm()
     {
-        return view('website.CollegeEnrollment'); // ✅ Match your actual Blade path
+        $indigenousGroups = CollegeShsIndigenous::orderBy('indigenous_name')->get();
+        $disabilityTypes = CollegeShsDisability::orderBy('disability_name')->get();
+
+        return view('website.CollegeEnrollment', compact('indigenousGroups', 'disabilityTypes'));
     }
 
+    /**
+     * Handle form submission
+     */
     public function submit(Request $request)
     {
         // Validate basic student info
@@ -36,7 +48,7 @@ class EnrollmentController extends Controller
             'nationality' => 'required',
             'currentAddress' => 'required',
             'cityMunicipality' => 'required',
-            'region' => 'required|exists:college_regions,region_id', // ✅ Fixed: was region_id
+            'region' => 'required|exists:college_regions,region_id',
             'zipCode' => 'required',
             'province' => 'required',
             'religion' => 'required',
@@ -53,7 +65,12 @@ class EnrollmentController extends Controller
             'primarySchool' => 'required',
             'secondarySchool' => 'required',
             'lastSchoolAttended' => 'required',
-            'documents.*' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120', // 5MB
+            'indigenous' => 'required|exists:college_shs_indigenous,indigenous_id',
+            'disability' => 'required|exists:college_shs_disability,disability_id',
+            'documents.*' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120', // 5MB max per file
+        ], [
+            'indigenous.required' => 'Please select an Indigenous group.',
+            'disability.required' => 'Please select a Disability type.',
         ]);
 
         if ($validator->fails()) {
@@ -100,6 +117,8 @@ class EnrollmentController extends Controller
                 'province' => $request->province,
                 'zip_code' => $request->zipCode,
                 'region_id' => $request->region,
+                'indigenous_id' => $request->indigenous,
+                'disability_id' => $request->disability,
             ]);
 
             // 2. Save Parents
@@ -151,29 +170,50 @@ class EnrollmentController extends Controller
 
             // 6. Save Documents
             if ($request->hasFile('documents')) {
-            $docIds = $request->input('document_doc_id'); // Array of correct doc_ids
+                $files = $request->file('documents');
+                $docIds = $request->input('document_doc_id');
 
-               foreach ($request->file('documents') as $index => $file) {
+                // Validate: must be array and same count
+                if (!is_array($docIds) || count($docIds) !== count($files)) {
+                    throw new \Exception("Document ID mismatch: expected " . count($files) . " IDs.");
+                }
+
+                foreach ($files as $index => $file) {
                     $path = $file->store('enrollment_documents', 'public');
                     $extension = $file->getClientOriginalExtension();
 
-                  CollegeUploadedDocument::create([
-                     'student_id' => $student->student_id,
-                     'doc_id' => $docIds[$index], // ✅ Correct doc_id from hidden input
-                     'file_path' => $path,
-                     'file_type' => $extension,
-                ]);
-             }
-           }
+                    CollegeUploadedDocument::create([
+                        'student_id' => $student->student_id,
+                        'doc_id' => $docIds[$index],
+                        'file_path' => $path,
+                        'file_type' => $extension,
+                    ]);
+                }
+            }
 
-           
+            // ✅ REMOVED: CollegeSelf::create(...) — no longer needed
+
+            // 7. Generate and Save Enrollee Number (ONLY ONCE PER STUDENT)
+            $enrolleeNo = CollegeEnrolleeNumber::generateUniqueEnrolleeNo();
+
+            CollegeEnrolleeNumber::create([
+                'enrollee_no' => $enrolleeNo,
+                'student_id' => $student->student_id,
+            ]);
+
+            // ✅ Commit transaction
             DB::commit();
 
-            // ✅ Return JSON for AJAX, redirect for regular form
+            // ✅ Return JSON or Redirect
             return $this->jsonOrRedirect($request, true, null, route('enrollment.success'));
 
         } catch (\Exception $e) {
+            // 🔙 Undo all changes
             DB::rollback();
+
+            // Log error for debugging
+            \Log::error('Enrollment failed: ' . $e->getMessage());
+
             return $this->jsonOrRedirect($request, false, 'Save failed: ' . $e->getMessage());
         }
     }
@@ -198,8 +238,11 @@ class EnrollmentController extends Controller
         return redirect()->back()->with('error', $message);
     }
 
+    /**
+     * Show success page
+     */
     public function success()
     {
-        return view('website.enrollment_success'); // ✅ Create this view
+        return view('website.enrollment_success');
     }
 }

@@ -28,6 +28,8 @@ class DatabaseSeeder extends Seeder
             ShsYearLevelSeeder::class,
             ShsCoursesSeeder::class,
             ShsDocumentSeeder::class,
+            CollegeShsIndigenousSeeder::class,
+            CollegeShsDisabilitySeeder::class,
     ]);
 }
 }
