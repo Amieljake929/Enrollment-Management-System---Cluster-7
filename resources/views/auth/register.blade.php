@@ -55,6 +55,19 @@
                         @enderror
                     </div>
 
+                    <!-- Role Selection -->
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Role</label>
+                        <select id="role" class="form-select @error('role') is-invalid @enderror" name="role" required>
+                            <option value="" disabled selected>Select Role</option>
+                            <option value="Administrator (OIC)" {{ old('role') == 'Administrator (OIC)' ? 'selected' : '' }}>Administrator (OIC)</option>
+                            <option value="Staff OIC" {{ old('role') == 'Staff OIC' ? 'selected' : '' }}>Staff OIC</option>
+                        </select>
+                        @error('role')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
                     <!-- Actions -->
                     <div class="d-flex justify-content-between align-items-center mt-4">
                         <a href="{{ route('login') }}" class="text-decoration-none text-secondary small">

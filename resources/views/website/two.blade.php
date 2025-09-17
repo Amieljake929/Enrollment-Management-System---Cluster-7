@@ -10,6 +10,8 @@
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
 
     <style>
         :root {
@@ -18,13 +20,13 @@
             --section-padding: 6rem 0;
         }
         body {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Poppins', sans-serif;
             color: #333;
             line-height: 1.6;
             background-color: #f8f9fa;
             overflow-x: hidden;
         }
-        h2, h3, h4, h5 {
+        h1, h2, h3, h4, h5 {
             color: var(--primary-color);
             font-weight: 700;
         }
@@ -44,8 +46,64 @@
             background-color: #f8f9fa !important;
         }
         .bg-soft-blue {
-            background: linear-gradient(135deg, #f5f9ff 0%, #e8f0fc 100%);
-        }
+    background: linear-gradient(135deg, #f5f9ff 0%, #e8f0fc 100%);
+    position: relative;
+    overflow: hidden;
+}
+/* Button Styling */
+.btn-primary-custom {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(32, 59, 107, 0.2);
+}
+.btn-primary-custom:hover {
+    background-color: #1a315a;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(32, 59, 107, 0.3);
+}
+
+/* Image Styling */
+.img-fluid.rounded-4 {
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    transition: transform 0.5s ease;
+}
+.img-fluid.rounded-4:hover {
+    transform: scale(1.02);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .bg-soft-blue {
+        padding: 4rem 0;
+    }
+    .row.align-items-center {
+        flex-direction: column;
+        text-align: center;
+    }
+    .col-lg-6 {
+        margin-bottom: 2rem;
+    }
+    .img-fluid.rounded-4 {
+        max-height: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    h2.display-5 {
+        font-size: 2rem;
+        line-height: 1.4;
+    }
+    .btn-primary-custom {
+        width: 70%;
+        padding: 12px;
+        font-size: 0.95rem;
+    }
+}
 
         /* Fade-in Animation on Scroll */
         .fade-in-section {
@@ -378,6 +436,13 @@
             border-color: var(--primary-color);
             box-shadow: 0 0 0 0.25rem rgba(32, 59, 107, 0.25);
         }
+        .hero{
+            background: linear-gradient(135deg, #203B6B, #305793);
+    color: white;
+    position: relative;
+    overflow: hidden;
+        }
+        
     </style>
 </head>
 <body>
@@ -406,78 +471,51 @@
 </div>
 
 <!-- =================================== -->
-<!-- 2️⃣ HERO SECTION – Taller & Immersive -->
+<!-- 2️⃣ HERO SECTION – Centered Text with Gradient Background -->
 <!-- =================================== -->
-<section class="section hero">
-    <div class="container">
-        <div class="row align-items-center g-5">
-            <div class="col-lg-6 hero-content fade-in-section">
-                <h1 class="display-4 fw-bold">Start Your Journey at Bestlink College</h1>
-                <p class="lead">
+<section class="section hero bg-gradient-custom text-center fade-in-section" id="hero-section">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10 text-center">
+                <h1 class="display-4 fw-bold text-white mb-4">
+                    Start Your Journey at Bestlink College
+                </h1>
+                <p class="lead text-white mb-5">
                     We provide quality education to make students globally competitive and productive citizens.
                 </p>
                 <a href="#enroll-now-section" class="btn btn-hero btn-lg mt-3">
                     Enroll Now
                 </a>
             </div>
-            <div class="col-lg-6 text-center fade-in-section">
-                <img src="{{ asset('images/enroll_now.jpg') }}" alt="Education" class="img-fluid hover-lift" />
-            </div>
         </div>
     </div>
 </section>
 
 <!-- =================================== -->
-<!-- 3️⃣ ASSESSMENT QUIZ SECTION – Enhanced -->
+<!-- 3️⃣ ASSESSMENT QUIZ SECTION – Enhanced Hero Style -->
 <!-- =================================== -->
-<section class="section bg-light" id="assessment-section">
+<section class="section bg-soft-blue" id="assessment-section">
     <div class="container">
-        <div class="text-center mb-5 fade-in-section">
-            <h2 class="text-primary-custom">Not sure which path to take?</h2>
-            <p class="lead text-muted">Discover your ideal academic track with our quick assessment.</p>
-        </div>
+        <div class="row align-items-center g-5">
+                    <h1 class="text-center mb-5 fade-in-section">Course Assessment Test</h1>
 
-        <div class="row justify-content-center g-4">
-            <div class="col-md-8">
-                <div class="assessment-card fade-in-section">
-                    <div class="row g-4 text-center">
-                        <div class="col-6 col-md-3">
-                            <div class="feature-icon-large">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <h5>5–7 mins</h5>
-                            <p class="small">Quick & easy</p>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <div class="feature-icon-large">
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <h5>Personalized</h5>
-                            <p class="small">Tailored to you</p>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <div class="feature-icon-large">
-                                <i class="fas fa-lightbulb"></i>
-                            </div>
-                            <h5>Recommendation</h5>
-                            <p class="small">Smart matching</p>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <div class="feature-icon-large">
-                                <i class="fas fa-check-circle"></i>
-                            </div>
-                            <h5>Expert-Designed</h5>
-                            <p class="small">Trusted by faculty</p>
-                        </div>
-                    </div>
-                </div>
+            <!-- Left Side: Text Content -->
+            <div class="col-lg-6 fade-in-section">
+                <h2 class="text-primary-custom display-5 fw-bold mb-3">
+                    Find the program<br><span class="text-white">That fits you the BEST.</span>
+                </h2>
+                <p class="lead text-muted mb-4">
+                    Take our AI-powered assessment and discover the program that aligns with your strengths and interests.
+                </p>
+                <button type="button" class="btn btn-primary-custom btn-lg px-5 py-3 shadow-lg hover-lift" data-bs-toggle="modal" data-bs-target="#assessmentModal">
+                    <i class="fas fa-vial me-2"></i> Take the Assessment Now
+                </button>
             </div>
-        </div>
 
-        <div class="text-center mt-4 fade-in-section">
-            <button type="button" class="btn-assessment btn-lg" data-bs-toggle="modal" data-bs-target="#assessmentModal">
-                <i class="fas fa-vial me-2"></i> Take Assessment
-            </button>
+            <!-- Right Side: Image -->
+            <div class="col-lg-6 text-center fade-in-section">
+                <img src="{{ asset('images/assessment.png') }}" alt="Bestlink Students" class="img-fluid rounded-4 shadow-lg" style="max-height: 500px; object-fit: cover;" />
+            </div>
         </div>
     </div>
 </section>
@@ -498,7 +536,7 @@
             <div class="modal-body py-4">
                 <div class="row g-3">
                     <div class="col-12">
-                        <a href="{{ route('college.quiz') }}" class="text-decoration-none">
+                        <a href="{{ route('college.info.form') }}" class="text-decoration-none">
                             <div class="btn btn-primary w-100 py-3 text-center hover-lift">
                                 <i class="fas fa-university fa-lg me-2"></i> <strong>College Assessment</strong>
                             </div>
@@ -776,7 +814,7 @@
                     <a href="{{ route('college.enrollment') }}" class="btn btn-primary btn-lg rounded-pill shadow-sm hover-lift">
                         <i class="fas fa-university me-2"></i> College Enrollment
                     </a>
-                    <a href="{{ route('shs.enrollment') }}" class="btn btn-outline-light btn-lg rounded-pill shadow-sm hover-lift" style="color: black;>
+                    <a href="{{ route('shs.enrollment') }}" class="btn btn-outline-light btn-lg rounded-pill shadow-sm hover-lift" style="color: black;">
                         <i class="fas fa-user-graduate me-2"></i> Senior High School
                     </a>
                 </div>

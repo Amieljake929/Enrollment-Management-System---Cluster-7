@@ -170,20 +170,10 @@
                     </div>
 
                     <!-- Remember Me -->
-                    <div class="mb-3 form-check">
-                        <input id="remember_me" type="checkbox" class="form-check-input" name="remember">
-                        <label class="form-check-label" for="remember_me">
-                            {{ __('Remember me') }}
-                        </label>
-                    </div>
+                    
 
                     <!-- Forgot Password & Submit -->
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        @if (Route::has('password.request'))
-                            <a class="text-decoration-none small text-secondary" href="{{ route('password.request') }}">
-                                {{ __('Forgot your password?') }}
-                            </a>
-                        @endif
 
                         <button type="submit" class="btn btn-custom-login">
                             {{ __('Sign in') }}
@@ -191,14 +181,7 @@
                     </div>
 
                     <!-- Register Link -->
-                    <div class="mt-4 text-center">
-                        <span class="small text-muted">
-                            {{ __("Don't have an account?") }}
-                        </span>
-                        <a href="{{ route('register') }}" class="ms-1 text-primary fw-semibold text-decoration-none">
-                            {{ __('Register here') }}
-                        </a>
-                    </div>
+                    
                 </form>
             </div>
         </div>

@@ -261,8 +261,8 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
 
     <!-- Dashboard -->
         <li class="nav-item mb-2">
-            <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('accreditation.dashboard') ? 'active' : '' }}">
-                <i class="bi bi-speedometer2"></i> Enrollment Dashboard
+            <a href="{{ route('dashboard.staff') }}" class="nav-link {{ request()->routeIs('dashboard.staff') ? 'active' : '' }}">
+                <i class="bi bi-speedometer2"></i> Staff Dashboard
             </a>
         </li>
 
@@ -273,12 +273,12 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
     </a>
     <ul class="nav collapse ms-3 flex-column" id="pending-admissions-submenu">
         <li class="mb-1">
-            <a href="{{ route('modules.pending.college') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+            <a href="#" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
                 <i class="bi bi-building me-2"></i> College
             </a>
         </li>
         <li class="mb-1">
-            <a href="{{ route('modules.pending.shs') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+            <a href="#" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
                 <i class="bi bi-mortarboard me-2"></i> SHS
             </a>
         </li>
@@ -294,12 +294,12 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
             </a>
             <ul class="nav collapse ms-3 flex-column" id="waiting-list-submenu">
                 <li class="mb-1">
-                    <a href="{{ route('modules.waiting.college') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                    <a href="#" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
                         <i class="bi bi-building me-2"></i> College
                     </a>
                 </li>
                 <li class="mb-1">
-                    <a href="{{ route('modules.waiting.shs') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                    <a href="#" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
                         <i class="bi bi-mortarboard me-2"></i> SHS
                     </a>
                 </li>
@@ -315,12 +315,12 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
             </a>
             <ul class="nav collapse ms-3 flex-column" id="student-records-submenu">
                 <li class="mb-1">
-                    <a href="{{ route('modules.records.college') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                    <a href="#" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
                         <i class="bi bi-building me-2"></i> College
                     </a>
                 </li>
                 <li class="mb-1">
-                    <a href="{{ route('modules.records.shs') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                    <a href="#" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
                         <i class="bi bi-mortarboard me-2"></i> SHS
                     </a>
                 </li>
@@ -336,12 +336,12 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
             </a>
             <ul class="nav collapse ms-3 flex-column" id="uploaded-docs-submenu">
                 <li class="mb-1">
-                    <a href="{{ route('modules.documents.college') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                    <a href="#" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
                         <i class="bi bi-building me-2"></i> College
                     </a>
                 </li>
                 <li class="mb-1">
-                    <a href="{{ route('modules.documents.shs') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                    <a href="#" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
                         <i class="bi bi-mortarboard me-2"></i> SHS
                     </a>
                 </li>
@@ -357,12 +357,12 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
             </a>
             <ul class="nav collapse ms-3 flex-column" id="parents-notification-submenu">
                 <li class="mb-1">
-                    <a href="{{ route('modules.parents.college') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                    <a href="#" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
                         <i class="bi bi-building me-2"></i> College
                     </a>
                 </li>
                 <li class="mb-1">
-                    <a href="{{ route('modules.parents.shs') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                    <a href="#" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
                         <i class="bi bi-mortarboard me-2"></i> SHS
                     </a>
                 </li>

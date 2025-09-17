@@ -188,6 +188,24 @@ class CollegeQuizController extends Controller
 
         usort($finalRecommendations, fn($a, $b) => $b['confidence'] <=> $a['confidence']);
 
+        // AFTER generating $finalRecommendations, BEFORE return view(...)
+if (session()->has('college_assessment_data')) {
+    $assessmentData = session('college_assessment_data');
+    $assessmentId = $assessmentData['assessment_id'];
+
+    $topRecommendation = $finalRecommendations[0] ?? null;
+
+    if ($topRecommendation) {
+        \App\Models\CollegeAssessmentResult::where('assessment_id', $assessmentId)
+            ->update([
+                'recommended_course' => $topRecommendation['course'],
+                'recommended_course_description' => $topRecommendation['description'],
+                'confidence_score' => $topRecommendation['confidence'],
+                'narrative' => $narrative ?? null,
+            ]);
+    }
+}
+
         return view('website.CollegeQuizResult', [
             'recommendations' => $finalRecommendations,
             'localScores' => $courseTally,

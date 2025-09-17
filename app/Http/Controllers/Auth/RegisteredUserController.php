@@ -31,6 +31,7 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role' => ['required', 'in:Administrator (OIC),Staff OIC'], // <-- VALIDATE ROLE
         ]);
 
         // Generate 6-digit OTP
@@ -46,12 +47,13 @@ class RegisteredUserController extends Controller
         // Send OTP via email
         Mail::to($request->email)->send(new OtpMail($otp));
 
-        // Temporarily save user data in session
+        // Temporarily save user data in session (including role)
         session([
             'register_data' => [
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => $request->password,
+                'role' => $request->role, // <-- STORE ROLE IN SESSION
             ],
         ]);
 
@@ -93,11 +95,13 @@ class RegisteredUserController extends Controller
             return back()->withErrors(['otp_code' => 'OTP expired, please request again.']);
         }
 
-        // Create user after OTP verification
+        // Create user after OTP verification (include role)
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'role' => $data['role'], // <-- INCLUDE ROLE
+            'email_verified_at' => now(), // ✅ MARK EMAIL AS VERIFIED
         ]);
 
         // Clear OTP + session

@@ -7,6 +7,9 @@
   <title>Bestlink College of the Philippines - SHS Enrollment</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
   <style>
     :root {
       --primary-color: #203B6B;
@@ -14,7 +17,7 @@
       --primary-light: #E8F0FE;
     }
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
       color: var(--primary-color);
       font-size: 0.9rem;
@@ -384,7 +387,12 @@
                 <h3 class="stepper-header mb-4">Step 1: Student Information</h3>
                 <div class="row g-3">
                   <div class="col-md-6">
-                    <label for="studentType" class="form-label">Student Type<span class="required-star">*</span></label>
+                    <label for="studentType" class="form-label">
+                      Student Type<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Choose your student status: New Regular (new student), Transferee (from another school), or Returnee (previously enrolled here).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <select class="form-select" id="studentType" name="studentType" required aria-describedby="studentTypeHelp">
                       <option value="" selected disabled>Choose student type</option>
                       <option value="New Regular">New Regular</option>
@@ -395,31 +403,61 @@
                     <div id="studentTypeHelp" class="form-text d-none">Selected: <span id="studentTypeValue"></span></div>
                   </div>
                   <div class="col-md-6 d-none" id="previousIdContainer">
-                    <label for="previousStudentId" class="form-label">Previous Student ID No (8 digits)<span class="required-star">*</span></label>
+                    <label for="previousStudentId" class="form-label">
+                      Previous Student ID No (8 digits)<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your 8-digit BCP Student ID if you were previously enrolled here. This helps us locate your records.">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="previousStudentId" name="previousStudentId" pattern="^\d{8}$" maxlength="8" />
                     <div class="invalid-feedback">Please enter a valid 8-digit Previous Student ID.</div>
                   </div>
                   <div class="col-md-4">
-                    <label for="firstName" class="form-label">First Name<span class="required-star">*</span></label>
+                    <label for="firstName" class="form-label">
+                      First Name<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your first name as it appears on your birth certificate.">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="firstName" name="firstName" required />
                     <div class="invalid-feedback">Please enter your first name.</div>
                   </div>
                   <div class="col-md-4">
-                    <label for="middleName" class="form-label">Middle Name<span class="required-star">*</span></label>
+                    <label for="middleName" class="form-label">
+                      Middle Name<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your middle name. If none, write 'N/A'.">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="middleName" name="middleName" required />
                     <div class="invalid-feedback">Please enter your middle name.</div>
                   </div>
                   <div class="col-md-4">
-                    <label for="lastName" class="form-label">Last Name<span class="required-star">*</span></label>
+                    <label for="lastName" class="form-label">
+                      Last Name<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your last name. This is usually your family name.">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="lastName" name="lastName" required />
                     <div class="invalid-feedback">Please enter your last name.</div>
                   </div>
                   <div class="col-md-6">
-                    <label for="extensionName" class="form-label">Extension Name (Optional)</label>
+                    <label for="extensionName" class="form-label">
+                      Extension Name (Optional)
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter Jr., Sr., III, IV, etc. if applicable. Leave blank if not.">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="extensionName" name="extensionName" />
                   </div>
                   <div class="col-md-6">
-                    <label for="civilStatus" class="form-label">Civil Status<span class="required-star">*</span></label>
+                    <label for="civilStatus" class="form-label">
+                      Civil Status<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Your current marital status: Single, Married, Widowed, Separated, or Divorced.">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <select class="form-select" id="civilStatus" name="civilStatus" required>
                       <option value="" selected disabled>Choose civil status</option>
                       <option value="Single">Single</option>
@@ -431,7 +469,12 @@
                     <div class="invalid-feedback">Please select your civil status.</div>
                   </div>
                   <div class="col-md-6">
-                    <label for="gender" class="form-label">Gender<span class="required-star">*</span></label>
+                    <label for="gender" class="form-label">
+                      Gender<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select Male or Female based on your official documents.">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <select class="form-select" id="gender" name="gender" required>
                       <option value="" selected disabled>Choose gender</option>
                       <option value="Male">Male</option>
@@ -439,47 +482,75 @@
                     </select>
                     <div class="invalid-feedback">Please select your gender.</div>
                   </div>
-
                   <!-- Indigenous Group -->
-<div class="col-md-6">
-    <label for="indigenous" class="form-label">Indigenous Group<span class="required-star">*</span></label>
-    <select class="form-select" id="indigenous" name="indigenous" required>
-        <option value="" selected disabled>Choose Indigenous group</option>
-        @foreach($indigenousGroups as $group)
-            <option value="{{ $group->indigenous_id }}">{{ $group->indigenous_name }}</option>
-        @endforeach
-    </select>
-    <div class="invalid-feedback">Please select an Indigenous group.</div>
-</div>
-
-<!-- Disability Type -->
-<div class="col-md-6">
-    <label for="disability" class="form-label">Disability Type<span class="required-star">*</span></label>
-    <select class="form-select" id="disability" name="disability" required>
-        <option value="" selected disabled>Choose Disability type</option>
-        @foreach($disabilityTypes as $type)
-            <option value="{{ $type->disability_id }}">{{ $type->disability_name }}</option>
-        @endforeach
-    </select>
-    <div class="invalid-feedback">Please select a Disability type.</div>
-</div>
                   <div class="col-md-6">
-                    <label for="dob" class="form-label">Date of Birth<span class="required-star">*</span></label>
+                    <label for="indigenous" class="form-label">
+                      Indigenous Group<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select your indigenous group if applicable (e.g., Igorot, Lumad, etc.).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
+                    <select class="form-select" id="indigenous" name="indigenous" required>
+                      <option value="" selected disabled>Choose Indigenous group</option>
+                      @foreach($indigenousGroups as $group)
+                          <option value="{{ $group->indigenous_id }}">{{ $group->indigenous_name }}</option>
+                      @endforeach
+                    </select>
+                    <div class="invalid-feedback">Please select an Indigenous group.</div>
+                  </div>
+                  <!-- Disability Type -->
+                  <div class="col-md-6">
+                    <label for="disability" class="form-label">
+                      Disability Type<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select your disability type if applicable (e.g., Hearing Impaired, Visually Impaired, etc.).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
+                    <select class="form-select" id="disability" name="disability" required>
+                      <option value="" selected disabled>Choose Disability type</option>
+                      @foreach($disabilityTypes as $type)
+                          <option value="{{ $type->disability_id }}">{{ $type->disability_name }}</option>
+                      @endforeach
+                    </select>
+                    <div class="invalid-feedback">Please select a Disability type.</div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="dob" class="form-label">
+                      Date of Birth<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your date of birth in DD-MM-YYYY format (e.g., 01-01-2001).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="date" class="form-control" id="dob" name="dob" max="" required />
                     <div class="invalid-feedback">Please enter your date of birth.</div>
                   </div>
                   <div class="col-md-6">
-                    <label for="placeOfBirth" class="form-label">Place of Birth<span class="required-star">*</span></label>
+                    <label for="placeOfBirth" class="form-label">
+                      Place of Birth<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter the full place where you were born (e.g., Quezon City, Metro Manila).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="placeOfBirth" name="placeOfBirth" required />
                     <div class="invalid-feedback">Please enter your place of birth.</div>
                   </div>
                   <div class="col-md-6">
-                    <label for="nationality" class="form-label">Nationality<span class="required-star">*</span></label>
+                    <label for="nationality" class="form-label">
+                      Nationality<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your nationality (e.g., Filipino).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="nationality" name="nationality" required />
                     <div class="invalid-feedback">Please enter your nationality.</div>
                   </div>
                   <div class="col-md-6">
-                    <label for="lrn" class="form-label">Learner Reference Number (LRN)<span class="required-star">*</span></label>
+                    <label for="lrn" class="form-label">
+                      Learner Reference Number (LRN)<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your 12-digit LRN number issued by DepEd. This is required for enrollment.">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="lrn" name="lrn" pattern="^\d{12}$" maxlength="12" required />
                     <div class="invalid-feedback">Please enter a valid 12-digit LRN.</div>
                   </div>
@@ -490,17 +561,32 @@
                 <h3 class="stepper-header mb-4">Step 2: Address</h3>
                 <div class="row g-3">
                   <div class="col-md-12">
-                    <label for="currentAddress" class="form-label">Current Address<span class="required-star">*</span></label>
+                    <label for="currentAddress" class="form-label">
+                      Current Address<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your complete current address (e.g., Blk 12, Lot 34, Brgy. Maligaya, Quezon City).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="currentAddress" name="currentAddress" required />
                     <div class="invalid-feedback">Please enter your current address.</div>
                   </div>
                   <div class="col-md-6">
-                    <label for="cityMunicipality" class="form-label">City/Municipality<span class="required-star">*</span></label>
+                    <label for="cityMunicipality" class="form-label">
+                      City/Municipality<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter the city or municipality where you currently reside (e.g., Quezon City).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="cityMunicipality" name="cityMunicipality" required />
                     <div class="invalid-feedback">Please enter your city or municipality.</div>
                   </div>
                   <div class="col-md-6">
-                    <label for="region" class="form-label">Region<span class="required-star">*</span></label>
+                    <label for="region" class="form-label">
+                      Region<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select the region where you live (e.g., NCR - National Capital Region).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <select class="form-select" id="region" name="region" required>
                       <option value="" selected disabled>Choose region</option>
                       <option value="1">NCR - National Capital Region</option>
@@ -523,32 +609,62 @@
                     <div class="invalid-feedback">Please select your region.</div>
                   </div>
                   <div class="col-md-6">
-                    <label for="zipCode" class="form-label">Zip Code<span class="required-star">*</span></label>
+                    <label for="zipCode" class="form-label">
+                      Zip Code<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your 4-6 digit zip code (e.g., 1100 for Quezon City).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="zipCode" name="zipCode" pattern="^\d{4,6}$" required />
                     <div class="invalid-feedback">Please enter a valid zip code (4-6 digits).</div>
                   </div>
                   <div class="col-md-6">
-                    <label for="province" class="form-label">Province<span class="required-star">*</span></label>
+                    <label for="province" class="form-label">
+                      Province<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter the province where you currently live (e.g., Metro Manila).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="province" name="province" required />
                     <div class="invalid-feedback">Please enter your province.</div>
                   </div>
                   <div class="col-md-6">
-                    <label for="religion" class="form-label">Religion<span class="required-star">*</span></label>
+                    <label for="religion" class="form-label">
+                      Religion<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your religious affiliation (e.g., Roman Catholic, Islam, etc.).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="religion" name="religion" required />
                     <div class="invalid-feedback">Please enter your religion.</div>
                   </div>
                   <div class="col-md-6">
-                    <label for="email" class="form-label">Email<span class="required-star">*</span></label>
+                    <label for="email" class="form-label">
+                      Email<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter a valid email address that you can access regularly (e.g., student@example.com).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="email" class="form-control" id="email" name="email" required />
                     <div class="invalid-feedback">Please enter a valid email address.</div>
                   </div>
                   <div class="col-md-6">
-                    <label for="contactNumber" class="form-label">Contact Number<span class="required-star">*</span></label>
+                    <label for="contactNumber" class="form-label">
+                      Contact Number<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your mobile number (e.g., +639123456789). We will use this to contact you.">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="^\+?\d{7,15}$" required />
                     <div class="invalid-feedback">Please enter a valid contact number.</div>
                   </div>
                   <div class="col-md-6">
-                    <label for="socialMedia" class="form-label">Social Media Account / Facebook<span class="required-star">*</span></label>
+                    <label for="socialMedia" class="form-label">
+                      Social Media Account / Facebook<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your Facebook username or profile link (e.g., facebook.com/juan.santos).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="socialMedia" name="socialMedia" required />
                     <div class="invalid-feedback">Please enter your social media account.</div>
                   </div>
@@ -560,90 +676,180 @@
                 <div class="row g-3">
                   <h5 class="mb-3" style="color: var(--primary-dark); font-weight: 700;">Mother's Information</h5>
                   <div class="col-md-4">
-                    <label for="motherFirstName" class="form-label">First Name<span class="required-star">*</span></label>
+                    <label for="motherFirstName" class="form-label">
+                      First Name<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your mother's first name (e.g., Maria).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="motherFirstName" name="motherFirstName" required />
                     <div class="invalid-feedback">Please enter mother's first name.</div>
                   </div>
                   <div class="col-md-4">
-                    <label for="motherMiddleName" class="form-label">Middle Name<span class="required-star">*</span></label>
+                    <label for="motherMiddleName" class="form-label">
+                      Middle Name<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your mother's middle name (e.g., Dela Cruz).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="motherMiddleName" name="motherMiddleName" required />
                     <div class="invalid-feedback">Please enter mother's middle name.</div>
                   </div>
                   <div class="col-md-4">
-                    <label for="motherLastName" class="form-label">Last Name<span class="required-star">*</span></label>
+                    <label for="motherLastName" class="form-label">
+                      Last Name<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your mother's last name (e.g., Santos).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="motherLastName" name="motherLastName" required />
                     <div class="invalid-feedback">Please enter mother's last name.</div>
                   </div>
                   <div class="col-md-4">
-                    <label for="motherOccupation" class="form-label">Occupation<span class="required-star">*</span></label>
+                    <label for="motherOccupation" class="form-label">
+                      Occupation<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your mother's current job (e.g., Teacher, Nurse, Housewife).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="motherOccupation" name="motherOccupation" required />
                     <div class="invalid-feedback">Please enter mother's occupation.</div>
                   </div>
                   <div class="col-md-4">
-                    <label for="motherContact" class="form-label">Contact Number<span class="required-star">*</span></label>
+                    <label for="motherContact" class="form-label">
+                      Contact Number<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your mother's phone number (e.g., +639123456789).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="tel" class="form-control" id="motherContact" name="motherContact" pattern="^\+?\d{7,15}$" required />
                     <div class="invalid-feedback">Please enter a valid contact number.</div>
                   </div>
                   <div class="col-md-4">
-                    <label for="motherEmail" class="form-label">Email<span class="required-star">*</span></label>
+                    <label for="motherEmail" class="form-label">
+                      Email<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your mother's email address (e.g., mom@example.com).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="email" class="form-control" id="motherEmail" name="motherEmail" required />
                     <div class="invalid-feedback">Please enter a valid email address.</div>
                   </div>
                   <h5 class="mb-3 mt-4" style="color: var(--primary-dark); font-weight: 700;">Father's Information</h5>
                   <div class="col-md-4">
-                    <label for="fatherFirstName" class="form-label">First Name<span class="required-star">*</span></label>
+                    <label for="fatherFirstName" class="form-label">
+                      First Name<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your father's first name (e.g., Juan).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="fatherFirstName" name="fatherFirstName" required />
                     <div class="invalid-feedback">Please enter father's first name.</div>
                   </div>
                   <div class="col-md-4">
-                    <label for="fatherMiddleName" class="form-label">Middle Name<span class="required-star">*</span></label>
+                    <label for="fatherMiddleName" class="form-label">
+                      Middle Name<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your father's middle name (e.g., Dela Cruz).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="fatherMiddleName" name="fatherMiddleName" required />
                     <div class="invalid-feedback">Please enter father's middle name.</div>
                   </div>
                   <div class="col-md-4">
-                    <label for="fatherLastName" class="form-label">Last Name<span class="required-star">*</span></label>
+                    <label for="fatherLastName" class="form-label">
+                      Last Name<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your father's last name (e.g., Santos).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="fatherLastName" name="fatherLastName" required />
                     <div class="invalid-feedback">Please enter father's last name.</div>
                   </div>
                   <div class="col-md-4">
-                    <label for="fatherOccupation" class="form-label">Occupation<span class="required-star">*</span></label>
+                    <label for="fatherOccupation" class="form-label">
+                      Occupation<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your father's current job (e.g., Engineer, Driver, Retired).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="fatherOccupation" name="fatherOccupation" required />
                     <div class="invalid-feedback">Please enter father's occupation.</div>
                   </div>
                   <div class="col-md-4">
-                    <label for="fatherContact" class="form-label">Contact Number<span class="required-star">*</span></label>
+                    <label for="fatherContact" class="form-label">
+                      Contact Number<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your father's phone number (e.g., +639123456789).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="tel" class="form-control" id="fatherContact" name="fatherContact" pattern="^\+?\d{7,15}$" required />
                     <div class="invalid-feedback">Please enter a valid contact number.</div>
                   </div>
                   <div class="col-md-4">
-                    <label for="fatherEmail" class="form-label">Email<span class="required-star">*</span></label>
+                    <label for="fatherEmail" class="form-label">
+                      Email<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your father's email address (e.g., dad@example.com).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="email" class="form-control" id="fatherEmail" name="fatherEmail" required />
                     <div class="invalid-feedback">Please enter a valid email address.</div>
                   </div>
                   <h5 class="mb-3 mt-4" style="color: var(--primary-dark); font-weight: 700;">Guardian's Information (If not living with parents)</h5>
                   <div class="col-md-4">
-                    <label for="guardianFirstName" class="form-label">First Name</label>
+                    <label for="guardianFirstName" class="form-label">
+                      First Name
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your guardian's first name if applicable (e.g., Auntie Rosa).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="guardianFirstName" name="guardianFirstName" />
                   </div>
                   <div class="col-md-4">
-                    <label for="guardianMiddleName" class="form-label">Middle Name</label>
+                    <label for="guardianMiddleName" class="form-label">
+                      Middle Name
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your guardian's middle name if applicable.">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="guardianMiddleName" name="guardianMiddleName" />
                   </div>
                   <div class="col-md-4">
-                    <label for="guardianLastName" class="form-label">Last Name</label>
+                    <label for="guardianLastName" class="form-label">
+                      Last Name
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your guardian's last name if applicable.">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="guardianLastName" name="guardianLastName" />
                   </div>
                   <div class="col-md-3">
-                    <label for="guardianDob" class="form-label">Date of Birth</label>
+                    <label for="guardianDob" class="form-label">
+                      Date of Birth
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your guardian's date of birth if applicable.">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="date" class="form-control" id="guardianDob" name="guardianDob" max="" />
                   </div>
                   <div class="col-md-6">
-                    <label for="guardianContact" class="form-label">Contact Number</label>
+                    <label for="guardianContact" class="form-label">
+                      Contact Number
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your guardian's phone number if applicable.">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="tel" class="form-control" id="guardianContact" name="guardianContact" pattern="^\+?\d{7,15}$" />
                     <div class="invalid-feedback">Please enter a valid contact number.</div>
                   </div>
                   <div class="col-md-3">
-                    <label for="guardianEmail" class="form-label">Email</label>
+                    <label for="guardianEmail" class="form-label">
+                      Email
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your guardian's email address if applicable.">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="email" class="form-control" id="guardianEmail" name="guardianEmail" />
                     <div class="invalid-feedback">Please enter a valid email address.</div>
                   </div>
@@ -654,7 +860,12 @@
                 <h3 class="stepper-header mb-4">Step 4: Preferences</h3>
                 <div class="row g-3">
                   <div class="col-md-6">
-                    <label for="preferredBranch" class="form-label">Preferred Branch<span class="required-star">*</span></label>
+                    <label for="preferredBranch" class="form-label">
+                      Preferred Branch<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Choose your preferred campus location (Main Branch or Bulacan Branch).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <select class="form-select" id="preferredBranch" name="preferredBranch" required>
                       <option value="" selected disabled>Choose preferred branch</option>
                       <option value="1">Main Branch</option>
@@ -663,14 +874,24 @@
                     <div class="invalid-feedback">Please select a preferred branch.</div>
                   </div>
                   <div class="col-md-6">
-                    <label for="preferredCourse" class="form-label">Preferred Course<span class="required-star">*</span></label>
+                    <label for="preferredCourse" class="form-label">
+                      Preferred Course<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select your desired course of study (e.g., ABM, STEM, HUMSS).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <select class="form-select" id="preferredCourse" name="preferredCourse" required>
                       <option value="" selected disabled>Choose preferred course</option>
                     </select>
                     <div class="invalid-feedback">Please select a preferred course.</div>
                   </div>
                   <div class="col-md-6">
-                    <label for="yearLevelStep4" class="form-label">Year Level<span class="required-star">*</span></label>
+                    <label for="yearLevelStep4" class="form-label">
+                      Year Level<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select Grade 11 or Grade 12 depending on your level.">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <select class="form-select" id="yearLevelStep4" name="yearLevelStep4" required>
                       <option value="" selected disabled>Choose year level</option>
                     </select>
@@ -683,32 +904,62 @@
                 <h3 class="stepper-header mb-4">Step 5: Educational Background</h3>
                 <div class="row g-3">
                   <div class="col-md-6">
-                    <label for="primarySchool" class="form-label">Primary School<span class="required-star">*</span></label>
+                    <label for="primarySchool" class="form-label">
+                      Primary School<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter the name of your elementary school (e.g., Maligaya Elementary School).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="primarySchool" name="primarySchool" required />
                     <div class="invalid-feedback">Please enter your primary school.</div>
                   </div>
                   <div class="col-md-6">
-                    <label for="primaryYearGraduated" class="form-label">Year Graduated (Primary)<span class="required-star">*</span></label>
+                    <label for="primaryYearGraduated" class="form-label">
+                      Year Graduated (Primary)<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter the year you graduated from elementary (e.g., 2020).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="number" class="form-control" id="primaryYearGraduated" name="primaryYearGraduated" min="1900" max="2099" step="1" required />
                     <div class="invalid-feedback">Please enter a valid year graduated (1900-2099).</div>
                   </div>
                   <div class="col-md-6">
-                    <label for="secondarySchool" class="form-label">Secondary School<span class="required-star">*</span></label>
+                    <label for="secondarySchool" class="form-label">
+                      Secondary School<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter the name of your junior high school (e.g., Maligaya Junior High School).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="secondarySchool" name="secondarySchool" required />
                     <div class="invalid-feedback">Please enter your secondary school.</div>
                   </div>
                   <div class="col-md-6">
-                    <label for="secondaryYearGraduated" class="form-label">Year Graduated (Secondary)<span class="required-star">*</span></label>
+                    <label for="secondaryYearGraduated" class="form-label">
+                      Year Graduated (Secondary)<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter the year you graduated from junior high (e.g., 2023).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="number" class="form-control" id="secondaryYearGraduated" name="secondaryYearGraduated" min="1900" max="2099" step="1" required />
                     <div class="invalid-feedback">Please enter a valid year graduated (1900-2099).</div>
                   </div>
                   <div class="col-md-10">
-                    <label for="lastSchoolAttended" class="form-label">Last School Attended<span class="required-star">*</span></label>
+                    <label for="lastSchoolAttended" class="form-label">
+                      Last School Attended<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter the name of the school you last attended (e.g., ABC High School).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="text" class="form-control" id="lastSchoolAttended" name="lastSchoolAttended" required />
                     <div class="invalid-feedback">Please enter your last school attended.</div>
                   </div>
                   <div class="col-md-2">
-                    <label for="lastSchoolYearGraduated" class="form-label">Year Graduated<span class="required-star">*</span></label>
+                    <label for="lastSchoolYearGraduated" class="form-label">
+                      Year Graduated<span class="required-star">*</span>
+                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter the year you last graduated or are currently attending (e.g., 2024).">
+                        <i class="fas fa-info-circle text-primary"></i>
+                      </span>
+                    </label>
                     <input type="number" class="form-control" id="lastSchoolYearGraduated" name="lastSchoolYearGraduated" min="1900" max="2099" step="1" required />
                     <div class="invalid-feedback">Please enter a valid year graduated (1900-2099).</div>
                   </div>
@@ -799,6 +1050,343 @@
       </div>
     </div>
   </footer>
+
+  <!-- TERMS MODAL (ENROLLMENT PAGE) -->
+<div id="enrollmentTermsModal" class="modal-overlay" style="display: none; opacity: 0;">
+    <div class="modal-content-scrollable">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                  <i class="bi bi-file-earmark-text me-2"></i><br>
+                 Terms and Conditions
+               </h5>
+        </div>
+
+        <div class="modal-body-scrollable">
+            <p class="lead"><strong>Introduction & Acceptance</strong></p>
+            <p><strong>Agreement to Terms</strong><br>
+            By proceeding with the enrollment process and submitting your personal information through this system, you (“Student” or “Applicant”) acknowledge and agree to be bound by these Terms and Conditions on Data Privacy (“Agreement”).</p>
+
+            <p><strong>Effective Date</strong><br>
+            This Agreement is effective as of September 1, 2025.</p>
+
+            <hr class="my-4">
+
+            <p class="lead"><strong>2. Compliance with the Data Privacy Act</strong></p>
+            <p>Bestlink College of the Philippines strictly complies with Republic Act No. 10173, otherwise known as the Data Privacy Act of 2012, including its Implementing Rules and Regulations (IRR). All personal data collected and processed through the Enrollment Management System shall be managed in accordance with this law and institutional privacy policies.</p>
+
+            <hr class="my-4">
+
+            <p class="lead"><strong>3. Collection and Use of Personal Data</strong></p>
+            <p><strong>Types of Data Collected</strong><br>
+            The following personal information may be collected:</p>
+            <ul>
+                <li>Full name, birthdate, and contact details</li>
+                <li>Academic records and enrollment history</li>
+                <li>Supporting documents submitted during registration</li>
+            </ul>
+
+            <p><strong>Purpose of Collection</strong><br>
+            Your data will be used solely for legitimate institutional purposes, including but not limited to:</p>
+            <ul>
+                <li>Admission and enrollment processing</li>
+                <li>Academic evaluation and placement</li>
+                <li>Official school transactions and communications</li>
+            </ul>
+
+            <hr class="my-4">
+
+            <p class="lead"><strong>4. Data Protection and Security</strong></p>
+            <p>Bestlink College of the Philippines is committed to protecting your personal data. Reasonable and appropriate organizational, physical, and technical safeguards are in place to prevent:</p>
+            <ul>
+                <li>Unauthorized access</li>
+                <li>Misuse, alteration, or destruction</li>
+                <li>Disclosure or loss of data</li>
+            </ul>
+            <p>These safeguards include secure access controls, encrypted storage, and regular system monitoring and audits.</p>
+
+            <hr class="my-4">
+
+            <p class="lead"><strong>5. Rights of the Data Subject</strong></p>
+            <p>In accordance with RA 10173, you have the following rights:</p>
+            <ul>
+                <li><strong>Right to Access</strong> – Request a copy of your personal data held by the institution.</li>
+                <li><strong>Right to Rectification</strong> – Correct or update inaccurate or outdated information.</li>
+                <li><strong>Right to Withdraw Consent</strong> – Revoke consent to data processing, subject to academic and institutional requirements.</li>
+                <li><strong>Right to File Complaints</strong> – Report any misuse, breach, or unauthorized handling of your data to the institution’s Data Protection Officer (DPO) or to the National Privacy Commission (NPC).</li>
+            </ul>
+
+            <hr class="my-4">
+
+            <p class="lead"><strong>6. Consent and Agreement</strong></p>
+            <p>By submitting your personal information through the Enrollment Management System, you:</p>
+            <ul>
+                <li>Confirm that the details provided are true and correct to the best of your knowledge.</li>
+                <li>Consent to the collection, processing, and retention of your data in accordance with this Agreement and the Data Privacy Act of 2012.</li>
+                <li>Understand that your data will be retained only for as long as necessary to fulfill its intended purpose or as required by law.</li>
+            </ul>
+
+            <hr class="my-4">
+
+            <p class="lead"><strong>7. Policy Amendments</strong></p>
+            <p>Bestlink College of the Philippines reserves the right to update or revise this Data Privacy Policy at any time. Any changes will be communicated through official channels, including:</p>
+            <ul>
+                <li>The official school website</li>
+                <li>Email notifications</li>
+                <li>Enrollment system announcements</li>
+            </ul>
+
+            <hr class="my-4">
+
+            <p class="lead"><strong>8. Acceptance Mechanism</strong></p>
+            <p>By continuing with the enrollment process and submitting your personal data, you acknowledge that you have read, understood, and accepted these Terms and Conditions on Data Privacy.</p>
+        </div>
+
+        <div class="modal-footer-sticky">
+            <button type="button" id="cancelEnrollmentTerms" class="btn-custom-secondary">
+                Decline
+            </button>
+            <button type="button" id="agreeEnrollmentTerms" class="btn-custom-primary" disabled>
+                Confirm
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Reusable Modal Styles (Same as Dashboard) */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-content-scrollable {
+        background: white;
+        border-radius: 1rem;
+        width: 70%;
+        max-width: 600px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+        max-height: 60vh;
+        display: flex;
+        flex-direction: column;
+        animation: modalPop 0.5s forwards;
+        overflow: hidden;
+    }
+
+    @keyframes modalPop {
+        0% {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .modal-header {
+        padding: 1.5rem 2rem;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+        justify-content: center;
+    }
+
+    .modal-title {
+        font-weight: 800;
+        font-size: 1.5rem;
+        color: #1e3a8a;
+        letter-spacing: -0.5px;
+        margin: 0;
+        text-align: center;
+    }
+
+
+    .modal-body-scrollable {
+        padding: 0 2rem;
+        overflow-y: auto;
+        flex: 1;
+        font-size: 0.75rem;
+        line-height: 1.7;
+        color: #4b5563;
+        margin: 1.5rem 0;
+    }
+
+    .modal-footer-sticky {
+        padding: 1.5rem 2rem;
+        background: white;
+        border-top: 1px solid #eee;
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: auto;
+        position: sticky;
+        bottom: 0;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+    }
+
+    /* Custom Button Styles — Compatible with Bootstrap */
+    .btn-custom-primary {
+        background-color: #5044e4;
+        border: none;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 2rem;
+        transition: all 0.3s ease;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(80, 68, 228, 0.3);
+    }
+
+    .btn-custom-primary:hover {
+        background-color: #4237c9;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(80, 68, 228, 0.4);
+    }
+
+    .btn-custom-primary:active {
+        transform: translateY(0);
+    }
+
+    .btn-custom-secondary {
+        background-color: #f4f7f6;
+        border: 1px solid #d1d5db;
+        color: #374151;
+        padding: 0.75rem 1.5rem;
+        border-radius: 2rem;
+        transition: all 0.3s ease;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .btn-custom-secondary:hover {
+        background-color: #e5e7eb;
+        transform: translateY(-2px);
+        border-color: #9ca3af;
+    }
+
+    .btn-custom-secondary:active {
+        transform: translateY(0);
+    }
+
+    body.modal-open {
+        overflow: hidden;
+    }
+
+    /* Prevent closing by clicking backdrop */
+    .modal-overlay {
+        animation: fadeIn 0.4s ease forwards;
+    }
+
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    }
+
+    /* Responsive */
+    @media (max-width: 468px) {
+        .modal-content-scrollable {
+            width: 75%;
+            max-height: 75vh;
+
+        }
+        .modal-body-scrollable {
+            padding: 1rem;
+
+        }
+        .modal-footer-sticky {
+            padding: 1rem;
+        }
+    }
+    .btn-custom-primary:disabled {
+    background-color: #d1d5db; /* Gray color (Tailwind's gray-300) */
+    color: #6b7280; /* Darker gray text */
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.7; /* Optional: medyo blurred/transparent effect */
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('enrollmentTermsModal');
+    const agreeBtn = document.getElementById('agreeEnrollmentTerms');
+    const cancelBtn = document.getElementById('cancelEnrollmentTerms');
+
+    // Show modal on page load
+    if (modal) {
+        modal.style.display = 'flex';
+        setTimeout(() => {
+            modal.style.opacity = '1';
+            document.body.classList.add('modal-open');
+        }, 100);
+
+        // Prevent closing by clicking outside
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                e.stopPropagation();
+            }
+        });
+    }
+
+    function closeModal() {
+        if (modal) {
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.body.classList.remove('modal-open');
+            }, 400);
+        }
+    }
+
+    if (agreeBtn) {
+        agreeBtn.addEventListener('click', function() {
+            closeModal();
+        });
+    }
+
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', function() {
+            window.location.href = "{{ route('two') }}";
+        });
+    }
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const modalBody = document.querySelector('.modal-body-scrollable');
+    const confirmButton = document.getElementById('agreeEnrollmentTerms');
+
+    // Optional: Reset scroll position kapag binuksan ang modal
+    // (kung meron kang function na nag-oopen ng modal, ilagay mo ito doon)
+    // modalBody.scrollTop = 0;
+    // confirmButton.disabled = true;
+
+    modalBody.addEventListener('scroll', function() {
+        // Check if scrolled to bottom
+        const isScrolledToBottom = modalBody.scrollHeight - modalBody.clientHeight <= modalBody.scrollTop + 1;
+
+        if (isScrolledToBottom) {
+            confirmButton.disabled = false;
+            confirmButton.classList.remove('disabled'); // Optional: for styling
+        }
+    });
+});
+</script>
   <!-- Define route for JS -->
   <script>
     const SUBMIT_ENROLLMENT_URL = "{{ route('shs.enrollment.submit') }}";
@@ -997,7 +1585,6 @@
       const step = steps[index];
       const inputs = step.querySelectorAll('input, select');
       let valid = true;
-
       inputs.forEach(input => {
         input.classList.remove('is-invalid');
         if (input.hasAttribute('required') && !input.value) {
@@ -1005,16 +1592,13 @@
           valid = false;
         }
       });
-
       // Validate years and order
       if (index === 4) { // Step 5: Educational Background
         const primaryYear = parseInt(document.getElementById('primaryYearGraduated').value);
         const secondaryYear = parseInt(document.getElementById('secondaryYearGraduated').value);
         const lastSchoolYear = parseInt(document.getElementById('lastSchoolYearGraduated').value);
-
         const yearInputs = [primaryYear, secondaryYear, lastSchoolYear];
         const yearFields = ['primaryYearGraduated', 'secondaryYearGraduated', 'lastSchoolYearGraduated'];
-
         for (let i = 0; i < yearInputs.length; i++) {
           const val = yearInputs[i];
           if (isNaN(val) || val < 1900 || val > 2099) {
@@ -1024,13 +1608,11 @@
             valid = false;
           }
         }
-
         if (valid && (primaryYear >= secondaryYear || secondaryYear >= lastSchoolYear)) {
           alert('Invalid year order. Years must be in chronological order: Primary < Secondary < Last School.');
           valid = false;
         }
       }
-
       // Validate documents
       if (index === 5) {
         const fileInputs = document.querySelectorAll('#documentUploadList input[type="file"]');
@@ -1041,7 +1623,6 @@
           }
         });
       }
-
       return valid;
     }
     function populateSummary() {
@@ -1162,5 +1743,16 @@
     showStep(0);
   })();
   </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.forEach(tooltipTriggerEl => {
+      new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+  });
+</script>
 </body>
 </html>

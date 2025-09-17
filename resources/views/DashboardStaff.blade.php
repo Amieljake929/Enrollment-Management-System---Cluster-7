@@ -1,11 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.staff')
 
 @section('content')
 <div class="container mx-auto px-4 py-8">
 
     {{-- Header --}}
     <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-800">Enrollment Dashboard</h1>
+        <h1 class="text-3xl font-bold text-gray-800">Staff Dashboard</h1>
         <p class="text-gray-600">Welcome back, {{ Auth::user()->name }}! You are logged in as <strong>{{ Auth::user()->role }}</strong>.</p>
     </div>
 
@@ -36,7 +36,7 @@
 
             <hr class="my-4">
 
-            <p class="lead"><strong>2. Administrator Access & Responsibilities</strong></p>
+            <p class="lead"><strong>2. Role-Based Access & Responsibilities </strong></p>
             <p><strong>Access Granted</strong><br>
             You are granted limited, non-exclusive, and revocable access to perform administrative functions within the Platform.</p>
 
@@ -145,10 +145,10 @@
 
         <div class="modal-footer">
             <button type="button" id="cancelTerms" class="btn-custom-secondary">
-                Cancel
+                Decline
             </button>
             <button type="button" id="agreeTerms" class="btn-custom-primary" disabled>
-                Agree
+                Confirm
             </button>
         </div>
     </div>
@@ -308,6 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (modal) {
         document.body.classList.add('modal-open');
+        // Prevent closing by clicking outside
         modal.addEventListener('click', function(e) {
             if (e.target === modal) {
                 e.stopPropagation();

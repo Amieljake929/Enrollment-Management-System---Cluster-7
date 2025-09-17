@@ -9,6 +9,8 @@ use App\Http\Controllers\CollegeQuizController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\ShsEnrollmentController; // 👈 Added: SHS Enrollment Controller
 use App\Http\Controllers\PendingAdmissionController;
+use App\Http\Controllers\CollegeAssessmentController;
+
 
 
 // ===================================================
@@ -62,6 +64,11 @@ Route::post('/quiz/submit', [QuizController::class, 'submit'])->name('quiz.submi
 Route::get('/college/quiz', [CollegeQuizController::class, 'showQuiz'])->name('college.quiz.show');
 Route::post('/college/quiz', [CollegeQuizController::class, 'submit'])->name('college.quiz.submit');
 
+// NEW ROUTES FOR COLLEGE ASSESSMENT FLOW (using new controller)
+Route::get('/college/info', [CollegeAssessmentController::class, 'showInfoForm'])->name('college.info.form');
+Route::post('/college/info/submit', [CollegeAssessmentController::class, 'submitInfo'])->name('college.info.submit');
+Route::get('/college/welcome', [CollegeAssessmentController::class, 'showWelcome'])->name('college.welcome');
+
 // ===================================================
 // === 📝 COLLEGE ENROLLMENT ROUTES ===
 // ===================================================
@@ -107,6 +114,12 @@ Route::post('/verify-otp', [RegisteredUserController::class, 'verifyOtp'])->name
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Staff OIC Dashboard
+Route::get('/dashboard-staff', function () {
+    return view('DashboardStaff');
+})->middleware(['auth', 'verified'])->name('dashboard.staff'); // ⚠️ Removed 'verified' for now
+
 
 // Modules Routes
 // web.php
@@ -184,6 +197,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Terms Agreement
+Route::post('/user/agree-terms', [App\Http\Controllers\TermsController::class, 'agreeTerms'])->name('user.agree.terms');
+    
 });
 
 // ===================================================

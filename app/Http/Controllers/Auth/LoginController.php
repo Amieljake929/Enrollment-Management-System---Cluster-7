@@ -81,38 +81,51 @@ class LoginController extends Controller
     }
 
     /**
-     * Verify MFA code and log in user
-     */
-    public function verifyMfa(Request $request)
-    {
-        $request->validate([
-            'otp_code' => 'required|numeric',
-        ]);
+ * Verify MFA code and log in user
+ */
+public function verifyMfa(Request $request)
+{
+    $request->validate([
+        'otp_code' => 'required|numeric',
+    ]);
 
-        $userId = session('mfa_user_id');
+    $userId = session('mfa_user_id');
 
-        if (!$userId) {
-            return redirect()->route('login')->withErrors(['error' => 'Session expired, login again.']);
-        }
-
-        // Verify OTP
-        $otp = LoginOtp::where('user_id', $userId)
-                      ->where('otp_code', $request->otp_code)
-                      ->where('used', false)
-                      ->where('expires_at', '>=', Carbon::now())
-                      ->first();
-
-        if (!$otp) {
-            return back()->withErrors(['otp_code' => 'Invalid or expired OTP']);
-        }
-
-        // Login the user
-        Auth::loginUsingId($userId);
-
-        // Mark OTP as used
-        $otp->update(['used' => true]);
-        session()->forget('mfa_user_id');
-
-        return redirect()->intended('/dashboard');
+    if (!$userId) {
+        return redirect()->route('login')->withErrors(['error' => 'Session expired, login again.']);
     }
+
+    // Verify OTP
+    $otp = LoginOtp::where('user_id', $userId)
+                  ->where('otp_code', $request->otp_code)
+                  ->where('used', false)
+                  ->where('expires_at', '>=', Carbon::now())
+                  ->first();
+
+    if (!$otp) {
+        return back()->withErrors(['otp_code' => 'Invalid or expired OTP']);
+    }
+
+    // Login the user
+    Auth::loginUsingId($userId);
+
+    // Mark OTP as used
+    $otp->update(['used' => true]);
+    session()->forget('mfa_user_id');
+
+    // 🚀 SET FLAG FOR MODAL TRIGGER
+    session(['just_logged_in' => true]);
+
+    // 🚀 REDIRECT BASED ON ROLE
+    $user = Auth::user();
+
+    if ($user->role === 'Administrator (OIC)') {
+        return redirect()->intended('/dashboard');
+    } elseif ($user->role === 'Staff OIC') {
+        return redirect()->intended('/dashboard-staff');
+    }
+
+    // Fallback
+    return redirect('/dashboard');
+}
 }
