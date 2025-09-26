@@ -1,0 +1,228 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\QuizController;
+use App\Http\Controllers\CollegeQuizController;
+use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\ShsEnrollmentController; // 👈 Added: SHS Enrollment Controller
+use App\Http\Controllers\PendingAdmissionController;
+use App\Http\Controllers\CollegeAssessmentController;
+
+
+
+
+// ===================================================
+// === 🏠 Landing Pages (Public) ===
+// ===================================================
+
+// Homepage: one.blade.php
+Route::get('/', function () {
+    return view('website.one');
+})->name('one');
+
+// Second page: two.blade.php
+Route::get('/two', function () {
+    return view('website.two');
+})->name('two');
+
+// ===================================================
+// === 📝 Assessment & Enrollment Modals ===
+// ===================================================
+
+// 🔹 Assessment Modal Pages
+Route::get('/college-quiz', function () {
+    return view('website.CollegeQuiz');
+})->name('college.quiz');
+
+Route::get('/shs-quiz', function () {
+    return view('website.ShsQuiz');
+})->name('shs.quiz');
+
+// 🔹 Enrollment Modal Pages
+// ✅ Use Controller to pass required data
+Route::get('/college-enrollment', [EnrollmentController::class, 'showForm'])
+    ->name('college.enrollment');
+
+Route::get('/shs-enrollment', function () {
+    return view('website.ShsEnrollment');
+})->name('shs.enrollment');
+
+// 🔹 Main Enrollment Page
+Route::get('/enrollment', function () {
+    return view('website.Enrollment');
+})->name('enrollment');
+
+// ===================================================
+// === 🧠 Quiz Assessment Routes ===
+// ===================================================
+
+Route::get('/quiz', [QuizController::class, 'showQuiz'])->name('quiz.show');
+Route::post('/quiz/submit', [QuizController::class, 'submit'])->name('quiz.submit');
+
+Route::get('/college/quiz', [CollegeQuizController::class, 'showQuiz'])->name('college.quiz.show');
+Route::post('/college/quiz', [CollegeQuizController::class, 'submit'])->name('college.quiz.submit');
+
+// NEW ROUTES FOR COLLEGE ASSESSMENT FLOW (using new controller)
+Route::get('/college/info', [CollegeAssessmentController::class, 'showInfoForm'])->name('college.info.form');
+Route::post('/college/info/submit', [CollegeAssessmentController::class, 'submitInfo'])->name('college.info.submit');
+Route::get('/college/welcome', [CollegeAssessmentController::class, 'showWelcome'])->name('college.welcome');
+
+// Add this AFTER existing College Assessment Flow routes
+Route::post('/college/interests/submit', [CollegeQuizController::class, 'submitInterests'])->name('college.interests.submit');
+
+// ===================================================
+// === 📝 COLLEGE ENROLLMENT ROUTES ===
+// ===================================================
+
+// Show the enrollment form
+Route::get('/college-enrollment/form', [EnrollmentController::class, 'showForm'])
+    ->name('enrollment.form');
+
+// Handle form submission
+Route::post('/college-enrollment/submit', [EnrollmentController::class, 'submit'])
+    ->name('enrollment.submit');
+
+// Success page after submission
+Route::get('/college-enrollment/success', [EnrollmentController::class, 'success'])
+    ->name('enrollment.success');
+
+// ===================================================
+// === 📚 SHS ENROLLMENT ROUTES ===
+// ===================================================
+// routes/web.php
+Route::prefix('shs')->name('shs.')->middleware('web')->group(function () {
+    Route::get('/enrollment', [ShsEnrollmentController::class, 'showForm'])->name('enrollment');
+    Route::post('/enrollment/submit', [ShsEnrollmentController::class, 'submit'])->name('enrollment.submit');
+    Route::get('/enrollment/success', [ShsEnrollmentController::class, 'success'])->name('enrollment.success');
+});
+
+// ===================================================
+// === 🔐 Auth & Dashboard (Protected) ===
+// ===================================================
+
+// Login & MFA
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+
+Route::get('/mfa', [LoginController::class, 'showMfaForm'])->name('mfa.form');
+Route::post('/mfa', [LoginController::class, 'verifyMfa'])->name('mfa.verify');
+
+// OTP Verification
+Route::get('/verify-otp', [RegisteredUserController::class, 'showOtpForm'])->name('verify.otp');
+Route::post('/verify-otp', [RegisteredUserController::class, 'verifyOtp'])->name('verify.otp.post');
+
+// Dashboard & Documents
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+// Staff OIC Dashboard
+Route::get('/dashboard-staff', function () {
+    return view('DashboardStaff');
+})->middleware(['auth', 'verified'])->name('dashboard.staff'); // ⚠️ Removed 'verified' for now
+
+
+// Modules Routes
+// web.php
+
+// Modules Routes
+Route::prefix('modules')->middleware(['auth'])->group(function () {
+
+    // Pending Admissions
+    Route::get('/pending/college', [PendingAdmissionController::class, 'index'])->name('modules.pending.college');
+    Route::get('/pending/college/{id}', [PendingAdmissionController::class, 'show'])->name('modules.pending.college.show');
+    Route::get('/pending/shs', [PendingAdmissionController::class, 'shsIndex'])->name('modules.pending.shs');
+    Route::delete('/pending/college/{id}', [PendingAdmissionController::class, 'destroy'])->name('modules.pending.college.destroy');
+    // SHS Show & Delete
+Route::get('/pending/shs/{id}', [PendingAdmissionController::class, 'showShs'])->name('modules.pending.shs.show');
+Route::delete('/pending/shs/{id}', [PendingAdmissionController::class, 'destroyShs'])->name('modules.pending.shs.destroy');
+
+    // Waiting List
+    Route::get('/waiting/college', function () {
+        if (request()->ajax()) {
+            return view('modules.waitingCollege')->render();
+        }
+        return view('modules.waitingCollege');
+    })->name('modules.waiting.college');
+
+    Route::get('/waiting/shs', function () {
+        if (request()->ajax()) {
+            return view('modules.waitingShs')->render();
+        }
+        return view('modules.waitingShs');
+    })->name('modules.waiting.shs');
+
+    // Student Records
+    Route::get('/records/college', function () {
+        if (request()->ajax()) {
+            return view('modules.recordsCollege')->render();
+        }
+        return view('modules.recordsCollege');
+    })->name('modules.records.college');
+
+    Route::get('/records/shs', function () {
+        if (request()->ajax()) {
+            return view('modules.recordsShs')->render();
+        }
+        return view('modules.recordsShs');
+    })->name('modules.records.shs');
+
+    // Uploaded Documents
+    Route::get('/documents/college', function () {
+        if (request()->ajax()) {
+            return view('modules.documentsCollege')->render();
+        }
+        return view('modules.documentsCollege');
+    })->name('modules.documents.college');
+
+    Route::get('/documents/shs', function () {
+        if (request()->ajax()) {
+            return view('modules.documentsShs')->render();
+        }
+        return view('modules.documentsShs');
+    })->name('modules.documents.shs');
+
+    // Parents Notification
+    Route::get('/parents/college', function () {
+        if (request()->ajax()) {
+            return view('modules.parentsCollege')->render();
+        }
+        return view('modules.parentsCollege');
+    })->name('modules.parents.college');
+
+    Route::get('/parents/shs', function () {
+        if (request()->ajax()) {
+            return view('modules.parentsShs')->render();
+        }
+        return view('modules.parentsShs');
+    })->name('modules.parents.shs');
+});
+
+// Profile Routes
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Terms Agreement
+Route::post('/user/agree-terms', [App\Http\Controllers\TermsController::class, 'agreeTerms'])->name('user.agree.terms');
+    
+});
+
+// ===================================================
+// === 🛑 Laravel Auth (logout, register, etc.) ===
+// ===================================================
+require __DIR__.'/auth.php';
+
+// ===================================================
+// === 🔐 OVERRIDE: Logout Redirect to /login ===
+// ===================================================
+Route::post('/logout', function () {
+    auth()->logout();
+    session()->invalidate();
+    session()->regenerateToken();
+    return redirect('/login')->with('status', 'You have been logged out.');
+})->name('logout');

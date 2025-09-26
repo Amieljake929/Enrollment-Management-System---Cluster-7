@@ -1,0 +1,4 @@
+- [x] Add destroy method to PendingAdmissionController.php
+- [x] Add delete route in routes/web.php
+- [x] Modify delete link in pendingCollege.blade.php
+- [x] Add JavaScript delete handler

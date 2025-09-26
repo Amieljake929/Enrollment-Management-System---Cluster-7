@@ -1,0 +1,302 @@
+[
+  {
+    "id": 1,
+    "section": "Business & Management",
+    "strand": "ABM",
+    "question": "Managing budgets, planning events, or running a small business."
+  },
+  {
+    "id": 2,
+    "section": "General Academics",
+    "strand": "GAS",
+    "question": "Studying a wide range of subjects like history, psychology, or current events."
+  },
+  {
+    "id": 3,
+    "section": "Culinary Arts",
+    "strand": "HECF",
+    "question": "Cooking, baking, and creating new recipes for family and friends."
+  },
+  {
+    "id": 4,
+    "section": "Hotel & Hospitality",
+    "strand": "HEHRS",
+    "question": "Welcoming guests, checking them in, and ensuring they have a great experience."
+  },
+  {
+    "id": 5,
+    "section": "Hotel Operations",
+    "strand": "HEHO",
+    "question": "Working in a luxury hotel, managing rooms, and serving guests."
+  },
+  {
+    "id": 6,
+    "section": "Tourism & Events",
+    "strand": "HETEM",
+    "question": "Planning tours, organizing festivals, or managing travel itineraries."
+  },
+  {
+    "id": 7,
+    "section": "Humanities & Social Sciences",
+    "strand": "HUMSS",
+    "question": "Writing stories, debating ideas, or helping others through counseling."
+  },
+  {
+    "id": 8,
+    "section": "ICT Hardware",
+    "strand": "ICT-HW",
+    "question": "Fixing computers, installing hardware, or setting up networks."
+  },
+  {
+    "id": 9,
+    "section": "ICT Programming",
+    "strand": "ICT-CP",
+    "question": "Creating apps, coding games, or building websites."
+  },
+  {
+    "id": 10,
+    "section": "ICT Animation",
+    "strand": "ICT-Animation",
+    "question": "Making animated videos, short films, or digital cartoons."
+  },
+  {
+    "id": 11,
+    "section": "ICT Customer Service",
+    "strand": "ICT-CCS",
+    "question": "Helping customers over the phone or chat, solving their problems."
+  },
+  {
+    "id": 12,
+    "section": "ICT Graphics",
+    "strand": "ICT-VisualGraphics",
+    "question": "Designing logos, posters, or social media content using digital tools."
+  },
+  {
+    "id": 13,
+    "section": "Science & Technology",
+    "strand": "STEM",
+    "question": "Doing science experiments, solving math problems, or building robots."
+  },
+  {
+    "id": 14,
+    "section": "Maritime Studies",
+    "strand": "STEM-PBM",
+    "question": "Sailing, navigating ships, or studying marine life and ocean science."
+  },
+  {
+    "id": 15,
+    "section": "Welding",
+    "strand": "SMAW",
+    "question": "Welding metal, building structures, or working with tools and fire."
+  },
+  {
+    "id": 16,
+    "section": "Sports & Fitness",
+    "strand": "SPORTS",
+    "question": "Playing sports, training athletes, or staying physically active."
+  },
+  {
+    "id": 17,
+    "section": "Automotive",
+    "strand": "AUTO",
+    "question": "Fixing cars, understanding engines, or upgrading vehicle parts."
+  },
+  {
+    "id": 18,
+    "section": "ICT General",
+    "strand": "ICT",
+    "question": "Learning about technology, digital tools, and how they work."
+  },
+  {
+    "id": 19,
+    "section": "Home Economics",
+    "strand": "HE",
+    "question": "Sewing, crafting, or designing fashion and home interiors."
+  },
+  {
+    "id": 20,
+    "section": "Business Planning",
+    "strand": "ABM",
+    "question": "Creating business plans, tracking expenses, or selling products online."
+  },
+  {
+    "id": 21,
+    "section": "Academic Research",
+    "strand": "GAS",
+    "question": "Reading books, researching topics, or writing reports on social issues."
+  },
+  {
+    "id": 22,
+    "section": "Food Services",
+    "strand": "HECF",
+    "question": "Plating dishes, managing a kitchen, or running a food stall."
+  },
+  {
+    "id": 23,
+    "section": "Guest Relations",
+    "strand": "HEHRS",
+    "question": "Handling complaints, managing reservations, or providing excellent service."
+  },
+  {
+    "id": 24,
+    "section": "Hotel Management",
+    "strand": "HEHO",
+    "question": "Overseeing staff, managing guest satisfaction, or improving hotel operations."
+  },
+  {
+    "id": 25,
+    "section": "Event Coordination",
+    "strand": "HETEM",
+    "question": "Organizing weddings, conferences, or cultural festivals."
+  },
+  {
+    "id": 26,
+    "section": "Social Advocacy",
+    "strand": "HUMSS",
+    "question": "Speaking about justice, leading discussions, or supporting community causes."
+  },
+  {
+    "id": 27,
+    "section": "Hardware Repair",
+    "strand": "ICT-HW",
+    "question": "Opening devices, replacing parts, or troubleshooting technical issues."
+  },
+  {
+    "id": 28,
+    "section": "Software Development",
+    "strand": "ICT-CP",
+    "question": "Debugging code, developing apps, or automating tasks with programming."
+  },
+  {
+    "id": 29,
+    "section": "Digital Animation",
+    "strand": "ICT-Animation",
+    "question": "Animating characters, editing videos, or creating motion graphics."
+  },
+  {
+    "id": 30,
+    "section": "Call Center Work",
+    "strand": "ICT-CCS",
+    "question": "Answering calls, guiding users, or providing tech support."
+  },
+  {
+    "id": 31,
+    "section": "Graphic Design",
+    "strand": "ICT-VisualGraphics",
+    "question": "Creating digital art, editing photos, or designing marketing materials."
+  },
+  {
+    "id": 32,
+    "section": "Scientific Research",
+    "strand": "STEM",
+    "question": "Conducting lab experiments or exploring space and nature."
+  },
+  {
+    "id": 33,
+    "section": "Marine Navigation",
+    "strand": "STEM-PBM",
+    "question": "Using GPS, maps, and instruments to navigate ships at sea."
+  },
+  {
+    "id": 34,
+    "section": "Metal Fabrication",
+    "strand": "SMAW",
+    "question": "Building frames, welding joints, or working on construction projects."
+  },
+  {
+    "id": 35,
+    "section": "Athletics",
+    "strand": "SPORTS",
+    "question": "Training for competitions, coaching teams, or improving fitness."
+  },
+  {
+    "id": 36,
+    "section": "Car Mechanics",
+    "strand": "AUTO",
+    "question": "Diagnosing car problems, changing oil, or upgrading performance parts."
+  },
+  {
+    "id": 37,
+    "section": "Tech Literacy",
+    "strand": "ICT",
+    "question": "Learning about computers, networks, and digital communication."
+  },
+  {
+    "id": 38,
+    "section": "Crafting",
+    "strand": "HE",
+    "question": "Making handmade items, designing clothes, or decorating homes."
+  },
+  {
+    "id": 39,
+    "section": "Entrepreneurship",
+    "strand": "ABM",
+    "question": "Starting a business, managing money, or marketing products."
+  },
+  {
+    "id": 40,
+    "section": "Philosophy & Ideas",
+    "strand": "GAS",
+    "question": "Thinking deeply about life, ethics, or human behavior."
+  },
+  {
+    "id": 41,
+    "section": "Nutrition & Health",
+    "strand": "HECF",
+    "question": "Planning healthy meals, understanding food labels, or teaching cooking."
+  },
+  {
+    "id": 42,
+    "section": "Hospitality Service",
+    "strand": "HEHRS",
+    "question": "Serving guests at a resort, managing check-ins, or handling bookings."
+  },
+  {
+    "id": 43,
+    "section": "Luxury Stays",
+    "strand": "HEHO",
+    "question": "Working in five-star hotels, managing suites, or spa services."
+  },
+  {
+    "id": 44,
+    "section": "Adventure Tourism",
+    "strand": "HETEM",
+    "question": "Guiding hiking trips, scuba diving tours, or eco-travel experiences."
+  },
+  {
+    "id": 45,
+    "section": "Public Speaking",
+    "strand": "HUMSS",
+    "question": "Giving speeches, leading debates, or hosting events."
+  },
+  {
+    "id": 46,
+    "section": "Cybersecurity",
+    "strand": "ICT-HW",
+    "question": "Protecting systems, managing firewalls, or securing data."
+  },
+  {
+    "id": 47,
+    "section": "Game Development",
+    "strand": "ICT-CP",
+    "question": "Designing game logic, coding levels, or creating interactive experiences."
+  },
+  {
+    "id": 48,
+    "section": "Film Production",
+    "strand": "ICT-Animation",
+    "question": "Shooting videos, editing footage, or producing documentaries."
+  },
+  {
+    "id": 49,
+    "section": "Customer Support",
+    "strand": "ICT-CCS",
+    "question": "Responding to emails, managing live chats, or solving user issues."
+  },
+  {
+    "id": 50,
+    "section": "Digital Marketing",
+    "strand": "ICT-VisualGraphics",
+    "question": "Running social media ads, designing banners, or analyzing engagement."
+  }
+]

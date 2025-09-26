@@ -1,0 +1,1016 @@
+[
+  {
+    "id": 1,
+    "category": "science & technology",
+    "course": "BSIT",
+    "question": "Do you enjoy learning about software, databases, and networks?",
+    "type": "regular"
+  },
+  {
+    "id": 2,
+    "category": "science & technology",
+    "course": "BSIT",
+    "question": "Are you good at solving technical problems, programming, or troubleshooting?",
+    "type": "regular"
+  },
+  {
+    "id": 3,
+    "category": "science & technology",
+    "course": "BSIT",
+    "question": "Would you enjoy spending time developing systems, maintaining IT infrastructure, or managing data?",
+    "type": "regular"
+  },
+  {
+    "id": 4,
+    "category": "science & technology",
+    "course": "BSIT",
+    "question": "Do you see yourself working as a programmer, system analyst, or IT support specialist?",
+    "type": "regular"
+  },
+  {
+    "id": 5,
+    "category": "science & technology",
+    "course": "BSIT",
+    "question": "Do you prefer working in an environment that involves technology, innovation, and digital solutions?",
+    "type": "regular"
+  },
+  {
+    "id": 6,
+    "category": "science & technology",
+    "course": "BSCPE",
+    "question": "Do you enjoy learning about computers, electronics, and hardware systems?",
+    "type": "regular"
+  },
+  {
+    "id": 7,
+    "category": "science & technology",
+    "course": "BSCPE",
+    "question": "Are you good at problem-solving, coding, and understanding technical systems?",
+    "type": "regular"
+  },
+  {
+    "id": 8,
+    "category": "science & technology",
+    "course": "BSCPE",
+    "question": "Would you enjoy spending time designing circuits, building devices, or testing systems?",
+    "type": "regular"
+  },
+  {
+    "id": 9,
+    "category": "science & technology",
+    "course": "BSCPE",
+    "question": "Do you see yourself working as a computer engineer, hardware designer, or systems developer?",
+    "type": "regular"
+  },
+  {
+    "id": 10,
+    "category": "science & technology",
+    "course": "BSCPE",
+    "question": "Do you prefer working in an environment that involves labs, technical projects, and engineering teamwork?",
+    "type": "regular"
+  },
+  {
+    "id": 11,
+    "category": "science & technology",
+    "course": "BSAIS",
+    "question": "Do you enjoy learning about accounting, finance, and computerized information systems?",
+    "type": "regular"
+  },
+  {
+    "id": 12,
+    "category": "science & technology",
+    "course": "BSAIS",
+    "question": "Are you good at solving numerical problems and working with data accuracy?",
+    "type": "regular"
+  },
+  {
+    "id": 13,
+    "category": "science & technology",
+    "course": "BSAIS",
+    "question": "Would you enjoy spending time analyzing financial reports, auditing systems, or managing databases?",
+    "type": "regular"
+  },
+  {
+    "id": 14,
+    "category": "science & technology",
+    "course": "BSAIS",
+    "question": "Do you see yourself working as an accountant, auditor, or financial system analyst?",
+    "type": "regular"
+  },
+  {
+    "id": 15,
+    "category": "science & technology",
+    "course": "BSAIS",
+    "question": "Do you prefer working in an environment that involves both numbers and technology-based tools?",
+    "type": "regular"
+  },
+  {
+    "id": 16,
+    "category": "science & technology",
+    "course": "TIE_BREAKER",
+    "question": "Which type of work sounds most interesting to you?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Working with software and systems to help businesses run smoothly (BSIT)",
+        "course": "BSIT"
+      },
+      {
+        "label": "B",
+        "text": "Creating and improving computer hardware and devices (BSCPE)",
+        "course": "BSCPE"
+      },
+      {
+        "label": "C",
+        "text": "Handling financial data using technology to keep records accurate (BSAIS)",
+        "course": "BSAIS"
+      }
+    ],
+    "type": "tie_breaker"
+  },
+  {
+    "id": 17,
+    "category": "business & management",
+    "course": "BSBA MM",
+    "question": "Do you enjoy learning about advertising, branding, and market trends?",
+    "type": "regular"
+  },
+  {
+    "id": 18,
+    "category": "business & management",
+    "course": "BSBA MM",
+    "question": "Are you good at persuading others, promoting ideas, and analyzing consumer behavior?",
+    "type": "regular"
+  },
+  {
+    "id": 19,
+    "category": "business & management",
+    "course": "BSBA MM",
+    "question": "Would you enjoy spending time creating marketing campaigns, product promotions, and digital content?",
+    "type": "regular"
+  },
+  {
+    "id": 20,
+    "category": "business & management",
+    "course": "BSBA MM",
+    "question": "Do you see yourself working in careers related to sales, marketing, or brand management?",
+    "type": "regular"
+  },
+  {
+    "id": 21,
+    "category": "business & management",
+    "course": "BSBA MM",
+    "question": "Do you prefer working in an environment that involves creativity, business competition, and customer interaction?",
+    "type": "regular"
+  },
+  {
+    "id": 22,
+    "category": "business & management",
+    "course": "BSBA FM",
+    "question": "Do you enjoy learning about business, banking, and financial planning?",
+    "type": "regular"
+  },
+  {
+    "id": 23,
+    "category": "business & management",
+    "course": "BSBA FM",
+    "question": "Are you good at managing budgets, analyzing investments, and handling money?",
+    "type": "regular"
+  },
+  {
+    "id": 24,
+    "category": "business & management",
+    "course": "BSBA FM",
+    "question": "Would you enjoy spending time studying financial markets, investments, and corporate finance?",
+    "type": "regular"
+  },
+  {
+    "id": 25,
+    "category": "business & management",
+    "course": "BSBA FM",
+    "question": "Do you see yourself working as a financial analyst, banker, or finance manager?",
+    "type": "regular"
+  },
+  {
+    "id": 26,
+    "category": "business & management",
+    "course": "BSBA FM",
+    "question": "Do you prefer working in an environment that involves numbers, strategic planning, and decision-making?",
+    "type": "regular"
+  },
+  {
+    "id": 27,
+    "category": "business & management",
+    "course": "BSBA HRM",
+    "question": "Do you enjoy learning about people management, recruitment, and employee relations?",
+    "type": "regular"
+  },
+  {
+    "id": 28,
+    "category": "business & management",
+    "course": "BSBA HRM",
+    "question": "Are you good at communicating, resolving conflicts, and organizing people?",
+    "type": "regular"
+  },
+  {
+    "id": 29,
+    "category": "business & management",
+    "course": "BSBA HRM",
+    "question": "Would you enjoy spending time conducting interviews, training staff, or managing workplace policies?",
+    "type": "regular"
+  },
+  {
+    "id": 30,
+    "category": "business & management",
+    "course": "BSBA HRM",
+    "question": "Do you see yourself working in HR roles such as recruiter, HR officer, or training manager?",
+    "type": "regular"
+  },
+  {
+    "id": 31,
+    "category": "business & management",
+    "course": "BSBA HRM",
+    "question": "Do you prefer working in an environment that involves collaboration, employee engagement, and organizational development?",
+    "type": "regular"
+  },
+  {
+    "id": 32,
+    "category": "business & management",
+    "course": "BSEntrep",
+    "question": "Do you enjoy learning about business creation, innovation, and management?",
+    "type": "regular"
+  },
+  {
+    "id": 33,
+    "category": "business & management",
+    "course": "BSEntrep",
+    "question": "Are you good at identifying opportunities, solving business problems, or handling risks?",
+    "type": "regular"
+  },
+  {
+    "id": 34,
+    "category": "business & management",
+    "course": "BSEntrep",
+    "question": "Would you enjoy spending time creating business plans, launching ventures, and managing operations?",
+    "type": "regular"
+  },
+  {
+    "id": 35,
+    "category": "business & management",
+    "course": "BSEntrep",
+    "question": "Do you see yourself working as a business owner, startup founder, or innovation leader?",
+    "type": "regular"
+  },
+  {
+    "id": 36,
+    "category": "business & management",
+    "course": "BSEntrep",
+    "question": "Do you prefer working in an environment that involves creativity, independence, and decision-making?",
+    "type": "regular"
+  },
+  {
+    "id": 37,
+    "category": "business & management",
+    "course": "BSOA",
+    "question": "Do you enjoy learning about office systems, management, and clerical work?",
+    "type": "regular"
+  },
+  {
+    "id": 38,
+    "category": "business & management",
+    "course": "BSOA",
+    "question": "Are you good at organization, communication, and multitasking?",
+    "type": "regular"
+  },
+  {
+    "id": 39,
+    "category": "business & management",
+    "course": "BSOA",
+    "question": "Would you enjoy spending time managing office records, handling correspondence, or supervising clerical tasks?",
+    "type": "regular"
+  },
+  {
+    "id": 40,
+    "category": "business & management",
+    "course": "BSOA",
+    "question": "Do you see yourself working as an office manager, secretary, or administrative assistant?",
+    "type": "regular"
+  },
+  {
+    "id": 41,
+    "category": "business & management",
+    "course": "BSOA",
+    "question": "Do you prefer working in an environment that involves office operations, teamwork, and administrative support?",
+    "type": "regular"
+  },
+  {
+    "id": 42,
+    "category": "business & management",
+    "course": "TIE_BREAKER",
+    "question": "Which of the following would you most enjoy doing in your future career?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Creating marketing campaigns and promoting products to customers (BSBA MM)",
+        "course": "BSBA MM"
+      },
+      {
+        "label": "B",
+        "text": "Managing budgets, analyzing investments, and making financial decisions (BSBA FM)",
+        "course": "BSBA FM"
+      },
+      {
+        "label": "C",
+        "text": "Organizing recruitment, training, and employee relations in a company (BSBA HRM)",
+        "course": "BSBA HRM"
+      },
+      {
+        "label": "D",
+        "text": "Launching your own business and making independent decisions as an entrepreneur (BSEntrep)",
+        "course": "BSEntrep"
+      },
+      {
+        "label": "E",
+        "text": "Handling office records, correspondence, and administrative tasks to support operations (BSOA)",
+        "course": "BSOA"
+      }
+    ],
+    "type": "tie_breaker"
+  },
+  {
+    "id": 43,
+    "category": "education & teaching",
+    "course": "BPED",
+    "question": "Do you enjoy learning about sports, fitness, and human movement?",
+    "type": "regular"
+  },
+  {
+    "id": 44,
+    "category": "education & teaching",
+    "course": "BPED",
+    "question": "Are you good at playing sports, demonstrating exercises, or teaching physical skills?",
+    "type": "regular"
+  },
+  {
+    "id": 45,
+    "category": "education & teaching",
+    "course": "BPED",
+    "question": "Would you enjoy spending time coaching, training, or organizing physical activities?",
+    "type": "regular"
+  },
+  {
+    "id": 46,
+    "category": "education & teaching",
+    "course": "BPED",
+    "question": "Do you see yourself working in careers related to sports, health, or fitness education?",
+    "type": "regular"
+  },
+  {
+    "id": 47,
+    "category": "education & teaching",
+    "course": "BPED",
+    "question": "Do you prefer working in an environment that involves active, physical, and outdoor activities?",
+    "type": "regular"
+  },
+  {
+    "id": 48,
+    "category": "education & teaching",
+    "course": "BEED",
+    "question": "Do you enjoy learning about child development and teaching young learners?",
+    "type": "regular"
+  },
+  {
+    "id": 49,
+    "category": "education & teaching",
+    "course": "BEED",
+    "question": "Are you good at communicating concepts in simple and creative ways?",
+    "type": "regular"
+  },
+  {
+    "id": 50,
+    "category": "education & teaching",
+    "course": "BEED",
+    "question": "Would you enjoy spending time preparing lessons, activities, and teaching children?",
+    "type": "regular"
+  },
+  {
+    "id": 51,
+    "category": "education & teaching",
+    "course": "BEED",
+    "question": "Do you see yourself working as an elementary school teacher or in early childhood education?",
+    "type": "regular"
+  },
+  {
+    "id": 52,
+    "category": "education & teaching",
+    "course": "BEED",
+    "question": "Do you prefer working in an environment that involves classrooms, young learners, and interactive teaching?",
+    "type": "regular"
+  },
+  {
+    "id": 53,
+    "category": "education & teaching",
+    "course": "BSED English",
+    "question": "Do you enjoy learning about literature, grammar, and communication in English?",
+    "type": "regular"
+  },
+  {
+    "id": 54,
+    "category": "education & teaching",
+    "course": "BSED English",
+    "question": "Are you good at writing, speaking, and analyzing texts in English?",
+    "type": "regular"
+  },
+  {
+    "id": 55,
+    "category": "education & teaching",
+    "course": "BSED English",
+    "question": "Would you enjoy spending time teaching English, writing essays, or preparing language lessons?",
+    "type": "regular"
+  },
+  {
+    "id": 56,
+    "category": "education & teaching",
+    "course": "BSED English",
+    "question": "Do you see yourself working as a high school English teacher or language specialist?",
+    "type": "regular"
+  },
+  {
+    "id": 57,
+    "category": "education & teaching",
+    "course": "BSED English",
+    "question": "Do you prefer working in an environment that involves communication, reading, and language instruction?",
+    "type": "regular"
+  },
+  {
+    "id": 58,
+    "category": "education & teaching",
+    "course": "BSED Filipino",
+    "question": "Do you enjoy learning about Filipino literature, grammar, and culture?",
+    "type": "regular"
+  },
+  {
+    "id": 59,
+    "category": "education & teaching",
+    "course": "BSED Filipino",
+    "question": "Are you good at writing, speaking, and interpreting texts in Filipino?",
+    "type": "regular"
+  },
+  {
+    "id": 60,
+    "category": "education & teaching",
+    "course": "BSED Filipino",
+    "question": "Would you enjoy spending time teaching Filipino, writing poems, or discussing cultural works?",
+    "type": "regular"
+  },
+  {
+    "id": 61,
+    "category": "education & teaching",
+    "course": "BSED Filipino",
+    "question": "Do you see yourself working as a Filipino teacher or writer?",
+    "type": "regular"
+  },
+  {
+    "id": 62,
+    "category": "education & teaching",
+    "course": "BSED Filipino",
+    "question": "Do you prefer working in an environment that involves teaching, reading, and promoting Filipino culture?",
+    "type": "regular"
+  },
+  {
+    "id": 63,
+    "category": "education & teaching",
+    "course": "BSED Math",
+    "question": "Do you enjoy learning about numbers, problem-solving, and mathematical theories?",
+    "type": "regular"
+  },
+  {
+    "id": 64,
+    "category": "education & teaching",
+    "course": "BSED Math",
+    "question": "Are you good at logical reasoning, computations, and analyzing equations?",
+    "type": "regular"
+  },
+  {
+    "id": 65,
+    "category": "education & teaching",
+    "course": "BSED Math",
+    "question": "Would you enjoy spending time teaching math concepts, solving problems, or preparing exercises?",
+    "type": "regular"
+  },
+  {
+    "id": 66,
+    "category": "education & teaching",
+    "course": "BSED Math",
+    "question": "Do you see yourself working as a high school math teacher or researcher?",
+    "type": "regular"
+  },
+  {
+    "id": 67,
+    "category": "education & teaching",
+    "course": "BSED Math",
+    "question": "Do you prefer working in an environment that involves logical thinking, numbers, and structured learning?",
+    "type": "regular"
+  },
+  {
+    "id": 68,
+    "category": "education & teaching",
+    "course": "BSED Science",
+    "question": "Do you enjoy learning about biology, chemistry, physics, and scientific experiments?",
+    "type": "regular"
+  },
+  {
+    "id": 69,
+    "category": "education & teaching",
+    "course": "BSED Science",
+    "question": "Are you good at conducting experiments, observing, and analyzing data?",
+    "type": "regular"
+  },
+  {
+    "id": 70,
+    "category": "education & teaching",
+    "course": "BSED Science",
+    "question": "Would you enjoy spending time teaching science lessons, conducting experiments, or explaining scientific concepts?",
+    "type": "regular"
+  },
+  {
+    "id": 71,
+    "category": "education & teaching",
+    "course": "BSED Science",
+    "question": "Do you see yourself working as a science teacher or researcher in the future?",
+    "type": "regular"
+  },
+  {
+    "id": 72,
+    "category": "education & teaching",
+    "course": "BSED Science",
+    "question": "Do you prefer working in an environment that involves laboratories, experiments, and science education?",
+    "type": "regular"
+  },
+  {
+    "id": 73,
+    "category": "education & teaching",
+    "course": "BSED Social Studies",
+    "question": "Do you enjoy learning about history, culture, politics, and society?",
+    "type": "regular"
+  },
+  {
+    "id": 74,
+    "category": "education & teaching",
+    "course": "BSED Social Studies",
+    "question": "Are you good at analyzing events, interpreting sources, and connecting ideas?",
+    "type": "regular"
+  },
+  {
+    "id": 75,
+    "category": "education & teaching",
+    "course": "BSED Social Studies",
+    "question": "Would you enjoy spending time teaching history, discussing current events, or organizing debates?",
+    "type": "regular"
+  },
+  {
+    "id": 76,
+    "category": "education & teaching",
+    "course": "BSED Social Studies",
+    "question": "Do you see yourself working as a social studies teacher or researcher?",
+    "type": "regular"
+  },
+  {
+    "id": 77,
+    "category": "education & teaching",
+    "course": "BSED Social Studies",
+    "question": "Do you prefer working in an environment that involves discussions, analysis, and historical learning?",
+    "type": "regular"
+  },
+  {
+    "id": 78,
+    "category": "education & teaching",
+    "course": "BSED Values",
+    "question": "Do you enjoy learning about ethics, values, and human development?",
+    "type": "regular"
+  },
+  {
+    "id": 79,
+    "category": "education & teaching",
+    "course": "BSED Values",
+    "question": "Are you good at guiding others, resolving conflicts, and practicing empathy?",
+    "type": "regular"
+  },
+  {
+    "id": 80,
+    "category": "education & teaching",
+    "course": "BSED Values",
+    "question": "Would you enjoy spending time teaching values, leading reflections, or mentoring students?",
+    "type": "regular"
+  },
+  {
+    "id": 81,
+    "category": "education & teaching",
+    "course": "BSED Values",
+    "question": "Do you see yourself working as a values education teacher or counselor?",
+    "type": "regular"
+  },
+  {
+    "id": 82,
+    "category": "education & teaching",
+    "course": "BSED Values",
+    "question": "Do you prefer working in an environment that involves mentoring, guiding, and moral education?",
+    "type": "regular"
+  },
+  {
+    "id": 83,
+    "category": "education & teaching",
+    "course": "BTLED",
+    "question": "Do you enjoy learning about technical skills, crafts, and livelihood-based subjects?",
+    "type": "regular"
+  },
+  {
+    "id": 84,
+    "category": "education & teaching",
+    "course": "BTLED",
+    "question": "Are you good at practical tasks such as cooking, sewing, or basic electronics?",
+    "type": "regular"
+  },
+  {
+    "id": 85,
+    "category": "education & teaching",
+    "course": "BTLED",
+    "question": "Would you enjoy spending time teaching TLE subjects, conducting hands-on projects, or preparing learning materials?",
+    "type": "regular"
+  },
+  {
+    "id": 86,
+    "category": "education & teaching",
+    "course": "BTLED",
+    "question": "Do you see yourself working as a TLE teacher or vocational trainer?",
+    "type": "regular"
+  },
+  {
+    "id": 87,
+    "category": "education & teaching",
+    "course": "BTLED",
+    "question": "Do you prefer working in an environment that involves practical work, workshops, and skill-based learning?",
+    "type": "regular"
+  },
+  {
+    "id": 88,
+    "category": "education & teaching",
+    "course": "TIE_BREAKER",
+    "question": "Which of the following would you most enjoy teaching or working with?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Sports, fitness, and physical activities (BPED)",
+        "course": "BPED"
+      },
+      {
+        "label": "B",
+        "text": "Young children in early education settings (BEED)",
+        "course": "BEED"
+      },
+      {
+        "label": "C",
+        "text": "English language, literature, and communication (BSED English)",
+        "course": "BSED English"
+      },
+      {
+        "label": "D",
+        "text": "Filipino language, literature, and cultural works (BSED Filipino)",
+        "course": "BSED Filipino"
+      },
+      {
+        "label": "E",
+        "text": "Mathematics and problem-solving skills (BSED Math)",
+        "course": "BSED Math"
+      },
+      {
+        "label": "F",
+        "text": "Science experiments and scientific concepts (BSED Science)",
+        "course": "BSED Science"
+      },
+      {
+        "label": "G",
+        "text": "History, culture, and current events (BSED Social Studies)",
+        "course": "BSED Social Studies"
+      },
+      {
+        "label": "H",
+        "text": "Ethics, values, and personal development (BSED Values)",
+        "course": "BSED Values"
+      },
+      {
+        "label": "I",
+        "text": "Technical and livelihood skills like cooking, electronics, or crafts (BTLED)",
+        "course": "BTLED"
+      }
+    ],
+    "type": "tie_breaker"
+  },
+  {
+    "id": 89,
+    "category": "arts_communication_library",
+    "course": "BLIS",
+    "question": "Do you enjoy learning about books, information organization, and research methods?",
+    "type": "regular"
+  },
+  {
+    "id": 90,
+    "category": "arts_communication_library",
+    "course": "BLIS",
+    "question": "Are you good at organizing, categorizing, and analyzing information?",
+    "type": "regular"
+  },
+  {
+    "id": 91,
+    "category": "arts_communication_library",
+    "course": "BLIS",
+    "question": "Would you enjoy spending time cataloging, archiving, or managing information systems?",
+    "type": "regular"
+  },
+  {
+    "id": 92,
+    "category": "arts_communication_library",
+    "course": "BLIS",
+    "question": "Do you see yourself working in a library, information center, or digital archive in the future?",
+    "type": "regular"
+  },
+  {
+    "id": 93,
+    "category": "arts_communication_library",
+    "course": "BLIS",
+    "question": "Do you prefer working in an environment that involves quiet study spaces, digital systems, and organized collections?",
+    "type": "regular"
+  },
+  {
+    "id": 94,
+    "category": "arts_communication_library",
+    "course": "BSED English",
+    "question": "Do you enjoy learning about literature, grammar, and communication in English?",
+    "type": "regular"
+  },
+  {
+    "id": 95,
+    "category": "arts_communication_library",
+    "course": "BSED English",
+    "question": "Are you good at writing, speaking, and analyzing texts in English?",
+    "type": "regular"
+  },
+  {
+    "id": 96,
+    "category": "arts_communication_library",
+    "course": "BSED English",
+    "question": "Would you enjoy spending time teaching English, writing essays, or preparing language lessons?",
+    "type": "regular"
+  },
+  {
+    "id": 97,
+    "category": "arts_communication_library",
+    "course": "BSED English",
+    "question": "Do you see yourself working as a high school English teacher or language specialist?",
+    "type": "regular"
+  },
+  {
+    "id": 98,
+    "category": "arts_communication_library",
+    "course": "BSED English",
+    "question": "Do you prefer working in an environment that involves communication, reading, and language instruction?",
+    "type": "regular"
+  },
+  {
+    "id": 99,
+    "category": "arts_communication_library",
+    "course": "BSED Filipino",
+    "question": "Do you enjoy learning about Filipino literature, grammar, and culture?",
+    "type": "regular"
+  },
+  {
+    "id": 100,
+    "category": "arts_communication_library",
+    "course": "BSED Filipino",
+    "question": "Are you good at writing, speaking, and interpreting texts in Filipino?",
+    "type": "regular"
+  },
+  {
+    "id": 101,
+    "category": "arts_communication_library",
+    "course": "BSED Filipino",
+    "question": "Would you enjoy spending time teaching Filipino, writing poems, or discussing cultural works?",
+    "type": "regular"
+  },
+  {
+    "id": 102,
+    "category": "arts_communication_library",
+    "course": "BSED Filipino",
+    "question": "Do you see yourself working as a Filipino teacher or writer?",
+    "type": "regular"
+  },
+  {
+    "id": 103,
+    "category": "arts_communication_library",
+    "course": "BSED Filipino",
+    "question": "Do you prefer working in an environment that involves teaching, reading, and promoting Filipino culture?",
+    "type": "regular"
+  },
+  {
+    "id": 104,
+    "category": "arts_communication_library",
+    "course": "TIE_BREAKER",
+    "question": "Which of the following would you most enjoy doing in your future career?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Organizing books, managing digital archives, and helping people find information (BLIS)",
+        "course": "BLIS"
+      },
+      {
+        "label": "B",
+        "text": "Teaching English language and literature, and helping students improve communication skills (BSED English)",
+        "course": "BSED English"
+      },
+      {
+        "label": "C",
+        "text": "Teaching Filipino language and culture, and guiding students in creative expression and national identity (BSED Filipino)",
+        "course": "BSED Filipino"
+      }
+    ],
+    "type": "tie_breaker"
+  },
+  {
+    "id": 105,
+    "category": "social & public services",
+    "course": "BSP",
+    "question": "Do you enjoy learning about human behavior, emotions, and mental processes?",
+    "type": "regular"
+  },
+  {
+    "id": 106,
+    "category": "social & public services",
+    "course": "BSP",
+    "question": "Are you good at listening, analyzing, and understanding people’s perspectives?",
+    "type": "regular"
+  },
+  {
+    "id": 107,
+    "category": "social & public services",
+    "course": "BSP",
+    "question": "Would you enjoy spending time counseling, conducting research, or helping others with psychological concerns?",
+    "type": "regular"
+  },
+  {
+    "id": 108,
+    "category": "social & public services",
+    "course": "BSP",
+    "question": "Do you see yourself working as a counselor, psychologist, or HR practitioner?",
+    "type": "regular"
+  },
+  {
+    "id": 109,
+    "category": "social & public services",
+    "course": "BSP",
+    "question": "Do you prefer working in an environment that involves research, therapy, or people-focused services?",
+    "type": "regular"
+  },
+  {
+    "id": 110,
+    "category": "social & public services",
+    "course": "BSCRIM",
+    "question": "Do you enjoy learning about law, justice, and criminal investigation?",
+    "type": "regular"
+  },
+  {
+    "id": 111,
+    "category": "social & public services",
+    "course": "BSCRIM",
+    "question": "Are you good at observing details, analyzing evidence, and applying discipline?",
+    "type": "regular"
+  },
+  {
+    "id": 112,
+    "category": "social & public services",
+    "course": "BSCRIM",
+    "question": "Would you enjoy spending time studying cases, practicing law enforcement drills, or solving crimes?",
+    "type": "regular"
+  },
+  {
+    "id": 113,
+    "category": "social & public services",
+    "course": "BSCRIM",
+    "question": "Do you see yourself working as a police officer, investigator, or in forensic science?",
+    "type": "regular"
+  },
+  {
+    "id": 114,
+    "category": "social & public services",
+    "course": "BSCRIM",
+    "question": "Do you prefer working in an environment that involves discipline, justice, and public safety?",
+    "type": "regular"
+  },
+  {
+    "id": 115,
+    "category": "social & public services",
+    "course": "TIE_BREAKER",
+    "question": "Which of the following would you most enjoy doing in your future career?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Helping individuals understand and manage their thoughts, emotions, and behavior (BSP)",
+        "course": "BSP"
+      },
+      {
+        "label": "B",
+        "text": "Investigating crimes, enforcing laws, and promoting public safety through discipline and justice (BSCRIM)",
+        "course": "BSCRIM"
+      }
+    ],
+    "type": "tie_breaker"
+  },
+  {
+    "id": 116,
+    "category": "hospitality_tourism_service",
+    "course": "BSHM",
+    "question": "Do you enjoy learning about hotels, restaurants, and hospitality services?",
+    "type": "regular"
+  },
+  {
+    "id": 117,
+    "category": "hospitality_tourism_service",
+    "course": "BSHM",
+    "question": "Are you good at serving people, organizing events, or managing operations?",
+    "type": "regular"
+  },
+  {
+    "id": 118,
+    "category": "hospitality_tourism_service",
+    "course": "BSHM",
+    "question": "Would you enjoy spending time in hotels, restaurants, or catering services?",
+    "type": "regular"
+  },
+  {
+    "id": 119,
+    "category": "hospitality_tourism_service",
+    "course": "BSHM",
+    "question": "Do you see yourself working in hotel management, food service, or tourism industries?",
+    "type": "regular"
+  },
+  {
+    "id": 120,
+    "category": "hospitality_tourism_service",
+    "course": "BSHM",
+    "question": "Do you prefer working in an environment that involves customer service, teamwork, and fast-paced operations?",
+    "type": "regular"
+  },
+  {
+    "id": 121,
+    "category": "hospitality_tourism_service",
+    "course": "BSTM",
+    "question": "Do you enjoy learning about tourism, travel, and cultural exchange?",
+    "type": "regular"
+  },
+  {
+    "id": 122,
+    "category": "hospitality_tourism_service",
+    "course": "BSTM",
+    "question": "Are you good at communicating, organizing tours, or planning itineraries?",
+    "type": "regular"
+  },
+  {
+    "id": 123,
+    "category": "hospitality_tourism_service",
+    "course": "BSTM",
+    "question": "Would you enjoy spending time managing travel agencies, guiding tours, or promoting tourism spots?",
+    "type": "regular"
+  },
+  {
+    "id": 124,
+    "category": "hospitality_tourism_service",
+    "course": "BSTM",
+    "question": "Do you see yourself working in travel agencies, airlines, or tourism boards?",
+    "type": "regular"
+  },
+  {
+    "id": 125,
+    "category": "hospitality_tourism_service",
+    "course": "BSTM",
+    "question": "Do you prefer working in an environment that involves travel, customer service, and cultural interactions?",
+    "type": "regular"
+  },
+  {
+    "id": 126,
+    "category": "hospitality_tourism_service",
+    "course": "TIE_BREAKER",
+    "question": "Which of the following would you most enjoy doing in your future career?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Managing hotels, restaurants, or events to provide excellent service and guest experiences (BSHM)",
+        "course": "BSHM"
+      },
+      {
+        "label": "B",
+        "text": "Organizing tours, promoting travel destinations, and helping people explore new places and cultures (BSTM)",
+        "course": "BSTM"
+      }
+    ],
+    "type": "tie_breaker"
+  }
+]
