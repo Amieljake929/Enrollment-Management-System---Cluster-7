@@ -527,29 +527,16 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
             <div class="modal-header bg-primary-custom text-white border-0">
-                <div>
-                    <h5 class="modal-title" id="assessmentModalLabel" style="color: white;">Choose Your Assessment</h5>
-                    <p class="mb-0 small">Select the path that matches your current academic level</p>
-                </div>
+                <h5 class="modal-title" id="assessmentModalLabel">Proceed to Assessment</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body py-4">
-                <div class="row g-3">
-                    <div class="col-12">
-                        <a href="{{ route('college.info.form') }}" class="text-decoration-none">
-                            <div class="btn btn-primary w-100 py-3 text-center hover-lift">
-                                <i class="fas fa-university fa-lg me-2"></i> <strong>College Assessment</strong>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-12">
-                        <a href="{{ route('shs.quiz') }}" class="text-decoration-none">
-                            <div class="btn btn-secondary w-100 py-3 text-center hover-lift">
-                                <i class="fas fa-user-graduate fa-lg me-2"></i> <strong>SHS Assessment</strong>
-                            </div>
-                        </a>
-                    </div>
-                </div>
+            <div class="modal-body py-4 text-center">
+                <p class="text-muted mb-4">
+                    You will now be redirected to the assessment test.
+                </p>
+                <a href="{{ route('assessment.test') }}" class="btn btn-primary-custom btn-lg px-5 py-3 shadow-lg hover-lift">
+                    <i class="fas fa-arrow-right me-2"></i> Proceed to Assessment
+                </a>
             </div>
         </div>
     </div>

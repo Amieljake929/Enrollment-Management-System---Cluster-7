@@ -41,6 +41,11 @@ Route::get('/shs-quiz', function () {
     return view('website.ShsQuiz');
 })->name('shs.quiz');
 
+// ✅ New: College Info Test Page
+Route::get('/college-info-test', function () {
+    return view('website.CollegeInfoTest');
+})->name('college.info.test');
+
 // 🔹 Enrollment Modal Pages
 // ✅ Use Controller to pass required data
 Route::get('/college-enrollment', [EnrollmentController::class, 'showForm'])
@@ -133,12 +138,21 @@ Route::prefix('modules')->middleware(['auth'])->group(function () {
 
     // Pending Admissions
     Route::get('/pending/college', [PendingAdmissionController::class, 'index'])->name('modules.pending.college');
+    // ✅ Ilagay mo dito ang PDF route BEFORE the {id} route
+    Route::get('/pending/college/download-pdf', [PendingAdmissionController::class, 'downloadPdf'])
+        ->name('modules.pending.college.download.pdf');
+
+    // ✅ SHS PDF (ADD THIS)
+    Route::get('/pending/shs/download-pdf', [PendingAdmissionController::class, 'downloadShsPdf'])
+        ->name('modules.pending.shs.download.pdf');
+        
     Route::get('/pending/college/{id}', [PendingAdmissionController::class, 'show'])->name('modules.pending.college.show');
     Route::get('/pending/shs', [PendingAdmissionController::class, 'shsIndex'])->name('modules.pending.shs');
     Route::delete('/pending/college/{id}', [PendingAdmissionController::class, 'destroy'])->name('modules.pending.college.destroy');
+
     // SHS Show & Delete
-Route::get('/pending/shs/{id}', [PendingAdmissionController::class, 'showShs'])->name('modules.pending.shs.show');
-Route::delete('/pending/shs/{id}', [PendingAdmissionController::class, 'destroyShs'])->name('modules.pending.shs.destroy');
+    Route::get('/pending/shs/{id}', [PendingAdmissionController::class, 'showShs'])->name('modules.pending.shs.show');
+    Route::delete('/pending/shs/{id}', [PendingAdmissionController::class, 'destroyShs'])->name('modules.pending.shs.destroy');
 
     // Waiting List
     Route::get('/waiting/college', function () {
@@ -211,6 +225,11 @@ Route::middleware('auth')->group(function () {
 Route::post('/user/agree-terms', [App\Http\Controllers\TermsController::class, 'agreeTerms'])->name('user.agree.terms');
     
 });
+
+// Temporary route for the new assessment test page
+Route::get('/assessment-test', function () {
+    return view('website.AssessmentTest');
+})->name('assessment.test');
 
 // ===================================================
 // === 🛑 Laravel Auth (logout, register, etc.) ===

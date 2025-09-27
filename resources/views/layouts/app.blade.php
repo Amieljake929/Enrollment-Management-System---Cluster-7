@@ -426,7 +426,6 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
         <div class="sidebar-overlay"></div>
     </div>
 
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
      <script>
 // Prevent full page reload and load content via AJAX
 document.addEventListener('DOMContentLoaded', function () {
