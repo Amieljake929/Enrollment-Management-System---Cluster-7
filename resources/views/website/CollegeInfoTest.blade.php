@@ -179,9 +179,12 @@
             color: var(--accent-blue);
         }
         .navbar-brand {
-            color: var(--accent-blue);
+            color: var(--primary-color);
             font-weight: 700;
             font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         footer.bg-dark-custom {
             color: white;
@@ -195,6 +198,119 @@
                 font-size: 1.5rem;
             }
         }
+        /* ==== ANIMATIONS FOR FORM CONTENT ==== */
+.form-container {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==== 3D BUBBLE EFFECTS AROUND LOTTIE ==== */
+.lottie-bubble-container {
+    position: relative;
+    display: inline-block;
+}
+
+.lottie-bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(79, 110, 247, 0.2), transparent);
+    pointer-events: none;
+    z-index: -1;
+    animation: floatBubble 8s infinite ease-in-out;
+}
+
+.lottie-bubble:nth-child(1) {
+    width: 120px;
+    height: 120px;
+    top: -40px;
+    left: -30px;
+    animation-delay: 0s;
+}
+.lottie-bubble:nth-child(2) {
+    width: 90px;
+    height: 90px;
+    bottom: -30px;
+    right: -20px;
+    animation-delay: 2s;
+}
+.lottie-bubble:nth-child(3) {
+    width: 150px;
+    height: 150px;
+    top: 30%;
+    right: -60px;
+    animation-delay: 4s;
+}
+
+@keyframes floatBubble {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.5;
+    }
+    50% {
+        transform: translate(10px, -15px) scale(1.1);
+        opacity: 0.7;
+    }
+}
+/* ==== 3D SPEECH BUBBLE ==== */
+.speech-bubble {
+    position: absolute;
+    top: -5%;
+    left: 40%;
+    transform: translateX(-50%) rotateX(10deg) rotateY(-5deg);
+    background: white;
+    color: var(--primary-color);
+    padding: 1.2rem 1.5rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-align: center;
+    max-width: 320px;
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.15),
+        0 6px 10px rgba(32, 59, 107, 0.1);
+    z-index: 2;
+    opacity: 0;
+    animation: fadeInBubble 1s ease-out 0.6s forwards;
+}
+
+/* Speech bubble tail (triangle) */
+.speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-top: 14px solid white;
+    filter: drop-shadow(0 -2px 4px rgba(0,0,0,0.1));
+}
+
+@keyframes fadeInBubble {
+    to {
+        opacity: 1;
+        transform: translateX(-50%) rotateX(10deg) rotateY(-5deg) translateY(0);
+    }
+}
+
+/* Optional: Slight hover lift for interactivity */
+.speech-bubble:hover {
+    transform: translateX(-50%) rotateX(8deg) rotateY(-4deg) translateY(-3px);
+    box-shadow:
+        0 14px 30px rgba(0, 0, 0, 0.2),
+        0 8px 12px rgba(32, 59, 107, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
     </style>
 </head>
 <body>
@@ -202,7 +318,13 @@
 <!-- Navbar (copied from AssessmentTest.blade.php) -->
 <nav class="navbar navbar-expand-lg bg-white shadow-sm">
     <div class="container">
-        <a class="navbar-brand" href="#">Bestlink College</a>
+        <a class="navbar-brand" href="#">
+            <img src="{{ asset('images/pcb.png') }}" alt="Bestlink College Logo" style="width: 80px; height: 80px;">
+            <div>
+                    <span class="d-block" style="font-size:1rem;">Bestlink College</span>
+                    <span class="d-block" style="font-size:.75rem;">of the Philippines</span>
+                </div>
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -227,13 +349,21 @@
         <div class="row align-items-center justify-content-center">
             <!-- Lottie Animation (Left Side) -->
             <div class="col-md-6 d-flex justify-content-center">
-                <dotlottie-wc
-                    src="https://lottie.host/0675dd5a-c142-4843-aa2d-96b5c78180fb/58jQMaPdVu.lottie"
-                    style="width: 650px; height: 650px; max-width: 120%;"
-                    autoplay
-                    loop
-                ></dotlottie-wc>
-            </div>
+    <div class="lottie-bubble-container">
+        <div class="lottie-bubble"></div>
+        <div class="lottie-bubble"></div>
+        <div class="lottie-bubble"></div>
+        <dotlottie-wc
+            src="https://lottie.host/0675dd5a-c142-4843-aa2d-96b5c78180fb/58jQMaPdVu.lottie"
+            style="width: 650px; height: 650px; max-width: 120%;"
+            autoplay
+            loop
+        ></dotlottie-wc>
+        <div class="speech-bubble">
+    MAGANDANG BUHAY, please fill our form to proceed the Assessment. Thank you!
+</div>
+    </div>
+</div>
 
             <!-- Form (Right Side) -->
             <div class="col-md-5">

@@ -1,494 +1,371 @@
-@extends('layouts.assessment')
-
-@section('content')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Personal Information - Bestlink College</title>
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Lottie Web Component -->
+<script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.1/dist/dotlottie-wc.js" type="module"></script>
 <style>
-    /* ===== GLOBAL STYLES ===== */
-    :root {
-        --primary: #27ae60;
-        --secondary: #8e44ad;
-        --accent: #9b59b6;
-        --dark-bg: #0d0c22;
-        --card-bg: rgba(30, 29, 50, 0.85);
-        --text-light: #ffffff;
-        --text-muted: #bdc3c7;
-        --border-glow: rgba(155, 89, 182, 0.3);
-        --hover-glow: rgba(155, 89, 182, 0.2);
-        --purple-glow: rgba(142, 68, 173, 0.4);
-        --success-glow: rgba(46, 204, 113, 0.3);
-        --star-glow: rgba(255, 255, 255, 0.1);
-    }
+:root {
+    --primary-color: #203B6B;
+    --secondary-color: #ffffff;
+    --dark-bg: #121a2a;
+    --light-bg: #f8f9fa;
+    --accent-blue: #4f6ef7;
+    --accent-purple: #a051e0;
+    --accent-green: #4cd964;
+}
 
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        color: var(--text-light);
-        overflow-x: hidden;
-        height: auto !important;
-        position: relative;
-    }
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    background-color: var(--light-bg);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 
-    /* ===== VIDEO BACKGROUND ===== */
-    .video-bg {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        z-index: -1;
-    }
+/* Navbar & Footer Styles */
+.nav-link {
+    color: var(--primary-color);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+.nav-link:hover {
+    color: var(--accent-blue);
+}
+.navbar-brand {
+    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+footer.bg-dark-custom {
+    color: white;
+}
 
+/* ===== FORM CONTAINER (COMPACT) ===== */
+.form-container {
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 40px rgba(32, 59, 107, 0.15);
+    max-width: 550px;
+    width: 100%;
+    margin: 0 auto;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
 
-
-    /* ===== NAVBAR ===== */
-    .navbar-custom {
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-        padding: 1rem 2rem;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 1000;
-        transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    .navbar-brand {
-        font-weight: 700;
-        color: var(--text-light);
-        font-size: 1.4rem;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
-    }
-
-    .nav-link {
-        color: var(--text-light);
-        font-weight: 500;
-        padding: 0.6rem 1.2rem;
-        border-radius: 12px;
-        transition: all 0.3s ease;
-        position: relative;
-        letter-spacing: 0.5px;
-    }
-
-    .nav-link:hover {
-        background: var(--border-glow);
-        color: white;
-        transform: translateY(-3px) scale(1.05);
-        box-shadow: 0 0 15px rgba(155, 89, 182, 0.5);
-    }
-
-    .nav-link::after {
-        content: '';
-        position: absolute;
-        bottom: -4px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 0;
-        height: 2px;
-        background: var(--accent);
-        transition: width 0.3s ease;
-    }
-
-    .nav-link:hover::after {
-        width: 60%;
-    }
-
-    /* ===== FLOATING ELEMENTS (STICKERS) ===== */
-    .floating-elements {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 0;
-        overflow: hidden;
-    }
-
-    .floating-element {
-        position: absolute;
-        animation: float 12s ease-in-out infinite;
-        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
-        z-index: 1;
-        opacity: 0.7;
-        transition: transform 0.5s ease;
-        font-size: 2.5rem;
-    }
-
-    .floating-element:hover {
+@keyframes fadeInUp {
+    to {
         opacity: 1;
-        transform: scale(1.1) rotate(10deg) !important;
-        filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.7));
+        transform: translateY(0);
     }
+}
 
-    .floating-element:nth-child(1) {
-        top: 10%;
-        left: 5%;
-        animation-delay: 0s;
-        transform: rotate(-10deg);
+.form-title {
+    font-size: 1.6rem;
+    color: var(--primary-color);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.welcome-message {
+    text-align: center;
+    color: #6c757d;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+}
+
+/* ===== STEP BOX ===== */
+.step-box {
+    background-color: #f8f9fa;
+    border-left: 4px solid var(--accent-blue);
+    padding: 0.75rem 1rem;
+    border-radius: 0 12px 12px 0;
+    margin-bottom: 1rem;
+}
+
+.step-box h5 {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+}
+
+.step-box p {
+    color: #6c757d;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+/* ===== INTEREST OPTIONS ===== */
+.interest-option {
+    background: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 0.75rem;
+}
+
+.interest-option:hover {
+    border-color: var(--accent-blue);
+    background: #edf2ff;
+}
+
+.interest-option.selected {
+    background: #eef4ff;
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 3px rgba(79, 110, 247, 0.15);
+}
+
+.checkmark {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ced4da;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.interest-option.selected .checkmark {
+    background: var(--accent-blue);
+    border-color: var(--accent-blue);
+}
+
+.interest-option.selected .checkmark::after {
+    content: '✓';
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.interest-label {
+    color: var(--primary-color);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.interest-option.selected .interest-label {
+    color: var(--accent-blue);
+}
+
+/* ===== PROCEED BUTTON ===== */
+.btn-proceed {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    width: 100%;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(32, 59, 107, 0.2);
+}
+
+.btn-proceed:hover {
+    background-color: #1a315a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(32, 59, 107, 0.3);
+}
+
+.btn-proceed:disabled {
+    opacity: 0.7;
+    transform: none;
+    cursor: not-allowed;
+}
+
+/* ===== ERROR MESSAGE ===== */
+.alert-danger-custom {
+    color: #e74c3c;
+    background-color: #fdf2f2;
+    border: 1px solid #fbd5d5;
+    border-radius: 8px;
+    padding: 0.5rem;
+    margin-top: 0.75rem;
+    display: none;
+    font-size: 0.85rem;
+}
+
+.alert-danger-custom.show {
+    display: block;
+}
+
+/* ===== REMINDERS BOX ===== */
+.reminders-box {
+    background-color: #f0f9ff;
+    border: 1px solid #cce9ff;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.reminders-box h5 {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.reminders-box ul {
+    padding-left: 1.25rem;
+    color: #6c757d;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.reminders-box li {
+    margin-bottom: 0.5rem;
+}
+
+/* ==== 3D BUBBLE EFFECTS AROUND LOTTIE ==== */
+.lottie-bubble-container {
+    position: relative;
+    display: inline-block;
+}
+
+.lottie-bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(79, 110, 247, 0.2), transparent);
+    pointer-events: none;
+    z-index: -1;
+    animation: floatBubble 8s infinite ease-in-out;
+}
+
+.lottie-bubble:nth-child(1) {
+    width: 100px;
+    height: 100px;
+    top: -30px;
+    left: -20px;
+    animation-delay: 0s;
+}
+.lottie-bubble:nth-child(2) {
+    width: 80px;
+    height: 80px;
+    bottom: -20px;
+    right: -15px;
+    animation-delay: 2s;
+}
+.lottie-bubble:nth-child(3) {
+    width: 120px;
+    height: 120px;
+    top: 25%;
+    right: -40px;
+    animation-delay: 4s;
+}
+
+@keyframes floatBubble {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.5;
     }
-
-    .floating-element:nth-child(2) {
-        top: 25%;
-        right: 8%;
-        animation-delay: -5s;
-        transform: rotate(15deg);
+    50% {
+        transform: translate(10px, -15px) scale(1.1);
+        opacity: 0.7;
     }
+}
 
-    .floating-element:nth-child(3) {
-        bottom: 15%;
-        left: 20%;
-        animation-delay: -9s;
-        transform: rotate(-5deg);
+/* ==== 3D SPEECH BUBBLE ==== */
+.speech-bubble {
+    position: absolute;
+    top: 8%;
+    left: 25%;
+    transform: translateX(-50%) rotateX(10deg) rotateY(-5deg);
+    background: white;
+    color: var(--primary-color);
+    padding: 0.8rem 1rem;
+    border-radius: 16px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-align: center;
+    max-width: 280px;
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.1),
+        0 4px 8px rgba(32, 59, 107, 0.1);
+    z-index: 2;
+    opacity: 0;
+    animation: fadeInBubble 1s ease-out 0.6s forwards;
+}
+
+.speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 12px solid white;
+    filter: drop-shadow(0 -2px 4px rgba(0,0,0,0.1));
+}
+
+@keyframes fadeInBubble {
+    to {
+        opacity: 1;
+        transform: translateX(-50%) rotateX(10deg) rotateY(-5deg) translateY(0);
     }
+}
 
-    .floating-element:nth-child(4) {
-        top: 45%;
-        left: 30%;
-        animation-delay: -7s;
-        transform: rotate(10deg);
-    }
+.speech-bubble:hover {
+    transform: translateX(-50%) rotateX(8deg) rotateY(-4deg) translateY(-2px);
+    box-shadow:
+        0 12px 25px rgba(0, 0, 0, 0.15),
+        0 6px 10px rgba(32, 59, 107, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-    .floating-element:nth-child(5) {
-        bottom: 10%;
-        right: 20%;
-        animation-delay: -3s;
-        transform: rotate(-15deg);
-    }
-
-    @keyframes float {
-        0% { transform: translate(0px, 0px) rotate(0deg); }
-        50% { transform: translate(20px, -20px) rotate(5deg); }
-        100% { transform: translate(0px, 0px) rotate(0deg); }
-    }
-
-    /* ===== FORM CONTAINER ===== */
-    .form-container {
-        max-width: 600px;
-        margin: 120px auto 60px;
-        background: var(--card-bg);
-        backdrop-filter: blur(16px);
-        border-radius: 24px;
-        padding: 40px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        position: relative;
-        overflow: hidden;
-        animation: pulseGlow 3s ease-in-out infinite alternate;
-        z-index: 5;
-    }
-
-    .form-container::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, transparent, var(--purple-glow) 25%, transparent 50%);
-        opacity: 0.4;
-        animation: rotateGlow 12s linear infinite;
-        z-index: -1;
-    }
-
-    .form-title {
-        font-size: 1.8rem;
-        font-weight: 700;
-        margin-bottom: 15px;
-        text-align: center;
-        color: var(--text-light);
-        animation: fadeInUp 0.8s ease-out;
-    }
-
-    .welcome-message {
-        font-size: 1.3rem;
-        color: var(--text-light);
-        margin-bottom: 25px;
-        text-align: center;
-        animation: fadeInUp 0.8s ease-out 0.2s both;
-    }
-
-    /* ===== STEP BOX ===== */
-    .step-box {
-        background: rgba(52, 152, 219, 0.15);
-        border: 1px solid rgba(52, 152, 219, 0.3);
-        border-radius: 16px;
-        padding: 20px;
-        margin-bottom: 25px;
-        animation: fadeInUp 0.8s ease-out 0.4s both;
-    }
-
-    .step-box h5 {
-        color: #3498db;
-        font-weight: 600;
-        margin-bottom: 8px;
-    }
-
-    .step-box p {
-        color: var(--text-muted);
-        font-size: 0.95rem;
-        line-height: 1.5;
-    }
-
-    /* ===== INTEREST OPTIONS ===== */
-    .interest-option {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 14px;
-        padding: 14px 16px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 10px;
-        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .interest-option:hover {
-        background: rgba(255, 255, 255, 0.1);
-        transform: translateY(-2px) scale(1.02);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .interest-option.selected {
-        background: rgba(155, 89, 182, 0.2);
-        border-color: var(--accent);
-        box-shadow: 0 0 15px var(--border-glow);
-        animation: pulseSelect 0.5s ease-in-out;
-    }
-
-    @keyframes pulseSelect {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.03); }
-        100% { transform: scale(1); }
-    }
-
-    .interest-checkbox {
-        opacity: 0;
-        position: absolute;
-    }
-
-    .checkmark {
-        width: 20px;
-        height: 20px;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        border-radius: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-        position: relative;
-        z-index: 2;
-    }
-
-    .interest-option.selected .checkmark {
-        background: var(--accent);
-        border-color: var(--accent);
-    }
-
-    .interest-option.selected .checkmark::after {
-        content: '✓';
-        color: white;
-        font-size: 12px;
-        font-weight: bold;
-    }
-
-    .interest-label {
-        flex: 1;
-        color: var(--text-light);
-        font-weight: 500;
-        user-select: none;
-        transition: color 0.2s ease;
-    }
-
-    .interest-option.selected .interest-label {
-        color: white;
-    }
-
-    /* ===== PROCEED BUTTON ===== */
-    .btn-proceed {
-        background: linear-gradient(135deg, #2ecc71, #27ae60);
-        border: none;
-        border-radius: 16px;
-        padding: 16px 24px;
-        font-weight: 600;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-        box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        width: 100%;
-        margin-top: 20px;
-    }
-
-    .btn-proceed:hover {
-        background: linear-gradient(135deg, #27ae60, #2ecc71);
-        transform: translateY(-3px) scale(1.03);
-        box-shadow: 0 8px 25px rgba(46, 204, 113, 0.5);
-    }
-
-    .btn-proceed:disabled {
-        background: rgba(255, 255, 255, 0.1);
-        cursor: not-allowed;
-        box-shadow: none;
-        transform: none;
-    }
-
-    /* ===== ERROR MESSAGE ===== */
-    .alert-danger-custom {
-        background: rgba(231, 76, 60, 0.15);
-        border: 1px solid rgba(231, 76, 60, 0.3);
-        border-radius: 12px;
-        padding: 12px;
-        margin-top: 15px;
-        color: #e74c3c;
+/* Responsive */
+@media (max-width: 992px) {
+    .lottie-wrapper {
         display: none;
-        animation: fadeIn 0.3s ease;
     }
-
-    .alert-danger-custom.show {
-        display: block;
+    .form-container {
+        padding: 1.25rem;
+        max-width: 600px;
     }
-
-    /* ===== REMINDERS BOX ===== */
-    .reminders-box {
-        background: rgba(241, 196, 15, 0.1);
-        border: 1px solid rgba(241, 196, 15, 0.3);
-        border-radius: 16px;
-        padding: 20px;
-        margin-top: 30px;
-        animation: fadeInUp 0.8s ease-out 0.6s both;
+    .speech-bubble {
+        top: 10%;
+        left: 25%;
+        font-size: 0.85rem;
+        padding: 0.6rem 0.8rem;
     }
-
-    .reminders-box h5 {
-        color: #f1c40f;
-        font-weight: 600;
-        margin-bottom: 10px;
-    }
-
-    .reminders-box ul {
-        padding-left: 20px;
-        color: var(--text-muted);
-        font-size: 0.95rem;
-    }
-
-    .reminders-box li {
-        margin-bottom: 8px;
-    }
-
-    /* ===== FOOTER ===== */
-    footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background: rgba(13, 12, 34, 0.8);
-        backdrop-filter: blur(10px);
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 15px 20px;
-        text-align: center;
-        z-index: 1000;
-        box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
-        animation: fadeInUp 0.8s ease-out;
-    }
-
-    footer p {
-        color: var(--text-muted);
-        font-size: 0.9rem;
-        margin: 0;
-    }
-
-    footer a {
-        color: var(--accent);
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.2s ease;
-    }
-
-    footer a:hover {
-        color: white;
-        text-decoration: underline;
-    }
-
-    /* ===== ANIMATIONS ===== */
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @keyframes rotateGlow {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-    }
-
-    @keyframes pulseGlow {
-        from { box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); }
-        to { box-shadow: 0 20px 60px rgba(155, 89, 182, 0.3); }
-    }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 768px) {
-        .form-container {
-            padding: 30px 20px;
-            margin: 100px 10px 40px;
-        }
-        .navbar-custom {
-            padding: 0.8rem 1rem;
-        }
-        .nav-link {
-            padding: 0.5rem 0.8rem;
-            font-size: 0.9rem;
-        }
-        .interest-option {
-            padding: 12px;
-            font-size: 0.95rem;
-        }
-        .floating-element {
-            font-size: 2rem;
-        }
-    }
+}
 </style>
+</head>
+<body>
 
-<!-- ===== VIDEO BACKGROUND ===== -->
-<video class="video-bg" autoplay muted loop playsinline>
-    <source src="{{ asset('images/educational.mp4') }}" type="video/mp4">
-    Your browser does not support the video tag.
-</video>
-<div class="overlay"></div>
-
-<!-- ===== FLOATING 3D ICONS (STICKERS) ===== -->
-<div class="floating-elements">
-    <div class="floating-element">🧠</div>
-    <div class="floating-element">🚀</div>
-    <div class="floating-element">📚</div>
-    <div class="floating-element">🎯</div>
-    <div class="floating-element">💡</div>
-</div>
-
-<!-- ===== NAVBAR ===== -->
-<nav class="navbar navbar-expand-lg navbar-custom" id="navbar">
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg bg-white shadow-sm">
     <div class="container">
         <a class="navbar-brand" href="#">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1v-1a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1V6a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1v2a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2a1 1 0 0 0 1 1z"/>
-            </svg>
-            AI Course Suggestion
+            <img src="{{ asset('images/pcb.png') }}" alt="Bestlink College Logo" style="width: 80px; height: 80px;">
+            <div>
+                <span class="d-block" style="font-size:1rem;">Bestlink College</span>
+                <span class="d-block" style="font-size:.75rem;">of the Philippines</span>
+            </div>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
@@ -496,84 +373,113 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="{{ url('/') }}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Assessment</a>
+                    <a class="nav-link" href="#">Career</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">AI Courses</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About Us</a>
+                    <a class="nav-link" href="#">Roadmaps</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
 
-<!-- ===== WELCOME CONTAINER ===== -->
-<div class="form-container">
-    <h3 class="form-title">Welcome to Our Assessment Test!</h3>
-    
-    <div class="welcome-message">
-        👋 Welcome, <strong>{{ $data['name'] }}</strong>!
-    </div>
-
-    <div class="step-box">
-        <h5>Step 1: Select Your Interests</h5>
-        <p><strong>Choose at least 2 categories</strong> that best represent your interests. The quiz questions will be tailored based on your selection.</p>
-    </div>
-
-    <form id="interestForm">
-        @csrf
-        <div class="row g-3 mb-3">
-            @php
-                $categories = [
-                    'science & technology' => 'Science & Technology',
-                    'business & management' => 'Business & Management',
-                    'education & teaching' => 'Education & Teaching',
-                    'arts_communication_library' => 'Arts, Communication & Library',
-                    'social & public services' => 'Social & Public Services',
-                    'hospitality_tourism_service' => 'Hospitality, Tourism & Service Industry'
-                ];
-            @endphp
-
-            @foreach($categories as $key => $label)
-                <div class="col-md-6">
-                    <label class="interest-option" for="interest_{{ $loop->index }}">
-                        <input type="checkbox" class="interest-checkbox" name="interests[]" value="{{ $key }}" id="interest_{{ $loop->index }}">
-                        <span class="checkmark"></span>
-                        <span class="interest-label">{{ $label }}</span>
-                    </label>
+<!-- Main Content with Lottie + Form -->
+<div class="main-content" style="flex: 1; padding: 1.5rem 0;">
+    <div class="container-fluid px-4">
+        <div class="row align-items-center justify-content-center g-0"> <!-- Reduced gap -->
+            <!-- Lottie Animation (Left Side) -->
+            <div class="col-md-5 d-flex justify-content-center lottie-wrapper">
+                <div class="lottie-bubble-container">
+                    <div class="lottie-bubble"></div>
+                    <div class="lottie-bubble"></div>
+                    <div class="lottie-bubble"></div>
+                    <dotlottie-wc
+                        src="https://lottie.host/0675dd5a-c142-4843-aa2d-96b5c78180fb/58jQMaPdVu.lottie"
+                        style="width: 650px; height: 650px; max-width: 120%;"
+                        autoplay
+                        loop
+                    ></dotlottie-wc>
+                    <div class="speech-bubble">
+                        MAGANDANG BUHAY!! Welcome, <strong>{{ $data['name'] ?? 'Student' }}</strong>!
+                    </div>
                 </div>
-            @endforeach
+            </div>
+
+            <!-- Form (Right Side) -->
+            <div class="col-md-5">
+                <div class="form-container">
+                    <h3 class="form-title">Welcome to Our Assessment Test!</h3>
+                    
+                    <div class="welcome-message">
+                        👋 Welcome, <strong>{{ $data['name'] ?? 'Student' }}</strong>!
+                    </div>
+
+                    <div class="step-box">
+                        <h5>Step 1: Select Your Interests</h5>
+                        <p><strong>Choose at least 2 categories</strong> that best represent your interests. The quiz questions will be tailored based on your selection.</p>
+                    </div>
+
+                    <form id="interestForm">
+                        @csrf
+                        <div class="row g-2 mb-3"> <!-- Tighter grid -->
+                            @php
+                                $categories = [
+                                    'science & technology' => 'Science & Technology',
+                                    'business & management' => 'Business & Management',
+                                    'education & teaching' => 'Education & Teaching',
+                                    'arts_communication_library' => 'Arts, Communication & Library',
+                                    'social & public services' => 'Social & Public Services',
+                                    'hospitality_tourism_service' => 'Hospitality, Tourism & Service Industry'
+                                ];
+                            @endphp
+
+                            @foreach($categories as $key => $label)
+                                <div class="col-md-6">
+                                    <label class="interest-option" for="interest_{{ $loop->index }}">
+                                        <input type="checkbox" class="interest-checkbox" name="interests[]" value="{{ $key }}" id="interest_{{ $loop->index }}" style="display: none;">
+                                        <span class="checkmark"></span>
+                                        <span class="interest-label">{{ $label }}</span>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <div id="error-message" class="alert-danger-custom">
+                            Please select at least 2 interest categories.
+                        </div>
+
+                        <button type="submit" id="proceedBtn" class="btn-proceed" disabled>
+                            Proceed to Quiz ➡️
+                        </button>
+                    </form>
+
+                    <div class="reminders-box">
+                        <h5>Ready? Here are a few reminders before you start the quiz:</h5>
+                        <ul>
+                            <li><strong>Questions will be shown based on your selected interests.</strong></li>
+                            <li><strong>Rate each statement honestly</strong> using: Very Interested (5), Slightly Interested (4), Interested (3), Not Interested (2).</li>
+                            <li><strong>Make sure you're in a stable internet connection area</strong> to avoid any interruptions.</li>
+                        </ul>
+                        <p><strong>Good luck!</strong> 🍀</p>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div id="error-message" class="alert-danger-custom">
-            Please select at least 2 interest categories.
-        </div>
-
-        <button type="submit" id="proceedBtn" class="btn-proceed" disabled>
-            Proceed to Quiz ➡️
-        </button>
-    </form>
-
-    <div class="reminders-box">
-        <h5>Ready? Here are a few reminders before you start the quiz:</h5>
-        <ul>
-            <li><strong>Questions will be shown based on your selected interests.</strong></li>
-            <li><strong>Rate each statement honestly</strong> using: Very Interested (5), Slightly Interested (4), Interested (3), Not Interested (2).</li>
-            <li><strong>Make sure you're in a stable internet connection area</strong> to avoid any interruptions.</li>
-        </ul>
-        <p><strong>Good luck!</strong> 🍀</p>
     </div>
 </div>
 
-<!-- ===== FOOTER ===== -->
-<footer>
-    <p>© 2025 AI College Hub | Designed with 💖 by <a href="#">Your Team</a></p>
+<!-- Footer -->
+<footer class="bg-dark-custom py-4 mt-auto">
+    <div class="container text-center">
+        <p class="mb-0">&copy; 2025 Bestlink College of the Philippines. All rights reserved.</p>
+    </div>
 </footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -581,7 +487,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const proceedBtn = document.getElementById('proceedBtn');
     const errorMessage = document.getElementById('error-message');
 
-    // Update visual selection
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function() {
             const label = this.closest('.interest-option');
@@ -633,4 +538,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-@endsection
+
+</body>
+</html>
