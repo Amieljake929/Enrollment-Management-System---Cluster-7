@@ -1,302 +1,548 @@
 [
   {
     "id": 1,
-    "section": "Business & Management",
-    "strand": "ABM",
-    "question": "Managing budgets, planning events, or running a small business."
+    "category": "flexible_exploratory_learning",
+    "strand": "GAS",
+    "question": "Do you enjoy learning about different academic subjects without focusing on just one field?",
+    "type": "regular"
   },
   {
     "id": 2,
-    "section": "General Academics",
+    "category": "flexible_exploratory_learning",
     "strand": "GAS",
-    "question": "Studying a wide range of subjects like history, psychology, or current events."
+    "question": "Are you good at adapting to various kinds of tasks in math, science, and humanities?",
+    "type": "regular"
   },
   {
     "id": 3,
-    "section": "Culinary Arts",
-    "strand": "HECF",
-    "question": "Cooking, baking, and creating new recipes for family and friends."
+    "category": "flexible_exploratory_learning",
+    "strand": "GAS",
+    "question": "Would you enjoy spending time exploring different subjects, projects, or research?",
+    "type": "regular"
   },
   {
     "id": 4,
-    "section": "Hotel & Hospitality",
-    "strand": "HEHRS",
-    "question": "Welcoming guests, checking them in, and ensuring they have a great experience."
+    "category": "flexible_exploratory_learning",
+    "strand": "GAS",
+    "question": "Do you see yourself pursuing flexible career paths like teaching, management, or communication?",
+    "type": "regular"
   },
   {
     "id": 5,
-    "section": "Hotel Operations",
-    "strand": "HEHO",
-    "question": "Working in a luxury hotel, managing rooms, and serving guests."
+    "category": "flexible_exploratory_learning",
+    "strand": "GAS",
+    "question": "Do you prefer working in an environment that allows variety and flexibility in tasks?",
+    "type": "regular"
   },
   {
     "id": 6,
-    "section": "Tourism & Events",
-    "strand": "HETEM",
-    "question": "Planning tours, organizing festivals, or managing travel itineraries."
+    "category": "business_leadership",
+    "strand": "ABM",
+    "question": "Do you enjoy learning about business, finance, and entrepreneurship?",
+    "type": "regular"
   },
   {
     "id": 7,
-    "section": "Humanities & Social Sciences",
-    "strand": "HUMSS",
-    "question": "Writing stories, debating ideas, or helping others through counseling."
+    "category": "business_leadership",
+    "strand": "ABM",
+    "question": "Are you good at organizing, problem-solving, or analyzing numbers?",
+    "type": "regular"
   },
   {
     "id": 8,
-    "section": "ICT Hardware",
-    "strand": "ICT-HW",
-    "question": "Fixing computers, installing hardware, or setting up networks."
+    "category": "business_leadership",
+    "strand": "ABM",
+    "question": "Would you enjoy spending time making business plans, analyzing cases, or leading group activities?",
+    "type": "regular"
   },
   {
     "id": 9,
-    "section": "ICT Programming",
-    "strand": "ICT-CP",
-    "question": "Creating apps, coding games, or building websites."
+    "category": "business_leadership",
+    "strand": "ABM",
+    "question": "Do you see yourself working in careers related to business, accounting, or management?",
+    "type": "regular"
   },
   {
     "id": 10,
-    "section": "ICT Animation",
-    "strand": "ICT-Animation",
-    "question": "Making animated videos, short films, or digital cartoons."
+    "category": "business_leadership",
+    "strand": "ABM",
+    "question": "Do you prefer working in an environment that involves planning, decision-making, and teamwork?",
+    "type": "regular"
   },
   {
     "id": 11,
-    "section": "ICT Customer Service",
-    "strand": "ICT-CCS",
-    "question": "Helping customers over the phone or chat, solving their problems."
+    "category": "society_people_communication",
+    "strand": "HUMSS",
+    "question": "Do you enjoy learning about society, culture, communication, and people’s behavior?",
+    "type": "regular"
   },
   {
     "id": 12,
-    "section": "ICT Graphics",
-    "strand": "ICT-VisualGraphics",
-    "question": "Designing logos, posters, or social media content using digital tools."
+    "category": "society_people_communication",
+    "strand": "HUMSS",
+    "question": "Are you good at reading, writing, speaking, or analyzing human interactions?",
+    "type": "regular"
   },
   {
     "id": 13,
-    "section": "Science & Technology",
-    "strand": "STEM",
-    "question": "Doing science experiments, solving math problems, or building robots."
+    "category": "society_people_communication",
+    "strand": "HUMSS",
+    "question": "Would you enjoy spending time debating, writing essays, or conducting interviews?",
+    "type": "regular"
   },
   {
     "id": 14,
-    "section": "Maritime Studies",
-    "strand": "STEM-PBM",
-    "question": "Sailing, navigating ships, or studying marine life and ocean science."
+    "category": "society_people_communication",
+    "strand": "HUMSS",
+    "question": "Do you see yourself working in careers like teaching, law, psychology, or journalism?",
+    "type": "regular"
   },
   {
     "id": 15,
-    "section": "Welding",
-    "strand": "SMAW",
-    "question": "Welding metal, building structures, or working with tools and fire."
+    "category": "society_people_communication",
+    "strand": "HUMSS",
+    "question": "Do you prefer working in environments focused on people, communities, and communication?",
+    "type": "regular"
   },
   {
     "id": 16,
-    "section": "Sports & Fitness",
-    "strand": "SPORTS",
-    "question": "Playing sports, training athletes, or staying physically active."
+    "category": "society_people_communication",
+    "strand": "ICT-CCS",
+    "question": "Do you enjoy learning about customer service, communication, and business support?",
+    "type": "regular"
   },
   {
     "id": 17,
-    "section": "Automotive",
-    "strand": "AUTO",
-    "question": "Fixing cars, understanding engines, or upgrading vehicle parts."
+    "category": "society_people_communication",
+    "strand": "ICT-CCS",
+    "question": "Are you good at speaking, problem-solving, and assisting others?",
+    "type": "regular"
   },
   {
     "id": 18,
-    "section": "ICT General",
-    "strand": "ICT",
-    "question": "Learning about technology, digital tools, and how they work."
+    "category": "society_people_communication",
+    "strand": "ICT-CCS",
+    "question": "Would you enjoy spending time talking to customers, answering questions, or resolving issues?",
+    "type": "regular"
   },
   {
     "id": 19,
-    "section": "Home Economics",
-    "strand": "HE",
-    "question": "Sewing, crafting, or designing fashion and home interiors."
+    "category": "society_people_communication",
+    "strand": "ICT-CCS",
+    "question": "Do you see yourself working as a call center agent, customer service rep, or support staff?",
+    "type": "regular"
   },
   {
     "id": 20,
-    "section": "Business Planning",
-    "strand": "ABM",
-    "question": "Creating business plans, tracking expenses, or selling products online."
+    "category": "society_people_communication",
+    "strand": "ICT-CCS",
+    "question": "Do you prefer working in environments that involve interaction and communication with clients?",
+    "type": "regular"
   },
   {
     "id": 21,
-    "section": "Academic Research",
-    "strand": "GAS",
-    "question": "Reading books, researching topics, or writing reports on social issues."
+    "category": "society_people_communication",
+    "strand": "TIE_BREAKER",
+    "question": "Which of the following would you most enjoy doing in your future career?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Analyzing people’s behavior, exploring culture, and communicating ideas through teaching, law, psychology, or journalism (HUMSS)",
+        "strand": "HUMSS"
+      },
+      {
+        "label": "B",
+        "text": "Assisting customers, solving problems, and providing professional support in service-oriented industries (ICT CCS)",
+        "strand": "ICT-CCS"
+      }
+    ],
+    "type": "tie_breaker"
   },
   {
     "id": 22,
-    "section": "Food Services",
-    "strand": "HECF",
-    "question": "Plating dishes, managing a kitchen, or running a food stall."
+    "category": "science_math_innovation",
+    "strand": "STEM",
+    "question": "Do you enjoy learning about science, math, and problem-solving?",
+    "type": "regular"
   },
   {
     "id": 23,
-    "section": "Guest Relations",
-    "strand": "HEHRS",
-    "question": "Handling complaints, managing reservations, or providing excellent service."
+    "category": "science_math_innovation",
+    "strand": "STEM",
+    "question": "Are you good at analyzing data, solving equations, or doing experiments?",
+    "type": "regular"
   },
   {
     "id": 24,
-    "section": "Hotel Management",
-    "strand": "HEHO",
-    "question": "Overseeing staff, managing guest satisfaction, or improving hotel operations."
+    "category": "science_math_innovation",
+    "strand": "STEM",
+    "question": "Would you enjoy spending time working on research, projects, or science investigations?",
+    "type": "regular"
   },
   {
     "id": 25,
-    "section": "Event Coordination",
-    "strand": "HETEM",
-    "question": "Organizing weddings, conferences, or cultural festivals."
+    "category": "science_math_innovation",
+    "strand": "STEM",
+    "question": "Do you see yourself working in careers related to engineering, medicine, or scientific research?",
+    "type": "regular"
   },
   {
     "id": 26,
-    "section": "Social Advocacy",
-    "strand": "HUMSS",
-    "question": "Speaking about justice, leading discussions, or supporting community causes."
+    "category": "science_math_innovation",
+    "strand": "STEM",
+    "question": "Do you prefer working in environments that involve analysis, research, and innovation?",
+    "type": "regular"
   },
   {
     "id": 27,
-    "section": "Hardware Repair",
-    "strand": "ICT-HW",
-    "question": "Opening devices, replacing parts, or troubleshooting technical issues."
+    "category": "science_math_innovation",
+    "strand": "ICT-CP",
+    "question": "Do you enjoy learning about coding, algorithms, and system development?",
+    "type": "regular"
   },
   {
     "id": 28,
-    "section": "Software Development",
+    "category": "science_math_innovation",
     "strand": "ICT-CP",
-    "question": "Debugging code, developing apps, or automating tasks with programming."
+    "question": "Are you good at logical thinking, problem-solving, and creating digital solutions?",
+    "type": "regular"
   },
   {
     "id": 29,
-    "section": "Digital Animation",
-    "strand": "ICT-Animation",
-    "question": "Animating characters, editing videos, or creating motion graphics."
+    "category": "science_math_innovation",
+    "strand": "ICT-CP",
+    "question": "Would you enjoy spending time writing programs, solving coding challenges, or testing apps?",
+    "type": "regular"
   },
   {
     "id": 30,
-    "section": "Call Center Work",
-    "strand": "ICT-CCS",
-    "question": "Answering calls, guiding users, or providing tech support."
+    "category": "science_math_innovation",
+    "strand": "ICT-CP",
+    "question": "Do you see yourself working as a programmer, software developer, or systems analyst?",
+    "type": "regular"
   },
   {
     "id": 31,
-    "section": "Graphic Design",
-    "strand": "ICT-VisualGraphics",
-    "question": "Creating digital art, editing photos, or designing marketing materials."
+    "category": "science_math_innovation",
+    "strand": "ICT-CP",
+    "question": "Do you prefer working in environments focused on innovation and software development?",
+    "type": "regular"
   },
   {
     "id": 32,
-    "section": "Scientific Research",
-    "strand": "STEM",
-    "question": "Conducting lab experiments or exploring space and nature."
+    "category": "science_math_innovation",
+    "strand": "ICT-HW",
+    "question": "Do you enjoy learning about computers, gadgets, and electronics?",
+    "type": "regular"
   },
   {
     "id": 33,
-    "section": "Marine Navigation",
-    "strand": "STEM-PBM",
-    "question": "Using GPS, maps, and instruments to navigate ships at sea."
+    "category": "science_math_innovation",
+    "strand": "ICT-HW",
+    "question": "Are you good at fixing devices, troubleshooting, or assembling computer parts?",
+    "type": "regular"
   },
   {
     "id": 34,
-    "section": "Metal Fabrication",
-    "strand": "SMAW",
-    "question": "Building frames, welding joints, or working on construction projects."
+    "category": "science_math_innovation",
+    "strand": "ICT-HW",
+    "question": "Would you enjoy spending time repairing gadgets or upgrading hardware systems?",
+    "type": "regular"
   },
   {
     "id": 35,
-    "section": "Athletics",
-    "strand": "SPORTS",
-    "question": "Training for competitions, coaching teams, or improving fitness."
+    "category": "science_math_innovation",
+    "strand": "ICT-HW",
+    "question": "Do you see yourself working as a technician, IT support, or hardware specialist?",
+    "type": "regular"
   },
   {
     "id": 36,
-    "section": "Car Mechanics",
-    "strand": "AUTO",
-    "question": "Diagnosing car problems, changing oil, or upgrading performance parts."
+    "category": "science_math_innovation",
+    "strand": "ICT-HW",
+    "question": "Do you prefer working in environments involving technology repair and maintenance?",
+    "type": "regular"
   },
   {
     "id": 37,
-    "section": "Tech Literacy",
-    "strand": "ICT",
-    "question": "Learning about computers, networks, and digital communication."
+    "category": "science_math_innovation",
+    "strand": "TIE_BREAKER",
+    "question": "Which of the following would you most enjoy doing in your future career?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Designing experiments, solving equations, and applying science/math in fields like engineering, medicine, or research (STEM)",
+        "strand": "STEM"
+      },
+      {
+        "label": "B",
+        "text": "Creating programs, coding apps, and developing digital solutions for real-world problems (ICT-CP)",
+        "strand": "ICT-CP"
+      },
+      {
+        "label": "C",
+        "text": "Assembling, repairing, and troubleshooting computers, gadgets, and hardware systems (ICT-HW)",
+        "strand": "ICT-HW"
+      }
+    ],
+    "type": "tie_breaker"
   },
   {
     "id": 38,
-    "section": "Crafting",
-    "strand": "HE",
-    "question": "Making handmade items, designing clothes, or decorating homes."
+    "category": "creativity_design",
+    "strand": "ICT-Animation",
+    "question": "Do you enjoy learning about drawing, graphics, and motion design?",
+    "type": "regular"
   },
   {
     "id": 39,
-    "section": "Entrepreneurship",
-    "strand": "ABM",
-    "question": "Starting a business, managing money, or marketing products."
+    "category": "creativity_design",
+    "strand": "ICT-Animation",
+    "question": "Are you good at creating illustrations, digital art, or storytelling through visuals?",
+    "type": "regular"
   },
   {
     "id": 40,
-    "section": "Philosophy & Ideas",
-    "strand": "GAS",
-    "question": "Thinking deeply about life, ethics, or human behavior."
+    "category": "creativity_design",
+    "strand": "ICT-Animation",
+    "question": "Would you enjoy spending time making animated videos, characters, or graphics?",
+    "type": "regular"
   },
   {
     "id": 41,
-    "section": "Nutrition & Health",
-    "strand": "HECF",
-    "question": "Planning healthy meals, understanding food labels, or teaching cooking."
+    "category": "creativity_design",
+    "strand": "ICT-Animation",
+    "question": "Do you see yourself working as an animator, illustrator, or multimedia artist?",
+    "type": "regular"
   },
   {
     "id": 42,
-    "section": "Hospitality Service",
-    "strand": "HEHRS",
-    "question": "Serving guests at a resort, managing check-ins, or handling bookings."
+    "category": "creativity_design",
+    "strand": "ICT-Animation",
+    "question": "Do you prefer working in creative environments involving design and media production?",
+    "type": "regular"
   },
   {
     "id": 43,
-    "section": "Luxury Stays",
-    "strand": "HEHO",
-    "question": "Working in five-star hotels, managing suites, or spa services."
+    "category": "creativity_design",
+    "strand": "ICT-VisualGraphics",
+    "question": "Do you enjoy learning about design, layouts, and visual creativity?",
+    "type": "regular"
   },
   {
     "id": 44,
-    "section": "Adventure Tourism",
-    "strand": "HETEM",
-    "question": "Guiding hiking trips, scuba diving tours, or eco-travel experiences."
+    "category": "creativity_design",
+    "strand": "ICT-VisualGraphics",
+    "question": "Are you good at using design tools, editing, or creating graphics?",
+    "type": "regular"
   },
   {
     "id": 45,
-    "section": "Public Speaking",
-    "strand": "HUMSS",
-    "question": "Giving speeches, leading debates, or hosting events."
+    "category": "creativity_design",
+    "strand": "ICT-VisualGraphics",
+    "question": "Would you enjoy spending time designing posters, logos, or digital artwork?",
+    "type": "regular"
   },
   {
     "id": 46,
-    "section": "Cybersecurity",
-    "strand": "ICT-HW",
-    "question": "Protecting systems, managing firewalls, or securing data."
+    "category": "creativity_design",
+    "strand": "ICT-VisualGraphics",
+    "question": "Do you see yourself working as a graphic designer, visual artist, or creative media specialist?",
+    "type": "regular"
   },
   {
     "id": 47,
-    "section": "Game Development",
-    "strand": "ICT-CP",
-    "question": "Designing game logic, coding levels, or creating interactive experiences."
+    "category": "creativity_design",
+    "strand": "ICT-VisualGraphics",
+    "question": "Do you prefer working in environments where design and creativity are essential?",
+    "type": "regular"
   },
   {
     "id": 48,
-    "section": "Film Production",
-    "strand": "ICT-Animation",
-    "question": "Shooting videos, editing footage, or producing documentaries."
+    "category": "creativity_design",
+    "strand": "TIE_BREAKER",
+    "question": "Which of the following would you most enjoy doing in your future career?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Bringing characters, stories, and visuals to life through animation and motion design (ICT Animation)",
+        "strand": "ICT-Animation"
+      },
+      {
+        "label": "B",
+        "text": "Designing layouts, logos, posters, and visual branding materials for creative projects (ICT Visual Graphics)",
+        "strand": "ICT-VisualGraphics"
+      }
+    ],
+    "type": "tie_breaker"
   },
   {
     "id": 49,
-    "section": "Customer Support",
-    "strand": "ICT-CCS",
-    "question": "Responding to emails, managing live chats, or solving user issues."
+    "category": "hospitality_food_tourism",
+    "strand": "HECF",
+    "question": "Do you enjoy learning about cooking, food preparation, and culinary arts?",
+    "type": "regular"
   },
   {
     "id": 50,
-    "section": "Digital Marketing",
-    "strand": "ICT-VisualGraphics",
-    "question": "Running social media ads, designing banners, or analyzing engagement."
+    "category": "hospitality_food_tourism",
+    "strand": "HECF",
+    "question": "Are you good at following recipes, experimenting with flavors, or presenting dishes?",
+    "type": "regular"
+  },
+  {
+    "id": 51,
+    "category": "hospitality_food_tourism",
+    "strand": "HECF",
+    "question": "Would you enjoy spending time in the kitchen preparing meals or running food-related projects?",
+    "type": "regular"
+  },
+  {
+    "id": 52,
+    "category": "hospitality_food_tourism",
+    "strand": "HECF",
+    "question": "Do you see yourself working in careers like chef, cook, or food entrepreneur?",
+    "type": "regular"
+  },
+  {
+    "id": 53,
+    "category": "hospitality_food_tourism",
+    "strand": "HECF",
+    "question": "Do you prefer working in an environment like kitchens, restaurants, or food labs?",
+    "type": "regular"
+  },
+  {
+    "id": 54,
+    "category": "hospitality_food_tourism",
+    "strand": "HEHRS",
+    "question": "Do you enjoy learning about hospitality, food service, and customer care?",
+    "type": "regular"
+  },
+  {
+    "id": 55,
+    "category": "hospitality_food_tourism",
+    "strand": "HEHRS",
+    "question": "Are you good at communicating with people, assisting guests, or organizing service tasks?",
+    "type": "regular"
+  },
+  {
+    "id": 56,
+    "category": "hospitality_food_tourism",
+    "strand": "HEHRS",
+    "question": "Would you enjoy spending time serving food, assisting in restaurants, or helping guests in hotels?",
+    "type": "regular"
+  },
+  {
+    "id": 57,
+    "category": "hospitality_food_tourism",
+    "strand": "HEHRS",
+    "question": "Do you see yourself working in careers related to hotels, restaurants, or food service industries?",
+    "type": "regular"
+  },
+  {
+    "id": 58,
+    "category": "hospitality_food_tourism",
+    "strand": "HEHRS",
+    "question": "Do you prefer working in environments that involve customer interaction, food service, and hospitality?",
+    "type": "regular"
+  },
+  {
+    "id": 59,
+    "category": "hospitality_food_tourism",
+    "strand": "HEHO",
+    "question": "Do you enjoy learning about hotel management, housekeeping, and guest services?",
+    "type": "regular"
+  },
+  {
+    "id": 60,
+    "category": "hospitality_food_tourism",
+    "strand": "HEHO",
+    "question": "Are you good at organizing spaces, maintaining cleanliness, or providing customer assistance?",
+    "type": "regular"
+  },
+  {
+    "id": 61,
+    "category": "hospitality_food_tourism",
+    "strand": "HEHO",
+    "question": "Would you enjoy spending time managing hotel rooms, ensuring orderliness, or assisting in hotel operations?",
+    "type": "regular"
+  },
+  {
+    "id": 62,
+    "category": "hospitality_food_tourism",
+    "strand": "HEHO",
+    "question": "Do you see yourself working in careers related to hotel operations, lodging management, or housekeeping?",
+    "type": "regular"
+  },
+  {
+    "id": 63,
+    "category": "hospitality_food_tourism",
+    "strand": "HEHO",
+    "question": "Do you prefer working in environments that involve hospitality management, organization, and service?",
+    "type": "regular"
+  },
+  {
+    "id": 64,
+    "category": "hospitality_food_tourism",
+    "strand": "HETEM",
+    "question": "Do you enjoy learning about tourism, events planning, and travel services?",
+    "type": "regular"
+  },
+  {
+    "id": 65,
+    "category": "hospitality_food_tourism",
+    "strand": "HETEM",
+    "question": "Are you good at organizing activities, assisting people, and handling responsibilities?",
+    "type": "regular"
+  },
+  {
+    "id": 66,
+    "category": "hospitality_food_tourism",
+    "strand": "HETEM",
+    "question": "Would you enjoy spending time planning tours, creating itineraries, or managing events?",
+    "type": "regular"
+  },
+  {
+    "id": 67,
+    "category": "hospitality_food_tourism",
+    "strand": "HETEM",
+    "question": "Do you see yourself working in careers related to tourism, events, or travel agencies?",
+    "type": "regular"
+  },
+  {
+    "id": 68,
+    "category": "hospitality_food_tourism",
+    "strand": "HETEM",
+    "question": "Do you prefer working in an environment that involves travel, events, and customer service?",
+    "type": "regular"
+  },
+  {
+    "id": 69,
+    "category": "hospitality_food_tourism",
+    "strand": "TIE_BREAKER",
+    "question": "Which of the following would you most enjoy doing in your future career?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Preparing meals, experimenting with flavors, and building a career in the culinary arts (HECF)",
+        "strand": "HECF"
+      },
+      {
+        "label": "B",
+        "text": "Assisting guests, serving food, and providing excellent hospitality in hotels and restaurants (HEHRS)",
+        "strand": "HEHRS"
+      },
+      {
+        "label": "C",
+        "text": "Managing hotel rooms, ensuring cleanliness, and organizing hotel operations (HEHO)",
+        "strand": "HEHO"
+      },
+      {
+        "label": "D",
+        "text": "Planning tours, organizing events, and creating memorable travel experiences (HETEM)",
+        "strand": "HETEM"
+      }
+    ],
+    "type": "tie_breaker"
   }
 ]

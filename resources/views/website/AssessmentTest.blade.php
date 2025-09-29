@@ -454,7 +454,7 @@
                     <a href="{{ route('college.info.test') }}" class="btn btn-primary-custom modal-btn w-100">
                         College Assessment
                     </a>
-                    <a href="{{ route('shs.quiz') }}" class="btn btn-outline-secondary modal-btn w-100" disabled>
+                    <a href="{{ route('shs.info.test') }}" class="btn btn-outline-secondary modal-btn w-100" disabled>
                         SHS Assessment
                     </a>
                 </div>

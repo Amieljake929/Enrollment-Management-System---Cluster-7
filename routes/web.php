@@ -37,14 +37,16 @@ Route::get('/college-quiz', function () {
     return view('website.CollegeQuiz');
 })->name('college.quiz');
 
-Route::get('/shs-quiz', function () {
-    return view('website.ShsQuiz');
-})->name('shs.quiz');
+Route::get('/quiz', [QuizController::class, 'showShsQuiz'])->name('quiz.show');
 
 // ✅ New: College Info Test Page
 Route::get('/college-info-test', function () {
     return view('website.CollegeInfoTest');
 })->name('college.info.test');
+
+Route::get('/shs-info-test', function () {
+    return view('website.ShsInfoTest');
+})->name('shs.info.test');
 
 // 🔹 Enrollment Modal Pages
 // ✅ Use Controller to pass required data
@@ -74,9 +76,16 @@ Route::post('/college/quiz', [CollegeQuizController::class, 'submit'])->name('co
 Route::get('/college/info', [CollegeAssessmentController::class, 'showInfoForm'])->name('college.info.form');
 Route::post('/college/info/submit', [CollegeAssessmentController::class, 'submitInfo'])->name('college.info.submit');
 Route::get('/college/welcome', [CollegeAssessmentController::class, 'showWelcome'])->name('college.welcome');
+// SHS Assessment Flow
+Route::get('/shs/info', [CollegeAssessmentController::class, 'showShsInfoForm'])->name('shs.info.form');
+Route::post('/shs/info/submit', [CollegeAssessmentController::class, 'submitShsInfo'])->name('shs.info.submit');
+Route::get('/shs/welcome', [CollegeAssessmentController::class, 'showShsWelcome'])->name('shs.welcome');
 
 // Add this AFTER existing College Assessment Flow routes
 Route::post('/college/interests/submit', [CollegeQuizController::class, 'submitInterests'])->name('college.interests.submit');
+// SHS Interest Submission (after SHS Welcome route)
+Route::post('/shs/interests/submit', [QuizController::class, 'submitInterests'])->name('shs.interests.submit');
+
 
 // ===================================================
 // === 📝 COLLEGE ENROLLMENT ROUTES ===

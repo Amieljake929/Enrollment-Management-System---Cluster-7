@@ -30,11 +30,73 @@ class QuizController extends Controller
         'HE' => 'Home Economics',
     ];
 
-    public function showQuiz()
+    // ✅ NEW: Submit Interests from ShsWelcome
+    public function submitInterests(Request $request)
     {
-        return view('website.ShsQuiz');
+        $request->validate([
+            'interests' => 'required|array|size:2',
+            // ✅ NO SPACES after commas!
+            'interests.*' => 'string|in:flexible_exploratory_learning,business_leadership,society_people_communication,science_math_innovation,creativity_design,hospitality_food_tourism'
+        ]);
+
+        session(['shs_selected_interests' => $request->input('interests')]);
+        return response()->json(['success' => true]);
     }
 
+    // ✅ UPDATED: Show Quiz — now filters by selected interests
+    public function showQuiz()
+    {
+        if (!session()->has('shs_selected_interests')) {
+            return redirect()->route('shs.welcome')->with('error', 'Please select your interests first.');
+        }
+
+        $selectedInterests = session('shs_selected_interests');
+
+        // ✅ Define $normalizedMap correctly
+        $normalizedMap = [
+            'Flexible & Exploratory Leaning' => 'flexible_exploratory_learning',
+            'Business & Leadership' => 'business_leadership',
+            'Society, People & Communication' => 'society_people_communication',
+            'Science, Math & Innovation' => 'science_math_innovation',
+            'Creativity & Design' => 'creativity_design',
+            'Hospitality, Food & Tourism' => 'hospitality_food_tourism',
+        ];
+
+        $normalizedSelected = [];
+        foreach ($selectedInterests as $interest) {
+            // ✅ But wait — if you use underscore values in Blade, no need to normalize!
+            // So better: assume $selectedInterests are already underscored
+            $normalizedSelected[] = $interest;
+        }
+
+        $questionsPath = public_path('data/quiz_questions.json');
+        if (!file_exists($questionsPath)) {
+            Log::error('Quiz questions JSON not found at: ' . $questionsPath);
+            return back()->with('error', 'Quiz configuration is missing.');
+        }
+
+        $allQuestions = json_decode(file_get_contents($questionsPath), true);
+
+        // ✅ Filter questions by selected categories (now underscored)
+        $filteredQuestions = array_filter($allQuestions, function ($q) use ($normalizedSelected) {
+            return in_array($q['category'], $normalizedSelected);
+        });
+
+        // Optional: Group by strand for better UX
+        $groupedQuestions = [];
+        foreach ($filteredQuestions as $q) {
+            $groupedQuestions[$q['strand']][] = $q;
+        }
+
+        return view('website.ShsQuiz', [
+            'questions' => $filteredQuestions,
+            'groupedQuestions' => $groupedQuestions,
+            'selectedInterests' => $selectedInterests,
+            'allStrands' => $this->allStrands,
+        ]);
+    }
+
+    // ✅ UPDATED: Submit Quiz — new scoring + tie breaker + better confidence
     public function submit(Request $request)
     {
         $answers = $request->input('answers');
@@ -50,26 +112,34 @@ class QuizController extends Controller
 
         $questions = json_decode(file_get_contents($questionsPath), true);
 
-        // Tally with weighted scoring
         $strandTally = array_fill_keys(array_keys($this->allStrands), 0);
 
+        // ✅ NEW SCORING: 5,4,3,2
         $interestMap = [
-            'very_interested' => 3,
-            'interested' => 2,
-            'slightly_interested' => 1,
-            'not_interested' => 0,
+            'very_interested' => 5,
+            'slightly_interested' => 4,
+            'interested' => 3,
+            'not_interested' => 2,
         ];
 
         foreach ($answers as $qId => $interestLevel) {
             $question = collect($questions)->firstWhere('id', (int)$qId);
             if (!$question) continue;
 
-            $strand = $question['strand'];
-            $points = $interestMap[$interestLevel] ?? 0;
-            $strandTally[$strand] += $points;
+            if ($question['type'] === 'tie_breaker') {
+                $selectedStrand = $interestLevel;
+                if (isset($strandTally[$selectedStrand])) {
+                    $strandTally[$selectedStrand] += 5;
+                }
+            } else {
+                $strand = $question['strand'];
+                $points = $interestMap[$interestLevel] ?? 2;
+                if (isset($strandTally[$strand])) {
+                    $strandTally[$strand] += $points;
+                }
+            }
         }
 
-        // Remove zero-score strands
         $strandTally = array_filter($strandTally, fn($score) => $score > 0);
 
         if (empty($strandTally)) {
@@ -77,72 +147,58 @@ class QuizController extends Controller
         }
 
         arsort($strandTally);
-        $topStrands = array_keys(array_slice($strandTally, 0, 3)); // Top 3 only
-        $localBest = $topStrands[0];
-        $localBestScore = $strandTally[$localBest];
+        $topStrands = array_keys(array_slice($strandTally, 0, 3));
         $total = array_sum($strandTally);
 
-        // === Generate Rich Narrative for AI ===
         $narrative = $this->generateRichNarrative($strandTally, $total);
 
-        // === Input for Hugging Face API ===
         $profile = "Student Profile: $narrative The student's top aligned tracks are: " . implode(', ', $topStrands) . ". Based on their interests, which of these is the best fit?";
 
         $apiResults = [];
         $rawScores = [];
 
-        $hfApiKey = env('HUGGINGFACE_API_KEY'); // ✅ secure best practice
-        if ($hfApiKey) {
-            try {
-                $response = Http::withHeaders([
-                    'Authorization' => 'Bearer ' . $hfApiKey,
-                ])->timeout(30)->post('https://api-inference.huggingface.co/models/facebook/bart-large-mnli', [
-                    'inputs' => $profile,
-                    'parameters' => [
-                        'candidate_labels' => $topStrands,
-                        'hypothesis_template' => 'The student\'s interests, strengths, and responses strongly indicate they are best suited for the {} strand.',
-                        'multi_label' => false,
-                    ],
-                ]);
+        try {
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . config('services.huggingface.api_key'),
+            ])->timeout(30)->post('https://api-inference.huggingface.co/models/facebook/bart-large-mnli', [ // ✅ No trailing space
+                'inputs' => $profile,
+                'parameters' => [
+                    'candidate_labels' => $topStrands,
+                    'hypothesis_template' => 'The student\'s interests, strengths, and responses strongly indicate they are best suited for the {} strand.',
+                    'multi_label' => false,
+                ],
+            ]);
 
-                $result = $response->json();
-                if (isset($result['labels']) && isset($result['scores'])) {
-                    $apiResults = array_combine($result['labels'], $result['scores']);
-                    arsort($apiResults);
-                    $rawScores = $apiResults;
-                }
-            } catch (\Exception $e) {
-                Log::warning('Hugging Face API failed: ' . $e->getMessage());
+            $result = $response->json();
+            if (isset($result['labels']) && isset($result['scores'])) {
+                $apiResults = array_combine($result['labels'], $result['scores']);
+                arsort($apiResults);
+                $rawScores = $apiResults;
             }
-        } else {
-            Log::warning('Hugging Face API Key not set in .env');
+        } catch (\Exception $e) {
+            Log::warning('Hugging Face API failed: ' . $e->getMessage());
         }
 
-        // === FINAL TOP 3 WITH CONFIDENCE ===
         $finalRecommendations = [];
 
         foreach ($topStrands as $idx => $strand) {
-            $localScore = $strandTally[$strand];
+            $localScore = round($strandTally[$strand], 2);
             $dominance = $localScore / $total;
 
-            // Base confidence: from AI if available, else from local dominance + score gap
             if (isset($rawScores[$strand])) {
-                $confidence = 50 + ($rawScores[$strand] * 50); // 50–100%
+                $confidence = 50 + ($rawScores[$strand] * 50);
             } else {
-                // Fallback: use local dominance and gap from next
-                $nextScore = $idx + 1 < count($topStrands) ? $strandTally[$topStrands[$idx + 1]] : 0;
-                $gap = $localScore - $nextScore;
-
-                if ($dominance > 0.5 && $gap >= 5) {
-                    $confidence = 85 + mt_rand(0, 10);
-                } elseif ($dominance > 0.4 && $gap >= 3) {
-                    $confidence = 75 + mt_rand(0, 8);
-                } else {
-                    $confidence = 65 + mt_rand(0, 7);
-                }
+                $baseConfidence = match($idx) {
+                    0 => 90,
+                    1 => 80,
+                    2 => 70,
+                    default => 60
+                };
+                $bonus = min(15, ($dominance * 30));
+                $confidence = $baseConfidence + $bonus + mt_rand(0, 2);
+                $confidence = round(min(98, $confidence), 2);
+                // ❌ NO max(60) — allow real scores
             }
-
-            $confidence = round(max(60, min(98, $confidence)), 2);
 
             $finalRecommendations[] = [
                 'strand' => $strand,
@@ -153,23 +209,19 @@ class QuizController extends Controller
             ];
         }
 
-        // Sort by confidence (in case AI reordered)
-        usort($finalRecommendations, function ($a, $b) {
-            return $b['confidence'] <=> $a['confidence'];
-        });
-
         return view('website.ShsQuizResult', [
             'recommendations' => $finalRecommendations,
-            'localScores'       => $strandTally,
-            'totalScore'        => $total,
-            'narrative'         => $narrative,
+            'localScores' => $strandTally,
+            'totalScore' => $total,
+            'narrative' => $narrative,
+            'allStrands' => $this->allStrands,
         ]);
     }
 
     private function generateRichNarrative($tally, $total)
     {
         arsort($tally);
-        $top3 = array_slice($tally, 0, 3);
+        $top3 = array_slice($tally, 0, 3, true);
 
         $parts = [];
         foreach ($top3 as $strand => $score) {
@@ -178,8 +230,6 @@ class QuizController extends Controller
         }
 
         $topStrand = key($top3);
-        $dominance = $top3[$topStrand] / $total;
-
         $baseNarratives = [
             'HUMSS' => "enjoys writing, debating, understanding people, and exploring social issues",
             'GAS' => "has broad academic interests and enjoys learning across subjects",
@@ -193,7 +243,6 @@ class QuizController extends Controller
         ];
 
         $interestDesc = $baseNarratives[$topStrand] ?? $baseNarratives['GAS'];
-
         return "The student scored highest in " . implode(', ', $parts) . ". "
             . "They $interestDesc. "
             . "Their strongest alignment is with $topStrand, which received the most points from their answers. "
