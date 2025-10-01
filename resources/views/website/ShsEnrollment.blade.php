@@ -371,14 +371,16 @@
           <div class="card-body p-4 p-md-5">
             <!-- Stepper -->
             <div id="stepper" class="stepper">
-              <div class="step active" data-step="1">Step 1: Student Info</div>
-              <div class="step disabled" data-step="2">Step 2: Address</div>
-              <div class="step disabled" data-step="3">Step 3: Parents Info</div>
-              <div class="step disabled" data-step="4">Step 4: Preferences</div>
-              <div class="step disabled" data-step="5">Step 5: Backgrounds</div>
-              <div class="step disabled" data-step="6">Step 6: Documents</div>
-              <div class="step disabled" data-step="7">Step 7: Summary</div>
-            </div>
+  <div class="step active" data-step="1">Step 1: Student Info</div>
+  <div class="step disabled" data-step="2">Step 2: Address</div>
+  <div class="step disabled" data-step="3">Step 3: Parents Info</div>
+  <div class="step disabled" data-step="4">Step 4: Health Info</div>
+  <div class="step disabled" data-step="5">Step 5: Preferences</div>
+  <div class="step disabled" data-step="6">Step 6: Backgrounds</div>
+  <div class="step disabled" data-step="7">Step 7: Documents</div>
+  <div class="step disabled" data-step="8">Step 8: How did you hear about us?</div>
+  <div class="step disabled" data-step="9">Step 9: Summary</div>
+</div>
             <!-- FORM -->
             <form id="registrationForm" novalidate>
               @csrf
@@ -855,9 +857,55 @@
                   </div>
                 </div>
               </section>
-              <!-- STEP 4 -->
-              <section class="form-section" data-step="4">
-                <h3 class="stepper-header mb-4">Step 4: Preferences</h3>
+
+              <!-- STEP 4: Health Info -->
+<section class="form-section" data-step="4">
+  <h3 class="stepper-header mb-4">Step 4: Health Information</h3>
+  <div class="row g-3">
+    <div class="col-12">
+      <label class="form-label">Do you have any of the following medical conditions?<span class="required-star">*</span></label>
+      <div class="row">
+        @php
+          $conditions = [
+            'Asthma', 'Allergies', 'Heart Disease', 'Hypertension',
+            'Diabeties Type 2', 'Kidney Disease', 'Pneumonia', 'Tuberculosis',
+            'Bleeding Disorders', 'Psychiatric Disorder', 'Cancer', 'Others'
+          ];
+        @endphp
+        @foreach($conditions as $cond)
+          <div class="col-md-6 col-lg-4 mb-2">
+            <div class="form-check">
+              <input class="form-check-input health-condition" type="radio" name="healthCondition" id="cond{{ str_replace(' ', '', $cond) }}" value="{{ $cond }}" required>
+              <label class="form-check-label" for="cond{{ str_replace(' ', '', $cond) }}">
+                {{ $cond }}
+              </label>
+            </div>
+          </div>
+        @endforeach
+      </div>
+      <div class="invalid-feedback d-block" id="healthConditionFeedback">Please select a condition.</div>
+    </div>
+
+    <div class="col-md-12" id="othersField" style="display: none;">
+      <label for="healthConditionOthers" class="form-label">Please specify the condition:</label>
+      <input type="text" class="form-control" id="healthConditionOthers" name="healthConditionOthers" placeholder="e.g., Epilepsy, Arthritis, etc." />
+    </div>
+
+    <div class="col-md-6">
+      <label for="weightKg" class="form-label">Weight (kg)<span class="required-star">*</span></label>
+      <input type="number" step="0.01" min="0" max="300" class="form-control" id="weightKg" name="weightKg" required />
+      <div class="invalid-feedback">Please enter your weight in kilograms.</div>
+    </div>
+    <div class="col-md-6">
+      <label for="heightCm" class="form-label">Height (cm)<span class="required-star">*</span></label>
+      <input type="number" step="0.01" min="0" max="300" class="form-control" id="heightCm" name="heightCm" required />
+      <div class="invalid-feedback">Please enter your height in centimeters.</div>
+    </div>
+  </div>
+</section>
+              <!-- STEP 5 -->
+              <section class="form-section" data-step="5">
+                <h3 class="stepper-header mb-4">Step 5: Preferences</h3>
                 <div class="row g-3">
                   <div class="col-md-6">
                     <label for="preferredBranch" class="form-label">
@@ -899,9 +947,9 @@
                   </div>
                 </div>
               </section>
-              <!-- STEP 5 -->
-              <section class="form-section" data-step="5">
-                <h3 class="stepper-header mb-4">Step 5: Educational Background</h3>
+              <!-- STEP 6 -->
+              <section class="form-section" data-step="6">
+                <h3 class="stepper-header mb-4">Step 6: Educational Background</h3>
                 <div class="row g-3">
                   <div class="col-md-6">
                     <label for="primarySchool" class="form-label">
@@ -966,7 +1014,7 @@
                 </div>
               </section>
               <!-- STEP 6 -->
-              <section class="form-section" data-step="6">
+              <section class="form-section" data-step="7">
                 <h3 class="stepper-header mb-4">Step 6: Softcopy of Document Submission</h3>
                 <p class="mb-4 text-muted">Please upload clear and legible scanned copies of the following required documents. Acceptable formats: PDF, JPG, PNG (max 5MB each).</p>
                 <div id="documentUploadList">
@@ -981,22 +1029,52 @@
                   </div>
                 </div>
               </section>
-              <!-- STEP 7 -->
-              <section class="form-section" data-step="7">
-                <h3 class="stepper-header mb-4">Step 7: Summary</h3>
-                <div class="alert alert-info mb-4">
-                  <strong><i class="fas fa-info-circle me-2"></i>Please review your information carefully before submitting.</strong>
-                </div>
-                <div id="summaryContent" class="mb-4">
-                  <!-- Populated by JS -->
-                </div>
-                <div class="form-check mb-4">
-                  <input class="form-check-input" type="checkbox" id="agreement" required>
-                  <label class="form-check-label" for="agreement">
-                    I certify that the information provided is true and correct to the best of my knowledge.
-                  </label>
-                </div>
-              </section>
+
+              <!-- STEP 8: Referral -->
+<section class="form-section" data-step="8">
+  <h3 class="stepper-header mb-4">Step 8: How did you hear about our school?</h3>
+  <div class="row g-3">
+    <div class="col-md-12">
+      <label for="referralSource" class="form-label">Referral Source<span class="required-star">*</span></label>
+      <select class="form-select" id="referralSource" name="referralSource" required>
+        <option value="" selected disabled>Select an option</option>
+        <option value="Social Media Account">Social Media Account</option>
+        <option value="Adviser/Referral/Others">Adviser/Referral/Others</option>
+        <option value="Walk-in/No Referral">Walk-in/No Referral</option>
+      </select>
+      <div class="invalid-feedback">Please select how you heard about us.</div>
+    </div>
+
+    <div class="col-md-6" id="referralNameField" style="display: none;">
+      <label for="referralName" class="form-label">Referral Name</label>
+      <input type="text" class="form-control" id="referralName" name="referralName" placeholder="e.g., Mrs. Dela Cruz" />
+    </div>
+    <div class="col-md-6" id="referralRelationField" style="display: none;">
+      <label for="referralRelation" class="form-label">Referral Relation</label>
+      <input type="text" class="form-control" id="referralRelation" name="referralRelation" placeholder="e.g., Former Teacher, Friend, etc." />
+    </div>
+  </div>
+</section>
+              <!-- STEP 9 -->
+<section class="form-section" data-step="9">
+  <h3 class="stepper-header mb-4">Step 9: Summary</h3>
+  <div class="alert alert-info mb-4">
+    <strong><i class="fas fa-info-circle me-2"></i>Please review your information carefully before submitting.</strong>
+  </div>
+  <div id="summaryContent" class="mb-4">
+    <!-- Populated by JS -->
+  </div>
+  <div class="form-check mb-4">
+    <input class="form-check-input" type="checkbox" id="agreement" required>
+    <label class="form-check-label" for="agreement">
+      I certify that the information provided is true and correct to the best of my knowledge.
+    </label>
+  </div>
+  <p class="text-muted small">
+    By continuing, you agree that your information will only be used for assessment and recommendation purposes.
+    For more details, please see our <a href="#" data-bs-toggle="modal" data-bs-target="#privacyPolicyModal" class="text-decoration-underline">[Privacy Policy]</a>.
+  </p>
+</section>
               <!-- Navigation Buttons -->
               <div class="d-flex justify-content-between mt-4">
                 <button type="button" class="btn btn-secondary" id="prevBtn" disabled>
@@ -1258,7 +1336,7 @@
         }
       });
       // Validate years and order
-      if (index === 4) { // Step 5: Educational Background
+      if (index === 5) { // Step 6: Educational Background
         const primaryYear = parseInt(document.getElementById('primaryYearGraduated').value);
         const secondaryYear = parseInt(document.getElementById('secondaryYearGraduated').value);
         const lastSchoolYear = parseInt(document.getElementById('lastSchoolYearGraduated').value);
@@ -1279,7 +1357,7 @@
         }
       }
       // Validate documents
-      if (index === 5) {
+      if (index === 6) {
         const fileInputs = document.querySelectorAll('#documentUploadList input[type="file"]');
         fileInputs.forEach(input => {
           if (!input.files || input.files.length === 0) {
@@ -1350,51 +1428,60 @@
       document.getElementById('summaryContent').innerHTML = html;
     }
     nextBtn.addEventListener('click', function () {
-      if (validateStep(currentStep)) {
-        if (currentStep < steps.length - 1) {
-          showStep(currentStep + 1);
-          if (currentStep === 6) {
-            populateSummary();
-          }
-        } else {
-          const formData = new FormData(form);
-          nextBtn.disabled = true;
-          nextBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
-          fetch(SUBMIT_ENROLLMENT_URL, {
-            method: 'POST',
-            body: formData,
-            headers: {
-              'X-Requested-With': 'XMLHttpRequest'
-            },
-            credentials: 'same-origin'
-          })
-          .then(response => {
-            if (!response.ok) {
-              return response.json().then(data => {
-                throw new Error(data.message || 'Submission failed');
-              });
-            }
-            return response.json();
-          })
-          .then(data => {
-            if (data.success) {
-              window.location.href = data.redirect;
-            } else {
-              alert(data.message || 'Submission failed');
-            }
-          })
-          .catch(error => {
-            alert(error.message || 'An error occurred during submission.');
-          })
-          .finally(() => {
-            nextBtn.disabled = false;
-            nextBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
+  if (validateStep(currentStep)) {
+    // Special validation for Step 9: agreement checkbox
+    if (currentStep === steps.length - 1) {
+      const agreementChecked = document.getElementById('agreement').checked;
+      if (!agreementChecked) {
+        alert('Please agree to the certification and privacy terms to proceed.');
+        return;
+      }
+    }
+
+    if (currentStep < steps.length - 1) {
+      showStep(currentStep + 1);
+      if (currentStep === 6) {
+        populateSummary();
+      }
+    } else {
+      const formData = new FormData(form);
+      nextBtn.disabled = true;
+      nextBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+      fetch(SUBMIT_ENROLLMENT_URL, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        credentials: 'same-origin'
+      })
+      .then(response => {
+        if (!response.ok) {
+          return response.json().then(data => {
+            throw new Error(data.message || 'Submission failed');
           });
         }
-      } else {
-        alert('Please fill all required fields correctly.');
-      }
-    });
+        return response.json();
+      })
+      .then(data => {
+        if (data.success) {
+          window.location.href = data.redirect;
+        } else {
+          alert(data.message || 'Submission failed');
+        }
+      })
+      .catch(error => {
+        alert(error.message || 'An error occurred during submission.');
+      })
+      .finally(() => {
+        nextBtn.disabled = false;
+        nextBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
+      });
+    }
+  } else {
+    alert('Please fill all required fields correctly.');
+  }
+});
     prevBtn.addEventListener('click', function () {
       if (currentStep > 0) {
         showStep(currentStep - 1);
@@ -1406,6 +1493,46 @@
       updateDocumentUploadList();
     }
     showStep(0);
+
+    // >>>>>>>>>> ADD THESE LINES HERE <<<<<<<<<<
+// Health condition "Others" toggle
+const healthConditionInputs = document.querySelectorAll('.health-condition');
+healthConditionInputs.forEach(input => {
+  input.addEventListener('change', () => {
+    const othersField = document.getElementById('othersField');
+    if (input.value === 'Others') {
+      othersField.style.display = 'block';
+      document.getElementById('healthConditionOthers').setAttribute('required', 'required');
+    } else {
+      othersField.style.display = 'none';
+      document.getElementById('healthConditionOthers').removeAttribute('required');
+      document.getElementById('healthConditionOthers').value = '';
+    }
+  });
+});
+
+// Referral source toggle
+const referralSource = document.getElementById('referralSource');
+if (referralSource) {
+  referralSource.addEventListener('change', () => {
+    const nameField = document.getElementById('referralNameField');
+    const relationField = document.getElementById('referralRelationField');
+    if (referralSource.value === 'Adviser/Referral/Others') {
+      nameField.style.display = 'block';
+      relationField.style.display = 'block';
+      document.getElementById('referralName').setAttribute('required', 'required');
+      document.getElementById('referralRelation').setAttribute('required', 'required');
+    } else {
+      nameField.style.display = 'none';
+      relationField.style.display = 'none';
+      document.getElementById('referralName').removeAttribute('required');
+      document.getElementById('referralRelation').removeAttribute('required');
+      document.getElementById('referralName').value = '';
+      document.getElementById('referralRelation').value = '';
+    }
+  });
+}
+// >>>>>>>>>> END OF NEW CODE <<<<<<<<<<
   })();
   </script>
 
@@ -1419,5 +1546,59 @@
     });
   });
 </script>
+
+
+
+
+<!-- Privacy Policy Modal -->
+<div class="modal fade" id="privacyPolicyModal" tabindex="-1" aria-labelledby="privacyPolicyModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="privacyPolicyModalLabel">Privacy Policy</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>We value your privacy and are committed to protecting your personal data in compliance with the Data Privacy Act of 2012 (RA 10173). By taking this assessment, you agree to the collection and use of your information as described below.</p>
+
+        <h6>1. Information We Collect</h6>
+        <ul>
+          <li><strong>Username</strong> – for record identification.</li>
+          <li><strong>Email Address</strong> – to send you a copy of your results and for official communication.</li>
+          <li><strong>Assessment Answers and Results</strong> – to generate recommendations and evaluate if the AI system suggested the right course or strand.</li>
+        </ul>
+
+        <h6>2. How We Use Your Information</h6>
+        <ul>
+          <li>To provide your personalized course/strand recommendations.</li>
+          <li>To email you a copy of your results.</li>
+          <li>To analyze data for research and system improvement.</li>
+          <li>To maintain records for enrollment-related purposes.</li>
+        </ul>
+
+        <h6>3. Data Retention</h6>
+        <p>Your personal information (username, email, answers, results) will be retained for up to 1 year or until it is no longer necessary for the purposes stated. You may request deletion of your data at any time by contacting us.</p>
+
+        <h6>4. Data Sharing</h6>
+        <p>We do not sell, rent, or share your data with third parties. Your information will only be accessed by authorized school personnel for academic and system-related purposes.</p>
+
+        <h6>5. Your Rights as a Data Subject</h6>
+        <p>Under the Data Privacy Act, you have the right to:</p>
+        <ul>
+          <li>Access your personal data.</li>
+          <li>Request correction of inaccuracies.</li>
+          <li>Request deletion of your data.</li>
+          <li>Withdraw consent at any time.</li>
+        </ul>
+
+        <h6>6. Data Security</h6>
+        <p>We implement technical and organizational measures to protect your information from unauthorized access, loss, or misuse.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

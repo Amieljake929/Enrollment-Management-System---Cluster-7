@@ -1,4 +1,4 @@
-@extends('layouts.web')
+@extends('layouts.assessment')
 
 @section('content')
 <div class="container-fluid py-5">

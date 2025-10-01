@@ -12,6 +12,8 @@ use App\Models\CollegeDocument;
 use App\Models\CollegeShsIndigenous;
 use App\Models\CollegeShsDisability;
 use App\Models\CollegeEnrolleeNumber;
+use App\Models\CollegeHealth;
+use App\Models\CollegeReferral;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
@@ -68,6 +70,13 @@ class EnrollmentController extends Controller
             'indigenous' => 'required|exists:college_shs_indigenous,indigenous_id',
             'disability' => 'required|exists:college_shs_disability,disability_id',
             'documents.*' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120', // 5MB max per file
+             'healthCondition' => 'required|in:Asthma,Allergies,Heart Disease,Hypertension,Diabeties Type 2,Kidney Disease,Pneumonia,Tuberculosis,Bleeding Disorders,Psychiatric Disorder,Cancer,Others',
+             'weightKg' => 'required|numeric|min:0|max:300',
+             'heightCm' => 'required|numeric|min:0|max:300',
+             'referralSource' => 'required|in:Social Media Account,Adviser/Referral/Others,Walk-in/No Referral',
+             'healthConditionOthers' => 'nullable|required_if:healthCondition,Others|string|max:255',
+'referralName' => 'nullable|required_if:referralSource,Adviser/Referral/Others|string|max:100',
+'referralRelation' => 'nullable|required_if:referralSource,Adviser/Referral/Others|string|max:100',
         ], [
             'indigenous.required' => 'Please select an Indigenous group.',
             'disability.required' => 'Please select a Disability type.',
@@ -121,6 +130,15 @@ class EnrollmentController extends Controller
                 'disability_id' => $request->disability,
             ]);
 
+            // 2.5 Save Health Info
+CollegeHealth::create([
+    'student_id' => $student->student_id,
+    'condition_type' => $request->healthCondition,
+    'condition' => $request->healthCondition === 'Others' ? $request->healthConditionOthers : null,
+    'weight_kg' => $request->weightKg,
+    'height_cm' => $request->heightCm,
+]);
+
             // 2. Save Parents
             foreach (['Mother', 'Father'] as $parentType) {
                 $prefix = $parentType === 'Mother' ? 'mother' : 'father';
@@ -167,6 +185,14 @@ class EnrollmentController extends Controller
                 'last_school_attended' => $request->lastSchoolAttended,
                 'last_school_year_graduated' => $request->lastSchoolYearGraduated,
             ]);
+
+            // 5.5 Save Referral
+CollegeReferral::create([
+    'student_id' => $student->student_id,
+    'referral_source' => $request->referralSource,
+    'referral_name' => $request->referralSource === 'Adviser/Referral/Others' ? $request->referralName : null,
+    'referral_relation' => $request->referralSource === 'Adviser/Referral/Others' ? $request->referralRelation : null,
+]);
 
             // 6. Save Documents
             if ($request->hasFile('documents')) {

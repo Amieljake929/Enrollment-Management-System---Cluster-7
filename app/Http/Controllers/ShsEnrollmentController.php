@@ -12,6 +12,8 @@ use App\Models\ShsDocument;
 use App\Models\ShsEnrolleeNumber;
 use App\Models\CollegeShsIndigenous;
 use App\Models\CollegeShsDisability;
+use App\Models\ShsHealth;
+use App\Models\ShsReferral;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
@@ -65,6 +67,13 @@ class ShsEnrollmentController extends Controller
             'documents.*' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
             'document_doc_id' => 'required|array',
             'document_doc_id.*' => 'exists:shs_documents,doc_id',
+            'healthCondition' => 'required|in:Asthma,Allergies,Heart Disease,Hypertension,Diabeties Type 2,Kidney Disease,Pneumonia,Tuberculosis,Bleeding Disorders,Psychiatric Disorder,Cancer,Others',
+'healthConditionOthers' => 'nullable|required_if:healthCondition,Others|string|max:255',
+'weightKg' => 'required|numeric|min:0|max:300',
+'heightCm' => 'required|numeric|min:0|max:300',
+'referralSource' => 'required|in:Social Media Account,Adviser/Referral/Others,Walk-in/No Referral',
+'referralName' => 'nullable|required_if:referralSource,Adviser/Referral/Others|string|max:100',
+'referralRelation' => 'nullable|required_if:referralSource,Adviser/Referral/Others|string|max:100',
         ], [
             'lrn.unique' => 'The LRN is already taken.',
             'primaryYearGraduated.integer' => 'Primary graduation year must be a valid number.',
@@ -145,6 +154,15 @@ class ShsEnrollmentController extends Controller
                 'disability_id' => $request->disability,
             ]);
 
+            // Save Health Info
+ShsHealth::create([
+    'student_id' => $student->student_id,
+    'condition_type' => $request->healthCondition,
+    'condition' => $request->healthCondition === 'Others' ? $request->healthConditionOthers : null,
+    'weight_kg' => $request->weightKg,
+    'height_cm' => $request->heightCm,
+]);
+
             // 2. Save Parent Info
             ShsParentInfo::create([
                 'student_id' => $student->student_id,
@@ -185,6 +203,13 @@ class ShsEnrollmentController extends Controller
                 'last_school_attended' => $request->lastSchoolAttended,
                 'last_school_year_graduated' => $lastSchoolYear,
             ]);
+            // After saving educational background, add:
+ShsReferral::create([
+    'student_id' => $student->student_id,
+    'referral_source' => $request->referralSource,
+    'referral_name' => $request->referralSource === 'Adviser/Referral/Others' ? $request->referralName : null,
+    'referral_relation' => $request->referralSource === 'Adviser/Referral/Others' ? $request->referralRelation : null,
+]);
 
             // 5. Save Enrollment Preference
             ShsEnrollmentPreference::create([

@@ -665,7 +665,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const titleText = "Accelerate your tech career\nwith expert roadmaps";
+    const titleText = "Your Course, Your Way\nwith expert roadmaps";
     const subtitleText = "Explore our interactive learning roadmaps, premium code marketplace, and in-depth tech blogs to master the skills that matter in today's tech industry.";
     const typingElement = document.getElementById('typing-text');
     const subtitleElement = document.getElementById('hero-subtitle');

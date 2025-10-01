@@ -1,4 +1,4 @@
-@extends('layouts.college')
+@extends('layouts.assessment')
 
 @section('content')
 <div class="container-fluid py-5">
