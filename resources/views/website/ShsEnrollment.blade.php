@@ -676,7 +676,7 @@
               <section class="form-section" data-step="3">
                 <h3 class="stepper-header mb-4">Step 3: Parents Information</h3>
                 <div class="row g-3">
-                  <h5 class="mb-3" style="color: var(--primary-dark); font-weight: 700;">Mother's Information</h5>
+                  <h5 class="mb-3" style="color: red; font-weight: 700;">Mother's Maiden Information</h5>
                   <div class="col-md-4">
                     <label for="motherFirstName" class="form-label">
                       First Name<span class="required-star">*</span>
@@ -855,6 +855,18 @@
                     <input type="email" class="form-control" id="guardianEmail" name="guardianEmail" />
                     <div class="invalid-feedback">Please enter a valid email address.</div>
                   </div>
+                  <!-- 4Ps Checkbox -->
+<div class="col-12 mt-3">
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="isFourPs" name="isFourPs" value="1">
+    <label class="form-check-label" for="isFourPs">
+      Parent / Guardian member of 4Ps?
+    </label>
+    <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Check if your parent or guardian is a beneficiary of the Pantawid Pamilyang Pilipino Program (4Ps). This may qualify you for financial assistance.">
+      <i class="fas fa-info-circle text-primary"></i>
+    </span>
+  </div>
+</div>
                 </div>
               </section>
 
@@ -916,8 +928,8 @@
                     </label>
                     <select class="form-select" id="preferredBranch" name="preferredBranch" required>
                       <option value="" selected disabled>Choose preferred branch</option>
-                      <option value="1">Main Branch</option>
-                      <option value="2">Bulacan Branch</option>
+                      <option value="1">Main Branch (#1071 Brgy. Kaligayahan, Quirino Highway Novaliches Quezon City)</option>
+                      <option value="2">Bulacan Branch (Lot 1 Ipo Road, Barangay Minuyan Proper, City of San Jose Del Monte, Bulacan)</option>
                     </select>
                     <div class="invalid-feedback">Please select a preferred branch.</div>
                   </div>
@@ -1253,60 +1265,107 @@
       });
     });
     function updateDocumentUploadList() {
-      const studentType = studentTypeSelect.value;
-      const docs = requiredDocuments[studentType] || [];
-      documentUploadList.innerHTML = '';
-      docs.forEach(function (doc, index) {
-        const docGroup = document.createElement('div');
-        docGroup.className = 'mb-4';
-        docGroup.innerHTML = `
-          <label class="form-label">
-            <i class="fas fa-file-upload text-primary me-1"></i>
-            ${doc.name} <span class="required-star">*</span>
+  const studentType = studentTypeSelect.value;
+  const docs = requiredDocuments[studentType] || [];
+  documentUploadList.innerHTML = '';
+
+  // Define which doc_ids are eligible for "To follow"
+  // Based on your list: doc_id 1 = Form 138 (required), doc_id 4 = ID Pic (required)
+  // Others (2,3,5,6,7,8,9) are eligible
+  const toFollowEligibleDocIds = [2, 3, 5, 6, 7, 8, 9]; // Form 137, Good Moral, NCAE, ESC, PSA, Barangay, Diploma
+
+  docs.forEach(function (doc) {
+    const isEligible = toFollowEligibleDocIds.includes(doc.doc_id);
+    const docGroup = document.createElement('div');
+    docGroup.className = 'mb-4 position-relative';
+
+    const toFollowCheckboxHtml = isEligible
+      ? `<div class="form-check mt-2">
+          <input class="form-check-input to-follow-checkbox" type="checkbox" id="toFollow_${doc.doc_id}" name="to_follow[${doc.doc_id}]" value="1">
+          <label class="form-check-label text-muted" for="toFollow_${doc.doc_id}">
+            To follow (I will submit this later)
           </label>
-          <input type="file" class="form-control" name="documents[]" accept=".pdf,.jpg,.jpeg,.png" required />
-          <div class="invalid-feedback">Please upload a valid copy of ${doc.name}.</div>
-          <div class="mt-2 preview-container" style="display: none;">
-            <strong>Preview:</strong>
-            <div class="border rounded p-2 bg-light" style="max-height: 200px; overflow: auto;">
-              <img src="" alt="Preview" class="img-fluid mb-2 d-none" style="max-height: 150px;" />
-              <a href="#" class="pdf-preview d-none text-danger" target="_blank"><i class="fas fa-file-pdf me-1"></i>View PDF</a>
-            </div>
-          </div>
-        `;
-        const hiddenDocId = document.createElement('input');
-        hiddenDocId.type = 'hidden';
-        hiddenDocId.name = 'document_doc_id[]';
-        hiddenDocId.value = doc.doc_id;
-        docGroup.appendChild(hiddenDocId);
-        documentUploadList.appendChild(docGroup);
-        const fileInput = docGroup.querySelector('input[type="file"]');
-        const previewContainer = docGroup.querySelector('.preview-container');
-        const imgPreview = docGroup.querySelector('img');
-        const pdfPreview = docGroup.querySelector('.pdf-preview');
-        fileInput.addEventListener('change', function () {
-          const file = this.files[0];
-          if (!file) return;
-          if (file.size > 5 * 1024 * 1024) {
-            alert('File too large: ' + file.name + '. Maximum is 5MB.');
-            this.value = '';
-            previewContainer.style.display = 'none';
-            return;
+        </div>`
+      : '';
+
+    docGroup.innerHTML = `
+      <label class="form-label">
+        <i class="fas fa-file-upload text-primary me-1"></i>
+        ${doc.name} <span class="required-star">*</span>
+      </label>
+      <input type="file" class="form-control document-file-input" name="documents[]" accept=".pdf,.jpg,.jpeg,.png" required />
+      <div class="invalid-feedback">Please upload a valid copy of ${doc.name}.</div>
+      <div class="mt-2 preview-container" style="display: none;">
+        <strong>Preview:</strong>
+        <div class="border rounded p-2 bg-light" style="max-height: 200px; overflow: auto;">
+          <img src="" alt="Preview" class="img-fluid mb-2 d-none" style="max-height: 150px;" />
+          <a href="#" class="pdf-preview d-none text-danger" target="_blank"><i class="fas fa-file-pdf me-1"></i>View PDF</a>
+        </div>
+      </div>
+      ${toFollowCheckboxHtml}
+    `;
+
+    const hiddenDocId = document.createElement('input');
+    hiddenDocId.type = 'hidden';
+    hiddenDocId.name = 'document_doc_id[]';
+    hiddenDocId.value = doc.doc_id;
+    docGroup.appendChild(hiddenDocId);
+
+    documentUploadList.appendChild(docGroup);
+
+    // File preview
+    const fileInput = docGroup.querySelector('.document-file-input');
+    const previewContainer = docGroup.querySelector('.preview-container');
+    const imgPreview = docGroup.querySelector('img');
+    const pdfPreview = docGroup.querySelector('.pdf-preview');
+
+    fileInput.dataset.docId = doc.doc_id;
+    fileInput.addEventListener('change', function () {
+      const file = this.files[0];
+      if (!file) {
+        previewContainer.style.display = 'none';
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        alert('File too large: ' + file.name + '. Maximum is 5MB.');
+        this.value = '';
+        previewContainer.style.display = 'none';
+        return;
+      }
+      const fileURL = URL.createObjectURL(file);
+      previewContainer.style.display = 'block';
+      imgPreview.classList.add('d-none');
+      pdfPreview.classList.add('d-none');
+      if (file.type.startsWith('image/')) {
+        imgPreview.src = fileURL;
+        imgPreview.classList.remove('d-none');
+      } else if (file.type === 'application/pdf') {
+        pdfPreview.href = fileURL;
+        pdfPreview.classList.remove('d-none');
+      }
+    });
+
+    // "To follow" toggle logic
+    if (isEligible) {
+      const toFollowCheckbox = docGroup.querySelector('.to-follow-checkbox');
+      toFollowCheckbox.addEventListener('change', function () {
+        const requiredStar = docGroup.querySelector('.required-star');
+        if (this.checked) {
+          fileInput.removeAttribute('required');
+          fileInput.classList.remove('is-invalid');
+          if (requiredStar) {
+            requiredStar.textContent = ' (optional if "To follow" is checked)';
           }
-          const fileURL = URL.createObjectURL(file);
-          previewContainer.style.display = 'block';
-          imgPreview.classList.add('d-none');
-          pdfPreview.classList.add('d-none');
-          if (file.type.startsWith('image/')) {
-            imgPreview.src = fileURL;
-            imgPreview.classList.remove('d-none');
-          } else if (file.type === 'application/pdf') {
-            pdfPreview.href = fileURL;
-            pdfPreview.classList.remove('d-none');
+        } else {
+          fileInput.setAttribute('required', 'required');
+          if (requiredStar) {
+            requiredStar.innerHTML = '*';
           }
-        });
+        }
       });
     }
+  });
+}
     function showStep(index) {
       steps.forEach(s => s.classList.remove('active'));
       stepperSteps.forEach(s => s.classList.remove('active', 'completed'));
@@ -1357,15 +1416,25 @@
         }
       }
       // Validate documents
-      if (index === 6) {
-        const fileInputs = document.querySelectorAll('#documentUploadList input[type="file"]');
-        fileInputs.forEach(input => {
-          if (!input.files || input.files.length === 0) {
-            input.classList.add('is-invalid');
-            valid = false;
-          }
-        });
+      // Validate documents (Step 7)
+if (index === 6) {
+  const fileInputs = document.querySelectorAll('#documentUploadList .document-file-input');
+  fileInputs.forEach(input => {
+    const docId = parseInt(input.dataset.docId);
+    const docGroup = input.closest('.mb-4');
+    const toFollowCheckbox = docGroup.querySelector('.to-follow-checkbox');
+    const isToFollow = toFollowCheckbox && toFollowCheckbox.checked;
+
+    input.classList.remove('is-invalid');
+
+    if (!isToFollow) {
+      if (!input.files || input.files.length === 0) {
+        input.classList.add('is-invalid');
+        valid = false;
       }
+    }
+  });
+}
       return valid;
     }
     function populateSummary() {
@@ -1412,11 +1481,35 @@
       html += `<div class="col-md-4"><span class="summary-label">Contact Number:</span> ${data.get('fatherContact') || ''}</div>`;
       html += `<div class="col-md-4"><span class="summary-label">Email:</span> ${data.get('fatherEmail') || ''}</div>`;
       html += `<div class="col-12"><hr></div>`;
+html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Additional Information</h5></div>`;
+html += `<div class="col-md-6"><span class="summary-label">4Ps Member:</span> ${data.get('isFourPs') ? 'Yes' : 'No'}</div>`;
+      html += `<div class="col-12"><hr></div>`;
       html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Preferences</h5></div>`;
       html += `<div class="col-md-6"><span class="summary-label">Preferred Branch:</span> ${document.querySelector('#preferredBranch option:checked')?.text || ''}</div>`;
       html += `<div class="col-md-6"><span class="summary-label">Preferred Course:</span> ${document.querySelector('#preferredCourse option:checked')?.text || ''}</div>`;
       html += `<div class="col-md-6"><span class="summary-label">Year Level:</span> ${document.querySelector('#yearLevelStep4 option:checked')?.text || ''}</div>`;
       html += `<div class="col-12"><hr></div>`;
+      // Health Info
+html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Health Information</h5></div>`;
+html += `<div class="col-md-6"><span class="summary-label">Medical Condition:</span> ${data.get('healthCondition') || ''}</div>`;
+if (data.get('healthCondition') === 'Others') {
+  html += `<div class="col-md-6"><span class="summary-label">Specified Condition:</span> ${data.get('healthConditionOthers') || ''}</div>`;
+}
+html += `<div class="col-md-6"><span class="summary-label">Weight (kg):</span> ${data.get('weightKg') || ''}</div>`;
+html += `<div class="col-md-6"><span class="summary-label">Height (cm):</span> ${data.get('heightCm') || ''}</div>`;
+html += `<div class="col-12"><hr></div>`;
+
+// Referral
+html += `<div class="col-12"><hr></div>`;
+html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Referral Source</h5></div>`;
+html += `<div class="col-md-6"><span class="summary-label">How did you hear about us?:</span> ${data.get('referralSource') || ''}</div>`;
+if (data.get('referralSource') === 'Adviser/Referral/Others') {
+  html += `<div class="col-md-6"><span class="summary-label">Referral Name:</span> ${data.get('referralName') || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Referral Relation:</span> ${data.get('referralRelation') || ''}</div>`;
+}
+
+html += `<div class="col-12"><hr></div>`;
+
       html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Educational Background</h5></div>`;
       html += `<div class="col-md-6"><span class="summary-label">Primary School:</span> ${data.get('primarySchool') || ''}</div>`;
       html += `<div class="col-md-6"><span class="summary-label">Year Graduated (Primary):</span> ${data.get('primaryYearGraduated') || ''}</div>`;

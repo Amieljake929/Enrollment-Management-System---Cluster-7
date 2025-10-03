@@ -556,7 +556,7 @@
               <section class="form-section" data-step="3">
                 <h3 class="stepper-header mb-4">Step 3: Parents Information</h3>
                 <div class="row g-3">
-                  <h5 class="mb-3" style="color: var(--primary-dark); font-weight: 700;">Mother's Information</h5>
+                  <h5 class="mb-3" style="color: red; font-weight: 700;">Mother's Maiden Information</h5>
                   <div class="col-md-4">
                     <label for="motherFirstName" class="form-label">First Name<span class="required-star">*</span><span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your mother's first name as it appears on her ID. Example: Maria"><i class="fas fa-info-circle text-primary"></i></span></label>
                     <input type="text" class="form-control" id="motherFirstName" name="motherFirstName" required />
@@ -645,6 +645,18 @@
                     <input type="email" class="form-control" id="guardianEmail" name="guardianEmail" />
                     <div class="invalid-feedback">Please enter a valid email address.</div>
                   </div>
+                  <!-- 4Ps Checkbox -->
+<div class="col-12 mt-3">
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="isFourPs" name="isFourPs" value="1">
+    <label class="form-check-label" for="isFourPs">
+      Parent / Guardian member of 4Ps?
+    </label>
+    <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Check if your parent or guardian is a beneficiary of the Pantawid Pamilyang Pilipino Program (4Ps). This may qualify you for financial assistance.">
+      <i class="fas fa-info-circle text-primary"></i>
+    </span>
+  </div>
+</div>
                 </div>
               </section>
 
@@ -1031,61 +1043,115 @@ referralSource.addEventListener('change', () => {
         });
       });
       function updateDocumentUploadList() {
-        const studentType = studentTypeSelect.value;
-        const docs = requiredDocuments[studentType] || [];
-        documentUploadList.innerHTML = '';
-        docs.forEach((doc, index) => {
-          const docGroup = document.createElement('div');
-          docGroup.className = 'mb-4';
-          docGroup.innerHTML = `
-            <label class="form-label">
-              <i class="fas fa-file-upload text-primary me-1"></i>
-              ${doc.name} <span class="required-star">*</span>
-            </label>
-            <input type="file" class="form-control" name="documents[]" accept=".pdf,.jpg,.jpeg,.png" required />
-            <div class="invalid-feedback">Please upload a valid copy of ${doc.name}.</div>
-            <div class="mt-2 preview-container" style="display: none;">
-              <strong>Preview:</strong>
-              <div class="border rounded p-2 bg-light" style="max-height: 200px; overflow: auto;">
-                <img src="" alt="Preview" class="img-fluid mb-2 d-none" style="max-height: 150px;" />
-                <a href="#" class="pdf-preview d-none text-danger" target="_blank"><i class="fas fa-file-pdf me-1"></i>View PDF</a>
-              </div>
-            </div>
-          `;
-          const hiddenDocId = document.createElement('input');
-          hiddenDocId.type = 'hidden';
-          hiddenDocId.name = 'document_doc_id[]';
-          hiddenDocId.value = doc.doc_id;
-          docGroup.appendChild(hiddenDocId);
-          documentUploadList.appendChild(docGroup);
-          const fileInput = docGroup.querySelector('input[type="file"]');
-          const previewContainer = docGroup.querySelector('.preview-container');
-          const imgPreview = docGroup.querySelector('img');
-          const pdfPreview = docGroup.querySelector('.pdf-preview');
-          fileInput.dataset.docId = doc.doc_id;
-          fileInput.addEventListener('change', function () {
-            const file = this.files[0];
-            if (!file) return;
-            if (file.size > 5 * 1024 * 1024) {
-              alert(`File too large: ${file.name}. Maximum is 5MB.`);
-              this.value = '';
-              previewContainer.style.display = 'none';
-              return;
-            }
-            const fileURL = URL.createObjectURL(file);
-            previewContainer.style.display = 'block';
-            imgPreview.classList.add('d-none');
-            pdfPreview.classList.add('d-none');
-            if (file.type.startsWith('image/')) {
-              imgPreview.src = fileURL;
-              imgPreview.classList.remove('d-none');
-            } else if (file.type === 'application/pdf') {
-              pdfPreview.href = fileURL;
-              pdfPreview.classList.remove('d-none');
-            }
-          });
-        });
+  const studentType = studentTypeSelect.value;
+  const docs = requiredDocuments[studentType] || [];
+  documentUploadList.innerHTML = '';
+
+  // Define which doc_ids are "to follow" eligible per student type
+  const toFollowEligible = {
+    'New Regular': [3, 5],      // Form 137, Certificate of Good Moral
+    'Returnee': [4, 6],         // Form 137, Certificate of Good Moral
+    'Transferee': [15, 16, 17, 18] // Good Moral, PSA, ID Pic, Barangay Clearance
+  };
+
+  const eligibleDocIds = toFollowEligible[studentType] || [];
+
+  docs.forEach((doc, index) => {
+    const isEligible = eligibleDocIds.includes(doc.doc_id);
+    const docGroup = document.createElement('div');
+    docGroup.className = 'mb-4 position-relative';
+
+    // "To follow" checkbox (only if eligible)
+    const toFollowCheckbox = isEligible
+      ? `<div class="form-check mt-2">
+          <input class="form-check-input to-follow-checkbox" type="checkbox" id="toFollow_${doc.doc_id}" name="to_follow[${doc.doc_id}]" value="1">
+          <label class="form-check-label text-muted" for="toFollow_${doc.doc_id}">
+            To follow (I will submit this later)
+          </label>
+        </div>`
+      : '';
+
+    docGroup.innerHTML = `
+      <label class="form-label">
+        <i class="fas fa-file-upload text-primary me-1"></i>
+        ${doc.name} <span class="required-star">*</span>
+      </label>
+      <input type="file" class="form-control document-file-input" name="documents[]" accept=".pdf,.jpg,.jpeg,.png" required />
+      <div class="invalid-feedback">Please upload a valid copy of ${doc.name}.</div>
+      <div class="mt-2 preview-container" style="display: none;">
+        <strong>Preview:</strong>
+        <div class="border rounded p-2 bg-light" style="max-height: 200px; overflow: auto;">
+          <img src="" alt="Preview" class="img-fluid mb-2 d-none" style="max-height: 150px;" />
+          <a href="#" class="pdf-preview d-none text-danger" target="_blank"><i class="fas fa-file-pdf me-1"></i>View PDF</a>
+        </div>
+      </div>
+      ${toFollowCheckbox}
+    `;
+
+    // Hidden input for doc_id
+    const hiddenDocId = document.createElement('input');
+    hiddenDocId.type = 'hidden';
+    hiddenDocId.name = 'document_doc_id[]';
+    hiddenDocId.value = doc.doc_id;
+    docGroup.appendChild(hiddenDocId);
+
+    documentUploadList.appendChild(docGroup);
+
+    // File preview logic
+    const fileInput = docGroup.querySelector('.document-file-input');
+    const previewContainer = docGroup.querySelector('.preview-container');
+    const imgPreview = docGroup.querySelector('img');
+    const pdfPreview = docGroup.querySelector('.pdf-preview');
+
+    fileInput.dataset.docId = doc.doc_id;
+
+    fileInput.addEventListener('change', function () {
+      const file = this.files[0];
+      if (!file) {
+        previewContainer.style.display = 'none';
+        return;
       }
+      if (file.size > 5 * 1024 * 1024) {
+        alert(`File too large: ${file.name}. Maximum is 5MB.`);
+        this.value = '';
+        previewContainer.style.display = 'none';
+        return;
+      }
+      const fileURL = URL.createObjectURL(file);
+      previewContainer.style.display = 'block';
+      imgPreview.classList.add('d-none');
+      pdfPreview.classList.add('d-none');
+      if (file.type.startsWith('image/')) {
+        imgPreview.src = fileURL;
+        imgPreview.classList.remove('d-none');
+      } else if (file.type === 'application/pdf') {
+        pdfPreview.href = fileURL;
+        pdfPreview.classList.remove('d-none');
+      }
+    });
+
+    // "To follow" checkbox toggle logic
+    if (isEligible) {
+      const toFollowCheckboxEl = docGroup.querySelector('.to-follow-checkbox');
+      toFollowCheckboxEl.addEventListener('change', function () {
+        const fileInput = docGroup.querySelector('.document-file-input');
+        const requiredStar = docGroup.querySelector('.required-star');
+        if (this.checked) {
+          fileInput.removeAttribute('required');
+          fileInput.classList.remove('is-invalid');
+          if (requiredStar) {
+            requiredStar.textContent = ' (optional if "To follow" is checked)';
+          }
+        } else {
+          fileInput.setAttribute('required', 'required');
+          if (requiredStar) {
+            requiredStar.innerHTML = '*';
+          }
+        }
+      });
+    }
+  });
+}
       function showStep(index) {
         steps.forEach(s => s.classList.remove('active'));
         stepperSteps.forEach(s => s.classList.remove('active', 'completed'));
@@ -1100,27 +1166,49 @@ referralSource.addEventListener('change', () => {
         setTimeout(() => document.querySelector('.card').scrollIntoView({ behavior: 'smooth' }), 100);
       }
       function validateStep(index) {
-        const step = steps[index];
-        const inputs = step.querySelectorAll('input, select');
-        let valid = true;
-        inputs.forEach(input => {
-          input.classList.remove('is-invalid');
-          if (input.hasAttribute('required') && !input.value) {
-            input.classList.add('is-invalid');
-            valid = false;
-          }
-        });
-        if (index === 6) {
-          const fileInputs = document.querySelectorAll('#documentUploadList input[type="file"]');
-          fileInputs.forEach(input => {
-            if (!input.files || input.files.length === 0) {
-              input.classList.add('is-invalid');
-              valid = false;
-            }
-          });
-        }
-        return valid;
+  const step = steps[index];
+  const inputs = step.querySelectorAll('input, select');
+  let valid = true;
+
+  inputs.forEach(input => {
+    input.classList.remove('is-invalid');
+    if (input.hasAttribute('required') && !input.value) {
+      input.classList.add('is-invalid');
+      valid = false;
+    }
+  });
+
+  // Special handling for Step 7: Document Uploads
+  if (index === 6) {
+    const fileInputs = document.querySelectorAll('#documentUploadList input[type="file"]');
+    fileInputs.forEach(input => {
+      const docId = input.dataset.docId;
+      const toFollowCheckbox = input.closest('.mb-4').querySelector('.to-follow-checkbox');
+      const isToFollow = toFollowCheckbox && toFollowCheckbox.checked;
+
+      // If "To follow" is checked → file is optional → skip validation
+      if (isToFollow) {
+        input.classList.remove('is-invalid');
+        return; // Skip validation for this file
       }
+
+      // Otherwise, validate normally
+      if (!input.files || input.files.length === 0) {
+        input.classList.add('is-invalid');
+        valid = false;
+      } else {
+        // Optional: Validate file type/size here too if needed
+        const file = input.files[0];
+        if (file.size > 5 * 1024 * 1024) {
+          input.classList.add('is-invalid');
+          valid = false;
+        }
+      }
+    });
+  }
+
+  return valid;
+}
       function populateSummary() {
         const data = new FormData(form);
         let html = '<div class="row g-3>';
@@ -1165,12 +1253,35 @@ referralSource.addEventListener('change', () => {
         html += `<div class="col-md-4"><span class="summary-label">Occupation:</span> ${data.get('fatherOccupation')|| ''}</div>`;
         html += `<div class="col-md-4"><span class="summary-label">Contact Number:</span> ${data.get('fatherContact')|| ''}</div>`;
         html += `<div class="col-md-4"><span class="summary-label">Email:</span> ${data.get('fatherEmail')|| ''}</div>`;
+        // Add after Parents section, before Preferences
+html += `<div class="col-12"><hr></div>`;
+html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Additional Information</h5></div>`;
+html += `<div class="col-md-6"><span class="summary-label">4Ps Member:</span> ${data.get('isFourPs') ? 'Yes' : 'No'}</div>`;
         html += `<div class="col-12"><hr></div>`;
         html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Preferences</h5></div>`;
         html += `<div class="col-md-6"><span class="summary-label">Preferred Branch:</span> ${document.querySelector('#preferredBranch option:checked')?.text || ''}</div>`;
         html += `<div class="col-md-6"><span class="summary-label">Preferred Course:</span> ${document.querySelector('#preferredCourse option:checked')?.text || ''}</div>`;
         html += `<div class="col-md-6"><span class="summary-label">Year Level:</span> ${document.querySelector('#yearLevelStep4 option:checked')?.text || ''}</div>`;
         html += `<div class="col-12"><hr></div>`;
+
+        // Health Info
+html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Health Information</h5></div>`;
+html += `<div class="col-md-6"><span class="summary-label">Medical Condition:</span> ${data.get('healthCondition') || ''}</div>`;
+if (data.get('healthCondition') === 'Others') {
+  html += `<div class="col-md-6"><span class="summary-label">Specified Condition:</span> ${data.get('healthConditionOthers') || ''}</div>`;
+}
+html += `<div class="col-md-6"><span class="summary-label">Weight (kg):</span> ${data.get('weightKg') || ''}</div>`;
+html += `<div class="col-md-6"><span class="summary-label">Height (cm):</span> ${data.get('heightCm') || ''}</div>`;
+
+// Referral
+html += `<div class="col-12"><hr></div>`;
+html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Referral Source</h5></div>`;
+html += `<div class="col-md-6"><span class="summary-label">How did you hear about us?:</span> ${data.get('referralSource') || ''}</div>`;
+if (data.get('referralSource') === 'Adviser/Referral/Others') {
+  html += `<div class="col-md-6"><span class="summary-label">Referral Name:</span> ${data.get('referralName') || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Referral Relation:</span> ${data.get('referralRelation') || ''}</div>`;
+}
+html += `<div class="col-12"><hr></div>`;
         html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Educational Background</h5></div>`;
         html += `<div class="col-md-6"><span class="summary-label">Primary School:</span> ${data.get('primarySchool')|| ''}</div>`;
         html += `<div class="col-md-6"><span class="summary-label">Year Graduated (Primary):</span> ${data.get('primaryYearGraduated')|| ''}</div>`;

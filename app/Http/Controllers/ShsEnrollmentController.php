@@ -14,6 +14,7 @@ use App\Models\CollegeShsIndigenous;
 use App\Models\CollegeShsDisability;
 use App\Models\ShsHealth;
 use App\Models\ShsReferral;
+use App\Models\ShsFourPs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
@@ -39,60 +40,87 @@ class ShsEnrollmentController extends Controller
     public function submit(Request $request)
     {
         // Enhanced Validation
-        $validator = Validator::make($request->all(), [
-            'studentType' => 'required|exists:shs_student_types,type_name',
-            'firstName' => 'required|string|max:100',
-            'middleName' => 'required|string|max:100',
-            'lastName' => 'required|string|max:100',
-            'lrn' => 'required|string|size:12|unique:shs_students,lrn',
-            'dob' => 'required|date',
-            'email' => 'required|email|unique:shs_students,email',
-            'contactNumber' => 'required|string|max:20',
-            'currentAddress' => 'required|string|max:255',
-            'cityMunicipality' => 'required|string|max:100',
-            'province' => 'required|string|max:100',
-            'region' => 'required|exists:college_regions,region_id',
-            'zipCode' => 'required|string|max:10',
-            'preferredBranch' => 'required|exists:shs_branches,branch_id',
-            'preferredCourse' => 'required|exists:shs_courses,course_id',
-            'yearLevelStep4' => 'required|exists:shs_year_levels,level_id',
-            'primarySchool' => 'required|string|max:255',
-            'primaryYearGraduated' => 'required|integer|min:1900|max:' . (date('Y') + 5),
-            'secondarySchool' => 'required|string|max:255',
-            'secondaryYearGraduated' => 'required|integer|min:1900|max:' . (date('Y') + 5),
-            'lastSchoolAttended' => 'required|string|max:255',
-            'lastSchoolYearGraduated' => 'required|integer|min:1900|max:' . (date('Y') + 5),
-            'indigenous' => 'required|exists:college_shs_indigenous,indigenous_id',
-            'disability' => 'required|exists:college_shs_disability,disability_id',
-            'documents.*' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
-            'document_doc_id' => 'required|array',
-            'document_doc_id.*' => 'exists:shs_documents,doc_id',
-            'healthCondition' => 'required|in:Asthma,Allergies,Heart Disease,Hypertension,Diabeties Type 2,Kidney Disease,Pneumonia,Tuberculosis,Bleeding Disorders,Psychiatric Disorder,Cancer,Others',
-'healthConditionOthers' => 'nullable|required_if:healthCondition,Others|string|max:255',
-'weightKg' => 'required|numeric|min:0|max:300',
-'heightCm' => 'required|numeric|min:0|max:300',
-'referralSource' => 'required|in:Social Media Account,Adviser/Referral/Others,Walk-in/No Referral',
-'referralName' => 'nullable|required_if:referralSource,Adviser/Referral/Others|string|max:100',
-'referralRelation' => 'nullable|required_if:referralSource,Adviser/Referral/Others|string|max:100',
-        ], [
-            'lrn.unique' => 'The LRN is already taken.',
-            'primaryYearGraduated.integer' => 'Primary graduation year must be a valid number.',
-            'secondaryYearGraduated.integer' => 'Secondary graduation year must be a valid number.',
-            'lastSchoolYearGraduated.integer' => 'Last school year must be a valid number.',
-            'primaryYearGraduated.between' => 'Primary year must be between 1900 and ' . (date('Y') + 5) . '.',
-            'secondaryYearGraduated.between' => 'Secondary year must be between 1900 and ' . (date('Y') + 5) . '.',
-            'lastSchoolYearGraduated.between' => 'Last school year must be between 1900 and ' . (date('Y') + 5) . '.',
-            'indigenous.required' => 'Please select an Indigenous group.',
-            'disability.required' => 'Please select a Disability type.',
-        ]);
+        // Enhanced Validation
+$validator = Validator::make($request->all(), [
+    'studentType' => 'required|exists:shs_student_types,type_name',
+    'firstName' => 'required|string|max:100',
+    'middleName' => 'required|string|max:100',
+    'lastName' => 'required|string|max:100',
+    'lrn' => 'required|string|size:12|unique:shs_students,lrn',
+    'dob' => 'required|date',
+    'email' => 'required|email|unique:shs_students,email',
+    'contactNumber' => 'required|string|max:20',
+    'currentAddress' => 'required|string|max:255',
+    'cityMunicipality' => 'required|string|max:100',
+    'province' => 'required|string|max:100',
+    'region' => 'required|exists:college_regions,region_id',
+    'zipCode' => 'required|string|max:10',
+    'preferredBranch' => 'required|exists:shs_branches,branch_id',
+    'preferredCourse' => 'required|exists:shs_courses,course_id',
+    'yearLevelStep4' => 'required|exists:shs_year_levels,level_id',
+    'primarySchool' => 'required|string|max:255',
+    'primaryYearGraduated' => 'required|integer|min:1900|max:' . (date('Y') + 5),
+    'secondarySchool' => 'required|string|max:255',
+    'secondaryYearGraduated' => 'required|integer|min:1900|max:' . (date('Y') + 5),
+    'lastSchoolAttended' => 'required|string|max:255',
+    'lastSchoolYearGraduated' => 'required|integer|min:1900|max:' . (date('Y') + 5),
+    'indigenous' => 'required|exists:college_shs_indigenous,indigenous_id',
+    'disability' => 'required|exists:college_shs_disability,disability_id',
+    'healthCondition' => 'required|in:Asthma,Allergies,Heart Disease,Hypertension,Diabeties Type 2,Kidney Disease,Pneumonia,Tuberculosis,Bleeding Disorders,Psychiatric Disorder,Cancer,Others',
+    'healthConditionOthers' => 'nullable|required_if:healthCondition,Others|string|max:255',
+    'weightKg' => 'required|numeric|min:0|max:300',
+    'heightCm' => 'required|numeric|min:0|max:300',
+    'referralSource' => 'required|in:Social Media Account,Adviser/Referral/Others,Walk-in/No Referral',
+    'referralName' => 'nullable|required_if:referralSource,Adviser/Referral/Others|string|max:100',
+    'referralRelation' => 'nullable|required_if:referralSource,Adviser/Referral/Others|string|max:100',
+], [
+    'lrn.unique' => 'The LRN is already taken.',
+    'indigenous.required' => 'Please select an Indigenous group.',
+    'disability.required' => 'Please select a Disability type.',
+]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Please fill all required fields correctly.',
-                'errors' => $validator->errors()
-            ], 422);
+// Custom document validation
+if ($validator->passes()) {
+    $docIds = $request->input('document_doc_id', []);
+    $toFollow = $request->input('to_follow', []); // e.g., [2 => "1", 3 => "1"]
+    $files = $request->file('documents') ?: [];
+
+    // Strictly required doc_ids (CANNOT be "to follow")
+    $strictlyRequiredDocIds = [1, 4]; // Form 138, ID Picture
+
+    if (count($files) !== count($docIds)) {
+        $validator->errors()->add('documents', 'Document count mismatch.');
+    } else {
+        foreach ($docIds as $index => $docId) {
+            $isToFollow = isset($toFollow[$docId]) && $toFollow[$docId] == '1';
+            $file = $files[$index] ?? null;
+
+            // If NOT "to follow", file must exist and be valid
+            if (!$isToFollow) {
+                if (!$file) {
+                    $validator->errors()->add("documents.{$index}", "Document {$docId} is required.");
+                } elseif (!in_array($file->getClientOriginalExtension(), ['pdf', 'jpg', 'jpeg', 'png'])) {
+                    $validator->errors()->add("documents.{$index}", "Invalid file type for document {$docId}.");
+                } elseif ($file->getSize() > 5 * 1024 * 1024) {
+                    $validator->errors()->add("documents.{$index}", "File too large for document {$docId}.");
+                }
+            }
+
+            // Block "to follow" on strictly required docs
+            if (in_array($docId, $strictlyRequiredDocIds) && $isToFollow) {
+                $validator->errors()->add("to_follow.{$docId}", "Document {$docId} cannot be marked as 'To follow'.");
+            }
         }
+    }
+}
+
+if ($validator->fails()) {
+    return response()->json([
+        'success' => false,
+        'message' => 'Please fill all required fields correctly.',
+        'errors' => $validator->errors()
+    ], 422);
+}
 
         // Check Chronological Order of Years
         $primaryYear = $request->primaryYearGraduated;
@@ -153,6 +181,13 @@ class ShsEnrollmentController extends Controller
                 'indigenous_id' => $request->indigenous,
                 'disability_id' => $request->disability,
             ]);
+
+            // Save 4Ps info if checked
+if ($request->has('isFourPs') && $request->isFourPs == '1') {
+    ShsFourPs::create([
+        'student_id' => $student->student_id,
+    ]);
+}
 
             // Save Health Info
 ShsHealth::create([
@@ -220,17 +255,26 @@ ShsReferral::create([
             ]);
 
             // 6. Upload Documents
-            if ($request->hasFile('documents')) {
-                foreach ($request->file('documents') as $index => $file) {
-                    $docId = $request->document_doc_id[$index];
-                    $path = $file->store('shs_documents', 'public');
-                    ShsUploadedDocument::create([
-                        'student_id' => $student->student_id,
-                        'doc_id' => $docId,
-                        'file_path' => $path,
-                    ]);
-                }
-            }
+            // Save Documents (only those NOT marked as "To follow")
+if ($request->hasFile('documents')) {
+    $files = $request->file('documents');
+    $docIds = $request->input('document_doc_id');
+    $toFollow = $request->input('to_follow', []);
+
+    foreach ($docIds as $index => $docId) {
+        $isToFollow = isset($toFollow[$docId]) && $toFollow[$docId] == '1';
+        $file = $files[$index] ?? null;
+
+        if (!$isToFollow && $file) {
+            $path = $file->store('shs_documents', 'public');
+            ShsUploadedDocument::create([
+                'student_id' => $student->student_id,
+                'doc_id' => $docId,
+                'file_path' => $path,
+            ]);
+        }
+    }
+}
 
             // 7. Generate Enrollee Number
             $enrolleeNo = ShsEnrolleeNumber::generateUniqueEnrolleeNo();

@@ -14,6 +14,7 @@ use App\Models\CollegeShsDisability;
 use App\Models\CollegeEnrolleeNumber;
 use App\Models\CollegeHealth;
 use App\Models\CollegeReferral;
+use App\Models\CollegeFourPs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
@@ -81,6 +82,44 @@ class EnrollmentController extends Controller
             'indigenous.required' => 'Please select an Indigenous group.',
             'disability.required' => 'Please select a Disability type.',
         ]);
+        
+
+        // Add custom document validation after basic validation
+if ($validator->passes()) {
+    $docIds = $request->input('document_doc_id', []);
+    $toFollow = $request->input('to_follow', []); // e.g., [3 => "1", 5 => "1"]
+    $files = $request->file('documents') ?: [];
+
+    // Required doc_ids that CANNOT be "to follow"
+    $strictlyRequiredDocIds = [1, 2, 7, 8, 13, 14]; // Form 138, PSA, Barangay Clearance, etc.
+
+    // Validate count
+    if (count($files) !== count($docIds)) {
+        $validator->errors()->add('documents', 'Document count mismatch.');
+    } else {
+        foreach ($docIds as $index => $docId) {
+            $isToFollow = isset($toFollow[$docId]) && $toFollow[$docId] == '1';
+            $file = $files[$index] ?? null;
+
+            // If NOT "to follow", file must exist
+            if (!$isToFollow) {
+                if (!$file) {
+                    $validator->errors()->add("documents.{$index}", "Document {$docId} is required.");
+                } elseif (!in_array($file->getClientOriginalExtension(), ['pdf', 'jpg', 'jpeg', 'png'])) {
+                    $validator->errors()->add("documents.{$index}", "Invalid file type for document {$docId}.");
+                } elseif ($file->getSize() > 5 * 1024 * 1024) {
+                    $validator->errors()->add("documents.{$index}", "File too large for document {$docId}.");
+                }
+            }
+
+            // If it's a strictly required doc, "to follow" is NOT allowed
+            if (in_array($docId, $strictlyRequiredDocIds) && $isToFollow) {
+                $validator->errors()->add("to_follow.{$docId}", "Document {$docId} cannot be marked as 'To follow'.");
+            }
+        }
+    }
+}
+
 
         if ($validator->fails()) {
             if ($request->expectsJson()) {
@@ -94,6 +133,8 @@ class EnrollmentController extends Controller
 
         // Start transaction
         DB::beginTransaction();
+        
+        
         try {
             // Get type_id
             $typeId = DB::table('college_student_types')
@@ -130,6 +171,12 @@ class EnrollmentController extends Controller
                 'disability_id' => $request->disability,
             ]);
 
+            // Save 4Ps info if checked
+if ($request->has('isFourPs') && $request->isFourPs == '1') {
+    CollegeFourPs::create([
+        'student_id' => $student->student_id,
+    ]);
+}
             // 2.5 Save Health Info
 CollegeHealth::create([
     'student_id' => $student->student_id,
@@ -195,27 +242,50 @@ CollegeReferral::create([
 ]);
 
             // 6. Save Documents
-            if ($request->hasFile('documents')) {
-                $files = $request->file('documents');
-                $docIds = $request->input('document_doc_id');
+            // 6. Save Documents (Only those NOT marked as "To follow")
+if ($request->hasFile('documents')) {
+    $files = $request->file('documents');
+    $docIds = $request->input('document_doc_id');
+    $toFollow = $request->input('to_follow', []);
 
-                // Validate: must be array and same count
-                if (!is_array($docIds) || count($docIds) !== count($files)) {
-                    throw new \Exception("Document ID mismatch: expected " . count($files) . " IDs.");
-                }
+    // Validate: must be arrays
+    if (!is_array($docIds) || !is_array($files)) {
+        throw new \Exception("Invalid document data.");
+    }
 
-                foreach ($files as $index => $file) {
-                    $path = $file->store('enrollment_documents', 'public');
-                    $extension = $file->getClientOriginalExtension();
+    // Create a filtered list: only save docs that are NOT "to follow"
+    $filteredFiles = [];
+    $filteredDocIds = [];
 
-                    CollegeUploadedDocument::create([
-                        'student_id' => $student->student_id,
-                        'doc_id' => $docIds[$index],
-                        'file_path' => $path,
-                        'file_type' => $extension,
-                    ]);
-                }
+    foreach ($docIds as $index => $docId) {
+        $isToFollow = isset($toFollow[$docId]) && $toFollow[$docId] == '1';
+        if (!$isToFollow) { // Only save if NOT marked as "To follow"
+            $file = $files[$index] ?? null;
+            if ($file) {
+                $filteredFiles[] = $file;
+                $filteredDocIds[] = $docId;
             }
+        }
+    }
+
+    // Now validate: filtered files and doc_ids must match
+    if (count($filteredFiles) !== count($filteredDocIds)) {
+        throw new \Exception("Filtered document ID mismatch: expected " . count($filteredFiles) . " IDs.");
+    }
+
+    // Save each filtered file
+    foreach ($filteredFiles as $index => $file) {
+        $path = $file->store('enrollment_documents', 'public');
+        $extension = $file->getClientOriginalExtension();
+
+        CollegeUploadedDocument::create([
+            'student_id' => $student->student_id,
+            'doc_id' => $filteredDocIds[$index],
+            'file_path' => $path,
+            'file_type' => $extension,
+        ]);
+    }
+}
 
             // ✅ REMOVED: CollegeSelf::create(...) — no longer needed
 

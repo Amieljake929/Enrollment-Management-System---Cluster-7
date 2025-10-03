@@ -62,4 +62,8 @@ public function disability()
 {
     return $this->belongsTo(CollegeShsDisability::class, 'disability_id');
 }
+public function fourPs()
+{
+    return $this->hasOne(CollegeFourPs::class, 'student_id', 'student_id');
+}
 }
