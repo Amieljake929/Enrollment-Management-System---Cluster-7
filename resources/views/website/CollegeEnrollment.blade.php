@@ -158,6 +158,12 @@
     }
     .step.disabled {
       color: #6c757d;
+      pointer-events: none;
+      cursor: default;
+    }
+    .step.completed, .step.active {
+      pointer-events: auto;
+      cursor: pointer;
     }
     /* Form Styles */
     .form-section {
@@ -418,11 +424,21 @@
                     <input type="text" class="form-control" id="lastName" name="lastName" required />
                     <div class="invalid-feedback">Please enter your last name.</div>
                   </div>
-                  <div class="col-md-6">
-                    <label for="extensionName" class="form-label">Extension Name (Optional)<span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add Jr., Sr., III, etc. if applicable. Example: Jr."><i class="fas fa-info-circle text-primary"></i></span></label>
-                    <input type="text" class="form-control" id="extensionName" name="extensionName" />
+                  <div class="col-md-6" id="extensionNameContainer">
+                    <label class="form-label">Extension Name (Optional)<span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select Jr., Sr., etc. if applicable to differentiate duplicate names."><i class="fas fa-info-circle text-primary"></i></span></label>
+                    <div class="form-check mb-2">
+                      <input class="form-check-input" type="checkbox" id="hasExtensionName" name="hasExtensionName" />
+                      <label class="form-check-label" for="hasExtensionName">
+                        I have an extension name
+                      </label>
+                    </div>
+                    <select class="form-select" id="extensionName" name="extensionName" disabled>
+                      <option value="" selected>Select extension</option>
+                      <option value="Sr.">Senior (Sr.)</option>
+                      <option value="Jr.">Junior (Jr.)</option>
+                    </select>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-3">
                     <label for="civilStatus" class="form-label">Civil Status<span class="required-star">*</span><span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Your marital status. Choose from Single, Married, Widowed, Separated, Divorced."><i class="fas fa-info-circle text-primary"></i></span></label>
                     <select class="form-select" id="civilStatus" name="civilStatus" required>
                       <option value="" selected disabled>Choose civil status</option>
@@ -618,29 +634,41 @@
                     <input type="email" class="form-control" id="fatherEmail" name="fatherEmail" required />
                     <div class="invalid-feedback">Please enter a valid email address.</div>
                   </div>
-                  <h5 class="mb-3 mt-4" style="color: var(--primary-dark); font-weight: 700;">Guardian's Information (If not living with parents)</h5>
-                  <div class="col-md-4">
-                    <label for="guardianFirstName" class="form-label">First Name<span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter the guardian's first name. Example: Ana"><i class="fas fa-info-circle text-primary"></i></span></label>
-                    <input type="text" class="form-control" id="guardianFirstName" name="guardianFirstName" />
+                  <div class="col-12 mt-3">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="notLivingWithParents" name="notLivingWithParents" value="1">
+                      <label class="form-check-label" for="notLivingWithParents">
+                        I am living with my parents
+                      </label>
+                    </div>
                   </div>
-                  <div class="col-md-4">
+                  <h5 class="mb-3 mt-4" style="color: var(--primary-dark); font-weight: 700;">Guardian's Information</h5>
+                   <div class="col-md-4" id="guardianFirstNameContainer" style="display: none;">
+                     <label for="guardianFirstName" class="form-label">First Name<span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter the guardian's first name. Example: Ana"><i class="fas fa-info-circle text-primary"></i></span></label>
+                     <input type="text" class="form-control" id="guardianFirstName" name="guardianFirstName" />
+                     <div class="invalid-feedback">Please enter guardian's first name.</div>
+                   </div>
+                  <div class="col-md-4" id="guardianMiddleNameContainer" style="display: none;">
                     <label for="guardianMiddleName" class="form-label">Middle Name<span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter the guardian's middle name. Example: Dela Cruz"><i class="fas fa-info-circle text-primary"></i></span></label>
                     <input type="text" class="form-control" id="guardianMiddleName" name="guardianMiddleName" />
+                    <div class="invalid-feedback">Please enter guardian's middle name.</div>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-4" id="guardianLastNameContainer" style="display: none;">
                     <label for="guardianLastName" class="form-label">Last Name<span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter the guardian's last name. Example: Garcia"><i class="fas fa-info-circle text-primary"></i></span></label>
                     <input type="text" class="form-control" id="guardianLastName" name="guardianLastName" />
+                    <div class="invalid-feedback">Please enter guardian's last name.</div>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-3" id="guardianDobContainer" style="display: none;">
                     <label for="guardianDob" class="form-label">Date of Birth<span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter the guardian's date of birth. Format: YYYY-MM-DD. Example: 1970-03-10"><i class="fas fa-info-circle text-primary"></i></span></label>
                     <input type="date" class="form-control" id="guardianDob" name="guardianDob" max="" />
+                    <div class="invalid-feedback">Please enter guardian's date of birth.</div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-6" id="guardianContactContainer" style="display: none;">
                     <label for="guardianContact" class="form-label">Contact Number<span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter the guardian's mobile number. Example: +639123456789"><i class="fas fa-info-circle text-primary"></i></span></label>
                     <input type="tel" class="form-control" id="guardianContact" name="guardianContact" pattern="^\+?\d{7,15}$" />
                     <div class="invalid-feedback">Please enter a valid contact number.</div>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-3" id="guardianEmailContainer" style="display: none;">
                     <label for="guardianEmail" class="form-label">Email<span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter the guardian's email address. Example: guardian@example.com"><i class="fas fa-info-circle text-primary"></i></span></label>
                     <input type="email" class="form-control" id="guardianEmail" name="guardianEmail" />
                     <div class="invalid-feedback">Please enter a valid email address.</div>
@@ -912,31 +940,160 @@ healthConditionInputs.forEach(input => {
   });
 });
 
-// Referral source toggle
-const referralSource = document.getElementById('referralSource');
-referralSource.addEventListener('change', () => {
-  const nameField = document.getElementById('referralNameField');
-  const relationField = document.getElementById('referralRelationField');
-  if (referralSource.value === 'Adviser/Referral/Others') {
-    nameField.style.display = 'block';
-    relationField.style.display = 'block';
-    document.getElementById('referralName').setAttribute('required', 'required');
-    document.getElementById('referralRelation').setAttribute('required', 'required');
-  } else {
-    nameField.style.display = 'none';
-    relationField.style.display = 'none';
-    document.getElementById('referralName').removeAttribute('required');
-    document.getElementById('referralRelation').removeAttribute('required');
-    document.getElementById('referralName').value = '';
-    document.getElementById('referralRelation').value = '';
+const extensionNameContainer = document.getElementById('extensionNameContainer');
+const hasExtensionNameCheckbox = document.getElementById('hasExtensionName');
+const extensionNameSelect = document.getElementById('extensionName');
+
+function toggleExtensionName() {
+  if (!extensionNameContainer || !hasExtensionNameCheckbox || !extensionNameSelect) {
+    console.error('Extension name elements missing');
+    return;
   }
+  if (hasExtensionNameCheckbox.checked) {
+    extensionNameSelect.removeAttribute('disabled');
+    extensionNameSelect.setAttribute('required', 'required');
+    extensionNameContainer.style.display = 'block';
+  } else {
+    extensionNameSelect.setAttribute('disabled', 'disabled');
+    extensionNameSelect.removeAttribute('required');
+    extensionNameSelect.value = '';
+    extensionNameContainer.style.display = 'none';
+  }
+}
+
+hasExtensionNameCheckbox.addEventListener('change', toggleExtensionName);
+
+// Call on page load to set initial state
+toggleExtensionName();
+
+// CSS fix to ensure extensionNameContainer is visible by default if checkbox is checked
+const style = document.createElement('style');
+style.innerHTML = `
+  #extensionNameContainer {
+    display: block !important;
+  }
+`;
+document.head.appendChild(style);
+
+function toggleGuardianFields() {
+  const checkbox = document.getElementById('notLivingWithParents');
+  const fields = [
+    'guardianFirstName',
+    'guardianMiddleName',
+    'guardianLastName',
+    'guardianDob',
+    'guardianContact',
+    'guardianEmail'
+  ];
+  let anyFilled = false;
+  fields.forEach(fieldId => {
+    const input = document.getElementById(fieldId);
+    if (input.value.trim() !== '') {
+      anyFilled = true;
+    }
+  });
+
+  fields.forEach(fieldId => {
+    const container = document.getElementById(fieldId + 'Container');
+    const input = document.getElementById(fieldId);
+    if (checkbox.checked || anyFilled) {
+      container.style.display = 'block';
+      input.setAttribute('required', 'required');
+    } else {
+      container.style.display = 'none';
+      input.removeAttribute('required');
+      input.value = '';
+    }
+  });
+}
+
+document.getElementById('notLivingWithParents').addEventListener('change', toggleGuardianFields);
+
+// Call on page load to set initial state
+toggleGuardianFields();
+
+      // Referral source toggle
+      const referralSource = document.getElementById('referralSource');
+      referralSource.addEventListener('change', () => {
+        const nameField = document.getElementById('referralNameField');
+        const relationField = document.getElementById('referralRelationField');
+        if (referralSource.value === 'Adviser/Referral/Others') {
+          nameField.style.display = 'block';
+          relationField.style.display = 'block';
+          document.getElementById('referralName').setAttribute('required', 'required');
+          document.getElementById('referralRelation').setAttribute('required', 'required');
+        } else {
+          nameField.style.display = 'none';
+          relationField.style.display = 'none';
+          document.getElementById('referralName').removeAttribute('required');
+          document.getElementById('referralRelation').removeAttribute('required');
+          document.getElementById('referralName').value = '';
+          document.getElementById('referralRelation').value = '';
+        }
+        // Update summary on referral change
+        if (currentStep === steps.length - 1) {
+          setTimeout(populateSummary, 0);
+        }
+      });
+
+      // Also update summary on referral name or relation input change
+      document.getElementById('referralName').addEventListener('input', () => {
+        if (currentStep === steps.length - 1) {
+          setTimeout(populateSummary, 0);
+        }
+      });
+      document.getElementById('referralRelation').addEventListener('input', () => {
+        if (currentStep === steps.length - 1) {
+          setTimeout(populateSummary, 0);
+        }
+      });
+
+      // Update summary on any input or select change in the form when on summary step
+      form.querySelectorAll('input, select').forEach(element => {
+        element.addEventListener('change', () => {
+          if (currentStep === steps.length - 1) {
+            setTimeout(populateSummary, 0);
+          }
+        });
+      });
+
+// Guardian fields toggle
+const guardianFields = ['guardianFirstName', 'guardianMiddleName', 'guardianLastName', 'guardianDob', 'guardianContact', 'guardianEmail'];
+const notLivingWithParentsCheckbox = document.getElementById('notLivingWithParents');
+notLivingWithParentsCheckbox.addEventListener('change', () => {
+  const isChecked = notLivingWithParentsCheckbox.checked;
+  guardianFields.forEach(fieldId => {
+    const input = document.getElementById(fieldId);
+    const label = input.previousElementSibling; // assuming label is before input
+    if (isChecked) {
+      input.setAttribute('required', 'required');
+      if (!label.querySelector('.required-star')) {
+        label.insertAdjacentHTML('beforeend', ' <span class="required-star">*</span>');
+      }
+    } else {
+      input.removeAttribute('required');
+      const star = label.querySelector('.required-star');
+      if (star) star.remove();
+    }
+  });
 });
       const stepperSteps = Array.from(document.querySelectorAll('#stepper .step'));
       const prevBtn = document.getElementById('prevBtn');
       const nextBtn = document.getElementById('nextBtn');
       let currentStep = 0;
+      let maxStep = 0;
       const today = new Date().toISOString().split('T')[0];
       form.querySelectorAll('input[type="date"]').forEach(input => input.setAttribute('max', today));
+
+      // Make stepper steps clickable only if completed or current step
+      stepperSteps.forEach((stepElement, index) => {
+        // stepElement.style.cursor = 'default'; // Removed to allow CSS cursor pointer to work
+        stepElement.addEventListener('click', () => {
+          if (stepElement.classList.contains('completed') || stepElement.classList.contains('active')) {
+            showStep(index);
+          }
+        });
+      });
       const studentTypeSelect = document.getElementById('studentType');
       const previousIdContainer = document.getElementById('previousIdContainer');
       const yearLevelStep4 = document.getElementById('yearLevelStep4');
@@ -952,7 +1109,7 @@ referralSource.addEventListener('change', () => {
           { course_id: 5, name: "BSBA FM - BSBA major in Financial Management" },
           { course_id: 6, name: "BSBA HRM - BSBA major in Human Resource Management" },
           { course_id: 7, name: "BSBA MM - BSBA major in Marketing Management" },
-          { course_id: 8, name: "BSCPE - BS in Computer Engineering" },
+          { course_id: 8, name: "BSBA MM - BSBA major in Marketing Management" },
           { course_id: 9, name: "BSCRIM - BS in Criminology" },
           { course_id: 10, name: "BSENTREP - BS in Entrepreneurship" },
           { course_id: 11, name: "BSHM - BS in Hospitality Management" },
@@ -1153,16 +1310,32 @@ referralSource.addEventListener('change', () => {
   });
 }
       function showStep(index) {
-        steps.forEach(s => s.classList.remove('active'));
-        stepperSteps.forEach(s => s.classList.remove('active', 'completed'));
-        steps[index].classList.add('active');
+        maxStep = Math.max(maxStep, index);
+        // First, set all stepper steps to disabled
+        stepperSteps.forEach(s => {
+          s.classList.remove('active', 'completed');
+          s.classList.add('disabled');
+        });
+        // Then set active for current
+        stepperSteps[index].classList.remove('disabled');
         stepperSteps[index].classList.add('active');
-        for (let i = 0; i < index; i++) stepperSteps[i].classList.add('completed');
+        // Set completed for all steps up to maxStep, except current
+        for (let i = 0; i <= maxStep; i++) {
+          if (i !== index) {
+            stepperSteps[i].classList.remove('disabled');
+            stepperSteps[i].classList.add('completed');
+          }
+        }
+        steps.forEach(s => s.classList.remove('active'));
+        steps[index].classList.add('active');
         prevBtn.disabled = index === 0;
-        nextBtn.innerHTML = index === steps.length - 1 
-          ? '<i class="fas fa-paper-plane me-2"></i>Submit' 
+        nextBtn.innerHTML = index === steps.length - 1
+          ? '<i class="fas fa-paper-plane me-2"></i>Submit'
           : 'Next<i class="fas fa-arrow-right ms-2"></i>';
         currentStep = index;
+        if (index === steps.length - 1) { // Update summary only on last step
+          populateSummary();
+        }
         setTimeout(() => document.querySelector('.card').scrollIntoView({ behavior: 'smooth' }), 100);
       }
       function validateStep(index) {
@@ -1220,7 +1393,7 @@ referralSource.addEventListener('change', () => {
         html += `<div class="col-md-4"><span class="summary-label">First Name:</span> ${data.get('firstName')|| ''}</div>`;
         html += `<div class="col-md-4"><span class="summary-label">Middle Name:</span> ${data.get('middleName')|| ''}</div>`;
         html += `<div class="col-md-4"><span class="summary-label">Last Name:</span> ${data.get('lastName')|| ''}</div>`;
-        html += `<div class="col-md-6"><span class="summary-label">Extension Name:</span> ${data.get('extensionName')|| ''}</div>`;
+        html += `<div class="col-md-6"><span class="summary-label">Extension Name:</span> ${data.get('hasExtensionName') ? data.get('extensionName') || 'None' : 'None'}</div>`;
         html += `<div class="col-md-6"><span class="summary-label">Civil Status:</span> ${data.get('civilStatus')|| ''}</div>`;
         html += `<div class="col-md-6"><span class="summary-label">Gender:</span> ${data.get('gender')|| ''}</div>`;
         html += `<div class="col-md-6"><span class="summary-label">Indigenous Group:</span> ${document.querySelector('#indigenous option:checked')?.text || ''}</div>`;
@@ -1257,8 +1430,18 @@ referralSource.addEventListener('change', () => {
 html += `<div class="col-12"><hr></div>`;
 html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Additional Information</h5></div>`;
 html += `<div class="col-md-6"><span class="summary-label">4Ps Member:</span> ${data.get('isFourPs') ? 'Yes' : 'No'}</div>`;
-        html += `<div class="col-12"><hr></div>`;
-        html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Preferences</h5></div>`;
+html += `<div class="col-md-6"><span class="summary-label">Not living with parents:</span> ${data.get('notLivingWithParents') ? 'Yes' : 'No'}</div>`;
+html += `<div class="col-12"><hr></div>`;
+if (data.get('notLivingWithParents')) {
+  html += `<div class="col-12"><h6 style="color: var(--primary-color); font-weight: 700;">Guardian Information</h6></div>`;
+  html += `<div class="col-md-4"><span class="summary-label">First Name:</span> ${data.get('guardianFirstName')|| ''}</div>`;
+  html += `<div class="col-md-4"><span class="summary-label">Middle Name:</span> ${data.get('guardianMiddleName')|| ''}</div>`;
+  html += `<div class="col-md-4"><span class="summary-label">Last Name:</span> ${data.get('guardianLastName')|| ''}</div>`;
+  html += `<div class="col-md-3"><span class="summary-label">Date of Birth:</span> ${data.get('guardianDob')|| ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Contact Number:</span> ${data.get('guardianContact')|| ''}</div>`;
+  html += `<div class="col-md-3"><span class="summary-label">Email:</span> ${data.get('guardianEmail')|| ''}</div>`;
+}
+html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Preferences</h5></div>`;
         html += `<div class="col-md-6"><span class="summary-label">Preferred Branch:</span> ${document.querySelector('#preferredBranch option:checked')?.text || ''}</div>`;
         html += `<div class="col-md-6"><span class="summary-label">Preferred Course:</span> ${document.querySelector('#preferredCourse option:checked')?.text || ''}</div>`;
         html += `<div class="col-md-6"><span class="summary-label">Year Level:</span> ${document.querySelector('#yearLevelStep4 option:checked')?.text || ''}</div>`;
@@ -1293,60 +1476,115 @@ html += `<div class="col-12"><hr></div>`;
         document.getElementById('summaryContent').innerHTML = html;
       }
       // FINAL SUBMIT WITH AJAX (UPDATED)
-nextBtn.addEventListener('click', () => {
-  if (validateStep(currentStep)) {
-    // Special validation for Step 9: agreement checkbox
-    if (currentStep === steps.length - 1) {
-      const agreementChecked = document.getElementById('agreement').checked;
-      if (!agreementChecked) {
-        alert('Please agree to the certification and privacy terms to proceed.');
-        return;
-      }
-    }
+      nextBtn.addEventListener('click', () => {
+        if (validateStep(currentStep)) {
+          // Special validation for Step 9: agreement checkbox
+          if (currentStep === steps.length - 1) {
+            const agreementChecked = document.getElementById('agreement').checked;
+            if (!agreementChecked) {
+              alert('Please agree to the certification and privacy terms to proceed.');
+              return;
+            }
+          }
 
-    if (currentStep < steps.length - 1) {
-      showStep(currentStep + 1);
-      if (currentStep === 6) {
-        populateSummary();
-      }
-    } else {
-      const formData = new FormData(form);
-      nextBtn.disabled = true;
-      nextBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
-      fetch(SUBMIT_ENROLLMENT_URL, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest'
-        },
-        credentials: 'same-origin'
-      })
-      .then(response => {
-        if (!response.ok) {
-          return response.text().then(text => {
-            console.error('Server Error:', text);
-            throw new Error('Submission failed. Please try again.');
-          });
+          if (currentStep < steps.length - 1) {
+            showStep(currentStep + 1);
+            if (currentStep === 6) {
+              populateSummary();
+            }
+          } else {
+            const formData = new FormData(form);
+            nextBtn.disabled = true;
+            nextBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+            fetch(SUBMIT_ENROLLMENT_URL, {
+              method: 'POST',
+              body: formData,
+              headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+              },
+              credentials: 'same-origin'
+            })
+            .then(response => response.json().then(data => ({ status: response.status, ok: response.ok, body: data })))
+            .then(({ status, ok, body }) => {
+              if (!ok) {
+                nextBtn.disabled = false;
+                nextBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
+                if (body.errors) {
+                  // Find first step with error and navigate to it
+                  let firstErrorStep = null;
+                  for (const key in body.errors) {
+                    if (body.errors.hasOwnProperty(key)) {
+                      // Map error keys to step numbers (example mapping, adjust as needed)
+                      if (key.startsWith('student')) firstErrorStep = 0;
+                      else if (key.startsWith('address')) firstErrorStep = 1;
+                      else if (key.startsWith('parent')) firstErrorStep = 2;
+                      else if (key.startsWith('health')) firstErrorStep = 3;
+                      else if (key.startsWith('preference')) firstErrorStep = 4;
+                      else if (key.startsWith('background')) firstErrorStep = 5;
+                      else if (key.startsWith('document')) firstErrorStep = 6;
+                      else if (key.startsWith('referral')) firstErrorStep = 7;
+                      if (firstErrorStep !== null) break;
+                    }
+                  }
+                  if (firstErrorStep !== null) {
+                    (async () => {
+                      for (const err of body.errors) {
+                        await new Promise(resolve => {
+                          alert(err);
+                          setTimeout(resolve, 500);
+                        });
+                      }
+                    })();
+                    showStep(firstErrorStep);
+                    stepperSteps[firstErrorStep].classList.add('error');
+                  } else {
+                    (async () => {
+                      for (const err of body.errors) {
+                        await new Promise(resolve => {
+                          alert(err);
+                          setTimeout(resolve, 500);
+                        });
+                      }
+                    })();
+                  }
+                } else {
+                  alert('Error: ' + (body.message || 'Submission failed'));
+                }
+                return;
+              }
+              if (body && body.success) {
+                window.location.href = body.redirect;
+              } else {
+                nextBtn.disabled = false;
+                nextBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
+                if (body && body.errors) {
+                  // Show each error in a separate alert sequentially with delay
+                  (async () => {
+                    console.log('Validation errors array:', body.errors); // Log errors array for debugging
+                    for (const err of body.errors) {
+                      await new Promise(resolve => {
+                        alert(err);
+                        setTimeout(resolve, 500); // increased delay to ensure sequential alerts
+                      });
+                    }
+                  })();
+                } else {
+                  alert('Error: ' + ((body && body.message) || 'Submission failed'));
+                }
+              }
+            })
+            .catch(error => {
+              nextBtn.disabled = false;
+              nextBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
+              if (error && error.message) {
+                alert('Network Error: Submission failed. Reason: ' + error.message);
+              } else {
+                alert('Network Error: Submission failed. Please try again.');
+              }
+            });
+          }
         }
-        return response.json();
-      })
-      .then(data => {
-        if (data.success) {
-          window.location.href = data.redirect;
-        } else {
-          nextBtn.disabled = false;
-          nextBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
-          alert('Error: ' + (data.message || 'Submission failed'));
-        }
-      })
-      .catch(error => {
-        nextBtn.disabled = false;
-        nextBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
-        alert('Network Error: ' + error.message);
       });
-    }
-  }
-});
       prevBtn.addEventListener('click', () => {
         if (currentStep > 0) showStep(currentStep - 1);
       });

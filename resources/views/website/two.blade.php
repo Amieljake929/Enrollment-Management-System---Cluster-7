@@ -18,6 +18,7 @@
             --primary-color: #203B6B;
             --secondary-color: #ffffff;
             --section-padding: 6rem 0;
+            --light-bg: #f8fafc;
         }
         body {
             font-family: 'Poppins', sans-serif;
@@ -46,25 +47,43 @@
             background-color: #f8f9fa !important;
         }
         .bg-soft-blue {
-    background: linear-gradient(135deg, #f5f9ff 0%, #e8f0fc 100%);
+    background: linear-gradient(135deg, #e9e9e9 0%, #e8f0fc 100%);
     position: relative;
     overflow: hidden;
 }
 /* Button Styling */
 .btn-primary-custom {
-    background-color: var(--primary-color) !important;
-    color: white !important;
+    background-color: #5044e4;
     border: none;
-    border-radius: 12px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 6px 20px rgba(32, 59, 107, 0.2);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2rem;
+    transition: background-color 0.3s;
+    font-weight: 700;
 }
 .btn-primary-custom:hover {
-    background-color: #1a315a;
+    background-color: #453bb6;
+    color: white;
     transform: translateY(-3px);
     box-shadow: 0 10px 30px rgba(32, 59, 107, 0.3);
 }
+
+.btn-primary-custom1 {
+    background-color: #5044e4;
+    border: none;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2rem;
+    transition: background-color 0.3s;
+    font-weight: 700;
+}
+.btn-primary-custom1:hover {
+    background-color: #463bbe;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(32, 59, 107, 0.3);
+}
+
 
 /* Image Styling */
 .img-fluid.rounded-4 {
@@ -214,7 +233,7 @@
         /* 2️⃣ HERO SECTION – Taller & Immersive */
         /* =================================== */
         .hero {
-            min-height: 80vh;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             background: linear-gradient(135deg, #f5f9ff 0%, #e8f0fc 100%);
@@ -237,7 +256,7 @@
 
         /* Enroll Now Button – Improved Visibility */
         .btn-hero {
-            background-color: var(--primary-color);
+            background-color: #5044e4;
             color: white;
             border: 2px solid rgba(32, 59, 107, 0.2);
             padding: 12px 35px;
@@ -247,7 +266,7 @@
             transition: all 0.3s ease;
         }
         .btn-hero:hover {
-            background-color: #1a315a;
+            background-color: #4338be;
             transform: translateY(-3px);
             box-shadow: 0 10px 25px rgba(32, 59, 107, 0.35);
         }
@@ -436,16 +455,174 @@
             border-color: var(--primary-color);
             box-shadow: 0 0 0 0.25rem rgba(32, 59, 107, 0.25);
         }
-        .hero{
-            background: linear-gradient(135deg, #203B6B, #305793);
-    color: white;
+        .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background-image: url("{{ asset('images/pcb.jpg') }}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     position: relative;
     overflow: hidden;
+    color: white;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 17, 53, 0.5); /* Dark overlay */
+    z-index: 1;
+}
+
+.hero .container {
+    position: relative;
+    z-index: 2;
+}
+        
+           
+    
+        .text-title{
+            color: #5044e4;
         }
+        /* ----- Navbar (transparent to solid on scroll) ----- */
+.navbar {
+    position: fixed;
+    width: 100%;
+    background-color: transparent !important;
+    transition: background-color 0.4s ease, border-bottom 0.4s ease, box-shadow 0.4s ease;
+    border-bottom: 1px solid transparent;
+    z-index: 1030;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+.navbar.scrolled {
+    background-color: var(--primary-color) !important;
+    border-bottom: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+.navbar-brand,
+.nav-link {
+    color: var(--secondary-color) !important;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+.nav-link:hover {
+    color: #bcd0ff !important;
+}
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.8);
+}
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+@media (min-width: 992px) {
+    .navbar-collapse-desktop {
+        display: flex !important;
+    }
+}
+@media (max-width: 991.98px) {
+    .navbar-collapse-desktop {
+        display: none;
+    }
+}
+
+/* ----- Offcanvas (Mobile) ----- */
+.offcanvas-end {
+    width: 85%;
+    max-width: 360px;
+    background-color: var(--primary-color);
+    z-index: 1040;
+    box-shadow: -2px 0 15px rgba(0, 0, 0, 0.15);
+}
+.offcanvas-body {
+    padding: 2rem 1.5rem;
+}
+.offcanvas-body .nav-link {
+    color: var(--secondary-color) !important;
+    font-size: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.offcanvas-body .dropdown-menu {
+    background-color: #f8f9fa;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 5px;
+}
+.offcanvas-body .dropdown-item {
+    color: var(--primary-color) !important;
+}
+.offcanvas-body .dropdown-item:hover {
+    background-color: #e6f0ff;
+}
+.offcanvas-header .btn-close {
+    filter: invert(1);
+}
         
     </style>
 </head>
 <body>
+
+    <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+            <img src="{{ asset('images/pcb.png') }}" alt="Bestlink College Logo" width="60" height="60" class="img-fluid rounded" />
+            <div>
+                <span class="d-block">Bestlink College</span>
+                <span class="d-block" style="font-size: 0.75rem;">of the Philippines</span>
+            </div>
+        </a>
+        <div class="collapse navbar-collapse navbar-collapse-desktop" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="#hero-section">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#assessment-section">Assessment</a></li>
+                <li class="nav-item"><a class="nav-link" href="#enroll-now-section">Enroll</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">FAQ</a></li>
+            </ul>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>
+
+<!-- Offcanvas Mobile Menu -->
+<div class="offcanvas offcanvas-end text-white" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="mobileMenuLabel">Menu</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="navbar-nav flex-column">
+            <li class="nav-item"><a class="nav-link py-3 border-bottom" href="#hero-section">Home</a></li>
+            <li class="nav-item"><a class="nav-link py-3 border-bottom" href="#assessment-section">Assessment</a></li>
+            <li class="nav-item"><a class="nav-link py-3 border-bottom" href="#enroll-now-section">Enroll</a></li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle py-3 border-bottom" href="#" id="mobileStudentDropdown" role="button" data-bs-toggle="dropdown">Student Services</a>
+                <ul class="dropdown-menu w-100" aria-labelledby="mobileStudentDropdown">
+                    <li><a class="dropdown-item" href="#">Guidance</a></li>
+                    <li><a class="dropdown-item" href="#">Counseling</a></li>
+                    <li><a class="dropdown-item" href="#">Registrar</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle py-3 border-bottom" href="#" id="mobileAcademicsDropdown" role="button" data-bs-toggle="dropdown">Academics</a>
+                <ul class="dropdown-menu w-100" aria-labelledby="mobileAcademicsDropdown">
+                    <li><a class="dropdown-item" href="#">SHS</a></li>
+                    <li><a class="dropdown-item" href="#">College</a></li>
+                    <li><a class="dropdown-item" href="#">Faculty</a></li>
+                </ul>
+            </li>
+            <li class="nav-item"><a class="nav-link py-3 border-bottom" href="#">FAQ</a></li>
+        </ul>
+    </div>
+</div>
 
 <!-- =================================== -->
 <!-- 1️⃣ WELCOME MODAL (Auto-Open on Load) -->
@@ -473,7 +650,8 @@
 <!-- =================================== -->
 <!-- 2️⃣ HERO SECTION – Centered Text with Gradient Background -->
 <!-- =================================== -->
-<section class="section hero bg-gradient-custom text-center fade-in-section" id="hero-section">
+<section class="section hero text-center fade-in-section" id="hero-section">
+    <div class="hero-overlay"></div>
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-lg-8 col-md-10 text-center">
@@ -502,7 +680,7 @@
             <!-- Left Side: Text Content -->
             <div class="col-lg-6 fade-in-section">
                 <h2 class="text-primary-custom display-5 fw-bold mb-3">
-                    Find the program<br><span class="text-white">That fits you the BEST.</span>
+                    Find the program<br><span class="text-title">That fits you the BEST.</span>
                 </h2>
                 <p class="lead text-muted mb-4">
                     Take our AI-powered assessment and discover the program that aligns with your strengths and interests.
@@ -584,6 +762,59 @@
 </section>
 
 <!-- =================================== -->
+<!-- 5️⃣ ENROLLMENT PROCESS – 6 Steps with Modals -->
+<!-- =================================== -->
+<section class="section">
+    <div class="container">
+        <h2 class="text-center mb-5 fade-in-section">Enrollment Process</h2>
+        <div class="row text-center">
+            <!-- Step 1 -->
+            <div class="col-lg-2 col-6 mb-4 fade-in-section">
+                <div class="step-icon" data-bs-toggle="modal" data-bs-target="#step1Modal">
+                    1
+                </div>
+                <h6 class="step-label">Apply Online</h6>
+            </div>
+            <!-- Step 2 -->
+            <div class="col-lg-2 col-6 mb-4 fade-in-section">
+                <div class="step-icon" data-bs-toggle="modal" data-bs-target="#step2Modal">
+                    2
+                </div>
+                <h6 class="step-label">Submit Requirements</h6>
+            </div>
+            <!-- Step 3 -->
+            <div class="col-lg-2 col-6 mb-4 fade-in-section">
+                <div class="step-icon" data-bs-toggle="modal" data-bs-target="#step3Modal">
+                    3
+                </div>
+                <h6 class="step-label">Pay Reservation Fee</h6>
+            </div>
+            <!-- Step 4 -->
+            <div class="col-lg-2 col-6 mb-4 fade-in-section">
+                <div class="step-icon" data-bs-toggle="modal" data-bs-target="#step4Modal">
+                    4
+                </div>
+                <h6 class="step-label">Receive ID & Schedule</h6>
+            </div>
+            <!-- Step 5 -->
+            <div class="col-lg-2 col-6 mb-4 fade-in-section">
+                <div class="step-icon" data-bs-toggle="modal" data-bs-target="#step5Modal">
+                    5
+                </div>
+                <h6 class="step-label">Attend Orientation</h6>
+            </div>
+            <!-- Step 6 -->
+            <div class="col-lg-2 col-6 mb-4 fade-in-section">
+                <div class="step-icon" data-bs-toggle="modal" data-bs-target="#step6Modal">
+                    6
+                </div>
+                <h6 class="step-label">Enroll & Start Classes</h6>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =================================== -->
 <!-- 4️⃣ ENROLLMENT REQUIREMENTS – Row on Desktop, Column on Mobile -->
 <!-- =================================== -->
 <section class="section bg-light">
@@ -621,6 +852,8 @@
                     <li class="list-group-item"><i class="fas fa-check text-success me-2"></i> Transcript of Records</li>
                     <li class="list-group-item"><i class="fas fa-check text-success me-2"></i> Good Moral Certificate</li>
                     <li class="list-group-item"><i class="fas fa-check text-success me-2"></i> 1x1 ID Pictures (4 copies)</li>
+                    <li class="list-group-item"><i class="fas fa-check text-success me-2"></i> Honorable Dismissal</li>
+
                 </ul>
             </div>
         </div>
@@ -633,58 +866,7 @@
     </div>
 </section>
 
-<!-- =================================== -->
-<!-- 5️⃣ ENROLLMENT PROCESS – 6 Steps with Modals -->
-<!-- =================================== -->
-<section class="section">
-    <div class="container">
-        <h2 class="text-center mb-5 fade-in-section">Enrollment Process</h2>
-        <div class="row text-center">
-            <!-- Step 1 -->
-            <div class="col-lg-2 col-6 mb-4 fade-in-section">
-                <div class="step-icon" data-bs-toggle="modal" data-bs-target="#step1Modal">
-                    1
-                </div>
-                <h6 class="step-label">Apply Online</h6>
-            </div>
-            <!-- Step 2 -->
-            <div class="col-lg-2 col-6 mb-4 fade-in-section">
-                <div class="step-icon" data-bs-toggle="modal" data-bs-target="#step2Modal">
-                    2
-                </div>
-                <h6 class="step-label">Submit Requirements</h6>
-            </div>
-            <!-- Step 3 -->
-            <div class="col-lg-2 col-6 mb-4 fade-in-section">
-                <div class="step-icon" data-bs-toggle="modal" data-bs-target="#step3Modal">
-                    3
-                </div>
-                <h6 class="step-label">Pay Reservation Fee</h6>
-            </div>
-            <!-- Step 4 -->
-            <div class="col-lg-2 col-6 mb-4 fade-in-section">
-                <div class="step-icon" data-bs-toggle="modal" data-bs-target="#step4Modal">
-                    4
-                </div>
-                <h6 class="step-label">Attend Orientation</h6>
-            </div>
-            <!-- Step 5 -->
-            <div class="col-lg-2 col-6 mb-4 fade-in-section">
-                <div class="step-icon" data-bs-toggle="modal" data-bs-target="#step5Modal">
-                    5
-                </div>
-                <h6 class="step-label">Enroll & Start Classes</h6>
-            </div>
-            <!-- Step 6 -->
-            <div class="col-lg-2 col-6 mb-4 fade-in-section">
-                <div class="step-icon" data-bs-toggle="modal" data-bs-target="#step6Modal">
-                    6
-                </div>
-                <h6 class="step-label">Receive ID & Schedule</h6>
-            </div>
-        </div>
-    </div>
-</section>
+
 
 <!-- Modals for Each Step -->
 <div class="modal fade" id="step1Modal" tabindex="-1">
@@ -730,33 +912,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Step 4: Attend Orientation</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <p>Join our virtual or on-site orientation to learn about school policies, facilities, and academic expectations.</p>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="step5Modal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Step 5: Enroll & Start Classes</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <p>Finalize your subject enrollment and class schedule. Classes begin shortly after!</p>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="step6Modal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Step 6: Receive ID & Schedule</h5>
+                <h5 class="modal-title">Step 4: Receive ID & Schedule</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -765,6 +921,74 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="step5Modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Step 5: Attend Orientation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Join our virtual or on-site orientation to learn about school policies, facilities, and academic expectations.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="step6Modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Step 6: Enroll & Start Classes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Finalize your subject enrollment and class schedule. Classes begin shortly after!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<section class="section bg-soft-blue" id="assessment-section">
+    <div class="container">
+        <div class="row align-items-center g-5">
+                    <h1 class="text-center mb-5 fade-in-section">STUDENT APPLICATION REMINDERS</h1>
+
+                    <p class="lead" style="font-size: 1rem; text-align: left;">
+                            We need a valid personal email address during your application. 
+                            This will be the primary way the Admissions and Registrar's Office
+                            shares important updates with you, such as acceptance notifications, 
+                            application links, login details for your student accounts, and instructions. 
+                            Be sure to check this email often so you don't miss anything important!
+                    </p><br>
+
+                    <p class="lead" style="font-size: 1rem; text-align: left;">
+                            Please ensure all information in your application is accurate and error-free 
+                            before you submit. Our personnel are not authorized to correct application mistakes; 
+                            once accepted, the form goes directly to the proper authorities. If the Admissions Office 
+                            finds significant errors, your application will be returned to you with directions on how 
+                            to correct and resubmit it.
+                    </p><br>
+
+                    <p class="lead" style="font-size: 1rem; text-align: left;">
+                            Your privacy is important to us. Rest assured that all the information you 
+                            provide in your application form will remain strictly confidential. We will 
+                            only use this data to contact you directly about your application process.
+                    </p><br>
+
+                    <p class="lead" style="font-size: 1rem; text-align: left;">
+                            Given the current circumstances, we need to understand your online learning 
+                            readiness for our various modalities. If you don't feel fully prepared right 
+                            now, that's perfectly fine! We're committed to giving you enough time to get 
+                            ready for the most convenient learning option we have available.
+                    </p><br>
+
+        
+
+
+        </div>
+    </div>
+</section>
 
 <!-- =================================== -->
 <!-- 6️⃣ PROCEED TO ENROLLMENT SECTION – Text Fixed to White -->
@@ -773,9 +997,9 @@
     <div class="container">
         <h2 class="fade-in-section">Ready to begin your academic journey?</h2>
         <p class="lead mb-4 fade-in-section">Join thousands of students who have started their future at Bestlink College.</p>
-        <button type="button" class="btn btn-light btn-primary-custom btn-lg px-5 mb-2" data-bs-toggle="modal" data-bs-target="#enrollmentModal">
+        <button type="button" class="btn btn-light btn-primary-custom1 btn-lg px-5 mb-2" data-bs-toggle="modal" data-bs-target="#enrollmentModal">
             Proceed to Online Enrollment
-        </button>
+        </button><br><br>
         <p class="small fade-in-section">Application takes approximately 15–20 minutes to complete.</p>
     </div>
 </section>
@@ -888,7 +1112,7 @@
     <div class="container">
         <div class="row g-4">
             <div class="col-md-4">
-                <img src="{{ asset('images/bcp.png') }}" alt="Bestlink College Logo" height="50" class="mb-3" />
+                <img src="{{ asset('images/pcb.png') }}" alt="Bestlink College Logo" height="50" class="mb-3" />
                 <p>Bestlink College of the Philippines is committed to excellence in education and student development.</p>
             </div>
             <div class="col-md-4">
@@ -972,6 +1196,28 @@
         }, { threshold: 0.1 });
 
         fadeElements.forEach(el => fadeInObserver.observe(el));
+    });
+</script>
+
+<script>
+    // Navbar scroll effect
+    const navbar = document.querySelector('.navbar');
+    window.addEventListener('scroll', () => {
+        if ((window.scrollY || document.documentElement.scrollTop) > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+
+    // Close mobile menu when clicking a link
+    document.querySelectorAll('#mobileMenu .nav-link').forEach(link => {
+        if (!link.classList.contains('dropdown-toggle')) {
+            link.addEventListener('click', () => {
+                const offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('mobileMenu'));
+                offcanvas?.hide();
+            });
+        }
     });
 </script>
 

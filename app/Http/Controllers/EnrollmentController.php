@@ -41,9 +41,11 @@ class EnrollmentController extends Controller
         // Validate basic student info
         $validator = Validator::make($request->all(), [
             'studentType' => 'required|exists:college_student_types,type_name',
+            'previousStudentId' => 'nullable|required_if:studentType,Returnee|regex:/^\d{8}$/',
             'firstName' => 'required|string|max:100',
             'middleName' => 'required|string|max:100',
             'lastName' => 'required|string|max:100',
+            'extensionName' => 'nullable|string|max:10',
             'civilStatus' => 'required',
             'gender' => 'required',
             'dob' => 'required|date',
@@ -58,10 +60,25 @@ class EnrollmentController extends Controller
             'email' => 'required|email|unique:college_students,email',
             'contactNumber' => 'required',
             'socialMedia' => 'required',
-            'motherFirstName' => 'required',
-            'motherLastName' => 'required',
-            'fatherFirstName' => 'required',
-            'fatherLastName' => 'required',
+            'motherFirstName' => 'required|string|max:100',
+            'motherMiddleName' => 'required|string|max:100',
+            'motherLastName' => 'required|string|max:100',
+            'motherOccupation' => 'required|string|max:100',
+            'motherContact' => 'required|regex:/^\+?\d{7,15}$/',
+            'motherEmail' => 'required|email',
+            'fatherFirstName' => 'required|string|max:100',
+            'fatherMiddleName' => 'required|string|max:100',
+            'fatherLastName' => 'required|string|max:100',
+            'fatherOccupation' => 'required|string|max:100',
+            'fatherContact' => 'required|regex:/^\+?\d{7,15}$/',
+            'fatherEmail' => 'required|email',
+            'notLivingWithParents' => 'nullable|in:0,1',
+            'guardianFirstName' => 'nullable|required_if:notLivingWithParents,1|string|max:100',
+            'guardianMiddleName' => 'nullable|required_if:notLivingWithParents,1|string|max:100',
+            'guardianLastName' => 'nullable|required_if:notLivingWithParents,1|string|max:100',
+            'guardianDob' => 'nullable|required_if:notLivingWithParents,1|date',
+            'guardianContact' => 'nullable|required_if:notLivingWithParents,1|regex:/^\+?\d{7,15}$/',
+            'guardianEmail' => 'nullable|required_if:notLivingWithParents,1|email',
             'preferredBranch' => 'required|exists:college_branches,branch_id',
             'preferredCourse' => 'required|exists:college_courses,course_id',
             'yearLevelStep4' => 'required|exists:college_year_levels,level_id',
@@ -83,6 +100,39 @@ class EnrollmentController extends Controller
             'disability.required' => 'Please select a Disability type.',
         ]);
         
+        // Add custom after validation hook for duplicate name check
+        $validator->after(function ($validator) use ($request) {
+            $existsCollege = CollegeStudent::whereRaw('LOWER(TRIM(first_name)) = ?', [strtolower(trim($request->firstName))])
+                ->whereRaw('LOWER(TRIM(middle_name)) = ?', [strtolower(trim($request->middleName))])
+                ->whereRaw('LOWER(TRIM(last_name)) = ?', [strtolower(trim($request->lastName))])
+                ->where(function ($query) use ($request) {
+                    if ($request->extensionName) {
+                        $query->where('extension_name', $request->extensionName);
+                    } else {
+                        $query->whereNull('extension_name');
+                    }
+                })
+                ->exists();
+
+            $existsShs = \App\Models\ShsStudent::whereRaw('LOWER(TRIM(first_name)) = ?', [strtolower(trim($request->firstName))])
+                ->whereRaw('LOWER(TRIM(middle_name)) = ?', [strtolower(trim($request->middleName))])
+                ->whereRaw('LOWER(TRIM(last_name)) = ?', [strtolower(trim($request->lastName))])
+                ->where(function ($query) use ($request) {
+                    if ($request->extensionName) {
+                        $query->where('extension_name', $request->extensionName);
+                    } else {
+                        $query->whereNull('extension_name');
+                    }
+                })
+                ->exists();
+
+            if ($existsCollege || $existsShs) {
+                $validator->errors()->add('firstName', 'A student with this name already exists. Please verify your information.');
+            }
+        });
+        
+
+        // Removed duplicate name check here because it is now handled in the validator after() hook
 
         // Add custom document validation after basic validation
 if ($validator->passes()) {
@@ -122,13 +172,16 @@ if ($validator->passes()) {
 
 
         if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            \Log::debug('Validation errors:', $errors); // Log errors for debugging
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => false,
-                    'errors' => $validator->errors()
+                    'errors' => $errors
                 ], 422);
             }
-            return redirect()->back()->withErrors($validator)->withInput();
+            $errorMessage = implode(', ', $errors);
+            return redirect()->back()->with('error', $errorMessage)->withInput();
         }
 
         // Start transaction
@@ -201,8 +254,8 @@ CollegeHealth::create([
                 ]);
             }
 
-            // 3. Save Guardian (optional)
-            if ($request->filled('guardianFirstName')) {
+            // 3. Save Guardian (if not living with parents)
+            if ($request->notLivingWithParents == '1') {
                 CollegeGuardian::create([
                     'student_id' => $student->student_id,
                     'first_name' => $request->guardianFirstName,
