@@ -638,7 +638,7 @@
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" id="notLivingWithParents" name="notLivingWithParents" value="1">
                       <label class="form-check-label" for="notLivingWithParents">
-                        I am living with my parents
+                        Not living with my parents
                       </label>
                     </div>
                   </div>
