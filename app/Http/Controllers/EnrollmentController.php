@@ -15,10 +15,14 @@ use App\Models\CollegeEnrolleeNumber;
 use App\Models\CollegeHealth;
 use App\Models\CollegeReferral;
 use App\Models\CollegeFourPs;
+use App\Models\CollegeStatus;
+use App\Models\ShsStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\EnrollmentSubmittedMail;
 
 class EnrollmentController extends Controller
 {
@@ -224,6 +228,15 @@ if ($validator->passes()) {
                 'disability_id' => $request->disability,
             ]);
 
+            // ✅ 2.0 Create College Status Record
+CollegeStatus::create([
+    'student_id' => $student->student_id,
+    'info_status' => 'Pending', // default value
+    'payment' => 'Not Paid',    // default value
+    'remarks' => null,          // optional
+]);
+
+
             // Save 4Ps info if checked
 if ($request->has('isFourPs') && $request->isFourPs == '1') {
     CollegeFourPs::create([
@@ -352,6 +365,13 @@ if ($request->hasFile('documents')) {
 
             // ✅ Commit transaction
             DB::commit();
+
+            // ✅ Send confirmation email after successful save
+            try {
+                Mail::to($student->email)->send(new EnrollmentSubmittedMail($student));
+            } catch (\Throwable $e) {
+                \Log::error('Failed to send enrollment confirmation email: ' . $e->getMessage());
+            }
 
             // ✅ Return JSON or Redirect
             return $this->jsonOrRedirect($request, true, null, route('enrollment.success'));

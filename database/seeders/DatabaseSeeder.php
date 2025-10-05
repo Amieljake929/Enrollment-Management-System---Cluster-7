@@ -30,6 +30,9 @@ class DatabaseSeeder extends Seeder
             ShsDocumentSeeder::class,
             CollegeShsIndigenousSeeder::class,
             CollegeShsDisabilitySeeder::class,
+
+            CollegeStatusSeeder::class,
+        ShsStatusSeeder::class,
     ]);
 }
 }

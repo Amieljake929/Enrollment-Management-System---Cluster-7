@@ -1522,7 +1522,6 @@ html += `<div class="col-12"><hr></div>`;
     }
     nextBtn.addEventListener('click', function () {
   if (validateStep(currentStep)) {
-    // Special validation for Step 9: agreement checkbox
     if (currentStep === steps.length - 1) {
       const agreementChecked = document.getElementById('agreement').checked;
       if (!agreementChecked) {
@@ -1540,6 +1539,7 @@ html += `<div class="col-12"><hr></div>`;
       const formData = new FormData(form);
       nextBtn.disabled = true;
       nextBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+
       fetch(SUBMIT_ENROLLMENT_URL, {
         method: 'POST',
         body: formData,
@@ -1548,25 +1548,60 @@ html += `<div class="col-12"><hr></div>`;
         },
         credentials: 'same-origin'
       })
-      .then(response => {
-        if (!response.ok) {
-          return response.json().then(data => {
-            throw new Error(data.message || 'Submission failed');
-          });
+      .then(async response => {
+        // ✅ Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        let data;
+        if (contentType && contentType.includes('application/json')) {
+          data = await response.json();
+        } else {
+          // ❌ Not JSON → likely server error (500, syntax error, etc.)
+          throw new Error('Server error: Invalid response format.');
         }
-        return response.json();
-      })
-      .then(data => {
+
+        if (!response.ok) {
+          // ✅ Handle validation errors
+          if (data.errors && Array.isArray(data.errors)) {
+            let errorIndex = 0;
+            const showError = () => {
+              if (errorIndex < data.errors.length) {
+                alert(data.errors[errorIndex]);
+                errorIndex++;
+                setTimeout(showError, 500);
+              } else {
+                nextBtn.disabled = false;
+                nextBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
+              }
+            };
+            showError();
+            return;
+          } else {
+            // Generic backend error
+            alert(data.message || 'Submission failed. Please try again.');
+            nextBtn.disabled = false;
+            nextBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
+            return;
+          }
+        }
+
+        // ✅ Success
         if (data.success) {
           window.location.href = data.redirect;
         } else {
-          alert(data.message || 'Submission failed');
+          alert(data.message || 'Submission failed.');
+          nextBtn.disabled = false;
+          nextBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
         }
       })
       .catch(error => {
-        alert(error.message || 'An error occurred during submission.');
-      })
-      .finally(() => {
+        // ❌ Only show network error if it's truly a network issue
+        if (error.message && !error.message.includes('Invalid response format')) {
+          alert('Network error: ' + error.message);
+        } else {
+          // Silent fail or log only (optional)
+          console.error('Submission error:', error);
+          alert('An unexpected error occurred. Please try again later.');
+        }
         nextBtn.disabled = false;
         nextBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
       });

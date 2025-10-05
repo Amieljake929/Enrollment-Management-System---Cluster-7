@@ -15,32 +15,50 @@
     <div class="card mb-4 shadow-sm">
         <div class="card-body p-4">
             <form method="GET" action="{{ route('modules.pending.college') }}" class="row g-3">
-                <div class="col-md-4">
-                    <label for="branch" class="form-label">Filter by Branch</label>
-                    <select name="branch" id="branch" class="form-select">
-                        <option value="">All Branches</option>
-                        <option value="1" {{ request('branch') == '1' ? 'selected' : '' }}>Main Branch</option>
-                        <option value="2" {{ request('branch') == '2' ? 'selected' : '' }}>Bulacan Branch</option>
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <label for="year_level" class="form-label">Filter by Year Level</label>
-                    <select name="year_level" id="year_level" class="form-select">
-                        <option value="">All Levels</option>
-                        <option value="1" {{ request('year_level') == '1' ? 'selected' : '' }}>1st Year</option>
-                        <option value="2" {{ request('year_level') == '2' ? 'selected' : '' }}>2nd Year</option>
-                        <option value="3" {{ request('year_level') == '3' ? 'selected' : '' }}>3rd Year</option>
-                        <option value="4" {{ request('year_level') == '4' ? 'selected' : '' }}>4th Year</option>
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <label for="search" class="form-label">Search by Keywords or Course</label>
-                    <input type="text" name="search" id="search" class="form-control" placeholder="Enter student name or course..." value="{{ request('search') }}">
-                </div>
-                <div class="col-12 d-flex justify-content-end">
-                    <button type="submit" class="btn btn-primary">Filter</button>
-                </div>
-            </form>
+    <div class="col-md-3">
+        <label for="branch" class="form-label">Filter by Branch</label>
+        <select name="branch" id="branch" class="form-select">
+            <option value="">All Branches</option>
+            <option value="1" {{ request('branch') == '1' ? 'selected' : '' }}>Main Branch</option>
+            <option value="2" {{ request('branch') == '2' ? 'selected' : '' }}>Bulacan Branch</option>
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <label for="year_level" class="form-label">Filter by Year Level</label>
+        <select name="year_level" id="year_level" class="form-select">
+            <option value="">All Levels</option>
+            <option value="1" {{ request('year_level') == '1' ? 'selected' : '' }}>1st Year</option>
+            <option value="2" {{ request('year_level') == '2' ? 'selected' : '' }}>2nd Year</option>
+            <option value="3" {{ request('year_level') == '3' ? 'selected' : '' }}>3rd Year</option>
+            <option value="4" {{ request('year_level') == '4' ? 'selected' : '' }}>4th Year</option>
+        </select>
+    </div>
+
+    {{-- NEW: Student Type --}}
+    <div class="col-md-3">
+        <label for="student_type" class="form-label">Filter by Student Type</label>
+        <select name="student_type" id="student_type" class="form-select">
+            <option value="">All Types</option>
+            @foreach($studentTypes as $type)
+                <option value="{{ $type->type_id }}" {{ request('student_type') == $type->type_id ? 'selected' : '' }}>
+                    {{ $type->type_name }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <label for="search" class="form-label">Search by Keywords or Course</label>
+        <input type="text" name="search" id="search" class="form-control"
+               placeholder="Enter student name or course..." value="{{ request('search') }}">
+    </div>
+
+    <div class="col-12 d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </div>
+</form>
+
         </div>
     </div>
 
@@ -51,9 +69,11 @@
                 <table class="table table-hover table-striped align-middle">
                     <thead class="table-light">
                         <tr>
+                            <th>Student Type</th>
                             <th>Student Names</th>
                             <th>Course</th>
                             <th>Year Level | Branch</th>
+                            <th>Status</th>
                             <th>Admission Date</th>
                             <th>Action</th>
                         </tr>
@@ -61,6 +81,8 @@
                     <tbody>
                         @forelse($students as $student)
                             <tr>
+                                <td>{{ $student->type->type_name ?? 'N/A' }}</td>
+
                                 <td>
                                     {{ $student->last_name }}, {{ $student->first_name }}
                                     @if($student->middle_name)
@@ -78,6 +100,15 @@
                                     {{ $student->preference->level->level_name ?? 'N/A' }} | 
                                     {{ $student->preference->branch->branch_name ?? 'N/A' }}
                                 </td>
+                                <td>
+    @if($student->status)
+        <span class="badge bg-warning text-dark">{{ $student->status->info_status }}</span>
+    @else
+        <span class="text-muted">N/A</span>
+    @endif
+</td>
+
+                                
                                 <td>{{ $student->created_at->format('M d, Y \a\t h:i A') }}</td>
                                 <td class="text-center">
                                     <a href="#" class="text-warning me-2 view-student" title="View" data-student-id="{{ $student->student_id }}"><i class="bi bi-eye fs-5"></i></a>
@@ -92,7 +123,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center text-muted py-4">
+                                <td colspan="6" class="text-center text-muted py-4">
                                     <i class="bi bi-clipboard-x fs-3"></i>
                                     <p class="mt-2 mb-0">No pending admissions found.</p>
                                 </td>

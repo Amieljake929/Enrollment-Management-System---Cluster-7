@@ -15,6 +15,7 @@ use App\Models\CollegeShsDisability;
 use App\Models\ShsHealth;
 use App\Models\ShsReferral;
 use App\Models\ShsFourPs;
+use App\Models\ShsStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
@@ -43,6 +44,7 @@ class ShsEnrollmentController extends Controller
         // Enhanced Validation
 $validator = Validator::make($request->all(), [
     'studentType' => 'required|exists:shs_student_types,type_name',
+    'previousStudentId' => 'nullable|required_if:studentType,Returnee|regex:/^\d{8}$/',
     'firstName' => 'required|string|max:100',
     'middleName' => 'required|string|max:100',
     'lastName' => 'required|string|max:100',
@@ -79,6 +81,38 @@ $validator = Validator::make($request->all(), [
     'disability.required' => 'Please select a Disability type.',
 ]);
 
+// Add custom after validation hook for duplicate name check (SHS + College)
+$validator->after(function ($validator) use ($request) {
+    // Check in SHS students
+    $existsShs = ShsStudent::whereRaw('LOWER(TRIM(first_name)) = ?', [strtolower(trim($request->firstName))])
+        ->whereRaw('LOWER(TRIM(middle_name)) = ?', [strtolower(trim($request->middleName))])
+        ->whereRaw('LOWER(TRIM(last_name)) = ?', [strtolower(trim($request->lastName))])
+        ->where(function ($query) use ($request) {
+            if ($request->filled('extensionName')) {
+                $query->where('extension_name', $request->extensionName);
+            } else {
+                $query->whereNull('extension_name');
+            }
+        })
+        ->exists();
+
+    // Check in College students (cross-system check)
+    $existsCollege = \App\Models\CollegeStudent::whereRaw('LOWER(TRIM(first_name)) = ?', [strtolower(trim($request->firstName))])
+        ->whereRaw('LOWER(TRIM(middle_name)) = ?', [strtolower(trim($request->middleName))])
+        ->whereRaw('LOWER(TRIM(last_name)) = ?', [strtolower(trim($request->lastName))])
+        ->where(function ($query) use ($request) {
+            if ($request->filled('extensionName')) {
+                $query->where('extension_name', $request->extensionName);
+            } else {
+                $query->whereNull('extension_name');
+            }
+        })
+        ->exists();
+
+    if ($existsShs || $existsCollege) {
+        $validator->errors()->add('firstName', 'A student with this name already exists. Please verify your information.');
+    }
+});
 // Custom document validation
 if ($validator->passes()) {
     $docIds = $request->input('document_doc_id', []);
@@ -118,7 +152,7 @@ if ($validator->fails()) {
     return response()->json([
         'success' => false,
         'message' => 'Please fill all required fields correctly.',
-        'errors' => $validator->errors()
+        'errors' => $validator->errors()->all() // 👈 convert to array of strings
     ], 422);
 }
 
@@ -128,20 +162,20 @@ if ($validator->fails()) {
         $lastSchoolYear = $request->lastSchoolYearGraduated;
 
         if ($primaryYear >= $secondaryYear) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Invalid year order: Secondary graduation year must be after primary.',
-                'errors' => ['secondaryYearGraduated' => ['Secondary year must be after primary year.']]
-            ], 422);
-        }
+    return response()->json([
+        'success' => false,
+        'message' => 'Invalid year order.',
+        'errors' => ['Secondary graduation year must be after primary year.']
+    ], 422);
+}
 
         if ($secondaryYear >= $lastSchoolYear) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Invalid year order: Last school year must be after secondary.',
-                'errors' => ['lastSchoolYearGraduated' => ['Last school year must be after secondary.']]
-            ], 422);
-        }
+    return response()->json([
+        'success' => false,
+        'message' => 'Invalid year order.',
+        'errors' => ['Last school year must be after secondary year.']
+    ], 422);
+}
 
         $success = false;
         $message = '';
@@ -181,6 +215,15 @@ if ($validator->fails()) {
                 'indigenous_id' => $request->indigenous,
                 'disability_id' => $request->disability,
             ]);
+
+            // ✅ 2.0 Create College Status Record
+ShsStatus::create([
+    'student_id' => $student->student_id,
+    'info_status' => 'Pending', // default value
+    'payment' => 'Not Paid',    // default value
+    'remarks' => null,          // optional
+]);
+
 
             // Save 4Ps info if checked
 if ($request->has('isFourPs') && $request->isFourPs == '1') {

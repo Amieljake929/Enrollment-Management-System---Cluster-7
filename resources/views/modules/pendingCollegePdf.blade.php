@@ -124,6 +124,7 @@
         <table>
             <thead>
                 <tr>
+                    <th>Student Type</th>
                     <th>Student Name</th>
                     <th>Course</th>
                     <th>Year Level | Branch</th>
@@ -134,6 +135,7 @@
             <tbody>
                 @foreach($students as $student)
                     <tr>
+                        <td>{{ $student->type->type_name ?? 'N/A' }}</td>
                         <td>
                             {{ $student->last_name }}, {{ $student->first_name }}
                             @if($student->middle_name)
