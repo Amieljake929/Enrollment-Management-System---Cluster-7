@@ -112,12 +112,19 @@
                                 <td>{{ $student->created_at->format('M d, Y \a\t h:i A') }}</td>
                                 <td class="text-center">
                                     <a href="#" class="text-warning me-2 view-student" title="View" data-student-id="{{ $student->student_id }}"><i class="bi bi-eye fs-5"></i></a>
-                                    <a href="#" class="text-info me-2" title="Send"><i class="bi bi-send fs-5"></i></a>
-                                    <button type="button" class="btn btn-link text-danger p-0 delete-btn" 
-        data-student-id="{{ $student->student_id }}" 
-        data-student-name="{{ $student->last_name }}, {{ $student->first_name }}"
-        title="Delete">
-    <i class="bi bi-trash fs-5"></i>
+                                    <!-- Validate Button -->
+<button type="button" class="btn btn-sm btn-success validate-btn me-2"
+    data-student-id="{{ $student->student_id }}"
+    title="Validate">
+    Validate
+</button>
+
+<!-- Cancel Button -->
+<button type="button" class="btn btn-sm btn-secondary cancel-btn"
+    data-student-id="{{ $student->student_id }}"
+    data-student-name="{{ $student->last_name }}, {{ $student->first_name }}"
+    title="Cancel">
+    Cancel
 </button>
                                 </td>
                             </tr>
@@ -166,29 +173,6 @@
     </div>
 </div>
 
-<!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Deletion</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to delete the admission record for <strong id="student-name-to-delete"></strong>?</p>
-                <p class="text-danger"><small>This action cannot be undone. All related data will also be permanently deleted.</small></p>
-            </div>
-            <div class="modal-footer">
-                <form id="delete-form" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script>
 document.addEventListener('click', function(e) {
@@ -314,59 +298,71 @@ ${student.parent_info && Array.isArray(student.parent_info) && student.parent_in
         </div>
     `;
 }
-// Delete button click handler
+
+</script>
+
+<script>
+// Validate Button
 document.addEventListener('click', function(e) {
-    const deleteBtn = e.target.closest('.delete-btn');
-    if (deleteBtn) {
+    const validateBtn = e.target.closest('.validate-btn');
+    if (validateBtn) {
         e.preventDefault();
-        const studentId = deleteBtn.getAttribute('data-student-id');
-        const studentName = deleteBtn.getAttribute('data-student-name');
+        const studentId = validateBtn.getAttribute('data-student-id');
+        if (!confirm('Validate this admission? This will change the status to "Validated".')) return;
 
-        // Set modal content
-        document.getElementById('student-name-to-delete').textContent = studentName;
-        const deleteForm = document.getElementById('delete-form');
-        deleteForm.action = `/modules/pending/college/${studentId}`;
-
-        // Show modal
-        const modal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
-        modal.show();
+        fetch(`/modules/pending/college/${studentId}/validate`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Validated successfully!');
+                location.reload();
+            } else {
+                alert('Validation failed.');
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('An error occurred.');
+        });
     }
 });
 
-// Handle successful deletion via AJAX (optional but better UX)
-document.getElementById('delete-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const form = this;
-    const formData = new FormData(form);
-    const url = form.action;
+// Cancel Button
+document.addEventListener('click', function(e) {
+    const cancelBtn = e.target.closest('.cancel-btn');
+    if (cancelBtn) {
+        e.preventDefault();
+        const studentId = cancelBtn.getAttribute('data-student-id');
+        const studentName = cancelBtn.getAttribute('data-student-name');
+        if (!confirm(`Cancel admission for ${studentName}? This will change the status to "Cancelled".`)) return;
 
-    fetch(url, {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Close modal
-            bootstrap.Modal.getInstance(document.getElementById('deleteConfirmationModal')).hide();
-            
-            // Show success toast (optional)
-            alert('Record deleted successfully!');
-            
-            // Reload the page (or remove row without reload if preferred)
-            location.reload();
-        } else {
-            alert('Failed to delete the record.');
-        }
-    })
-    .catch(error => {
-        console.error('Delete error:', error);
-        alert('An error occurred while deleting the record.');
-    });
+        fetch(`/modules/pending/college/${studentId}/cancel`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Cancelled successfully!');
+                location.reload();
+            } else {
+                alert('Cancellation failed.');
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('An error occurred.');
+        });
+    }
 });
 </script>
 

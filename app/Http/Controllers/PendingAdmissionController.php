@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\CollegeStudent;
 use App\Models\ShsStudent;
+use App\Models\CollegeStatus;
+use App\Models\ShsStudentType;
+use App\Models\ShsStatus;
 use App\Models\CollegeStudentType;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -13,11 +16,11 @@ class PendingAdmissionController extends Controller
     /**
      * College Pending Admissions
      */
-    public function index(Request $request)
+  public function index(Request $request)
 {
     $query = CollegeStudent::with([
-        'type', // 👈 eager-load type for efficiency
-        'status', // ✅ add this
+        'type',
+        'status',
         'preference.course',
         'preference.branch',
         'preference.level',
@@ -27,43 +30,45 @@ class PendingAdmissionController extends Controller
         $q->whereNotNull('course_id')
           ->whereNotNull('branch_id')
           ->whereNotNull('level_id');
+    })
+    ->where(function ($q) {
+        // Group: either has 'Pending' status OR has no status at all
+        $q->whereHas('status', function ($sub) {
+            $sub->where('info_status', 'Pending');
+        })
+        ->orWhereDoesntHave('status');
     });
 
-    // Filter by Branch
+    // ✅ Now apply filters (branch, year_level, etc.)
     if ($request->filled('branch')) {
         $query->whereHas('preference', function ($q) use ($request) {
             $q->where('branch_id', $request->branch);
         });
     }
 
-    // Filter by Year Level
     if ($request->filled('year_level')) {
         $query->whereHas('preference', function ($q) use ($request) {
             $q->where('level_id', $request->year_level);
         });
     }
 
-    // ✅ NEW: Filter by Student Type (college_students.type_id FK -> college_student_types.type_id)
     if ($request->filled('student_type')) {
         $query->where('type_id', $request->student_type);
     }
 
-    // Search by Keywords
     if ($request->filled('search')) {
         $search = $request->search;
         $query->where(function ($q) use ($search) {
             $q->where('first_name', 'like', "%{$search}%")
               ->orWhere('middle_name', 'like', "%{$search}%")
               ->orWhere('last_name', 'like', "%{$search}%")
-              ->orWhereHas('preference.course', function ($q) use ($search) {
-                  $q->where('course_name', 'like', "%{$search}%");
+              ->orWhereHas('preference.course', function ($q2) use ($search) {
+                  $q2->where('course_name', 'like', "%{$search}%");
               });
         });
     }
 
     $students = $query->paginate(10)->appends($request->query());
-
-    // 👇 Provide list of student types for the dropdown
     $studentTypes = CollegeStudentType::orderBy('type_id')->get(['type_id','type_name']);
 
     if ($request->ajax()) {
@@ -78,54 +83,67 @@ class PendingAdmissionController extends Controller
      * SHS Pending Admissions
      */
     public function shsIndex(Request $request)
-    {
-        $query = ShsStudent::with([
-            'enrollmentPreference.course',
-            'enrollmentPreference.branch',
-            'enrollmentPreference.level',
-            'enrolleeNumber' // ✅ Add this to load enrollee_no
-        ])
-        ->whereHas('enrollmentPreference', function ($q) {
-            $q->whereNotNull('course_id')
-              ->whereNotNull('branch_id')
-              ->whereNotNull('level_id');
+{
+    $query = ShsStudent::with([
+        'studentType',
+        'status', // 👈 DAPAT KASAMA ITO!
+        'enrollmentPreference.course',
+        'enrollmentPreference.branch',
+        'enrollmentPreference.level',
+        'enrolleeNumber'
+    ])
+    ->whereHas('enrollmentPreference', function ($q) {
+        $q->whereNotNull('course_id')
+          ->whereNotNull('branch_id')
+          ->whereNotNull('level_id');
+    })
+    ->where(function ($q) {
+        // Only show: Pending OR no status yet
+        $q->whereHas('status', function ($sub) {
+            $sub->where('info_status', 'Pending');
+        })
+        ->orWhereDoesntHave('status');
+    });
+
+    // ✅ Filters (branch, year_level, etc.)
+    if ($request->filled('branch')) {
+        $query->whereHas('enrollmentPreference', function ($q) use ($request) {
+            $q->where('branch_id', $request->branch);
         });
-
-        // Filter by Branch
-        if ($request->filled('branch')) {
-            $query->whereHas('enrollmentPreference', function ($q) use ($request) {
-                $q->where('branch_id', $request->branch);
-            });
-        }
-
-        // Filter by Year Level
-        if ($request->filled('year_level')) {
-            $query->whereHas('enrollmentPreference', function ($q) use ($request) {
-                $q->where('level_id', $request->year_level);
-            });
-        }
-
-        // Search by Keywords
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('first_name', 'like', "%{$search}%")
-                  ->orWhere('middle_name', 'like', "%{$search}%")
-                  ->orWhere('last_name', 'like', "%{$search}%")
-                  ->orWhereHas('enrollmentPreference.course', function ($q) use ($search) {
-                      $q->where('course_name', 'like', "%{$search}%");
-                  });
-            });
-        }
-
-        $students = $query->paginate(10)->appends($request->query());
-
-        if ($request->ajax()) {
-            return view('modules.pendingShs', compact('students'))->render();
-        }
-
-        return view('modules.pendingShs', compact('students'));
     }
+
+    if ($request->filled('year_level')) {
+        $query->whereHas('enrollmentPreference', function ($q) use ($request) {
+            $q->where('level_id', $request->year_level);
+        });
+    }
+
+    if ($request->filled('student_type')) {
+        $query->where('type_id', $request->student_type);
+    }
+
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function ($q) use ($search) {
+            $q->where('first_name', 'like', "%{$search}%")
+              ->orWhere('middle_name', 'like', "%{$search}%")
+              ->orWhere('last_name', 'like', "%{$search}%")
+              ->orWhereHas('enrollmentPreference.course', function ($q2) use ($search) {
+                  $q2->where('course_name', 'like', "%{$search}%");
+              });
+        });
+    }
+
+    $students = $query->paginate(10)->appends($request->query());
+    $studentTypes = ShsStudentType::orderBy('type_id')->get(['type_id','type_name']);
+
+    if ($request->ajax()) {
+        return view('modules.pendingShs', compact('students','studentTypes'))->render();
+    }
+
+    return view('modules.pendingShs', compact('students','studentTypes'));
+}
+
 
     /**
      * Show College Student Details
@@ -293,6 +311,8 @@ public function downloadPdf(Request $request)
 public function downloadShsPdf(Request $request)
 {
     $query = ShsStudent::with([
+        'studentType', // optional, if you want to show on PDF
+        'status',
         'enrollmentPreference.course',
         'enrollmentPreference.branch',
         'enrollmentPreference.level',
@@ -303,21 +323,23 @@ public function downloadShsPdf(Request $request)
           ->whereNotNull('level_id');
     });
 
-    // Filter by Branch
     if ($request->filled('branch')) {
         $query->whereHas('enrollmentPreference', function ($q) use ($request) {
             $q->where('branch_id', $request->branch);
         });
     }
 
-    // Filter by Year Level (Grade 11/12)
     if ($request->filled('year_level')) {
         $query->whereHas('enrollmentPreference', function ($q) use ($request) {
             $q->where('level_id', $request->year_level);
         });
     }
 
-    // Search by Keywords
+    // ✅ NEW: Student Type filter for PDF
+    if ($request->filled('student_type')) {
+        $query->where('type_id', $request->student_type);
+    }
+
     if ($request->filled('search')) {
         $search = $request->search;
         $query->where(function ($q) use ($search) {
@@ -336,6 +358,59 @@ public function downloadShsPdf(Request $request)
         ->setPaper('a4', 'portrait');
 
     return $pdf->download('pending_shs_admissions_' . now()->format('Y-m-d_H-i') . '.pdf');
+}
+
+// ...
+
+public function validate(Request $request, $id)
+{
+    $student = CollegeStudent::findOrFail($id);
+
+    // Update or create status
+    CollegeStatus::updateOrCreate(
+        ['student_id' => $student->student_id],
+        ['info_status' => 'Validated']
+    );
+
+    return response()->json(['success' => true, 'message' => 'Student validated successfully.']);
+}
+
+public function cancel(Request $request, $id)
+{
+    $student = CollegeStudent::findOrFail($id);
+
+    CollegeStatus::updateOrCreate(
+        ['student_id' => $student->student_id],
+        ['info_status' => 'Cancelled']
+    );
+
+    return response()->json(['success' => true, 'message' => 'Student admission cancelled.']);
+}
+
+// Validate SHS Admission
+public function validateShs(Request $request, $id)
+{
+    $student = ShsStudent::findOrFail($id);
+
+    ShsStatus::updateOrCreate(
+        ['student_id' => $student->student_id],
+        ['info_status' => 'Validated']
+    );
+
+    return response()->json(['success' => true, 'message' => 'SHS admission validated successfully.']);
+}
+
+// Cancel SHS Admission
+public function cancelShs(Request $request, $id)
+{
+    $student = ShsStudent::findOrFail($id);
+
+    ShsStatus::updateOrCreate(
+        ['student_id' => $student->student_id],
+        ['info_status' => 'Cancelled']
+    );
+
+    return response()->json(['success' => true, 'message' => 'SHS admission cancelled.']);
 }
 
 }

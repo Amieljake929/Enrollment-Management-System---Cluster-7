@@ -163,6 +163,16 @@ Route::prefix('modules')->middleware(['auth'])->group(function () {
     Route::get('/pending/shs/{id}', [PendingAdmissionController::class, 'showShs'])->name('modules.pending.shs.show');
     Route::delete('/pending/shs/{id}', [PendingAdmissionController::class, 'destroyShs'])->name('modules.pending.shs.destroy');
 
+    // Inside the `modules` group in web.php
+Route::post('/pending/college/{id}/validate', [PendingAdmissionController::class, 'validate'])->name('modules.pending.college.validate');
+Route::post('/pending/college/{id}/cancel', [PendingAdmissionController::class, 'cancel'])->name('modules.pending.college.cancel');
+
+// Inside Route::prefix('modules')->middleware(['auth'])->group(function () { ... })
+
+// SHS Validate & Cancel Routes
+Route::post('/pending/shs/{id}/validate', [PendingAdmissionController::class, 'validateShs'])->name('modules.pending.shs.validate');
+Route::post('/pending/shs/{id}/cancel', [PendingAdmissionController::class, 'cancelShs'])->name('modules.pending.shs.cancel');
+
     // Waiting List
     Route::get('/waiting/college', function () {
         if (request()->ajax()) {

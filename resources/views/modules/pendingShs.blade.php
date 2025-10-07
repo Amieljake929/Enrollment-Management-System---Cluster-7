@@ -15,30 +15,48 @@
     <div class="card mb-4 shadow-sm">
         <div class="card-body p-4">
             <form method="GET" action="{{ route('modules.pending.shs') }}" class="row g-3">
-                <div class="col-md-4">
-                    <label for="branch" class="form-label">Filter by Branch</label>
-                    <select name="branch" id="branch" class="form-select">
-                        <option value="">All Branches</option>
-                        <option value="1" {{ request('branch') == '1' ? 'selected' : '' }}>Main Branch</option>
-                        <option value="2" {{ request('branch') == '2' ? 'selected' : '' }}>Bulacan Branch</option>
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <label for="year_level" class="form-label">Filter by Year Level</label>
-                    <select name="year_level" id="year_level" class="form-select">
-                        <option value="">All Levels</option>
-                        <option value="11" {{ request('year_level') == '11' ? 'selected' : '' }}>Grade 11</option>
-                        <option value="12" {{ request('year_level') == '12' ? 'selected' : '' }}>Grade 12</option>
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <label for="search" class="form-label">Search by Keywords or Course</label>
-                    <input type="text" name="search" id="search" class="form-control" placeholder="Enter student name or course..." value="{{ request('search') }}">
-                </div>
-                <div class="col-12 d-flex justify-content-end">
-                    <button type="submit" class="btn btn-primary">Filter</button>
-                </div>
-            </form>
+    <div class="col-md-3">
+        <label for="branch" class="form-label">Filter by Branch</label>
+        <select name="branch" id="branch" class="form-select">
+            <option value="">All Branches</option>
+            <option value="1" {{ request('branch') == '1' ? 'selected' : '' }}>Main Branch</option>
+            <option value="2" {{ request('branch') == '2' ? 'selected' : '' }}>Bulacan Branch</option>
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <label for="year_level" class="form-label">Filter by Year Level</label>
+        <select name="year_level" id="year_level" class="form-select">
+            <option value="">All Levels</option>
+            <option value="11" {{ request('year_level') == '11' ? 'selected' : '' }}>Grade 11</option>
+            <option value="12" {{ request('year_level') == '12' ? 'selected' : '' }}>Grade 12</option>
+        </select>
+    </div>
+
+    {{-- ✅ NEW: Student Type --}}
+    <div class="col-md-3">
+        <label for="student_type" class="form-label">Filter by Student Type</label>
+        <select name="student_type" id="student_type" class="form-select">
+            <option value="">All Types</option>
+            @foreach($studentTypes as $type)
+                <option value="{{ $type->type_id }}" {{ request('student_type') == $type->type_id ? 'selected' : '' }}>
+                    {{ $type->type_name }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <label for="search" class="form-label">Search by Keywords or Course</label>
+        <input type="text" name="search" id="search" class="form-control"
+               placeholder="Enter student name or course..." value="{{ request('search') }}">
+    </div>
+
+    <div class="col-12 d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </div>
+</form>
+
         </div>
     </div>
 
@@ -49,9 +67,11 @@
                 <table class="table table-hover table-striped align-middle">
                     <thead class="table-light">
                         <tr>
+                            <th>Student Type</th>
                             <th>Student Names</th>
                             <th>Course</th>
                             <th>Year Level | Branch</th>
+                            <th>Status</th>
                             <th>Admission Date</th>
                             <th>Action</th>
                         </tr>
@@ -59,6 +79,7 @@
                     <tbody>
                         @forelse($students as $student)
                             <tr>
+                                <td>{{ $student->studentType->type_name ?? 'N/A' }}</td>
                                 <td>
                                     {{ $student->last_name }}, {{ $student->first_name }}
                                     @if($student->middle_name)
@@ -76,25 +97,40 @@
                                     {{ $student->enrollmentPreference->level->level_name ?? 'N/A' }} | 
                                     {{ $student->enrollmentPreference->branch->branch_name ?? 'N/A' }}
                                 </td>
+                                 <td>
+    @if($student->status)
+        <span class="badge bg-warning text-dark">{{ $student->status->info_status }}</span>
+    @else
+        <span class="text-muted">N/A</span>
+    @endif
+</td>
                                 <td>{{ $student->created_at->format('M d, Y \a\t h:i A') }}</td>
+                               
                                 <td class="text-center">
                                     <button type="button" class="btn btn-link text-warning p-0 view-shs-btn" 
         data-student-id="{{ $student->student_id }}" 
         title="View">
     <i class="bi bi-eye fs-5"></i>
 </button>
-<a href="#" class="text-info me-2" title="Send"><i class="bi bi-send fs-5"></i></a>
-<button type="button" class="btn btn-link text-danger p-0 delete-shs-btn" 
-        data-student-id="{{ $student->student_id }}" 
-        data-student-name="{{ $student->last_name }}, {{ $student->first_name }}"
-        title="Delete">
-    <i class="bi bi-trash fs-5"></i>
+<!-- Validate Button -->
+<button type="button" class="btn btn-sm btn-success validate-shs-btn me-2"
+    data-student-id="{{ $student->student_id }}"
+    title="Validate">
+    Validate
+</button>
+
+<!-- Cancel Button -->
+<button type="button" class="btn btn-sm btn-secondary cancel-shs-btn"
+    data-student-id="{{ $student->student_id }}"
+    data-student-name="{{ $student->last_name }}, {{ $student->first_name }}"
+    title="Cancel">
+    Cancel
 </button>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center text-muted py-4">
+                                <td colspan="7" class="text-center text-muted py-4">
                                     <i class="bi bi-clipboard-x fs-3"></i>
                                     <p class="mt-2 mb-0">No pending admissions found.</p>
                                 </td>
@@ -136,29 +172,6 @@
     </div>
 </div>
 
-<!-- SHS Delete Confirmation Modal -->
-<div class="modal fade" id="shsDeleteConfirmationModal" tabindex="-1" aria-labelledby="shsDeleteConfirmationModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="shsDeleteConfirmationModalLabel">Confirm Deletion</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to delete the SHS admission record for <strong id="shs-student-name-to-delete"></strong>?</p>
-                <p class="text-danger"><small>This action cannot be undone. All related data will also be permanently deleted.</small></p>
-            </div>
-            <div class="modal-footer">
-                <form id="shs-delete-form" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script>
 // View SHS Student
@@ -192,44 +205,7 @@ document.addEventListener('click', function(e) {
             });
     }
 
-    // Delete SHS Student
-    const deleteBtn = e.target.closest('.delete-shs-btn');
-    if (deleteBtn) {
-        e.preventDefault();
-        const studentId = deleteBtn.getAttribute('data-student-id');
-        const studentName = deleteBtn.getAttribute('data-student-name');
-
-        document.getElementById('shs-student-name-to-delete').textContent = studentName;
-        const deleteForm = document.getElementById('shs-delete-form');
-        deleteForm.action = `/modules/pending/shs/${studentId}`;
-
-        const modal = new bootstrap.Modal(document.getElementById('shsDeleteConfirmationModal'));
-        modal.show();
-    }
-});
-
-// Handle SHS delete form submit
-document.getElementById('shs-delete-form')?.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const form = this;
-    const url = form.action;
-
-    fetch(url, {
-        method: 'POST',
-        body: new FormData(form),
-        headers: { 'X-Requested-With': 'XMLHttpRequest' }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            bootstrap.Modal.getInstance(document.getElementById('shsDeleteConfirmationModal')).hide();
-            alert('Record deleted successfully!');
-            location.reload();
-        } else {
-            alert('Failed to delete.');
-        }
-    })
-    .catch(() => alert('An error occurred.'));
+    
 });
 
 // Generate SHS Student Details HTML
@@ -322,6 +298,57 @@ function generateShsStudentDetailsHTML(student) {
         </div>
     `;
 }
+</script>
+
+<script>
+// Validate SHS
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.validate-shs-btn');
+    if (btn) {
+        e.preventDefault();
+        const id = btn.getAttribute('data-student-id');
+        if (!confirm('Validate this SHS admission? Status will become "Validated".')) return;
+
+        fetch(`/modules/pending/shs/${id}/validate`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(r => r.json())
+        .then(data => {
+            alert(data.message);
+            location.reload();
+        })
+        .catch(() => alert('An error occurred.'));
+    }
+});
+
+// Cancel SHS
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.cancel-shs-btn');
+    if (btn) {
+        e.preventDefault();
+        const id = btn.getAttribute('data-student-id');
+        const name = btn.getAttribute('data-student-name');
+        if (!confirm(`Cancel admission for ${name}? Status will become "Cancelled".`)) return;
+
+        fetch(`/modules/pending/shs/${id}/cancel`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(r => r.json())
+        .then(data => {
+            alert(data.message);
+            location.reload();
+        })
+        .catch(() => alert('An error occurred.'));
+    }
+});
 </script>
 
 @endsection

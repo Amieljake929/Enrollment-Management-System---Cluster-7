@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('college_status', function (Blueprint $table) {
     $table->id();
     $table->unsignedBigInteger('student_id');
-    $table->enum('info_status', ['Pending', 'Validated', 'Rejected'])->default('Pending');
+    $table->enum('info_status', ['Pending', 'Validated', 'Cancelled'])->default('Pending');
     $table->enum('payment', ['Not Paid', 'Paid'])->default('Not Paid');
     $table->text('remarks')->nullable();
     $table->timestamps();
