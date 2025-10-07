@@ -346,6 +346,33 @@
       .feature-box {
         margin-bottom: 20px;
       }
+      .stepper {
+        flex-direction: column;
+        align-items: center;
+      }
+      .step {
+        margin-bottom: 10px;
+        font-size: 0.75rem;
+      }
+      .step::before {
+        width: 28px;
+        height: 28px;
+        line-height: 28px;
+        font-size: 0.75rem;
+      }
+      .summary-label {
+        font-size: 0.8rem;
+        display: block;
+        margin-bottom: 5px;
+      }
+      .card-body .row .col-md-6,
+      .card-body .row .col-md-4,
+      .card-body .row .col-md-3 {
+        margin-bottom: 10px;
+      }
+      #summaryContent {
+        font-size: 0.85rem;
+      }
     }
   </style>
 </head>
@@ -1459,8 +1486,10 @@ if (index === 6) {
     }
     function populateSummary() {
       const data = new FormData(form);
-      let html = '<div class="row g-3">';
-      html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Student Information</h5></div>`;
+      let html = '';
+
+      // Student Information Card
+      html += '<div class="card mb-3"><div class="card-header-custom">Student Information</div><div class="card-body"><div class="row g-3">';
       html += `<div class="col-md-6"><span class="summary-label">Student Type:</span> ${data.get('studentType') || ''}</div>`;
       if (data.get('studentType') === 'Returnee') {
         html += `<div class="col-md-6"><span class="summary-label">Previous Student ID No:</span> ${data.get('previousStudentId') || ''}</div>`;
@@ -1475,8 +1504,10 @@ if (index === 6) {
       html += `<div class="col-md-6"><span class="summary-label">Place of Birth:</span> ${data.get('placeOfBirth') || ''}</div>`;
       html += `<div class="col-md-6"><span class="summary-label">Nationality:</span> ${data.get('nationality') || ''}</div>`;
       html += `<div class="col-md-6"><span class="summary-label">Learner Reference Number (LRN):</span> ${data.get('lrn') || ''}</div>`;
-      html += `<div class="col-12"><hr></div>`;
-      html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Address & Contact</h5></div>`;
+      html += '</div></div></div>';
+
+      // Address & Contact Card
+      html += '<div class="card mb-3"><div class="card-header-custom">Address & Contact</div><div class="card-body"><div class="row g-3">';
       html += `<div class="col-md-6"><span class="summary-label">Current Address:</span> ${data.get('currentAddress') || ''}</div>`;
       html += `<div class="col-md-6"><span class="summary-label">City/Municipality:</span> ${data.get('cityMunicipality') || ''}</div>`;
       html += `<div class="col-md-6"><span class="summary-label">Province:</span> ${data.get('province') || ''}</div>`;
@@ -1486,8 +1517,10 @@ if (index === 6) {
       html += `<div class="col-md-6"><span class="summary-label">Email:</span> ${data.get('email') || ''}</div>`;
       html += `<div class="col-md-6"><span class="summary-label">Contact Number:</span> ${data.get('contactNumber') || ''}</div>`;
       html += `<div class="col-md-6"><span class="summary-label">Social Media:</span> ${data.get('socialMedia') || ''}</div>`;
-      html += `<div class="col-12"><hr></div>`;
-      html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Parents Information</h5></div>`;
+      html += '</div></div></div>';
+
+      // Parents Information Card
+      html += '<div class="card mb-3"><div class="card-header-custom">Parents Information</div><div class="card-body"><div class="row g-3">';
       html += `<div class="col-md-4"><span class="summary-label">Mother's First Name:</span> ${data.get('motherFirstName') || ''}</div>`;
       html += `<div class="col-md-4"><span class="summary-label">Middle Name:</span> ${data.get('motherMiddleName') || ''}</div>`;
       html += `<div class="col-md-4"><span class="summary-label">Last Name:</span> ${data.get('motherLastName') || ''}</div>`;
@@ -1500,11 +1533,12 @@ if (index === 6) {
       html += `<div class="col-md-4"><span class="summary-label">Occupation:</span> ${data.get('fatherOccupation') || ''}</div>`;
       html += `<div class="col-md-4"><span class="summary-label">Contact Number:</span> ${data.get('fatherContact') || ''}</div>`;
       html += `<div class="col-md-4"><span class="summary-label">Email:</span> ${data.get('fatherEmail') || ''}</div>`;
-      html += `<div class="col-12"><hr></div>`;
-      html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Additional Information</h5></div>`;
+      html += '</div></div></div>';
+
+      // Additional Information Card
+      html += '<div class="card mb-3"><div class="card-header-custom">Additional Information</div><div class="card-body"><div class="row g-3">';
       html += `<div class="col-md-6"><span class="summary-label">4Ps Member:</span> ${data.get('isFourPs') ? 'Yes' : 'No'}</div>`;
       html += `<div class="col-md-6"><span class="summary-label">Not living with parents:</span> ${data.get('notLivingWithParents') ? 'Yes' : 'No'}</div>`;
-      html += `<div class="col-12"><hr></div>`;
       if (data.get('notLivingWithParents')) {
         html += `<div class="col-12"><h6 style="color: var(--primary-color); font-weight: 700;">Guardian Information</h6></div>`;
         html += `<div class="col-md-4"><span class="summary-label">First Name:</span> ${data.get('guardianFirstName') || ''}</div>`;
@@ -1514,41 +1548,44 @@ if (index === 6) {
         html += `<div class="col-md-6"><span class="summary-label">Contact Number:</span> ${data.get('guardianContact') || ''}</div>`;
         html += `<div class="col-md-3"><span class="summary-label">Email:</span> ${data.get('guardianEmail') || ''}</div>`;
       }
-      html += `<div class="col-12"><hr></div>`;
-      html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Preferences</h5></div>`;
+      html += '</div></div></div>';
+
+      // Preferences Card
+      html += '<div class="card mb-3"><div class="card-header-custom">Preferences</div><div class="card-body"><div class="row g-3">';
       html += `<div class="col-md-6"><span class="summary-label">Preferred Branch:</span> ${document.querySelector('#preferredBranch option:checked')?.text || ''}</div>`;
       html += `<div class="col-md-6"><span class="summary-label">Preferred Course:</span> ${document.querySelector('#preferredCourse option:checked')?.text || ''}</div>`;
       html += `<div class="col-md-6"><span class="summary-label">Year Level:</span> ${document.querySelector('#yearLevelStep4 option:checked')?.text || ''}</div>`;
-      html += `<div class="col-12"><hr></div>`;
-      // Health Info
-html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Health Information</h5></div>`;
-html += `<div class="col-md-6"><span class="summary-label">Medical Condition:</span> ${data.get('healthCondition') || ''}</div>`;
-if (data.get('healthCondition') === 'Others') {
-  html += `<div class="col-md-6"><span class="summary-label">Specified Condition:</span> ${data.get('healthConditionOthers') || ''}</div>`;
-}
-html += `<div class="col-md-6"><span class="summary-label">Weight (kg):</span> ${data.get('weightKg') || ''}</div>`;
-html += `<div class="col-md-6"><span class="summary-label">Height (cm):</span> ${data.get('heightCm') || ''}</div>`;
-html += `<div class="col-12"><hr></div>`;
+      html += '</div></div></div>';
 
-// Referral
-html += `<div class="col-12"><hr></div>`;
-html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Referral Source</h5></div>`;
-html += `<div class="col-md-6"><span class="summary-label">How did you hear about us?:</span> ${data.get('referralSource') || ''}</div>`;
-if (data.get('referralSource') === 'Referral') {
-  html += `<div class="col-md-6"><span class="summary-label">Referral Name:</span> ${data.get('referralName') || ''}</div>`;
-  html += `<div class="col-md-6"><span class="summary-label">Referral Relation:</span> ${data.get('referralRelation') || ''}</div>`;
-}
+      // Health Information Card
+      html += '<div class="card mb-3"><div class="card-header-custom">Health Information</div><div class="card-body"><div class="row g-3">';
+      html += `<div class="col-md-6"><span class="summary-label">Medical Condition:</span> ${data.get('healthCondition') || ''}</div>`;
+      if (data.get('healthCondition') === 'Others') {
+        html += `<div class="col-md-6"><span class="summary-label">Specified Condition:</span> ${data.get('healthConditionOthers') || ''}</div>`;
+      }
+      html += `<div class="col-md-6"><span class="summary-label">Weight (kg):</span> ${data.get('weightKg') || ''}</div>`;
+      html += `<div class="col-md-6"><span class="summary-label">Height (cm):</span> ${data.get('heightCm') || ''}</div>`;
+      html += '</div></div></div>';
 
-html += `<div class="col-12"><hr></div>`;
+      // Referral Source Card
+      html += '<div class="card mb-3"><div class="card-header-custom">Referral Source</div><div class="card-body"><div class="row g-3">';
+      html += `<div class="col-md-6"><span class="summary-label">How did you hear about us?:</span> ${data.get('referralSource') || ''}</div>`;
+      if (data.get('referralSource') === 'Adviser/Referral/Others') {
+        html += `<div class="col-md-6"><span class="summary-label">Referral Name:</span> ${data.get('referralName') || ''}</div>`;
+        html += `<div class="col-md-6"><span class="summary-label">Referral Relation:</span> ${data.get('referralRelation') || ''}</div>`;
+      }
+      html += '</div></div></div>';
 
-      html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Educational Background</h5></div>`;
+      // Educational Background Card
+      html += '<div class="card mb-3"><div class="card-header-custom">Educational Background</div><div class="card-body"><div class="row g-3">';
       html += `<div class="col-md-6"><span class="summary-label">Primary School:</span> ${data.get('primarySchool') || ''}</div>`;
       html += `<div class="col-md-6"><span class="summary-label">Year Graduated (Primary):</span> ${data.get('primaryYearGraduated') || ''}</div>`;
       html += `<div class="col-md-6"><span class="summary-label">Secondary School:</span> ${data.get('secondarySchool') || ''}</div>`;
       html += `<div class="col-md-6"><span class="summary-label">Year Graduated (Secondary):</span> ${data.get('secondaryYearGraduated') || ''}</div>`;
       html += `<div class="col-md-12"><span class="summary-label">Last School Attended:</span> ${data.get('lastSchoolAttended') || ''}</div>`;
       html += `<div class="col-md-12"><span class="summary-label">Year Graduated (Last School):</span> ${data.get('lastSchoolYearGraduated') || ''}</div>`;
-      html += '</div>';
+      html += '</div></div></div>';
+
       document.getElementById('summaryContent').innerHTML = html;
     }
     nextBtn.addEventListener('click', function () {
