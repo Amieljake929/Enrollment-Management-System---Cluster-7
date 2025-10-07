@@ -1412,12 +1412,11 @@ function populateSummary() {
   html += `<div class="col-md-6"><span class="summary-label">Extension Name:</span> ${data.get('hasExtensionName') ? data.get('extensionName') || 'None' : 'None'}</div>`;
   html += `<div class="col-md-6"><span class="summary-label">Civil Status:</span> ${data.get('civilStatus') || ''}</div>`;
   html += `<div class="col-md-6"><span class="summary-label">Gender:</span> ${data.get('gender') || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Indigenous Group:</span> ${document.querySelector('#indigenous option:checked')?.text || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Disability Type:</span> ${document.querySelector('#disability option:checked')?.text || ''}</div>`;
   html += `<div class="col-md-6"><span class="summary-label">Date of Birth:</span> ${data.get('dob') || ''}</div>`;
   html += `<div class="col-md-6"><span class="summary-label">Place of Birth:</span> ${data.get('placeOfBirth') || ''}</div>`;
   html += `<div class="col-md-6"><span class="summary-label">Nationality:</span> ${data.get('nationality') || ''}</div>`;
-  html += `<div class="col-md-6"><span class="summary-label">Indigenous Group:</span> ${document.querySelector('#indigenous option:checked')?.text || ''}</div>`;
-  html += `<div class="col-md-6"><span class="summary-label">Disability Type:</span> ${document.querySelector('#disability option:checked')?.text || ''}</div>`;
-  html += `<div class="col-md-6"><span class="summary-label">Learner Reference Number (LRN):</span> ${data.get('lrn') || ''}</div>`;
   html += '</div></div></div>';
 
   // Address & Contact Card
