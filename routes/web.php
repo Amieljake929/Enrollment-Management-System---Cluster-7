@@ -10,6 +10,7 @@ use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\ShsEnrollmentController; // 👈 Added: SHS Enrollment Controller
 use App\Http\Controllers\PendingAdmissionController;
 use App\Http\Controllers\WaitingController;
+use App\Http\Controllers\ReEvaluationController;
 use App\Http\Controllers\CancelledController;
 use App\Http\Controllers\CollegeAssessmentController;
 
@@ -141,10 +142,12 @@ Route::get('/dashboard-staff', function () {
 })->middleware(['auth', 'verified'])->name('dashboard.staff'); // ⚠️ Removed 'verified' for now
 
 
-// Modules Routes
-// web.php
+////////////////////
+//                //
+// MODULES ROUTES //
+//                //
+////////////////////
 
-// Modules Routes
 Route::prefix('modules')->middleware(['auth'])->group(function () {
 
     // Pending Admissions
@@ -165,25 +168,27 @@ Route::prefix('modules')->middleware(['auth'])->group(function () {
     Route::get('/pending/shs/{id}', [PendingAdmissionController::class, 'showShs'])->name('modules.pending.shs.show');
     Route::delete('/pending/shs/{id}', [PendingAdmissionController::class, 'destroyShs'])->name('modules.pending.shs.destroy');
 
-    // Inside the `modules` group in web.php
-Route::post('/pending/college/{id}/validate', [PendingAdmissionController::class, 'validate'])->name('modules.pending.college.validate');
-Route::post('/pending/college/{id}/cancel', [PendingAdmissionController::class, 'cancel'])->name('modules.pending.college.cancel');
+    // BUTTONS FOR PENDING COLLEGE
+     Route::post('/pending/college/{id}/validate', [PendingAdmissionController::class, 'validate'])->name('modules.pending.college.validate');
+     Route::post('/pending/college/{id}/cancel', [PendingAdmissionController::class, 'cancel'])->name('modules.pending.college.cancel');
+     Route::post('/pending/college/{id}/reevaluate', [PendingAdmissionController::class, 'reevaluate'])->name('modules.pending.college.reevaluate');
 
-// Inside Route::prefix('modules')->middleware(['auth'])->group(function () { ... })
+    // Inside Route::prefix('modules')->middleware(['auth'])->group(function () { ... })
 
-// SHS Validate & Cancel Routes
-Route::post('/pending/shs/{id}/validate', [PendingAdmissionController::class, 'validateShs'])->name('modules.pending.shs.validate');
-Route::post('/pending/shs/{id}/cancel', [PendingAdmissionController::class, 'cancelShs'])->name('modules.pending.shs.cancel');
+    // BUTTONS FOR PENDING SHS
+     Route::post('/pending/shs/{id}/validate', [PendingAdmissionController::class, 'validateShs'])->name('modules.pending.shs.validate');
+     Route::post('/pending/shs/{id}/cancel', [PendingAdmissionController::class, 'cancelShs'])->name('modules.pending.shs.cancel');
+     Route::post('/pending/shs/{id}/reevaluate', [PendingAdmissionController::class, 'reevaluateShs'])->name('modules.pending.shs.reevaluate');
 
     // Waiting List
-   Route::get('/waiting/college', [WaitingController::class, 'index'])->name('modules.waiting.college');
-   Route::get('/waiting/shs', [WaitingController::class, 'shsIndex'])->name('modules.waiting.shs');
+     Route::get('/waiting/college', [WaitingController::class, 'index'])->name('modules.waiting.college');
+     Route::get('/waiting/shs', [WaitingController::class, 'shsIndex'])->name('modules.waiting.shs');
     
    // Update payment status (auto-generate student ID number when Paid)
-Route::post('/college/payment/update/{studentId}', [WaitingController::class, 'updateCollegePaymentStatus'])
+     Route::post('/college/payment/update/{studentId}', [WaitingController::class, 'updateCollegePaymentStatus'])
     ->name('college.payment.update');
 
-Route::post('/shs/payment/update/{studentId}', [WaitingController::class, 'updateShsPaymentStatus'])
+     Route::post('/shs/payment/update/{studentId}', [WaitingController::class, 'updateShsPaymentStatus'])
     ->name('shs.payment.update');
 
 
@@ -203,12 +208,30 @@ Route::post('/shs/payment/update/{studentId}', [WaitingController::class, 'updat
     })->name('modules.records.shs');
 
      // ✅ CANCELLED ADMISSIONS - COLLEGE
-    Route::get('/cancelled/college', [CancelledController::class, 'index'])->name('modules.cancelled.college');
-    Route::get('/cancelled/college/{id}', [CancelledController::class, 'show'])->name('modules.cancelled.college.show');
+     Route::get('/cancelled/college', [CancelledController::class, 'index'])->name('modules.cancelled.college');
+     Route::get('/cancelled/college/{id}', [CancelledController::class, 'show'])->name('modules.cancelled.college.show');
 
-// ✅ CANCELLED ADMISSIONS - SHS
-Route::get('/cancelled/shs', [CancelledController::class, 'shsIndex'])->name('modules.cancelled.shs');
-Route::get('/cancelled/shs/{id}', [CancelledController::class, 'showShs'])->name('modules.cancelled.shs.show');
+     // ✅ CANCELLED ADMISSIONS - SHS
+     Route::get('/cancelled/shs', [CancelledController::class, 'shsIndex'])->name('modules.cancelled.shs');
+     Route::get('/cancelled/shs/{id}', [CancelledController::class, 'showShs'])->name('modules.cancelled.shs.show');
+
+
+     // RE-EVALUATION COLLEGE
+     Route::get('/reevaluation/college', [ReEvaluationController::class, 'index'])
+     ->name('modules.reevaluation.college');
+
+     // RE-EVALUATION SHS
+     Route::get('/reevaluation/shs', [ReEvaluationController::class, 'shsIndex'])
+    ->name('modules.reevaluation.shs');
+
+     // Concerns Route
+     Route::get('/concerns', function () {
+      if (request()->ajax()) {
+          return view('modules.Concerns')->render();
+      }
+      return view('modules.Concerns');
+      })->name('modules.concerns');
+
 
     // Parents Notification
     Route::get('/parents/college', function () {

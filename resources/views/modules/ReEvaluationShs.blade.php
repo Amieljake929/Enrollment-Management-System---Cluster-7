@@ -1,62 +1,57 @@
-<!-- resources/views/modules/pendingShs.blade.php -->
+<!-- resources/views/modules/ReEvaluationShs.blade.php -->
 @extends('layouts.app')
 
 @section('content')
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Pending Admissions - SHS</h2>
-        <a href="{{ route('modules.pending.shs.download.pdf', request()->query()) }}" 
-   class="btn btn-secondary" style="background-color: #5044e4">
-    <i class="bi bi-download"></i> Download Admissions (PDF)
-</a>
+        <h2>Re-Evaluation - SHS</h2>
+        {{-- Optional PDF button kapag may controller na --}}
+        {{-- <a href="{{ route('modules.reevaluation.shs.download.pdf', request()->query()) }}" 
+           class="btn btn-secondary" style="background-color: #5044e4">
+            <i class="bi bi-download"></i> Download Re-Evaluations (PDF)
+        </a> --}}
     </div>
 
     <!-- Filter & Search Form -->
     <div class="card mb-4 shadow-sm">
         <div class="card-body p-4">
-            <form method="GET" action="{{ route('modules.pending.shs') }}" class="row g-3">
-    <div class="col-md-3">
-        <label for="branch" class="form-label">Filter by Branch</label>
-        <select name="branch" id="branch" class="form-select">
-            <option value="">All Branches</option>
-            <option value="1" {{ request('branch') == '1' ? 'selected' : '' }}>Main Branch</option>
-            <option value="2" {{ request('branch') == '2' ? 'selected' : '' }}>Bulacan Branch</option>
-        </select>
-    </div>
-
-    <div class="col-md-3">
-        <label for="year_level" class="form-label">Filter by Year Level</label>
-        <select name="year_level" id="year_level" class="form-select">
-            <option value="">All Levels</option>
-            <option value="11" {{ request('year_level') == '11' ? 'selected' : '' }}>Grade 11</option>
-            <option value="12" {{ request('year_level') == '12' ? 'selected' : '' }}>Grade 12</option>
-        </select>
-    </div>
-
-    {{-- ✅ NEW: Student Type --}}
-    <div class="col-md-3">
-        <label for="student_type" class="form-label">Filter by Student Type</label>
-        <select name="student_type" id="student_type" class="form-select">
-            <option value="">All Types</option>
-            @foreach($studentTypes as $type)
-                <option value="{{ $type->type_id }}" {{ request('student_type') == $type->type_id ? 'selected' : '' }}>
-                    {{ $type->type_name }}
-                </option>
-            @endforeach
-        </select>
-    </div>
-
-    <div class="col-md-3">
-        <label for="search" class="form-label">Search by Keywords or Course</label>
-        <input type="text" name="search" id="search" class="form-control"
-               placeholder="Enter student name or course..." value="{{ request('search') }}">
-    </div>
-
-    <div class="col-12 d-flex justify-content-end">
-        <button type="submit" class="btn btn-primary">Filter</button>
-    </div>
-</form>
-
+            <form method="GET" action="{{ route('modules.reevaluation.shs') }}" class="row g-3">
+                <div class="col-md-3">
+                    <label for="branch" class="form-label">Filter by Branch</label>
+                    <select name="branch" id="branch" class="form-select">
+                        <option value="">All Branches</option>
+                        <option value="1" {{ request('branch') == '1' ? 'selected' : '' }}>Main Branch</option>
+                        <option value="2" {{ request('branch') == '2' ? 'selected' : '' }}>Bulacan Branch</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="year_level" class="form-label">Filter by Year Level</label>
+                    <select name="year_level" id="year_level" class="form-select">
+                        <option value="">All Levels</option>
+                        <option value="11" {{ request('year_level') == '11' ? 'selected' : '' }}>Grade 11</option>
+                        <option value="12" {{ request('year_level') == '12' ? 'selected' : '' }}>Grade 12</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="student_type" class="form-label">Filter by Student Type</label>
+                    <select name="student_type" id="student_type" class="form-select">
+                        <option value="">All Types</option>
+                        @foreach($studentTypes as $type)
+                            <option value="{{ $type->type_id }}" {{ request('student_type') == $type->type_id ? 'selected' : '' }}>
+                                {{ $type->type_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="search" class="form-label">Search by Name or Course</label>
+                    <input type="text" name="search" id="search" class="form-control"
+                           placeholder="Enter student name or course..." value="{{ request('search') }}">
+                </div>
+                <div class="col-12 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -88,60 +83,50 @@
                                     @if($student->extension_name)
                                         {{ $student->extension_name }}
                                     @endif
-                                     <div class="text-muted small mt-1">
-                                          <strong>Enrollee Number:</strong> {{ $student->enrolleeNumber->enrollee_no ?? 'N/A' }}
-                                     </div>
+                                    <div class="text-muted small mt-1">
+                                        <strong>Enrollee Number:</strong> {{ $student->enrolleeNumber->enrollee_no ?? 'N/A' }}
+                                    </div>
                                 </td>
                                 <td>{{ $student->enrollmentPreference->course->course_name ?? 'N/A' }}</td>
                                 <td>
                                     {{ $student->enrollmentPreference->level->level_name ?? 'N/A' }} | 
                                     {{ $student->enrollmentPreference->branch->branch_name ?? 'N/A' }}
                                 </td>
-                                 <td>
-    @if($student->status)
-        <span class="badge bg-warning text-dark">{{ $student->status->info_status }}</span>
-    @else
-        <span class="text-muted">N/A</span>
-    @endif
-</td>
+                                <td>
+                                    @if($student->status)
+                                        <span class="badge bg-warning text-dark">{{ $student->status->info_status }}</span>
+                                    @else
+                                        <span class="text-muted">N/A</span>
+                                    @endif
+                                </td>
                                 <td>{{ $student->created_at->format('M d, Y \a\t h:i A') }}</td>
-                               
                                 <td class="text-center">
-    <button type="button" class="btn btn-sm btn-primary view-shs-btn" 
-        data-student-id="{{ $student->student_id }}" 
-        title="View">
-        View
-    </button>
+                                    <!-- View Button -->
+                                    <button type="button" class="btn btn-sm btn-primary me-2 view-shs-btn"
+                                        data-student-id="{{ $student->student_id }}" title="View">
+                                        View
+                                    </button>
 
-    <!-- Validate Button -->
-    <button type="button" class="btn btn-sm btn-success validate-shs-btn me-2"
-        data-student-id="{{ $student->student_id }}"
-        title="Validate">
-        Validate
-    </button>
+                                    <!-- Validate Button -->
+                                    <button type="button" class="btn btn-sm btn-success validate-shs-btn me-2"
+                                        data-student-id="{{ $student->student_id }}" title="Validate">
+                                        Validate
+                                    </button>
 
-    <!-- Re-Evaluate Button (NEW) -->
-    <button type="button" class="btn btn-sm btn-warning reevaluate-shs-btn me-2"
-        data-student-id="{{ $student->student_id }}"
-        title="Re-Evaluate">
-        Re-Evaluate
-    </button>
-
-    <!-- Cancel Button -->
-    <button type="button" class="btn btn-sm btn-danger cancel-shs-btn"
-        data-student-id="{{ $student->student_id }}"
-        data-student-name="{{ $student->last_name }}, {{ $student->first_name }}"
-        title="Cancel">
-        Cancel
-    </button>
-</td>
+                                    <!-- Cancel Button -->
+                                    <button type="button" class="btn btn-sm btn-danger cancel-shs-btn"
+                                        data-student-id="{{ $student->student_id }}"
+                                        data-student-name="{{ $student->last_name }}, {{ $student->first_name }}"
+                                        title="Cancel">
+                                        Cancel
+                                    </button>
                                 </td>
                             </tr>
                         @empty
                             <tr>
                                 <td colspan="7" class="text-center text-muted py-4">
                                     <i class="bi bi-clipboard-x fs-3"></i>
-                                    <p class="mt-2 mb-0">No pending admissions found.</p>
+                                    <p class="mt-2 mb-0">No re-evaluation records found.</p>
                                 </td>
                             </tr>
                         @endforelse
@@ -181,9 +166,8 @@
     </div>
 </div>
 
-
+{{-- View SHS Student Script --}}
 <script>
-// View SHS Student
 document.addEventListener('click', function(e) {
     const viewBtn = e.target.closest('.view-shs-btn');
     if (viewBtn) {
@@ -192,7 +176,6 @@ document.addEventListener('click', function(e) {
         const modalElement = document.getElementById('shsStudentModal');
         const modal = new bootstrap.Modal(modalElement);
         const modalBody = document.getElementById('shs-student-details');
-
         modalBody.innerHTML = `
             <div class="text-center">
                 <div class="spinner-border text-primary" role="status">
@@ -202,7 +185,6 @@ document.addEventListener('click', function(e) {
             </div>
         `;
         modal.show();
-
         fetch(`/modules/pending/shs/${studentId}`)
             .then(response => response.json())
             .then(data => {
@@ -213,11 +195,8 @@ document.addEventListener('click', function(e) {
                 console.error('Fetch error:', error);
             });
     }
-
-    
 });
 
-// Generate SHS Student Details HTML
 function generateShsStudentDetailsHTML(student) {
     return `
         <div class="row">
@@ -309,26 +288,27 @@ function generateShsStudentDetailsHTML(student) {
 }
 </script>
 
+{{-- Validate & Cancel Scripts --}}
 <script>
 // Validate SHS
 document.addEventListener('click', function(e) {
     const btn = e.target.closest('.validate-shs-btn');
     if (btn) {
-        e.preventDefault();
-        const id = btn.getAttribute('data-student-id');
-        if (!confirm('Validate this SHS admission? Status will become "Validated".')) return;
-
+        const id = btn.dataset.studentId;
+        if (!confirm('Validate this re-evaluation? Status will become "Validated".')) return;
         fetch(`/modules/pending/shs/${id}/validate`, {
             method: 'POST',
             headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                 'X-Requested-With': 'XMLHttpRequest'
             }
         })
         .then(r => r.json())
-        .then(data => {
-            alert(data.message);
-            location.reload();
+        .then(d => {
+            if (d.success) {
+                alert('Validated successfully!');
+                location.reload();
+            } else alert('Failed to validate.');
         })
         .catch(() => alert('An error occurred.'));
     }
@@ -338,57 +318,24 @@ document.addEventListener('click', function(e) {
 document.addEventListener('click', function(e) {
     const btn = e.target.closest('.cancel-shs-btn');
     if (btn) {
-        e.preventDefault();
-        const id = btn.getAttribute('data-student-id');
-        const name = btn.getAttribute('data-student-name');
-        if (!confirm(`Cancel admission for ${name}? Status will become "Cancelled".`)) return;
-
+        const id = btn.dataset.studentId;
+        const name = btn.dataset.studentName;
+        if (!confirm(`Cancel re-evaluation for ${name}? Status will become "Cancelled".`)) return;
         fetch(`/modules/pending/shs/${id}/cancel`, {
             method: 'POST',
             headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                 'X-Requested-With': 'XMLHttpRequest'
             }
         })
         .then(r => r.json())
-        .then(data => {
-            alert(data.message);
-            location.reload();
+        .then(d => {
+            if (d.success) {
+                alert('Cancelled successfully!');
+                location.reload();
+            } else alert('Failed to cancel.');
         })
         .catch(() => alert('An error occurred.'));
-    }
-});
-</script>
-
-<!-- Re-Evaluate SHS Button -->
-<script>
-document.addEventListener('click', function(e) {
-    const reevaluateBtn = e.target.closest('.reevaluate-shs-btn');
-    if (reevaluateBtn) {
-        e.preventDefault();
-        const studentId = reevaluateBtn.getAttribute('data-student-id');
-        if (!confirm('Re-evaluate this SHS admission? This will change the status to "Re-Evaluate".')) return;
-
-        fetch(`/modules/pending/shs/${studentId}/reevaluate`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Re-Evaluation status set successfully!');
-                location.reload();
-            } else {
-                alert('Failed to update status.');
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            alert('An error occurred while updating the status.');
-        });
     }
 });
 </script>
