@@ -3,17 +3,14 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Personal Information - Bestlink College</title>
+    <title>Senior High School - Bestlink College</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Lottie Web Component -->
-<script
-  src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.1/dist/dotlottie-wc.js"
-  type="module"
-></script>
+    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.1/dist/dotlottie-wc.js" type="module"></script>
     <style>
         :root {
             --primary-color: #203B6B;
@@ -45,15 +42,14 @@
         }
 
         .form-container {
-    background: white;
-    border-radius: 20px;
-    padding: 2rem;
-    box-shadow: 0 10px 40px rgba(32, 59, 107, 0.15);
-    max-width: 500px; /* Fixed width */
-    width: 100%;
-    height: 8%;
-    margin: 20 auto; /* Center horizontally */
-}
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(32, 59, 107, 0.15);
+            max-width: 500px;
+            width: 100%;
+            margin: 20 auto;
+        }
 
         .form-header {
             text-align: center;
@@ -169,7 +165,7 @@
             border-bottom: 1px solid #d1f0d5;
         }
 
-        /* Navbar & Footer Styles (from AssessmentTest) */
+        /* Navbar & Footer */
         .nav-link {
             color: var(--primary-color);
             font-weight: 500;
@@ -198,132 +194,177 @@
                 font-size: 1.5rem;
             }
         }
-        /* ==== ANIMATIONS FOR FORM CONTENT ==== */
-.form-container {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.8s ease-out forwards;
-}
 
-@keyframes fadeInUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+        /* Animations */
+        .form-container {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
 
-/* ==== 3D BUBBLE EFFECTS AROUND LOTTIE ==== */
-.lottie-bubble-container {
-    position: relative;
-    display: inline-block;
-}
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-.lottie-bubble {
-    position: absolute;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(79, 110, 247, 0.2), transparent);
-    pointer-events: none;
-    z-index: -1;
-    animation: floatBubble 8s infinite ease-in-out;
-}
+        .lottie-bubble-container {
+            position: relative;
+            display: inline-block;
+        }
 
-.lottie-bubble:nth-child(1) {
-    width: 120px;
-    height: 120px;
-    top: -40px;
-    left: -30px;
-    animation-delay: 0s;
-}
-.lottie-bubble:nth-child(2) {
-    width: 90px;
-    height: 90px;
-    bottom: -30px;
-    right: -20px;
-    animation-delay: 2s;
-}
-.lottie-bubble:nth-child(3) {
-    width: 150px;
-    height: 150px;
-    top: 30%;
-    right: -60px;
-    animation-delay: 4s;
-}
+        .lottie-bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(79, 110, 247, 0.2), transparent);
+            pointer-events: none;
+            z-index: -1;
+            animation: floatBubble 8s infinite ease-in-out;
+        }
 
-@keyframes floatBubble {
-    0%, 100% {
-        transform: translate(0, 0) scale(1);
-        opacity: 0.5;
-    }
-    50% {
-        transform: translate(10px, -15px) scale(1.1);
-        opacity: 0.7;
-    }
-}
-/* ==== 3D SPEECH BUBBLE ==== */
-.speech-bubble {
-    position: absolute;
-    top: -5%;
-    left: 40%;
-    transform: translateX(-50%) rotateX(10deg) rotateY(-5deg);
-    background: white;
-    color: var(--primary-color);
-    padding: 1.2rem 1.5rem;
-    border-radius: 20px;
-    font-weight: 600;
-    font-size: 1.1rem;
-    text-align: center;
-    max-width: 320px;
-    box-shadow:
-        0 10px 25px rgba(0, 0, 0, 0.15),
-        0 6px 10px rgba(32, 59, 107, 0.1);
-    z-index: 2;
-    opacity: 0;
-    animation: fadeInBubble 1s ease-out 0.6s forwards;
-}
+        .lottie-bubble:nth-child(1) {
+            width: 120px;
+            height: 120px;
+            top: -40px;
+            left: -30px;
+            animation-delay: 0s;
+        }
+        .lottie-bubble:nth-child(2) {
+            width: 90px;
+            height: 90px;
+            bottom: -30px;
+            right: -20px;
+            animation-delay: 2s;
+        }
+        .lottie-bubble:nth-child(3) {
+            width: 150px;
+            height: 150px;
+            top: 30%;
+            right: -60px;
+            animation-delay: 4s;
+        }
 
-/* Speech bubble tail (triangle) */
-.speech-bubble::after {
-    content: '';
-    position: absolute;
-    bottom: -12px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 12px solid transparent;
-    border-right: 12px solid transparent;
-    border-top: 14px solid white;
-    filter: drop-shadow(0 -2px 4px rgba(0,0,0,0.1));
-}
+        @keyframes floatBubble {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translate(10px, -15px) scale(1.1);
+                opacity: 0.7;
+            }
+        }
 
-@keyframes fadeInBubble {
-    to {
-        opacity: 1;
-        transform: translateX(-50%) rotateX(10deg) rotateY(-5deg) translateY(0);
-    }
-}
+        .speech-bubble {
+            position: absolute;
+            top: -5%;
+            left: 40%;
+            transform: translateX(-50%) rotateX(10deg) rotateY(-5deg);
+            background: white;
+            color: var(--primary-color);
+            padding: 1.2rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-align: center;
+            max-width: 320px;
+            box-shadow:
+                0 10px 25px rgba(0, 0, 0, 0.15),
+                0 6px 10px rgba(32, 59, 107, 0.1);
+            z-index: 2;
+            opacity: 0;
+            animation: fadeInBubble 1s ease-out 0.6s forwards;
+        }
 
-/* Optional: Slight hover lift for interactivity */
-.speech-bubble:hover {
-    transform: translateX(-50%) rotateX(8deg) rotateY(-4deg) translateY(-3px);
-    box-shadow:
-        0 14px 30px rgba(0, 0, 0, 0.2),
-        0 8px 12px rgba(32, 59, 107, 0.15);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 14px solid white;
+            filter: drop-shadow(0 -2px 4px rgba(0,0,0,0.1));
+        }
+
+        @keyframes fadeInBubble {
+            to {
+                opacity: 1;
+                transform: translateX(-50%) rotateX(10deg) rotateY(-5deg) translateY(0);
+            }
+        }
+
+        .speech-bubble:hover {
+            transform: translateX(-50%) rotateX(8deg) rotateY(-4deg) translateY(-3px);
+            box-shadow:
+                0 14px 30px rgba(0, 0, 0, 0.2),
+                0 8px 12px rgba(32, 59, 107, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Checkbox & Terms Link */
+        .form-check {
+            margin-top: 1rem;
+        }
+
+        .form-check-label a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .form-check-label a:hover {
+            text-decoration: underline;
+        }
+
+        /* Terms Modal Styling */
+        .modal-lg {
+            max-width: 800px;
+        }
+
+        .terms-content {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .terms-content h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            border-bottom: 2px solid var(--accent-blue);
+            padding-bottom: 0.5rem;
+        }
+
+        .terms-content ol {
+            padding-left: 1.5rem;
+        }
+
+        .terms-content li {
+            margin-bottom: 1rem;
+        }
+
+        .terms-content strong {
+            color: var(--primary-color);
+        }
     </style>
 </head>
 <body>
 
-<!-- Navbar (copied from AssessmentTest.blade.php) -->
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg bg-white shadow-sm">
     <div class="container">
         <a class="navbar-brand" href="#">
             <img src="{{ asset('images/pcb.png') }}" alt="Bestlink College Logo" style="width: 80px; height: 80px;">
             <div>
-                    <span class="d-block" style="font-size:1rem;">Bestlink College</span>
-                    <span class="d-block" style="font-size:.75rem;">of the Philippines</span>
-                </div>
+                <span class="d-block" style="font-size:1rem;">Bestlink College</span>
+                <span class="d-block" style="font-size:.75rem;">of the Philippines</span>
+            </div>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
@@ -347,25 +388,25 @@
 <div class="main-content">
     <div class="container-fluid px-4">
         <div class="row align-items-center justify-content-center">
-            <!-- Lottie Animation (Left Side) -->
+            <!-- Lottie Animation -->
             <div class="col-md-6 d-flex justify-content-center">
-    <div class="lottie-bubble-container">
-        <div class="lottie-bubble"></div>
-        <div class="lottie-bubble"></div>
-        <div class="lottie-bubble"></div>
-        <dotlottie-wc
-            src="https://lottie.host/0675dd5a-c142-4843-aa2d-96b5c78180fb/58jQMaPdVu.lottie"
-            style="width: 650px; height: 650px; max-width: 120%;"
-            autoplay
-            loop
-        ></dotlottie-wc>
-        <div class="speech-bubble">
-    MAGANDANG BUHAY, please fill our form to proceed the Assessment. Thank you!
-</div>
-    </div>
-</div>
+                <div class="lottie-bubble-container">
+                    <div class="lottie-bubble"></div>
+                    <div class="lottie-bubble"></div>
+                    <div class="lottie-bubble"></div>
+                    <dotlottie-wc
+                        src="https://lottie.host/0675dd5a-c142-4843-aa2d-96b5c78180fb/58jQMaPdVu.lottie"
+                        style="width: 650px; height: 650px; max-width: 120%;"
+                        autoplay
+                        loop
+                    ></dotlottie-wc>
+                    <div class="speech-bubble">
+                        MAGANDANG BUHAY, please fill our form to proceed the Assessment. Thank you!
+                    </div>
+                </div>
+            </div>
 
-            <!-- Form (Right Side) -->
+            <!-- Form -->
             <div class="col-md-5">
                 <div class="form-container">
                     <div class="form-header">
@@ -388,7 +429,7 @@
                             <input type="email" class="form-control" id="email" name="email" required placeholder="Enter your email">
                         </div>
 
-                        <!-- === MATH CAPTCHA SECTION === -->
+                        <!-- CAPTCHA -->
                         <div class="mb-3">
                             <label class="form-label">Solve this to prove you're human:</label>
                             <div id="captcha-question" class="form-control" style="cursor: default;">
@@ -399,6 +440,14 @@
                             <div id="captcha-error" class="text-danger mt-2" style="display:none;">
                                 ❌ Incorrect! Try again.
                             </div>
+                        </div>
+
+                        <!-- ✅ NEW: Terms Agreement Checkbox -->
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                            <label class="form-check-label" for="agreeTerms">
+                                I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms and Conditions</a>
+                            </label>
                         </div>
 
                         <button type="submit" class="btn btn-primary-custom" id="submitBtn" disabled>
@@ -426,7 +475,92 @@
     </div>
 </div>
 
-<!-- Footer (copied from AssessmentTest.blade.php) -->
+<!-- ✅ NEW: Terms and Conditions Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel">TERMS AND CONDITIONS</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body terms-content">
+                <h2>For Enrollees Taking the Assessment for Program Suitability</h2>
+                <p><strong>Effective Date: August 2026</strong></p>
+                
+                <ol>
+                    <li>
+                        <strong>Purpose of Information Collection</strong><br>
+                        We collect basic information from enrollees for the purpose of conducting an assessment designed to help identify the most suitable program or course for each individual. The collected information will be used solely to evaluate personal interests, skills, and academic strengths to provide appropriate guidance and recommendations.
+                    </li>
+                    <li>
+                        <strong>Information We Collect</strong><br>
+                        We may collect the following personal information:
+                        <ul>
+                            <li>Full name</li>
+                            <li>Age</li>
+                            <li>Contact details (email address, phone)</li>
+                            <li>Assessment results and related responses</li>
+                        </ul>
+                        Only information necessary for assessment and guidance purposes will be requested.
+                    </li>
+                    <li>
+                        <strong>Use of Information</strong><br>
+                        The collected data will be used exclusively to:
+                        <ul>
+                            <li>Administer and evaluate the enrollee's assessment results</li>
+                            <li>Provide program or course recommendations suited to the enrollee's profile</li>
+                            <li>Improve our guidance and placement process</li>
+                        </ul>
+                        We will not use your data for marketing, commercial, or unrelated purposes.
+                    </li>
+                    <li>
+                        <strong>In Compliance with the Data Privacy Act of 2012</strong><br>
+                        This collection and processing of enrollee data are conducted in compliance with Republic Act No. 10173, also known as the Data Privacy Act of 2012, and its Implementing Rules and Regulations.<br>
+                        We are committed to ensuring that your personal data is:
+                        <ul>
+                            <li>Collected and processed lawfully, fairly, and transparently</li>
+                            <li>Used only for legitimate and declared purposes</li>
+                            <li>Stored securely and accessed only by authorized personnel</li>
+                            <li>Retained only for as long as necessary for assessment and record-keeping purposes</li>
+                            <li>Shared with third parties only when required by law or with your explicit consent</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Consent</strong><br>
+                        By submitting your information and participating in the assessment, you voluntarily give your consent to the collection, use, and processing of your data for the purposes stated above.<br>
+                        You may withdraw your consent at any time by sending a written notice to bestlink092@gmail.com
+                    </li>
+                    <li>
+                        <strong>Data Retention</strong><br>
+                        Your information will be retained only for the duration necessary to complete the assessment and provide guidance results. After this period, your data will be securely deleted or anonymized.
+                    </li>
+                    <li>
+                        <strong>Rights of the Enrollee</strong><br>
+                        In accordance with the Data Privacy Act of 2012, you have the right to:
+                        <ul>
+                            <li>Access and correct your personal data</li>
+                            <li>Object to the processing of your data</li>
+                            <li>Withdraw consent at any time</li>
+                            <li>File a complaint with the National Privacy Commission (NPC) if you believe your data privacy rights have been violated</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Contact Information</strong><br>
+                        For any questions, concerns, or data privacy-related requests, please contact:<br>
+                        [Name of Data Protection Officer or Admissio]<br>
+                        Email: bestlink092@gmail.com<br>
+                        Address: #1071 Brgy. Kaligayahan, Quirino Highway Novaliches Quezon City, Philippines 1123
+                    </li>
+                </ol>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
 <footer class="bg-dark-custom py-4 mt-auto">
     <div class="container text-center">
         <p class="mb-0">&copy; 2025 Bestlink College of the Philippines. All rights reserved.</p>
@@ -436,21 +570,32 @@
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Your original JavaScript (unchanged) -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const submitBtn = document.getElementById('submitBtn');
+    const agreeTerms = document.getElementById('agreeTerms');
+    const captchaAnswer = document.getElementById('captcha-answer');
+
+    // Function to update submit button state
+    function updateSubmitButton() {
+        const isCaptchaCorrect = captchaAnswer.value !== '';
+        const isTermsChecked = agreeTerms.checked;
+        submitBtn.disabled = !(isCaptchaCorrect && isTermsChecked);
+    }
+
+    // Listen for changes
+    agreeTerms.addEventListener('change', updateSubmitButton);
+
     // Form submission
     document.getElementById('infoForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const formData = new FormData(this);
-// Append CSRF token explicitly to FormData
-formData.append('_token', document.querySelector('input[name="_token"]').value);
+        formData.append('_token', document.querySelector('input[name="_token"]').value);
 
-fetch("{{ route('shs.info.submit') }}", {
-    method: 'POST',
-    body: formData,
-    // Remove headers — not needed when using FormData with _token
-})
+        fetch("{{ route('shs.info.submit') }}", {
+            method: 'POST',
+            body: formData
+        })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
@@ -466,7 +611,7 @@ fetch("{{ route('shs.info.submit') }}", {
         });
     });
 
-    // === CAPTCHA LOGIC (unchanged) ===
+    // CAPTCHA Logic
     let correctAnswer = null;
 
     function generateCaptcha() {
@@ -498,9 +643,9 @@ fetch("{{ route('shs.info.submit') }}", {
             container.appendChild(btn);
         });
 
-        document.getElementById('captcha-answer').value = '';
+        captchaAnswer.value = '';
         document.getElementById('captcha-error').style.display = 'none';
-        document.getElementById('submitBtn').disabled = true;
+        updateSubmitButton(); // Update button state
     }
 
     function selectCaptchaOption(selected, button) {
@@ -510,16 +655,16 @@ fetch("{{ route('shs.info.submit') }}", {
 
         if (selected === correctAnswer) {
             button.classList.add('btn-success');
-            document.getElementById('captcha-answer').value = selected;
-            document.getElementById('submitBtn').disabled = false;
+            captchaAnswer.value = selected;
             document.getElementById('captcha-error').style.display = 'none';
         } else {
             button.classList.add('btn-danger');
-            document.getElementById('captcha-answer').value = '';
-            document.getElementById('submitBtn').disabled = true;
+            captchaAnswer.value = '';
             document.getElementById('captcha-error').style.display = 'block';
             setTimeout(generateCaptcha, 1200);
+            return;
         }
+        updateSubmitButton(); // Update after selection
     }
 
     generateCaptcha();

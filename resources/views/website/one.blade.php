@@ -420,7 +420,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2" href="#">
-                <img src="{{ asset('images/pcb.png') }}" alt="Bestlink College Logo" width="70" height="70" class="img-fluid rounded" />
+                <img src="{{ asset('images/bcp.png') }}" alt="Bestlink College Logo" width="60" height="60" class="img-fluid rounded" />
                 <div>
                     <span class="d-block">Bestlink College</span>
                     <span class="d-block" style="font-size:.75rem;">of the Philippines</span>
@@ -430,29 +430,17 @@
             <div class="collapse navbar-collapse navbar-collapse-desktop" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#aboutus">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#campuses">Campuses</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#future">Mission & Vision</a></li>
                     <li class="nav-item"><a class="nav-link" href="#admission">Admission</a></li>
                     <li class="nav-item"><a class="nav-link" href="#bcpnews">BCP News</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="studentDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Student Personnel Services</a>
-                        <ul class="dropdown-menu" aria-labelledby="studentDropdown">
-                            <li><a class="dropdown-item" href="#guidance">Guidance Services</a></li>
-                            <li><a class="dropdown-item" href="#counseling">Counseling</a></li>
-                            <li><a class="dropdown-item" href="#studentaffairs">Student Affairs</a></li>
-                            <li><a class="dropdown-item" href="#registrar">Registrar</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="academicsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Academics</a>
-                        <ul class="dropdown-menu" aria-labelledby="academicsDropdown">
-                            <li><a class="dropdown-item" href="#shsprograms">Senior High School Programs</a></li>
-                            <li><a class="dropdown-item" href="#collegeprograms">College Programs</a></li>
-                            <li><a class="dropdown-item" href="#faculty">Faculty</a></li>
-                            <li><a class="dropdown-item" href="#academiccalendar">Academic Calendar</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="#careers">Careers</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#alumni">Alumni</a></li>
                     <li class="nav-item"><a class="nav-link" href="#facilities">School Facilities</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#careers">Organizations</a></li>
+                    <li class="nav-item ms-lg-3">
+    <a href="{{ route('login') }}" class="btn" style="background-color: #1e3a8a; color: white; padding: 0.5rem 1.25rem; border-radius: 50rem; font-weight: 500; font-size: 1.05rem;">
+        <i class="fas fa-sign-in-alt me-1"></i> Sign In
+    </a>
+</li>
                 </ul>
             </div>
 
@@ -475,11 +463,11 @@
         <span class="parallax-bubble bubble-3" data-parallax data-speed="0.18"></span>
 
         <div class="hero-content">
-            <h1 class="reveal">Welcome to Bestlink College</h1>
+            <h1 class="reveal">Welcome to Bestlink College Of The Philippines</h1>
             <p class="lead reveal-up">We provide quality education to make students globally competitive and productive citizens.</p>
             <form action="{{ route('two') }}" method="GET" class="reveal-up">
                 <button type="submit" class="btn btn-light btn-lg btn-cta">
-                    Enroll Now
+                    Get Started
                 </button>
             </form>
         </div>
@@ -520,6 +508,11 @@
                 <li class="nav-item"><a class="nav-link py-3 border-bottom" href="#careers">Careers</a></li>
                 <li class="nav-item"><a class="nav-link py-3 border-bottom" href="#alumni">Alumni</a></li>
                 <li class="nav-item"><a class="nav-link py-3 border-bottom" href="#facilities">School Facilities</a></li>
+                <li class="nav-item mt-3">
+    <a href="{{ route('login') }}" class="btn w-100" style="background-color: #5044e4; color: white; padding: 0.75rem; border-radius: 50rem; font-weight: 500; font-size: 1.1rem;">
+        <i class="fas fa-sign-in-alt me-2"></i> Sign In
+    </a>
+</li>
             </ul>
         </div>
     </div>
@@ -665,7 +658,7 @@
         </div>
 
         <!-- Campus Cards Section -->
-<div class="col-lg-8 mb-5 reveal">
+<div id="campuses" class="col-lg-8 mb-5 reveal">
     <h3 class="text-center fw-bold mb-4" style="color: var(--primary-color);">Our Campuses</h3>
     <div class="row g-4 justify-content-center">
 
@@ -748,7 +741,7 @@
 </section>
 
 <!-- MISSION & VISION SECTION (Enhanced) -->
-<section class="section py-5" style="background: linear-gradient(135deg, #cddfec 0%, #e6f4ff 100%);">
+<section id="future" class="section py-5" style="background: linear-gradient(135deg, #cddfec 0%, #e6f4ff 100%);">
     <div class="container">
         <div class="row justify-content-center text-center mb-5 reveal-up">
             <h2 class="fw-bold display-6" style="color: var(--primary-color); font-size: 2rem; letter-spacing: -0.5px;">
@@ -1024,6 +1017,58 @@
     </div>
 </section>
 
+<!-- ORGANIZATIONS SECTION -->
+<section class="section" id="careers">
+    <div class="container">
+        <div class="row justify-content-center text-center mb-5 reveal-up">
+            <h2 class="fw-bold display-6" style="color: var(--primary-color); font-size: 2rem; letter-spacing: -0.5px;">
+                <i class="fas fa-users me-2"></i> Student Organizations
+            </h2>
+            <p class="text-muted mx-auto" style="max-width: 700px; font-size: 1.05rem; line-height: 1.6;">
+                Discover dynamic student-led groups that foster leadership, service, and camaraderie.
+            </p>
+        </div>
+        <div class="row g-4 justify-content-center">
+            @php
+                $organizations = [
+                    ['name' => 'Information Technology Arnis Klab (I.T.A.K.)', 'image' => 'org1.jpg'],
+                    ['name' => 'Bestlink College Debate Society', 'image' => 'org2.jpg'],
+                    ['name' => 'BCP Environmental Advocates', 'image' => 'org3.jpg'],
+                    ['name' => 'Future Business Leaders of the Philippines', 'image' => 'org4.jpg'],
+                    ['name' => 'Psychology Students Circle', 'image' => 'org5.jpg'],
+                    ['name' => 'BCP Performing Arts Guild', 'image' => 'org6.jpg'],
+                    ['name' => 'Engineering Innovators Club', 'image' => 'org7.jpg'],
+                    ['name' => 'Culinary & Hospitality Student Org', 'image' => 'org8.jpg'],
+                    ['name' => 'Business Administration Organization', 'image' => 'org9.jpg'],
+                ];
+            @endphp
+
+            @foreach($organizations as $index => $org)
+                <div class="col-6 col-md-4 col-lg-3 reveal{{ $index % 2 == 0 ? '' : '-up' }}">
+                    <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
+                        <div class="position-relative">
+                            <img src="{{ asset('images/' . $org['image']) }}" 
+                                 class="card-img-top img-fluid" 
+                                 alt="{{ $org['name'] }}" 
+                                 style="height: 180px; object-fit: cover; width: 100%;"
+                                 onerror="this.src='{{ asset('images/placeholder.jpg') }}'; this.onerror=null;">
+                            <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-10 d-flex align-items-center justify-content-center opacity-0 hover-opacity-100 transition-opacity">
+                                <i class="fas fa-users text-white fa-2x"></i>
+                            </div>
+                        </div>
+                        <div class="card-body text-center">
+                            <h6 class="card-title fw-bold">{{ $org['name'] }}</h6>
+                            <a href="#" class="btn btn-outline-primary btn-sm mt-2">
+                                <i class="fas fa-info-circle me-1"></i> View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
 <style>
     .hover-scale { transition: transform 0.3s ease; }
     .hover-scale:hover { transform: translateY(-5px); }
@@ -1043,22 +1088,53 @@
     </main>
 
     <!-- Footer -->
-    <footer class="text-center">
-        <div class="container">
-            <p class="mb-1"><strong>Bestlink College of the Philippines</strong></p>
-            <p class="mb-1">MV Branch: #1071 Quirino Highway, Quezon City</p>
-            <p class="mb-1">Bulacan Branch: IPO Road, San Jose Del Monte, Bulacan</p>
-            <div class="social-icons">
-                <!-- Placeholder for future social links -->
-                <!-- <a href="#"><i class="bi bi-facebook"></i></a>
-                <a href="#"><i class="bi bi-instagram"></i></a>
-                <a href="#"><i class="bi bi-youtube"></i></a> -->
+    <!-- Footer -->
+<footer class="text-light pt-5 pb-4">
+    <div class="container">
+        <div class="row g-4">
+            <!-- About Column -->
+            <div class="col-md-4">
+                <img src="{{ asset('images/bcp.png') }}" alt="Bestlink College Logo" height="50" class="mb-3" />
+                <p class="text-light">
+                    Bestlink College of the Philippines is committed to excellence in education and student development.
+                </p>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 All rights reserved.</p>
+
+            <!-- Contact Us Column -->
+            <div class="col-md-4">
+                <h5 class="text-light">Contact Us</h5>
+                <p>
+                    <i class="bi bi-geo-alt-fill me-2"></i> MV Branch: #1071 Quirino Highway, Quezon City<br />
+                    <i class="bi bi-geo-alt-fill me-2"></i> Bulacan Branch: IPO Road, San Jose Del Monte, Bulacan<br />
+                    <i class="bi bi-telephone-fill me-2"></i>417-4355<br/>
+                    <i class="bi bi-envelope-fill me-2"></i>bcp-inquiry@bcp.edu.ph
+                </p>
+            </div>
+
+            <!-- Stay Connected Column -->
+            <div class="col-md-4">
+                <h5 class="text-light">Stay Connected</h5>
+                <div class="d-flex mb-3">
+                    <a href="#" class="social-icon text-light me-3"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="social-icon text-light me-3"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="social-icon text-light me-3"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="social-icon text-light me-3"><i class="bi bi-youtube"></i></a>
+                </div>
+                <div>
+                    <p class="mb-2">Subscribe to our newsletter:</p>
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Enter your email" />
+                        <button class="btn btn-outline-light" type="button">Subscribe</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </footer>
+
+        <!-- Divider & Copyright -->
+        <hr class="mt-4 mb-3" style="border-color: rgba(255,255,255,0.2);" />
+        <p class="text-center mb-0">&copy; 2025 Bestlink College of the Philippines. All rights reserved.</p>
+    </div>
+</footer>
 
     <!-- Bootstrap Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

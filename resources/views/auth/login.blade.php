@@ -124,7 +124,7 @@
         <div class="login-form-container">
             <div class="login-form-wrapper">
                 <div class="text-center mb-4">
-                    <img src="{{ asset('images/pcb.png') }}" alt="Logo" style="width: 200px;">
+                    <img src="{{ asset('images/bcp.png') }}" alt="Logo" style="width: 130px;">
                     <h2 class="mt-3 fw-bold">Sign in</h2>
                 </div>
 

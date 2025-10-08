@@ -311,6 +311,57 @@
         0 8px 12px rgba(32, 59, 107, 0.15);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+/* Terms and Conditions Link */
+.terms-link {
+    display: block;
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.terms-link a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.terms-link a:hover {
+    text-decoration: underline;
+}
+
+/* Terms Modal Styling */
+.modal-lg {
+    max-width: 800px;
+}
+
+.terms-content {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding: 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.terms-content h2 {
+    color: var(--primary-color);
+    margin-top: 0;
+    border-bottom: 2px solid var(--accent-blue);
+    padding-bottom: 0.5rem;
+}
+
+.terms-content ol {
+    padding-left: 1.5rem;
+}
+
+.terms-content li {
+    margin-bottom: 1rem;
+}
+
+.terms-content strong {
+    color: var(--primary-color);
+}
     </style>
 </head>
 <body>
@@ -373,38 +424,47 @@
                         <p>Fill out this form to begin your assessment journey.</p>
                     </div>
 
-                    <form id="infoForm">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="full_name" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" id="full_name" name="full_name" required placeholder="Enter your full name">
-                        </div>
-                        <div class="mb-3">
-                            <label for="age" class="form-label">Age</label>
-                            <input type="number" class="form-control" id="age" name="age" min="15" max="99" required placeholder="Enter your age">
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email Address</label>
-                            <input type="email" class="form-control" id="email" name="email" required placeholder="Enter your email">
-                        </div>
+                    <!-- Inside your form, just above the submit button -->
+<form id="infoForm">
+    @csrf
+    <div class="mb-3">
+        <label for="full_name" class="form-label">Full Name</label>
+        <input type="text" class="form-control" id="full_name" name="full_name" required placeholder="Enter your full name">
+    </div>
+    <div class="mb-3">
+        <label for="age" class="form-label">Age</label>
+        <input type="number" class="form-control" id="age" name="age" min="15" max="99" required placeholder="Enter your age">
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Email Address</label>
+        <input type="email" class="form-control" id="email" name="email" required placeholder="Enter your email">
+    </div>
 
-                        <!-- === MATH CAPTCHA SECTION === -->
-                        <div class="mb-3">
-                            <label class="form-label">Solve this to prove you're human:</label>
-                            <div id="captcha-question" class="form-control" style="cursor: default;">
-                                Loading...
-                            </div>
-                            <div id="captcha-options" class="d-flex flex-wrap gap-2 justify-content-center"></div>
-                            <input type="hidden" id="captcha-answer" name="captcha_answer">
-                            <div id="captcha-error" class="text-danger mt-2" style="display:none;">
-                                ❌ Incorrect! Try again.
-                            </div>
-                        </div>
+    <!-- === MATH CAPTCHA SECTION === -->
+    <div class="mb-3">
+        <label class="form-label">Solve this to prove you're human:</label>
+        <div id="captcha-question" class="form-control" style="cursor: default;">
+            Loading...
+        </div>
+        <div id="captcha-options" class="d-flex flex-wrap gap-2 justify-content-center"></div>
+        <input type="hidden" id="captcha-answer" name="captcha_answer">
+        <div id="captcha-error" class="text-danger mt-2" style="display:none;">
+            ❌ Incorrect! Try again.
+        </div>
+    </div>
 
-                        <button type="submit" class="btn btn-primary-custom" id="submitBtn" disabled>
-                            Submit Information
-                        </button>
-                    </form>
+    <!-- Terms Agreement Checkbox -->
+    <div class="form-check mt-3">
+        <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+        <label class="form-check-label" for="agreeTerms">
+            I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms and Conditions</a>
+        </label>
+    </div>
+
+    <button type="submit" class="btn btn-primary-custom" id="submitBtn" disabled>
+        Submit Information
+    </button>
+</form>
                 </div>
             </div>
         </div>
@@ -426,6 +486,91 @@
     </div>
 </div>
 
+<!-- Terms and Conditions Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel">TERMS AND CONDITIONS</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body terms-content">
+                <h2>For Enrollees Taking the Assessment for Program Suitability</h2>
+                <p><strong>Effective Date: August 2025</strong></p>
+                
+                <ol>
+                    <li>
+                        <strong>Purpose of Information Collection</strong><br>
+                        We collect basic information from enrollees for the purpose of conducting an assessment designed to help identify the most suitable program or course for each individual. The collected information will be used solely to evaluate personal interests, skills, and academic strengths to provide appropriate guidance and recommendations.
+                    </li>
+                    <li>
+                        <strong>Information We Collect</strong><br>
+                        We may collect the following personal information:
+                        <ul>
+                            <li>Full name</li>
+                            <li>Age</li>
+                            <li>Contact details (email address, phone)</li>
+                            <li>Assessment results and related responses</li>
+                        </ul>
+                        Only information necessary for assessment and guidance purposes will be requested.
+                    </li>
+                    <li>
+                        <strong>Use of Information</strong><br>
+                        The collected data will be used exclusively to:
+                        <ul>
+                            <li>Administer and evaluate the enrollee's assessment results</li>
+                            <li>Provide program or course recommendations suited to the enrollee's profile</li>
+                            <li>Improve our guidance and placement process</li>
+                        </ul>
+                        We will not use your data for marketing, commercial, or unrelated purposes.
+                    </li>
+                    <li>
+                        <strong>In Compliance with the Data Privacy Act of 2012</strong><br>
+                        This collection and processing of enrollee data are conducted in compliance with Republic Act No. 10173, also known as the Data Privacy Act of 2012, and its Implementing Rules and Regulations.<br>
+                        We are committed to ensuring that your personal data is:
+                        <ul>
+                            <li>Collected and processed lawfully, fairly, and transparently</li>
+                            <li>Used only for legitimate and declared purposes</li>
+                            <li>Stored securely and accessed only by authorized personnel</li>
+                            <li>Retained only for as long as necessary for assessment and record-keeping purposes</li>
+                            <li>Shared with third parties only when required by law or with your explicit consent</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Consent</strong><br>
+                        By submitting your information and participating in the assessment, you voluntarily give your consent to the collection, use, and processing of your data for the purposes stated above.<br>
+                        You may withdraw your consent at any time by sending a written notice to bestlink092@gmail.com
+                    </li>
+                    <li>
+                        <strong>Data Retention</strong><br>
+                        Your information will be retained only for the duration necessary to complete the assessment and provide guidance results. After this period, your data will be securely deleted or anonymized.
+                    </li>
+                    <li>
+                        <strong>Rights of the Enrollee</strong><br>
+                        In accordance with the Data Privacy Act of 2012, you have the right to:
+                        <ul>
+                            <li>Access and correct your personal data</li>
+                            <li>Object to the processing of your data</li>
+                            <li>Withdraw consent at any time</li>
+                            <li>File a complaint with the National Privacy Commission (NPC) if you believe your data privacy rights have been violated</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Contact Information</strong><br>
+                        For any questions, concerns, or data privacy-related requests, please contact:<br>
+                        
+                        Email: bestlink092@gmail.com<br>
+                        Address: #1071 Brgy. Kaligayahan, Quirino Highway Novaliches Quezon City, Philippines 1123
+                    </li>
+                </ol>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Footer (copied from AssessmentTest.blade.php) -->
 <footer class="bg-dark-custom py-4 mt-auto">
     <div class="container text-center">
@@ -439,6 +584,20 @@
 <!-- Your original JavaScript (unchanged) -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const submitBtn = document.getElementById('submitBtn');
+    const agreeTerms = document.getElementById('agreeTerms');
+    const captchaAnswer = document.getElementById('captcha-answer');
+
+    // Function to enable/disable submit button
+    function updateSubmitButton() {
+        const isCaptchaCorrect = captchaAnswer.value !== '';
+        const isTermsChecked = agreeTerms.checked;
+        submitBtn.disabled = !(isCaptchaCorrect && isTermsChecked);
+    }
+
+    // Listen for checkbox changes
+    agreeTerms.addEventListener('change', updateSubmitButton);
+
     // Form submission
     document.getElementById('infoForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -465,7 +624,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // === CAPTCHA LOGIC (unchanged) ===
+    // === CAPTCHA LOGIC ===
     let correctAnswer = null;
 
     function generateCaptcha() {
@@ -497,9 +656,9 @@ document.addEventListener('DOMContentLoaded', function() {
             container.appendChild(btn);
         });
 
-        document.getElementById('captcha-answer').value = '';
+        captchaAnswer.value = '';
         document.getElementById('captcha-error').style.display = 'none';
-        document.getElementById('submitBtn').disabled = true;
+        updateSubmitButton(); // Update button state
     }
 
     function selectCaptchaOption(selected, button) {
@@ -509,16 +668,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (selected === correctAnswer) {
             button.classList.add('btn-success');
-            document.getElementById('captcha-answer').value = selected;
-            document.getElementById('submitBtn').disabled = false;
+            captchaAnswer.value = selected;
             document.getElementById('captcha-error').style.display = 'none';
         } else {
             button.classList.add('btn-danger');
-            document.getElementById('captcha-answer').value = '';
-            document.getElementById('submitBtn').disabled = true;
+            captchaAnswer.value = '';
             document.getElementById('captcha-error').style.display = 'block';
             setTimeout(generateCaptcha, 1200);
+            return;
         }
+        updateSubmitButton(); // Update after selection
     }
 
     generateCaptcha();

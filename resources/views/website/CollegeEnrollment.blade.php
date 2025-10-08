@@ -1109,7 +1109,7 @@ notLivingWithParentsCheckbox.addEventListener('change', () => {
           { course_id: 5, name: "BSBA FM - BSBA major in Financial Management" },
           { course_id: 6, name: "BSBA HRM - BSBA major in Human Resource Management" },
           { course_id: 7, name: "BSBA MM - BSBA major in Marketing Management" },
-          { course_id: 8, name: "BSBA MM - BSBA major in Marketing Management" },
+          { course_id: 8, name: "BSCPE - BS in Computer Engineering" },
           { course_id: 9, name: "BSCRIM - BS in Criminology" },
           { course_id: 10, name: "BSENTREP - BS in Entrepreneurship" },
           { course_id: 11, name: "BSHM - BS in Hospitality Management" },

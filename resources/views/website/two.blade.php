@@ -176,7 +176,7 @@
             opacity: 1;
         }
         .welcome-modal-header {
-            background: linear-gradient(135deg, var(--primary-color), #305793);
+            background:  #233f6b;
             color: white;
             padding: 1.2rem 1.5rem;
             border-radius: 16px 16px 0 0;
@@ -212,22 +212,35 @@
             display: block;
         }
         .welcome-modal-btn {
-            background-color: var(--primary-color);
-            color: white;
-            font-weight: 600;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 12px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-        }
-        .welcome-modal-btn:hover {
-            background-color: #1a315a;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(32, 59, 107, 0.3);
-        }
+    background: linear-gradient(135deg, var(--primary-color), #305793);
+    color: white;
+    font-weight: 600;
+    padding: 14px 30px;
+    border: none;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 18px rgba(32, 59, 107, 0.2);
+}
+.welcome-modal-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(32, 59, 107, 0.35);
+}
+/* Skip Button */
+#skipAssessmentBtn {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+#skipAssessmentBtn:hover {
+    background-color: rgba(32, 59, 107, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(32, 59, 107, 0.1);
+}
 
         /* =================================== */
         /* 2️⃣ HERO SECTION – Taller & Immersive */
@@ -572,7 +585,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
     <div class="container">
         <a class="navbar-brand d-flex align-items-center gap-2" href="#">
-            <img src="{{ asset('images/pcb.png') }}" alt="Bestlink College Logo" width="60" height="60" class="img-fluid rounded" />
+            <img src="{{ asset('images/bcp.png') }}" alt="Bestlink College Logo" width="60" height="60" class="img-fluid rounded" />
             <div>
                 <span class="d-block">Bestlink College</span>
                 <span class="d-block" style="font-size: 0.75rem;">of the Philippines</span>
@@ -625,24 +638,31 @@
 </div>
 
 <!-- =================================== -->
-<!-- 1️⃣ WELCOME MODAL (Auto-Open on Load) -->
+<!-- 1️⃣ WELCOME MODAL (Updated Design – Consistent Button Sizes) -->
 <!-- =================================== -->
 <div class="welcome-modal-backdrop" id="welcomeModalBackdrop">
     <div class="welcome-modal" id="welcomeModal">
         <div class="welcome-modal-header">
-            <h5 class="mb-0" style="color: white;">Welcome to Bestlink College</h5>
-            <button type="button" class="welcome-modal-close" id="welcomeModalClose">&times;</button>
+            <h5 class="mb-0" style="color: white;">Welcome to Bestlink College of the Philippines</h5>
         </div>
         <div class="welcome-modal-body text-center">
             <img src="{{ asset('images/take2.jpg') }}" alt="Welcome to Bestlink" class="welcome-modal-img" />
-            <h4 class="text-primary-custom">Not Sure What to Study?</h4>
-            <p class="text-muted">
-                Take our quick and fun assessment to find the Senior High School strand or College program that best matches your interests, strengths, and future goals.
+            <h4 class="text-primary-custom mb-3">Not Sure What to Study?</h4>
+            <p class="text-muted mb-4">
+                Take our quick and fun assessment to find the Senior High School strand or College program that best matches your interests, strengths, and future goals.<br>
                 It’s free, takes less than 7 minutes, and gives you personalized recommendations!
             </p>
-            <button id="takeAssessmentBtn" class="welcome-modal-btn btn-lg">
-                <i class="fas fa-vial me-2"></i> Take Assessment Now
-            </button>
+            <div class="d-grid gap-3">
+                <!-- Take Assessment Button -->
+                <button id="takeAssessmentBtn" class="welcome-modal-btn btn-lg rounded-pill px-4 py-3" style="background: linear-gradient(135deg, var(--primary-color), #305793); border: none;">
+                    <i class="fas fa-vial me-2"></i> Take Assessment Now
+                </button>
+
+                <!-- Skip Assessment Button (now styled like the first one) -->
+                <button id="skipAssessmentBtn" class="welcome-modal-btn btn-lg rounded-pill px-4 py-3" style="background: #f8f9fa; color: var(--primary-color); border: 2px solid var(--primary-color);">
+                    <i class="fas fa-arrow-right me-2"></i> Skip Assessment
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -656,14 +676,14 @@
         <div class="row justify-content-center">
             <div class="col-lg-8 col-md-10 text-center">
                 <h1 class="display-4 fw-bold text-white mb-4">
-                    Start Your Journey at Bestlink College
+                    Start Your Journey at Bestlink College Of The Philippines
                 </h1>
                 <p class="lead text-white mb-5">
                     We provide quality education to make students globally competitive and productive citizens.
                 </p>
-                <a href="#enroll-now-section" class="btn btn-hero btn-lg mt-3">
-                    Enroll Now
-                </a>
+                <button type="button" class="btn btn-hero btn-lg mt-3" id="enrollNowBtn">
+                Enroll Now
+               </button>
             </div>
         </div>
     </div>
@@ -1112,7 +1132,7 @@
     <div class="container">
         <div class="row g-4">
             <div class="col-md-4">
-                <img src="{{ asset('images/pcb.png') }}" alt="Bestlink College Logo" height="50" class="mb-3" />
+                <img src="{{ asset('images/bcp.png') }}" alt="Bestlink College Logo" height="50" class="mb-3" />
                 <p>Bestlink College of the Philippines is committed to excellence in education and student development.</p>
             </div>
             <div class="col-md-4">
@@ -1148,55 +1168,63 @@
 
 <!-- Welcome Modal & Fade-in Script -->
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const backdrop = document.getElementById('welcomeModalBackdrop');
-        const modal = document.getElementById('welcomeModal');
-        const closeBtn = document.getElementById('welcomeModalClose');
-        const takeAssessmentBtn = document.getElementById('takeAssessmentBtn');
+document.addEventListener('DOMContentLoaded', function () {
+    const backdrop = document.getElementById('welcomeModalBackdrop');
+    const modal = document.getElementById('welcomeModal');
+    const takeAssessmentBtn = document.getElementById('takeAssessmentBtn');
+    const skipAssessmentBtn = document.getElementById('skipAssessmentBtn');
+    const enrollNowBtn = document.getElementById('enrollNowBtn');
 
-        // Show modal after 1 second
+    // Open modal on Enroll Now click
+    enrollNowBtn.addEventListener('click', () => {
+        backdrop.classList.add('show');
         setTimeout(() => {
-            backdrop.classList.add('show');
-            setTimeout(() => {
-                modal.classList.add('show');
-            }, 10);
-        }, 1000);
+            modal.classList.add('show');
+        }, 10);
+    });
 
-        // Close modal
-        closeBtn.addEventListener('click', () => {
-            modal.classList.remove('show');
-            setTimeout(() => {
-                backdrop.classList.remove('show');
-            }, 500);
-        });
+    // Close modal helper
+    function closeModal() {
+        modal.classList.remove('show');
+        setTimeout(() => {
+            backdrop.classList.remove('show');
+        }, 500);
+    }
 
-        // Click outside to close
-        backdrop.addEventListener('click', (e) => {
-            if (e.target === backdrop) {
-                closeBtn.click();
+    // Take Assessment → scroll to assessment
+    takeAssessmentBtn.addEventListener('click', () => {
+        closeModal();
+        setTimeout(() => {
+            document.querySelector('#assessment-section').scrollIntoView({ behavior: 'smooth' });
+        }, 600);
+    });
+
+    // Skip Assessment → scroll to enrollment CTA
+    skipAssessmentBtn.addEventListener('click', () => {
+        closeModal();
+        setTimeout(() => {
+            document.querySelector('#enroll-now-section').scrollIntoView({ behavior: 'smooth' });
+        }, 600);
+    });
+
+    // Click outside → treat as SKIP (optional but user-friendly)
+    backdrop.addEventListener('click', (e) => {
+        if (e.target === backdrop) {
+            skipAssessmentBtn.click();
+        }
+    });
+
+    // Fade-in on scroll
+    const fadeElements = document.querySelectorAll('.fade-in-section');
+    const fadeInObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
             }
         });
-
-        // Take Assessment button scrolls to section
-        takeAssessmentBtn.addEventListener('click', () => {
-            closeBtn.click(); // Close modal
-            setTimeout(() => {
-                document.querySelector('#assessment-section').scrollIntoView({ behavior: 'smooth' });
-            }, 300);
-        });
-
-        // Fade-in on scroll
-        const fadeElements = document.querySelectorAll('.fade-in-section');
-        const fadeInObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        fadeElements.forEach(el => fadeInObserver.observe(el));
-    });
+    }, { threshold: 0.1 });
+    fadeElements.forEach(el => fadeInObserver.observe(el));
+});
 </script>
 
 <script>
