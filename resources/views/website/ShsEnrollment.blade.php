@@ -346,6 +346,33 @@
       .feature-box {
         margin-bottom: 20px;
       }
+      .stepper {
+        flex-direction: column;
+        align-items: center;
+      }
+      .step {
+        margin-bottom: 10px;
+        font-size: 0.75rem;
+      }
+      .step::before {
+        width: 28px;
+        height: 28px;
+        line-height: 28px;
+        font-size: 0.75rem;
+      }
+      .summary-label {
+        font-size: 0.8rem;
+        display: block;
+        margin-bottom: 5px;
+      }
+      .card-body .row .col-md-6,
+      .card-body .row .col-md-4,
+      .card-body .row .col-md-3 {
+        margin-bottom: 10px;
+      }
+      #summaryContent {
+        font-size: 0.85rem;
+      }
     }
   </style>
 </head>
@@ -445,13 +472,25 @@
                     <div class="invalid-feedback">Please enter your last name.</div>
                   </div>
                   <div class="col-md-6">
-                    <label for="extensionName" class="form-label">
-                      Extension Name (Optional)
-                      <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter Jr., Sr., III, IV, etc. if applicable. Leave blank if not.">
-                        <i class="fas fa-info-circle text-primary"></i>
-                      </span>
-                    </label>
-                    <input type="text" class="form-control" id="extensionName" name="extensionName" />
+                    <div id="extensionNameContainer" class="mt-3">
+                      <label class="form-label">
+                        Extension Name (Optional)
+                        <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Select Jr., Sr., etc. if applicable to differentiate duplicate names.">
+                          <i class="fas fa-info-circle text-primary"></i>
+                        </span>
+                      </label>
+                       <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="hasExtensionName" name="hasExtensionName" value="1">
+                      <label class="form-check-label" for="hasExtensionName">
+                        I have an extension name
+                      </label>
+                    </div>
+                      <select class="form-select" id="extensionName" name="extensionName" disabled>
+                        <option value="" selected disabled>Choose extension</option>
+                        <option value="Jr">Jr.</option>
+                        <option value="Sr">Sr.</option>
+                      </select>
+                    </div>
                   </div>
                   <div class="col-md-6">
                     <label for="civilStatus" class="form-label">
@@ -798,61 +837,69 @@
                     <input type="email" class="form-control" id="fatherEmail" name="fatherEmail" required />
                     <div class="invalid-feedback">Please enter a valid email address.</div>
                   </div>
+                 <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="notLivingWithParents" name="notLivingWithParents" value="1">
+                      <label class="form-check-label" for="notLivingWithParents">
+                        Not living with parents
+                      </label>
+                    </div>
                   <h5 class="mb-3 mt-4" style="color: var(--primary-dark); font-weight: 700;">Guardian's Information (If not living with parents)</h5>
-                  <div class="col-md-4">
+                  <div class="col-12 mt-3">
+                  </div>
+                  <div class="col-md-4 d-none" id="guardianFirstNameContainer">
                     <label for="guardianFirstName" class="form-label">
                       First Name
                       <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your guardian's first name if applicable (e.g., Auntie Rosa).">
                         <i class="fas fa-info-circle text-primary"></i>
                       </span>
                     </label>
-                    <input type="text" class="form-control" id="guardianFirstName" name="guardianFirstName" />
+                    <input type="text" class="form-control" id="guardianFirstName" name="guardianFirstName" disabled />
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-4 d-none" id="guardianMiddleNameContainer">
                     <label for="guardianMiddleName" class="form-label">
                       Middle Name
                       <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your guardian's middle name if applicable.">
                         <i class="fas fa-info-circle text-primary"></i>
                       </span>
                     </label>
-                    <input type="text" class="form-control" id="guardianMiddleName" name="guardianMiddleName" />
+                    <input type="text" class="form-control" id="guardianMiddleName" name="guardianMiddleName" disabled />
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-4 d-none" id="guardianLastNameContainer">
                     <label for="guardianLastName" class="form-label">
                       Last Name
                       <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your guardian's last name if applicable.">
                         <i class="fas fa-info-circle text-primary"></i>
                       </span>
                     </label>
-                    <input type="text" class="form-control" id="guardianLastName" name="guardianLastName" />
+                    <input type="text" class="form-control" id="guardianLastName" name="guardianLastName" disabled />
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-3 d-none" id="guardianDobContainer">
                     <label for="guardianDob" class="form-label">
                       Date of Birth
                       <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your guardian's date of birth if applicable.">
                         <i class="fas fa-info-circle text-primary"></i>
                       </span>
                     </label>
-                    <input type="date" class="form-control" id="guardianDob" name="guardianDob" max="" />
+                    <input type="date" class="form-control" id="guardianDob" name="guardianDob" max="" disabled />
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-6 d-none" id="guardianContactContainer">
                     <label for="guardianContact" class="form-label">
                       Contact Number
                       <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your guardian's phone number if applicable.">
                         <i class="fas fa-info-circle text-primary"></i>
                       </span>
                     </label>
-                    <input type="tel" class="form-control" id="guardianContact" name="guardianContact" pattern="^\+?\d{7,15}$" />
+                    <input type="tel" class="form-control" id="guardianContact" name="guardianContact" pattern="^\+?\d{7,15}$" disabled />
                     <div class="invalid-feedback">Please enter a valid contact number.</div>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-3 d-none" id="guardianEmailContainer">
                     <label for="guardianEmail" class="form-label">
                       Email
                       <span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your guardian's email address if applicable.">
                         <i class="fas fa-info-circle text-primary"></i>
                       </span>
                     </label>
-                    <input type="email" class="form-control" id="guardianEmail" name="guardianEmail" />
+                    <input type="email" class="form-control" id="guardianEmail" name="guardianEmail" disabled />
                     <div class="invalid-feedback">Please enter a valid email address.</div>
                   </div>
                   <!-- 4Ps Checkbox -->
@@ -1083,7 +1130,7 @@
     </label>
   </div>
   <p class="text-muted small">
-    By continuing, you agree that your information will only be used for assessment and recommendation purposes.
+    By submitting this form, you agree to our terms and conditions.
     For more details, please see our <a href="#" data-bs-toggle="modal" data-bs-target="#privacyPolicyModal" class="text-decoration-underline">[Privacy Policy]</a>.
   </p>
 </section>
@@ -1437,89 +1484,110 @@ if (index === 6) {
 }
       return valid;
     }
-    function populateSummary() {
-      const data = new FormData(form);
-      let html = '<div class="row g-3">';
-      html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Student Information</h5></div>`;
-      html += `<div class="col-md-6"><span class="summary-label">Student Type:</span> ${data.get('studentType') || ''}</div>`;
-      if (data.get('studentType') === 'Returnee') {
-        html += `<div class="col-md-6"><span class="summary-label">Previous Student ID No:</span> ${data.get('previousStudentId') || ''}</div>`;
-      }
-      html += `<div class="col-md-4"><span class="summary-label">First Name:</span> ${data.get('firstName') || ''}</div>`;
-      html += `<div class="col-md-4"><span class="summary-label">Middle Name:</span> ${data.get('middleName') || ''}</div>`;
-      html += `<div class="col-md-4"><span class="summary-label">Last Name:</span> ${data.get('lastName') || ''}</div>`;
-      html += `<div class="col-md-6"><span class="summary-label">Extension Name:</span> ${data.get('extensionName') || ''}</div>`;
-      html += `<div class="col-md-6"><span class="summary-label">Civil Status:</span> ${data.get('civilStatus') || ''}</div>`;
-      html += `<div class="col-md-6"><span class="summary-label">Gender:</span> ${data.get('gender') || ''}</div>`;
-      html += `<div class="col-md-6"><span class="summary-label">Date of Birth:</span> ${data.get('dob') || ''}</div>`;
-      html += `<div class="col-md-6"><span class="summary-label">Place of Birth:</span> ${data.get('placeOfBirth') || ''}</div>`;
-      html += `<div class="col-md-6"><span class="summary-label">Nationality:</span> ${data.get('nationality') || ''}</div>`;
-      html += `<div class="col-md-6"><span class="summary-label">Learner Reference Number (LRN):</span> ${data.get('lrn') || ''}</div>`;
-      html += `<div class="col-12"><hr></div>`;
-      html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Address & Contact</h5></div>`;
-      html += `<div class="col-md-6"><span class="summary-label">Current Address:</span> ${data.get('currentAddress') || ''}</div>`;
-      html += `<div class="col-md-6"><span class="summary-label">City/Municipality:</span> ${data.get('cityMunicipality') || ''}</div>`;
-      html += `<div class="col-md-6"><span class="summary-label">Province:</span> ${data.get('province') || ''}</div>`;
-      html += `<div class="col-md-6"><span class="summary-label">Region:</span> ${document.querySelector('#region option:checked')?.text || ''}</div>`;
-      html += `<div class="col-md-6"><span class="summary-label">Zip Code:</span> ${data.get('zipCode') || ''}</div>`;
-      html += `<div class="col-md-6"><span class="summary-label">Religion:</span> ${data.get('religion') || ''}</div>`;
-      html += `<div class="col-md-6"><span class="summary-label">Email:</span> ${data.get('email') || ''}</div>`;
-      html += `<div class="col-md-6"><span class="summary-label">Contact Number:</span> ${data.get('contactNumber') || ''}</div>`;
-      html += `<div class="col-md-6"><span class="summary-label">Social Media:</span> ${data.get('socialMedia') || ''}</div>`;
-      html += `<div class="col-12"><hr></div>`;
-      html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Parents Information</h5></div>`;
-      html += `<div class="col-md-4"><span class="summary-label">Mother's First Name:</span> ${data.get('motherFirstName') || ''}</div>`;
-      html += `<div class="col-md-4"><span class="summary-label">Middle Name:</span> ${data.get('motherMiddleName') || ''}</div>`;
-      html += `<div class="col-md-4"><span class="summary-label">Last Name:</span> ${data.get('motherLastName') || ''}</div>`;
-      html += `<div class="col-md-4"><span class="summary-label">Occupation:</span> ${data.get('motherOccupation') || ''}</div>`;
-      html += `<div class="col-md-4"><span class="summary-label">Contact Number:</span> ${data.get('motherContact') || ''}</div>`;
-      html += `<div class="col-md-4"><span class="summary-label">Email:</span> ${data.get('motherEmail') || ''}</div>`;
-      html += `<div class="col-md-4"><span class="summary-label">Father's First Name:</span> ${data.get('fatherFirstName') || ''}</div>`;
-      html += `<div class="col-md-4"><span class="summary-label">Middle Name:</span> ${data.get('fatherMiddleName') || ''}</div>`;
-      html += `<div class="col-md-4"><span class="summary-label">Last Name:</span> ${data.get('fatherLastName') || ''}</div>`;
-      html += `<div class="col-md-4"><span class="summary-label">Occupation:</span> ${data.get('fatherOccupation') || ''}</div>`;
-      html += `<div class="col-md-4"><span class="summary-label">Contact Number:</span> ${data.get('fatherContact') || ''}</div>`;
-      html += `<div class="col-md-4"><span class="summary-label">Email:</span> ${data.get('fatherEmail') || ''}</div>`;
-      html += `<div class="col-12"><hr></div>`;
-html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Additional Information</h5></div>`;
-html += `<div class="col-md-6"><span class="summary-label">4Ps Member:</span> ${data.get('isFourPs') ? 'Yes' : 'No'}</div>`;
-      html += `<div class="col-12"><hr></div>`;
-      html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Preferences</h5></div>`;
-      html += `<div class="col-md-6"><span class="summary-label">Preferred Branch:</span> ${document.querySelector('#preferredBranch option:checked')?.text || ''}</div>`;
-      html += `<div class="col-md-6"><span class="summary-label">Preferred Course:</span> ${document.querySelector('#preferredCourse option:checked')?.text || ''}</div>`;
-      html += `<div class="col-md-6"><span class="summary-label">Year Level:</span> ${document.querySelector('#yearLevelStep4 option:checked')?.text || ''}</div>`;
-      html += `<div class="col-12"><hr></div>`;
-      // Health Info
-html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Health Information</h5></div>`;
-html += `<div class="col-md-6"><span class="summary-label">Medical Condition:</span> ${data.get('healthCondition') || ''}</div>`;
-if (data.get('healthCondition') === 'Others') {
-  html += `<div class="col-md-6"><span class="summary-label">Specified Condition:</span> ${data.get('healthConditionOthers') || ''}</div>`;
+   function populateSummary() {
+  const data = new FormData(form);
+  let html = '';
+
+  // Student Information Card
+  html += '<div class="card mb-3"><div class="card-header-custom">Student Information</div><div class="card-body"><div class="row g-3">';
+  html += `<div class="col-md-6"><span class="summary-label">Student Type:</span> ${data.get('studentType') || ''}</div>`;
+  if (data.get('studentType') === 'Returnee') {
+    html += `<div class="col-md-6"><span class="summary-label">Previous Student ID No:</span> ${data.get('previousStudentId') || ''}</div>`;
+  }
+  html += `<div class="col-md-4"><span class="summary-label">First Name:</span> ${data.get('firstName') || ''}</div>`;
+  html += `<div class="col-md-4"><span class="summary-label">Middle Name:</span> ${data.get('middleName') || ''}</div>`;
+  html += `<div class="col-md-4"><span class="summary-label">Last Name:</span> ${data.get('lastName') || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Extension Name:</span> ${data.get('extensionName') || 'None'}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Civil Status:</span> ${data.get('civilStatus') || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Gender:</span> ${data.get('gender') || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Date of Birth:</span> ${data.get('dob') || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Place of Birth:</span> ${data.get('placeOfBirth') || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Nationality:</span> ${data.get('nationality') || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Learner Reference Number (LRN):</span> ${data.get('lrn') || ''}</div>`;
+  html += '</div></div></div>';
+
+  // Address & Contact Card
+  html += '<div class="card mb-3"><div class="card-header-custom">Address & Contact</div><div class="card-body"><div class="row g-3">';
+  html += `<div class="col-md-6"><span class="summary-label">Current Address:</span> ${data.get('currentAddress') || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">City/Municipality:</span> ${data.get('cityMunicipality') || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Province:</span> ${data.get('province') || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Region:</span> ${document.querySelector('#region option:checked')?.text || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Zip Code:</span> ${data.get('zipCode') || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Religion:</span> ${data.get('religion') || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Email:</span> ${data.get('email') || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Contact Number:</span> ${data.get('contactNumber') || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Social Media:</span> ${data.get('socialMedia') || ''}</div>`;
+  html += '</div></div></div>';
+
+  // Parents Information Card
+  html += '<div class="card mb-3"><div class="card-header-custom">Parents Information</div><div class="card-body"><div class="row g-3">';
+  html += `<div class="col-md-4"><span class="summary-label">Mother's First Name:</span> ${data.get('motherFirstName') || ''}</div>`;
+  html += `<div class="col-md-4"><span class="summary-label">Middle Name:</span> ${data.get('motherMiddleName') || ''}</div>`;
+  html += `<div class="col-md-4"><span class="summary-label">Last Name:</span> ${data.get('motherLastName') || ''}</div>`;
+  html += `<div class="col-md-4"><span class="summary-label">Occupation:</span> ${data.get('motherOccupation') || ''}</div>`;
+  html += `<div class="col-md-4"><span class="summary-label">Contact Number:</span> ${data.get('motherContact') || ''}</div>`;
+  html += `<div class="col-md-4"><span class="summary-label">Email:</span> ${data.get('motherEmail') || ''}</div>`;
+  html += `<div class="col-md-4"><span class="summary-label">Father's First Name:</span> ${data.get('fatherFirstName') || ''}</div>`;
+  html += `<div class="col-md-4"><span class="summary-label">Middle Name:</span> ${data.get('fatherMiddleName') || ''}</div>`;
+  html += `<div class="col-md-4"><span class="summary-label">Last Name:</span> ${data.get('fatherLastName') || ''}</div>`;
+  html += `<div class="col-md-4"><span class="summary-label">Occupation:</span> ${data.get('fatherOccupation') || ''}</div>`;
+  html += `<div class="col-md-4"><span class="summary-label">Contact Number:</span> ${data.get('fatherContact') || ''}</div>`;
+  html += `<div class="col-md-4"><span class="summary-label">Email:</span> ${data.get('fatherEmail') || ''}</div>`;
+  html += '</div></div></div>';
+
+  // Additional Information Card
+  html += '<div class="card mb-3"><div class="card-header-custom">Additional Information</div><div class="card-body"><div class="row g-3">';
+  html += `<div class="col-md-6"><span class="summary-label">4Ps Member:</span> ${data.get('isFourPs') ? 'Yes' : 'No'}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Not living with parents:</span> ${data.get('notLivingWithParents') ? 'Yes' : 'No'}</div>`;
+  if (data.get('notLivingWithParents')) {
+    html += `<div class="col-12"><h6 style="color: var(--primary-color); font-weight: 700;">Guardian Information</h6></div>`;
+    html += `<div class="col-md-4"><span class="summary-label">First Name:</span> ${data.get('guardianFirstName') || ''}</div>`;
+    html += `<div class="col-md-4"><span class="summary-label">Middle Name:</span> ${data.get('guardianMiddleName') || ''}</div>`;
+    html += `<div class="col-md-4"><span class="summary-label">Last Name:</span> ${data.get('guardianLastName') || ''}</div>`;
+    html += `<div class="col-md-3"><span class="summary-label">Date of Birth:</span> ${data.get('guardianDob') || ''}</div>`;
+    html += `<div class="col-md-6"><span class="summary-label">Contact Number:</span> ${data.get('guardianContact') || ''}</div>`;
+    html += `<div class="col-md-3"><span class="summary-label">Email:</span> ${data.get('guardianEmail') || ''}</div>`;
+  }
+  html += '</div></div></div>';
+
+  // Preferences Card
+  html += '<div class="card mb-3"><div class="card-header-custom">Preferences</div><div class="card-body"><div class="row g-3">';
+  html += `<div class="col-md-6"><span class="summary-label">Preferred Branch:</span> ${document.querySelector('#preferredBranch option:checked')?.text || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Preferred Course:</span> ${document.querySelector('#preferredCourse option:checked')?.text || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Year Level:</span> ${document.querySelector('#yearLevelStep4 option:checked')?.text || ''}</div>`;
+  html += '</div></div></div>';
+
+  // Health Information Card
+  html += '<div class="card mb-3"><div class="card-header-custom">Health Information</div><div class="card-body"><div class="row g-3">';
+  html += `<div class="col-md-6"><span class="summary-label">Medical Condition:</span> ${data.get('healthCondition') || ''}</div>`;
+  if (data.get('healthCondition') === 'Others') {
+    html += `<div class="col-md-6"><span class="summary-label">Specified Condition:</span> ${data.get('healthConditionOthers') || ''}</div>`;
+  }
+  html += `<div class="col-md-6"><span class="summary-label">Weight (kg):</span> ${data.get('weightKg') || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Height (cm):</span> ${data.get('heightCm') || ''}</div>`;
+  html += '</div></div></div>';
+
+  // Referral Source Card
+  html += '<div class="card mb-3"><div class="card-header-custom">Referral Source</div><div class="card-body"><div class="row g-3">';
+  html += `<div class="col-md-6"><span class="summary-label">How did you hear about us?:</span> ${data.get('referralSource') || ''}</div>`;
+  if (data.get('referralSource') === 'Adviser/Referral/Others') {
+    html += `<div class="col-md-6"><span class="summary-label">Referral Name:</span> ${data.get('referralName') || ''}</div>`;
+    html += `<div class="col-md-6"><span class="summary-label">Referral Relation:</span> ${data.get('referralRelation') || ''}</div>`;
+  }
+  html += '</div></div></div>';
+
+  // Educational Background Card
+  html += '<div class="card mb-3"><div class="card-header-custom">Educational Background</div><div class="card-body"><div class="row g-3">';
+  html += `<div class="col-md-6"><span class="summary-label">Primary School:</span> ${data.get('primarySchool') || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Year Graduated (Primary):</span> ${data.get('primaryYearGraduated') || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Secondary School:</span> ${data.get('secondarySchool') || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Year Graduated (Secondary):</span> ${data.get('secondaryYearGraduated') || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Last School Attended:</span> ${data.get('lastSchoolAttended') || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Year Graduated (Last School):</span> ${data.get('lastSchoolYearGraduated') || ''}</div>`;
+  html += '</div></div></div>';
+
+  document.getElementById('summaryContent').innerHTML = html;
 }
-html += `<div class="col-md-6"><span class="summary-label">Weight (kg):</span> ${data.get('weightKg') || ''}</div>`;
-html += `<div class="col-md-6"><span class="summary-label">Height (cm):</span> ${data.get('heightCm') || ''}</div>`;
-html += `<div class="col-12"><hr></div>`;
-
-// Referral
-html += `<div class="col-12"><hr></div>`;
-html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Referral Source</h5></div>`;
-html += `<div class="col-md-6"><span class="summary-label">How did you hear about us?:</span> ${data.get('referralSource') || ''}</div>`;
-if (data.get('referralSource') === 'Adviser/Referral/Others') {
-  html += `<div class="col-md-6"><span class="summary-label">Referral Name:</span> ${data.get('referralName') || ''}</div>`;
-  html += `<div class="col-md-6"><span class="summary-label">Referral Relation:</span> ${data.get('referralRelation') || ''}</div>`;
-}
-
-html += `<div class="col-12"><hr></div>`;
-
-      html += `<div class="col-12"><h5 style="color: var(--primary-color); font-weight: 700;">Educational Background</h5></div>`;
-      html += `<div class="col-md-6"><span class="summary-label">Primary School:</span> ${data.get('primarySchool') || ''}</div>`;
-      html += `<div class="col-md-6"><span class="summary-label">Year Graduated (Primary):</span> ${data.get('primaryYearGraduated') || ''}</div>`;
-      html += `<div class="col-md-6"><span class="summary-label">Secondary School:</span> ${data.get('secondarySchool') || ''}</div>`;
-      html += `<div class="col-md-6"><span class="summary-label">Year Graduated (Secondary):</span> ${data.get('secondaryYearGraduated') || ''}</div>`;
-      html += `<div class="col-md-12"><span class="summary-label">Last School Attended:</span> ${data.get('lastSchoolAttended') || ''}</div>`;
-      html += `<div class="col-md-12"><span class="summary-label">Year Graduated (Last School):</span> ${data.get('lastSchoolYearGraduated') || ''}</div>`;
-      html += '</div>';
-      document.getElementById('summaryContent').innerHTML = html;
-    }
     nextBtn.addEventListener('click', function () {
   if (validateStep(currentStep)) {
     if (currentStep === steps.length - 1) {
@@ -1531,10 +1599,10 @@ html += `<div class="col-12"><hr></div>`;
     }
 
     if (currentStep < steps.length - 1) {
-      showStep(currentStep + 1);
-      if (currentStep === 6) {
+      if (currentStep + 1 === 8) {
         populateSummary();
       }
+      showStep(currentStep + 1);
     } else {
       const formData = new FormData(form);
       nextBtn.disabled = true;
@@ -1622,7 +1690,63 @@ html += `<div class="col-12"><hr></div>`;
     }
     showStep(0);
 
-    // >>>>>>>>>> ADD THESE LINES HERE <<<<<<<<<<
+    // Auto-update summary on form changes when on summary step
+    const formElements = form.querySelectorAll('input, select, textarea');
+    formElements.forEach(element => {
+      element.addEventListener('change', () => {
+        if (currentStep === 8) { // Step 9 (0-indexed)
+          populateSummary();
+        }
+      });
+      if (element.type === 'text' || element.type === 'email' || element.type === 'tel' || element.type === 'number' || element.tagName === 'TEXTAREA') {
+        element.addEventListener('input', () => {
+          if (currentStep === 8) {
+            populateSummary();
+          }
+        });
+      }
+    });
+
+    const hasExtensionNameCheckbox = document.getElementById('hasExtensionName');
+    const extensionNameSelect = document.getElementById('extensionName');
+
+    function toggleExtensionNameSelect() {
+      if (hasExtensionNameCheckbox.checked) {
+        extensionNameSelect.disabled = false;
+      } else {
+        extensionNameSelect.disabled = true;
+        extensionNameSelect.value = '';
+      }
+    }
+
+    // On page load, set select disabled/enabled based on checkbox
+    toggleExtensionNameSelect();
+
+    // Extension name toggle
+    hasExtensionNameCheckbox.addEventListener('change', toggleExtensionNameSelect);
+
+    // Guardian toggle
+    function toggleGuardianFields() {
+      const checkbox = document.getElementById('notLivingWithParents');
+      const containers = document.querySelectorAll('#guardianFirstNameContainer, #guardianMiddleNameContainer, #guardianLastNameContainer, #guardianDobContainer, #guardianContactContainer, #guardianEmailContainer');
+      const inputs = document.querySelectorAll('[id*="guardian"] input, [id*="guardian"] select');
+      if (checkbox.checked) {
+        containers.forEach(container => container.classList.remove('d-none'));
+        inputs.forEach(input => input.disabled = false);
+      } else {
+        containers.forEach(container => container.classList.add('d-none'));
+        inputs.forEach(input => {
+          input.disabled = true;
+          input.value = '';
+        });
+      }
+    }
+
+    // On page load, set initial state
+    toggleGuardianFields();
+
+    // Add event listener for checkbox change
+    document.getElementById('notLivingWithParents').addEventListener('change', toggleGuardianFields);
 // Health condition "Others" toggle
 const healthConditionInputs = document.querySelectorAll('.health-condition');
 healthConditionInputs.forEach(input => {
@@ -1661,6 +1785,29 @@ if (referralSource) {
   });
 }
 // >>>>>>>>>> END OF NEW CODE <<<<<<<<<<
+  // Make stepper steps clickable with updated logic
+  stepperSteps.forEach((stepElem, index) => {
+    stepElem.style.cursor = 'pointer';
+    stepElem.addEventListener('click', () => {
+      // Allow navigation if step is current or completed (not disabled)
+      if (stepElem.classList.contains('active') || stepElem.classList.contains('completed')) {
+        showStep(index);
+      } else {
+        // If clicking on a future step, check if current step is valid before allowing navigation
+        if (index < currentStep) {
+          // Allow going back to previous steps even if current step is invalid
+          showStep(index);
+        } else {
+          if (validateStep(currentStep)) {
+            showStep(index);
+          } else {
+            alert('Please fill all required fields correctly before proceeding.');
+          }
+        }
+      }
+    });
+  });
+
   })();
   </script>
 
