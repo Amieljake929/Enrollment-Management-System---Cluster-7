@@ -110,26 +110,35 @@
 
                                 
                                 <td>{{ $student->created_at->format('M d, Y \a\t h:i A') }}</td>
+                                
                                 <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-primary me-2 view-student" 
-    data-student-id="{{ $student->student_id }}" 
-    title="View">
-    View
-</button>
-                                    <!-- Validate Button -->
-<button type="button" class="btn btn-sm btn-success validate-btn me-2"
-    data-student-id="{{ $student->student_id }}"
-    title="Validate">
-    Validate
-</button>
+    <button type="button" class="btn btn-sm btn-primary me-2 view-student" 
+        data-student-id="{{ $student->student_id }}" 
+        title="View">
+        View
+    </button>
+    <!-- Validate Button -->
+    <button type="button" class="btn btn-sm btn-success validate-btn me-2"
+        data-student-id="{{ $student->student_id }}"
+        title="Validate">
+        Validate
+    </button>
 
-<!-- Cancel Button -->
-<button type="button" class="btn btn-sm btn-danger cancel-btn"
-    data-student-id="{{ $student->student_id }}"
-    data-student-name="{{ $student->last_name }}, {{ $student->first_name }}"
-    title="Cancel">
-    Cancel
-</button>
+    <!-- Re-Evaluate Button (NEW) -->
+    <button type="button" class="btn btn-sm btn-warning reevaluate-btn me-2"
+        data-student-id="{{ $student->student_id }}"
+        title="Re-Evaluate">
+        Re-Evaluate
+    </button>
+
+    <!-- Cancel Button -->
+    <button type="button" class="btn btn-sm btn-danger cancel-btn"
+        data-student-id="{{ $student->student_id }}"
+        data-student-name="{{ $student->last_name }}, {{ $student->first_name }}"
+        title="Cancel">
+        Cancel
+    </button>
+</td>
                                 </td>
                             </tr>
                         @empty
@@ -365,6 +374,38 @@ document.addEventListener('click', function(e) {
         .catch(err => {
             console.error(err);
             alert('An error occurred.');
+        });
+    }
+});
+</script>
+
+<!-- Re-Evaluate Button -->
+<script>
+document.addEventListener('click', function(e) {
+    const reevaluateBtn = e.target.closest('.reevaluate-btn');
+    if (reevaluateBtn) {
+        e.preventDefault();
+        const studentId = reevaluateBtn.getAttribute('data-student-id');
+        if (!confirm('Re-evaluate this admission? This will change the status to "Re-Evaluate".')) return;
+        fetch(`/modules/pending/college/${studentId}/reevaluate`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Re-Evaluation status set successfully!');
+                location.reload();
+            } else {
+                alert('Failed to update status.');
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('An error occurred while updating the status.');
         });
     }
 });

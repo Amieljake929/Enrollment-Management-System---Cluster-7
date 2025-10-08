@@ -9,6 +9,7 @@
     <link rel="icon" href="{{ asset('images/logo300.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    
 
 
     <style>
@@ -348,6 +349,34 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
                 </li>
             </ul>
         </li>
+
+        <!-- Re-Evaluation Dropdown -->
+<li class="nav-item mb-2">
+    <a class="nav-link d-flex align-items-center sidebar-dropdown-toggle" href="#reevaluation-submenu" data-bs-toggle="collapse" role="button" aria-expanded="false">
+        <i class="bi bi-arrow-repeat me-2"></i>
+        <span class="flex-grow-1">Re-Evaluation</span>
+        <i class="bi bi-chevron-down toggle-icon fs-small"></i>
+    </a>
+    <ul class="nav collapse ms-3 flex-column" id="reevaluation-submenu">
+        <li class="mb-1">
+            <a href="{{ route('modules.reevaluation.college') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                <i class="bi bi-building me-2"></i> College
+            </a>
+        </li>
+        <li class="mb-1">
+            <a href="{{ route('modules.reevaluation.shs') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                <i class="bi bi-mortarboard me-2"></i> SHS
+            </a>
+        </li>
+    </ul>
+</li>
+
+<!-- Concerns -->
+<li class="nav-item mb-2">
+    <a href="{{ route('modules.concerns') }}" class="nav-link" data-load>
+        <i class="bi bi-exclamation-circle me-2"></i> Concerns
+    </a>
+</li>
 
     
     </ul>

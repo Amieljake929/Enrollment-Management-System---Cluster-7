@@ -412,5 +412,24 @@ public function cancelShs(Request $request, $id)
 
     return response()->json(['success' => true, 'message' => 'SHS admission cancelled.']);
 }
+public function reevaluate(Request $request, $id)
+{
+    $student = CollegeStudent::findOrFail($id);
+    CollegeStatus::updateOrCreate(
+        ['student_id' => $student->student_id],
+        ['info_status' => 'Re-Evaluate']
+    );
+    return response()->json(['success' => true, 'message' => 'Student status updated to Re-Evaluate.']);
+}
 
+// Re-Evaluate SHS Admission
+public function reevaluateShs(Request $request, $id)
+{
+    $student = ShsStudent::findOrFail($id);
+    ShsStatus::updateOrCreate(
+        ['student_id' => $student->student_id],
+        ['info_status' => 'Re-Evaluate']
+    );
+    return response()->json(['success' => true, 'message' => 'SHS admission status updated to Re-Evaluate.']);
+}
 }
