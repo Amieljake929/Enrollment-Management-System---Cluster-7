@@ -111,7 +111,7 @@ public function verifyMfa(Request $request)
     Auth::loginUsingId($userId);
 
     // Enforce single session: delete other sessions for this user
-    DB::table('sessions')->where('user_id', $userId)->where('id', '!=', session()->getId())->delete();
+    $deletedSessions = DB::table('sessions')->where('user_id', $userId)->where('id', '!=', session()->getId())->delete();
 
     // Mark OTP as used
     $otp->update(['used' => true]);
@@ -123,13 +123,19 @@ public function verifyMfa(Request $request)
     // 🚀 REDIRECT BASED ON ROLE
     $user = Auth::user();
 
+    $redirect = redirect('/dashboard'); // default
+
     if ($user->role === 'Administrator (OIC)') {
-        return redirect()->intended('/dashboard');
+        $redirect = redirect()->intended('/dashboard');
     } elseif ($user->role === 'Staff OIC') {
-        return redirect()->intended('/dashboard-staff');
+        $redirect = redirect()->intended('/dashboard-staff');
     }
 
-    // Fallback
-    return redirect('/dashboard');
+    // If other sessions were deleted, show message
+    if ($deletedSessions > 0) {
+        $redirect = $redirect->with('message', 'You have logged in from another device. Previous sessions have been invalidated.');
+    }
+
+    return $redirect;
 }
 }
