@@ -332,44 +332,24 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
         <li class="nav-item mb-2">
             <a class="nav-link d-flex align-items-center sidebar-dropdown-toggle" href="#uploaded-docs-submenu" data-bs-toggle="collapse" role="button" aria-expanded="false">
                 <i class="bi bi-file-earmark-arrow-up me-2"></i>
-                <span class="flex-grow-1">Uploaded Documents</span>
+                <span class="flex-grow-1">Cancelled Admissions</span>
                 <i class="bi bi-chevron-down toggle-icon fs-small"></i>
             </a>
             <ul class="nav collapse ms-3 flex-column" id="uploaded-docs-submenu">
                 <li class="mb-1">
-                    <a href="{{ route('modules.documents.college') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                    <a href="{{ route('modules.cancelled.college') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
                         <i class="bi bi-building me-2"></i> College
                     </a>
                 </li>
                 <li class="mb-1">
-                    <a href="{{ route('modules.documents.shs') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                    <a href="{{ route('modules.cancelled.shs') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
                         <i class="bi bi-mortarboard me-2"></i> SHS
                     </a>
                 </li>
             </ul>
         </li>
 
-        <!-- Parents Notification Dropdown -->
-        <li class="nav-item mb-2">
-            <a class="nav-link d-flex align-items-center sidebar-dropdown-toggle" href="#parents-notification-submenu" data-bs-toggle="collapse" role="button" aria-expanded="false">
-                <i class="bi bi-envelope-paper me-2"></i>
-                <span class="flex-grow-1">Parents Notification</span>
-                <i class="bi bi-chevron-down toggle-icon fs-small"></i>
-            </a>
-            <ul class="nav collapse ms-3 flex-column" id="parents-notification-submenu">
-                <li class="mb-1">
-                    <a href="{{ route('modules.parents.college') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
-                        <i class="bi bi-building me-2"></i> College
-                    </a>
-                </li>
-                <li class="mb-1">
-                    <a href="{{ route('modules.parents.shs') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
-                        <i class="bi bi-mortarboard me-2"></i> SHS
-                    </a>
-                </li>
-            </ul>
-        </li>
-
+    
     </ul>
 
     <div class="p-3">
@@ -508,6 +488,26 @@ document.addEventListener('DOMContentLoaded', function () {
     setInterval(updateTime, 1000);
     updateTime();
 
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebarOverlay = document.querySelector('.sidebar-overlay');
+    const body = document.body;
+
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', function () {
+            body.classList.toggle('sidebar-toggled');
+        });
+    }
+
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', function () {
+            body.classList.remove('sidebar-toggled');
+        });
+    }
 });
 </script>
 </body>

@@ -1,64 +1,59 @@
-<!-- resources/views/modules/pendingCollege.blade.php -->
+<!-- resources/views/modules/cancelledCollege.blade.php -->
 @extends('layouts.app')
 
 @section('content')
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Pending Admissions</h2>
-        <a href="{{ route('modules.pending.college.download.pdf', request()->query()) }}" 
-   class="btn btn-secondary" style="background-color: #5044e4">
-    <i class="bi bi-download"></i> Download Admissions (PDF)
-</a>
+        <h2>Cancelled Admissions</h2>
+        {{-- Optional: Add PDF download later if needed --}}
     </div>
 
     <!-- Filter & Search Form -->
     <div class="card mb-4 shadow-sm">
         <div class="card-body p-4">
-            <form method="GET" action="{{ route('modules.pending.college') }}" class="row g-3">
-    <div class="col-md-3">
-        <label for="branch" class="form-label">Filter by Branch</label>
-        <select name="branch" id="branch" class="form-select">
-            <option value="">All Branches</option>
-            <option value="1" {{ request('branch') == '1' ? 'selected' : '' }}>Main Branch</option>
-            <option value="2" {{ request('branch') == '2' ? 'selected' : '' }}>Bulacan Branch</option>
-        </select>
-    </div>
+            <form method="GET" action="{{ route('modules.cancelled.college') }}" class="row g-3">
+                <div class="col-md-3">
+                    <label for="branch" class="form-label">Filter by Branch</label>
+                    <select name="branch" id="branch" class="form-select">
+                        <option value="">All Branches</option>
+                        <option value="1" {{ request('branch') == '1' ? 'selected' : '' }}>Main Branch</option>
+                        <option value="2" {{ request('branch') == '2' ? 'selected' : '' }}>Bulacan Branch</option>
+                    </select>
+                </div>
 
-    <div class="col-md-3">
-        <label for="year_level" class="form-label">Filter by Year Level</label>
-        <select name="year_level" id="year_level" class="form-select">
-            <option value="">All Levels</option>
-            <option value="1" {{ request('year_level') == '1' ? 'selected' : '' }}>1st Year</option>
-            <option value="2" {{ request('year_level') == '2' ? 'selected' : '' }}>2nd Year</option>
-            <option value="3" {{ request('year_level') == '3' ? 'selected' : '' }}>3rd Year</option>
-            <option value="4" {{ request('year_level') == '4' ? 'selected' : '' }}>4th Year</option>
-        </select>
-    </div>
+                <div class="col-md-3">
+                    <label for="year_level" class="form-label">Filter by Year Level</label>
+                    <select name="year_level" id="year_level" class="form-select">
+                        <option value="">All Levels</option>
+                        <option value="1" {{ request('year_level') == '1' ? 'selected' : '' }}>1st Year</option>
+                        <option value="2" {{ request('year_level') == '2' ? 'selected' : '' }}>2nd Year</option>
+                        <option value="3" {{ request('year_level') == '3' ? 'selected' : '' }}>3rd Year</option>
+                        <option value="4" {{ request('year_level') == '4' ? 'selected' : '' }}>4th Year</option>
+                    </select>
+                </div>
 
-    {{-- NEW: Student Type --}}
-    <div class="col-md-3">
-        <label for="student_type" class="form-label">Filter by Student Type</label>
-        <select name="student_type" id="student_type" class="form-select">
-            <option value="">All Types</option>
-            @foreach($studentTypes as $type)
-                <option value="{{ $type->type_id }}" {{ request('student_type') == $type->type_id ? 'selected' : '' }}>
-                    {{ $type->type_name }}
-                </option>
-            @endforeach
-        </select>
-    </div>
+                <div class="col-md-3">
+                    <label for="student_type" class="form-label">Filter by Student Type</label>
+                    <select name="student_type" id="student_type" class="form-select">
+                        <option value="">All Types</option>
+                        @foreach($studentTypes as $type)
+                            <option value="{{ $type->type_id }}" {{ request('student_type') == $type->type_id ? 'selected' : '' }}>
+                                {{ $type->type_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
-    <div class="col-md-3">
-        <label for="search" class="form-label">Search by Keywords or Course</label>
-        <input type="text" name="search" id="search" class="form-control"
-               placeholder="Enter student name or course..." value="{{ request('search') }}">
-    </div>
+                <div class="col-md-3">
+                    <label for="search" class="form-label">Search by Keywords or Course</label>
+                    <input type="text" name="search" id="search" class="form-control"
+                           placeholder="Enter student name or course..." value="{{ request('search') }}">
+                </div>
 
-    <div class="col-12 d-flex justify-content-end">
-        <button type="submit" class="btn btn-primary">Filter</button>
-    </div>
-</form>
-
+                <div class="col-12 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -82,7 +77,6 @@
                         @forelse($students as $student)
                             <tr>
                                 <td>{{ $student->type->type_name ?? 'N/A' }}</td>
-
                                 <td>
                                     {{ $student->last_name }}, {{ $student->first_name }}
                                     @if($student->middle_name)
@@ -92,7 +86,7 @@
                                         {{ $student->extension_name }}
                                     @endif
                                     <div class="text-muted small mt-1">
-                                          <strong>Enrollee Number:</strong> {{ $student->enrolleeNumber->enrollee_no ?? 'N/A' }}
+                                        <strong>Enrollee Number:</strong> {{ $student->enrolleeNumber->enrollee_no ?? 'N/A' }}
                                     </div>
                                 </td>
                                 <td>{{ $student->preference->course->course_name ?? 'N/A' }}</td>
@@ -101,42 +95,35 @@
                                     {{ $student->preference->branch->branch_name ?? 'N/A' }}
                                 </td>
                                 <td>
-    @if($student->status)
-        <span class="badge bg-warning text-dark">{{ $student->status->info_status }}</span>
-    @else
-        <span class="text-muted">N/A</span>
-    @endif
-</td>
-
-                                
+                                    @if($student->status)
+                                        <span class="badge bg-danger text-white">{{ $student->status->info_status }}</span>
+                                    @else
+                                        <span class="text-muted">N/A</span>
+                                    @endif
+                                </td>
                                 <td>{{ $student->created_at->format('M d, Y \a\t h:i A') }}</td>
                                 <td class="text-center">
+                                    <!-- View Button -->
                                     <button type="button" class="btn btn-sm btn-primary me-2 view-student" 
-    data-student-id="{{ $student->student_id }}" 
-    title="View">
-    View
-</button>
-                                    <!-- Validate Button -->
-<button type="button" class="btn btn-sm btn-success validate-btn me-2"
-    data-student-id="{{ $student->student_id }}"
-    title="Validate">
-    Validate
-</button>
+                                        data-student-id="{{ $student->student_id }}" 
+                                        title="View">
+                                        View
+                                    </button>
 
-<!-- Cancel Button -->
-<button type="button" class="btn btn-sm btn-danger cancel-btn"
-    data-student-id="{{ $student->student_id }}"
-    data-student-name="{{ $student->last_name }}, {{ $student->first_name }}"
-    title="Cancel">
-    Cancel
-</button>
+                                    <!-- Cancel Button (UI only, no JS yet) -->
+                                    <button type="button" class="btn btn-sm btn-danger cancel-btn"
+                                        data-student-id="{{ $student->student_id }}"
+                                        data-student-name="{{ $student->last_name }}, {{ $student->first_name }}"
+                                        title="Cancel" disabled>
+                                        Cancel
+                                    </button>
                                 </td>
                             </tr>
                         @empty
                             <tr>
                                 <td colspan="7" class="text-center text-muted py-4">
                                     <i class="bi bi-clipboard-x fs-3"></i>
-                                    <p class="mt-2 mb-0">No pending admissions found.</p>
+                                    <p class="mt-2 mb-0">No cancelled admissions found.</p>
                                 </td>
                             </tr>
                         @endforelse
@@ -162,7 +149,6 @@
             </div>
             <div class="modal-body">
                 <div id="student-details">
-                    <!-- Student details will be loaded here -->
                     <div class="text-center">
                         <div class="spinner-border text-primary" role="status">
                             <span class="visually-hidden">Loading...</span>
@@ -177,7 +163,6 @@
     </div>
 </div>
 
-
 <script>
 document.addEventListener('click', function(e) {
     const link = e.target.closest('.view-student');
@@ -188,7 +173,6 @@ document.addEventListener('click', function(e) {
         const modal = new bootstrap.Modal(modalElement);
         const modalBody = document.getElementById('student-details');
 
-        // Show loading
         modalBody.innerHTML = `
             <div class="text-center">
                 <div class="spinner-border text-primary" role="status">
@@ -199,26 +183,16 @@ document.addEventListener('click', function(e) {
         `;
         modal.show();
 
-        // Fetch student data
-        fetch(`/modules/pending/college/${studentId}`)
-            .then(response => {
-                if (!response.ok) {
-                    console.log('Fetch failed with status:', response.status);
-                    console.log('Response text:', response.statusText);
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                }
-                return response.json();
-            })
+        fetch(`/modules/cancelled/college/${studentId}`)
+            .then(response => response.json())
             .then(data => {
-                console.log('Student data received:', data);
                 modalBody.innerHTML = generateStudentDetailsHTML(data);
             })
             .catch(error => {
-                modalBody.innerHTML = '<div class="alert alert-danger">Error loading student details: ' + error.message + '</div>';
+                modalBody.innerHTML = '<div class="alert alert-danger">Error loading student details.</div>';
                 console.error('Fetch error:', error);
             });
     }
-
 });
 
 function generateStudentDetailsHTML(student) {
@@ -292,8 +266,7 @@ ${student.parent_info && Array.isArray(student.parent_info) && student.parent_in
                 ${student.documents && student.documents.length > 0 ? `
     <ul>
         ${student.documents.map(doc => {
-            const filePath = doc.file_path; // e.g., "enrollment_documents/xxx.jpg"
-            const url = `/storage/${filePath}`; // ✅ Correct public URL
+            const url = `/storage/${doc.file_path}`;
             return `<li>${doc.document ? doc.document.document_name : 'Unknown'}: <a href="${url}" target="_blank">View</a></li>`;
         }).join('')}
     </ul>
@@ -302,72 +275,6 @@ ${student.parent_info && Array.isArray(student.parent_info) && student.parent_in
         </div>
     `;
 }
-
-</script>
-
-<script>
-// Validate Button
-document.addEventListener('click', function(e) {
-    const validateBtn = e.target.closest('.validate-btn');
-    if (validateBtn) {
-        e.preventDefault();
-        const studentId = validateBtn.getAttribute('data-student-id');
-        if (!confirm('Validate this admission? This will change the status to "Validated".')) return;
-
-        fetch(`/modules/pending/college/${studentId}/validate`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Validated successfully!');
-                location.reload();
-            } else {
-                alert('Validation failed.');
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            alert('An error occurred.');
-        });
-    }
-});
-
-// Cancel Button
-document.addEventListener('click', function(e) {
-    const cancelBtn = e.target.closest('.cancel-btn');
-    if (cancelBtn) {
-        e.preventDefault();
-        const studentId = cancelBtn.getAttribute('data-student-id');
-        const studentName = cancelBtn.getAttribute('data-student-name');
-        if (!confirm(`Cancel admission for ${studentName}? This will change the status to "Cancelled".`)) return;
-
-        fetch(`/modules/pending/college/${studentId}/cancel`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Cancelled successfully!');
-                location.reload();
-            } else {
-                alert('Cancellation failed.');
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            alert('An error occurred.');
-        });
-    }
-});
 </script>
 
 @endsection

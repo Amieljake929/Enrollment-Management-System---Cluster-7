@@ -363,6 +363,15 @@ if ($request->hasFile('documents')) {
                 'student_id' => $student->student_id,
             ]);
 
+            // 8. Create initial College Student Number record (N/A until Paid)
+DB::table('college_student_number')->insert([
+    'student_id' => $student->student_id,
+    'student_id_number' => null, // or 'N/A'
+    'created_at' => now(),
+    'updated_at' => now(),
+]);
+
+
             // ✅ Commit transaction
             DB::commit();
 

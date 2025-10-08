@@ -22,10 +22,10 @@ class CollegeStudentController extends Controller
             ], 403);
         }
 
-        // ✅ Kung may student_id sa query, i-filter agad
+        // ✅ Optional filter
         $studentId = $request->query('student_id');
 
-        // ✅ BUILD QUERY
+        // ✅ BUILD QUERY with joins
         $query = DB::table('college_students')
             ->leftJoin('college_student_types', 'college_students.type_id', '=', 'college_student_types.type_id')
             ->leftJoin('college_regions', 'college_students.region_id', '=', 'college_regions.region_id')
@@ -37,6 +37,7 @@ class CollegeStudentController extends Controller
             ->leftJoin('college_year_levels', 'college_enrollment_preferences.level_id', '=', 'college_year_levels.level_id')
             ->leftJoin('college_uploaded_documents', 'college_students.student_id', '=', 'college_uploaded_documents.student_id')
             ->leftJoin('college_documents', 'college_uploaded_documents.doc_id', '=', 'college_documents.doc_id')
+            ->leftJoin('college_status', 'college_students.student_id', '=', 'college_status.student_id') // 🆕 JOIN the status table
             ->select(
                 'college_students.*',
                 'college_student_types.type_name as student_type',
@@ -54,10 +55,14 @@ class CollegeStudentController extends Controller
                 'college_uploaded_documents.file_path',
                 'college_uploaded_documents.file_type',
                 'college_uploaded_documents.uploaded_at',
-                'college_documents.document_name'
-            );
+                'college_documents.document_name',
 
-        // ✅ I-APPLY FILTER KUNG MAY student_id
+                // Status
+                'college_status.info_status'
+            )
+            ->where('college_status.info_status', 'Validated'); // 🧠 Only show validated students
+
+        // ✅ Optional: Filter specific student
         if ($studentId) {
             $query->where('college_students.student_id', $studentId);
         }
@@ -68,7 +73,7 @@ class CollegeStudentController extends Controller
         if ($rawData->isEmpty()) {
             return response()->json([
                 'success' => false,
-                'message' => $studentId ? 'Student not found' : 'No students found'
+                'message' => $studentId ? 'Student not found or not validated' : 'No validated students found'
             ], $studentId ? 404 : 200);
         }
 
@@ -88,15 +93,13 @@ class CollegeStudentController extends Controller
             ];
         }
 
-        // ✅ I-RETURN
+        // ✅ Final formatted data
         $finalData = array_values($result);
 
-        // ✅ Kung iisa lang ang hinahanap, i-return as object (not array) — optional
-        // Kung gusto mong laging array (kahit iisa), tanggalin mo tong if block na 'to
         if ($studentId && count($finalData) === 1) {
             return response()->json([
                 'success' => true,
-                'data' => $finalData[0] // isang object, hindi array
+                'data' => $finalData[0]
             ]);
         }
 

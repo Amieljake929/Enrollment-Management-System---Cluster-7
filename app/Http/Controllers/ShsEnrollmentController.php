@@ -327,6 +327,15 @@ if ($request->hasFile('documents')) {
                 'student_id' => $student->student_id,
             ]);
 
+            // 8. Create initial SHS Student Number record (will auto-generate when Paid)
+DB::table('shs_student_number')->insert([
+    'student_id' => $student->student_id,
+    'student_id_number' => null, // or 'N/A' if you want placeholder
+    'created_at' => now(),
+    'updated_at' => now(),
+]);
+
+
             DB::commit();
             $success = true;
             $message = 'SHS Enrollment submitted successfully!';

@@ -9,6 +9,8 @@ use App\Http\Controllers\CollegeQuizController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\ShsEnrollmentController; // 👈 Added: SHS Enrollment Controller
 use App\Http\Controllers\PendingAdmissionController;
+use App\Http\Controllers\WaitingController;
+use App\Http\Controllers\CancelledController;
 use App\Http\Controllers\CollegeAssessmentController;
 
 
@@ -174,19 +176,16 @@ Route::post('/pending/shs/{id}/validate', [PendingAdmissionController::class, 'v
 Route::post('/pending/shs/{id}/cancel', [PendingAdmissionController::class, 'cancelShs'])->name('modules.pending.shs.cancel');
 
     // Waiting List
-    Route::get('/waiting/college', function () {
-        if (request()->ajax()) {
-            return view('modules.waitingCollege')->render();
-        }
-        return view('modules.waitingCollege');
-    })->name('modules.waiting.college');
+   Route::get('/waiting/college', [WaitingController::class, 'index'])->name('modules.waiting.college');
+   Route::get('/waiting/shs', [WaitingController::class, 'shsIndex'])->name('modules.waiting.shs');
+    
+   // Update payment status (auto-generate student ID number when Paid)
+Route::post('/college/payment/update/{studentId}', [WaitingController::class, 'updateCollegePaymentStatus'])
+    ->name('college.payment.update');
 
-    Route::get('/waiting/shs', function () {
-        if (request()->ajax()) {
-            return view('modules.waitingShs')->render();
-        }
-        return view('modules.waitingShs');
-    })->name('modules.waiting.shs');
+Route::post('/shs/payment/update/{studentId}', [WaitingController::class, 'updateShsPaymentStatus'])
+    ->name('shs.payment.update');
+
 
     // Student Records
     Route::get('/records/college', function () {
@@ -203,20 +202,13 @@ Route::post('/pending/shs/{id}/cancel', [PendingAdmissionController::class, 'can
         return view('modules.recordsShs');
     })->name('modules.records.shs');
 
-    // Uploaded Documents
-    Route::get('/documents/college', function () {
-        if (request()->ajax()) {
-            return view('modules.documentsCollege')->render();
-        }
-        return view('modules.documentsCollege');
-    })->name('modules.documents.college');
+     // ✅ CANCELLED ADMISSIONS - COLLEGE
+    Route::get('/cancelled/college', [CancelledController::class, 'index'])->name('modules.cancelled.college');
+    Route::get('/cancelled/college/{id}', [CancelledController::class, 'show'])->name('modules.cancelled.college.show');
 
-    Route::get('/documents/shs', function () {
-        if (request()->ajax()) {
-            return view('modules.documentsShs')->render();
-        }
-        return view('modules.documentsShs');
-    })->name('modules.documents.shs');
+// ✅ CANCELLED ADMISSIONS - SHS
+Route::get('/cancelled/shs', [CancelledController::class, 'shsIndex'])->name('modules.cancelled.shs');
+Route::get('/cancelled/shs/{id}', [CancelledController::class, 'showShs'])->name('modules.cancelled.shs.show');
 
     // Parents Notification
     Route::get('/parents/college', function () {
