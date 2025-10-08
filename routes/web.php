@@ -127,6 +127,22 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/mfa', [LoginController::class, 'showMfaForm'])->name('mfa.form');
 Route::post('/mfa', [LoginController::class, 'verifyMfa'])->name('mfa.verify');
 
+// Check session for polling
+use Illuminate\Support\Facades\Session;
+
+Route::get('/check-session', function() {
+    $authenticated = Auth::check();
+
+    // Example logic to detect if session invalidated due to login on another device
+    // This requires you to implement session tracking logic to set a flag in session or cache
+    $loggedOutDueToOtherDevice = Session::get('logged_out_due_to_other_device', false);
+
+    return response()->json([
+        'authenticated' => $authenticated,
+        'logged_out_due_to_other_device' => $loggedOutDueToOtherDevice,
+    ]);
+});
+
 // OTP Verification
 Route::get('/verify-otp', [RegisteredUserController::class, 'showOtpForm'])->name('verify.otp');
 Route::post('/verify-otp', [RegisteredUserController::class, 'verifyOtp'])->name('verify.otp.post');
@@ -279,3 +295,8 @@ Route::post('/logout', function () {
     session()->regenerateToken();
     return redirect('/login')->with('status', 'You have been logged out.');
 })->name('logout');
+
+// Add GET route for /logout to gracefully handle GET requests
+Route::get('/logout', function () {
+    return redirect('/login')->with('status', 'You have been logged out.');
+});

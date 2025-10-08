@@ -424,6 +424,28 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
         </div>
         <!-- Sidebar Overlay -->
         <div class="sidebar-overlay"></div>
+
+        <!-- Session Invalid Modal -->
+        <div id="sessionInvalidModal" class="modal-overlay" style="display: none;">
+            <div class="modal-content">
+                <div class="text-center mb-6">
+                    <i class="bi bi-exclamation-triangle text-warning" style="font-size: 30px;"></i>
+                    <h5 class="modal-title d-flex align-items-center justify-content-center">
+                        Session Invalidated
+                    </h5>
+                    <div class="modal-underline"></div>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Your session has been invalidated because you logged in from another device or browser.</p>
+                    <p>Please log in again to continue.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="logoutBtn" class="btn-custom-primary">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
      <script>
@@ -495,5 +517,44 @@ document.addEventListener('DOMContentLoaded', function () {
     updateTime();
 });
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const logoutBtn = document.getElementById('logoutBtn');
+    const sessionInvalidModal = document.getElementById('sessionInvalidModal');
+
+    // Polling function to check if session is still valid
+    async function checkSession() {
+        try {
+            const response = await fetch('/check-session', {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+            const data = await response.json();
+            if (!data.authenticated) {
+                // Show modal if session invalidated
+                if (sessionInvalidModal) {
+                    sessionInvalidModal.style.display = 'flex';
+                    document.body.classList.add('modal-open');
+                }
+            }
+        } catch (error) {
+            console.error('Error checking session:', error);
+        }
+    }
+
+    // Check session every 10 seconds
+    setInterval(checkSession, 10000);
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+            // Redirect to logout route to clear session and redirect to login
+            window.location.href = "{{ route('logout') }}";
+        });
+    }
+});
+</script>
+
 </body>
 </html>

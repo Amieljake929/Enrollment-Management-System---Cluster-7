@@ -9,6 +9,13 @@
         <p class="text-gray-600">Welcome back, {{ Auth::user()->name }}! You are logged in as <strong>{{ Auth::user()->role }}</strong>.</p>
     </div>
 
+    {{-- Flash Message --}}
+    @if(session('message'))
+        <div class="mb-4 p-4 bg-blue-100 border border-blue-400 text-blue-700 rounded">
+            {{ session('message') }}
+        </div>
+    @endif
+
 </div>
 
 <!-- TERMS MODAL -->
