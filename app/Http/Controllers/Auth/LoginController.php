@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 use App\Models\User;
 use App\Models\LoginOtp;
@@ -108,6 +109,9 @@ public function verifyMfa(Request $request)
 
     // Login the user
     Auth::loginUsingId($userId);
+
+    // Enforce single session: delete other sessions for this user
+    DB::table('sessions')->where('user_id', $userId)->where('id', '!=', session()->getId())->delete();
 
     // Mark OTP as used
     $otp->update(['used' => true]);
