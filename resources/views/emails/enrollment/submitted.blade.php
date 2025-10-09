@@ -70,6 +70,20 @@ Please keep note of your temporary details:
 **Important Notice:**  
 Your enrollment form is currently **under review** for verification and validation.
 
+---
+
+Need to Change or Update Your Information?
+If you notice any incorrect details or wish to change or update your information (such as your name, address, course, contact number, email address, birthdate, guardian or emergency contact, civil status, gender, or nationality),
+please email us at bestlink092@gmail.com and follow this format:
+
+Format Example:
+Course: BSCRIM
+Change to: BSIT
+
+---
+
+Make sure all information is complete and accurate before sending your request to avoid any processing delays.
+
 **What Happens Next?**  
 Please do not worry; we will send you another email to officially confirm when your enrollment form has been validated.
 
