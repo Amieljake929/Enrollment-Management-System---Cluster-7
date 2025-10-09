@@ -11,6 +11,7 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
     <style>
@@ -575,6 +576,27 @@
 }
 .offcanvas-header .btn-close {
     filter: invert(1);
+}
+
+/* ===== Chat Form Modal Animation Styles ===== */
+#chatFormBackdrop {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+#chatFormBackdrop.show {
+    opacity: 1;
+}
+
+#chatFormModal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+#chatFormModal.show {
+    opacity: 1;
+    transform: translateY(0);
 }
         
     </style>
@@ -1249,5 +1271,386 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 </script>
 
+
+<!-- Floating Chat Widget (Left Side - Auto Hide/Show Every 5s with Shake) -->
+<!-- Floating Chat Widget (Non-functional UI Only) - Left Side with Animation, Shake & Auto-Hide/Show -->
+<div style="
+    position: fixed;
+    bottom: 20px;
+    left: 40px; /* ← Adjusted: was 20px, now 40px for more space from left edge */
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+">
+    <!-- Chat Bubble -->
+    <div id="chatBubble" style="
+        background-color: #5044e4;
+        color: white;
+        padding: 14px 20px;
+        border-radius: 24px 24px 6px 24px;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        font-size: 1rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        max-width: 240px;
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.4s ease, transform 0.4s ease;
+        cursor: pointer;
+    " onmouseover="this.style.transform = 'translateY(-5px)';" onmouseout="this.style.transform = 'translateY(0)';">
+        <i class="fas fa-comment-dots"></i>
+        <span>Concern Box</span>
+    </div>
+
+    <!-- Chat Icon Button -->
+    <div id="floatingChatBtn" style="
+        width: 64px;
+        height: 64px;
+        background: #5044e4;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        box-shadow: 0 8px 24px rgba(32, 59, 107, 0.3);
+        margin-top: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        animation: pulse 2s infinite;
+    ">
+        <i class="fas fa-message"></i>
+    </div>
+</div>
+
+<style>
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+}
+#chatBubble.shake {
+    animation: shake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(80, 68, 228, 0.4); }
+    70% { box-shadow: 0 0 0 12px rgba(80, 68, 228, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(80, 68, 228, 0); }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const bubble = document.getElementById('chatBubble');
+
+    // Function to show bubble with shake
+    function showBubbleWithShake() {
+        bubble.style.opacity = '0';
+        bubble.style.transform = 'translateY(30px)';
+        setTimeout(() => {
+            bubble.classList.remove('shake');
+            bubble.style.opacity = '1';
+            bubble.style.transform = 'translateY(0)';
+            bubble.classList.add('shake');
+        }, 50);
+    }
+
+    // Initial fade-in after page load
+    setTimeout(() => {
+        bubble.style.opacity = '1';
+        bubble.style.transform = 'translateY(0)';
+        bubble.classList.add('shake');
+    }, 1000);
+
+    // Start auto-hide/show cycle every 5 seconds
+    setInterval(() => {
+        // Hide bubble
+        bubble.style.opacity = '0';
+        bubble.style.transform = 'translateY(30px)';
+        setTimeout(showBubbleWithShake, 1000); // Show again after 1 sec with shake
+    }, 5000); // Every 5 seconds
+
+    // Optional: Add hover effects to button
+    const btn = document.getElementById('floatingChatBtn');
+    btn.addEventListener('mouseenter', () => {
+        btn.style.transform = 'scale(1.1)';
+        btn.style.boxShadow = '0 10px 30px rgba(32, 59, 107, 0.5)';
+    });
+    btn.addEventListener('mouseleave', () => {
+        btn.style.transform = 'scale(1)';
+        btn.style.boxShadow = '0 8px 24px rgba(32, 59, 107, 0.3)';
+    });
+});
+</script>
+
+<!-- Chat Form Backdrop -->
+<div id="chatFormBackdrop" style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1040;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 20px;
+    box-sizing: border-box;
+    display: none; /* 👈 ADD THIS */
+"></div>
+
+<!-- Chat Form Modal (Updated) -->
+<div id="chatFormModal" style="
+    position: fixed;
+    top: 350px;
+    left: 40px;
+    width: 320px;
+    height: 550px; /* Fixed height */
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    z-index: 1051;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+">
+    <!-- Header -->
+    <div style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 20px;
+        background: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        position: relative;
+    ">
+        <div style="display: flex; gap: 12px;">
+            <button id="chatBackBtn" style="
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background: #e9ecef;
+                border: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                font-size: 0.9rem;
+                color: #495057;
+            ">&larr;</button>
+            <div style="display: flex; gap: 4px;">
+                <div style="width: 8px; height: 8px; background: #ffc107; border-radius: 50%;"></div>
+                <div style="width: 8px; height: 8px; background: #28a745; border-radius: 50%;"></div>
+                <div style="width: 8px; height: 8px; background: #dc3545; border-radius: 50%;"></div>
+            </div>
+        </div>
+        <div style="display: flex; gap: 12px;">
+            <button id="chatMinimizeBtn" style="
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background: #e9ecef;
+                border: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                font-size: 0.9rem;
+                color: #495057;
+            ">&minus;</button>
+        </div>
+    </div>
+
+    <!-- Logo -->
+    <div style="text-align: center; padding: 12px 0; border-bottom: 1px solid #eee;">
+        <img src="images/bcp.png" alt="Bestlink College Logo" style="height: 40px; object-fit: contain;">
+    </div>
+
+    <!-- Scrollable Body -->
+    <div style="
+        padding: 20px;
+        height: calc(550px - 140px); /* Header (60px) + Logo (50px approx) + Padding */
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #adb5bd #f8f9fa;
+    ">
+        <p style="font-size: 0.9rem; line-height: 1.6; color: #495057; margin-bottom: 20px;">
+            Welcome to Bestlink College! We're happy to assist you<br>
+        </p>
+        <!-- Form -->
+        <!-- Form -->
+<form id="concernForm" method="POST" action="{{ route('concerns.store') }}" style="display: flex; flex-direction: column; gap: 16px;">
+    @csrf
+
+    <!-- Student Type -->
+    <div>
+        <label class="form-label fw-bold" style="font-size: 0.85rem;">Student Type *</label>
+        <select name="student_type" class="form-select form-select-sm" required style="
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 0.85rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: white;
+        " onfocus="this.style.borderColor='#5044e4'; this.style.boxShadow='0 0 0 3px rgba(80, 68, 228, 0.1)';" onblur="this.style.borderColor='#ced4da'; this.style.boxShadow='none';">
+            <option value="">Select...</option>
+            <option value="New Regular">New Regular</option>
+            <option value="Transferee">Transferee</option>
+            <option value="Returnee">Returnee</option>
+        </select>
+    </div>
+
+    <!-- First Name -->
+    <div>
+        <label class="form-label fw-bold" style="font-size: 0.85rem;">First Name *</label>
+        <input type="text" name="first_name" class="form-control form-control-sm" placeholder="Enter first name" required style="
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 0.85rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: white;
+        " onfocus="this.style.borderColor='#5044e4'; this.style.boxShadow='0 0 0 3px rgba(80, 68, 228, 0.1)';" onblur="this.style.borderColor='#ced4da'; this.style.boxShadow='none';">
+    </div>
+
+    <!-- Middle Name -->
+    <div>
+        <label class="form-label fw-bold" style="font-size: 0.85rem;">Middle Name</label>
+        <input type="text" name="middle_name" class="form-control form-control-sm" placeholder="Enter middle name" style="
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 0.85rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: white;
+        " onfocus="this.style.borderColor='#5044e4'; this.style.boxShadow='0 0 0 3px rgba(80, 68, 228, 0.1)';" onblur="this.style.borderColor='#ced4da'; this.style.boxShadow='none';">
+    </div>
+
+    <!-- Last Name -->
+    <div>
+        <label class="form-label fw-bold" style="font-size: 0.85rem;">Last Name *</label>
+        <input type="text" name="last_name" class="form-control form-control-sm" placeholder="Enter last name" required style="
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 0.85rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: white;
+        " onfocus="this.style.borderColor='#5044e4'; this.style.boxShadow='0 0 0 3px rgba(80, 68, 228, 0.1)';" onblur="this.style.borderColor='#ced4da'; this.style.boxShadow='none';">
+    </div>
+
+    <!-- Email -->
+    <div>
+        <label class="form-label fw-bold" style="font-size: 0.85rem;">Email *</label>
+        <input type="email" name="email" class="form-control form-control-sm" placeholder="Enter your email" required style="
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 0.85rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: white;
+        " onfocus="this.style.borderColor='#5044e4'; this.style.boxShadow='0 0 0 3px rgba(80, 68, 228, 0.1)';" onblur="this.style.borderColor='#ced4da'; this.style.boxShadow='none';">
+    </div>
+
+    <!-- Concern -->
+    <div>
+        <label class="form-label fw-bold" style="font-size: 0.85rem;">Concern *</label>
+        <textarea name="concern" class="form-control form-control-sm" rows="4" placeholder="Please describe your concern in detail..." required style="
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 0.85rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: white;
+            resize: vertical;
+        " onfocus="this.style.borderColor='#5044e4'; this.style.boxShadow='0 0 0 3px rgba(80, 68, 228, 0.1)';" onblur="this.style.borderColor='#ced4da'; this.style.boxShadow='none';"></textarea>
+    </div>
+
+    <!-- Submit Button -->
+    <div style="margin-top: 20px;">
+        <button type="submit" class="btn btn-primary-custom btn-sm w-100" style="
+            background-color: #5044e4;
+            border: none;
+            padding: 10px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(80, 68, 228, 0.2);
+        ">Send Message</button>
+    </div>
+</form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const chatBtn = document.getElementById('floatingChatBtn');
+    const backdrop = document.getElementById('chatFormBackdrop');
+    const modal = document.getElementById('chatFormModal');
+    const form = document.getElementById('concernForm');
+    const backBtn = document.getElementById('chatBackBtn');
+    const minimizeBtn = document.getElementById('chatMinimizeBtn');
+
+    function openChatForm(e) {
+        e.preventDefault();
+        backdrop.style.display = 'flex'; // 👈 Show backdrop
+        modal.style.opacity = '0';
+        modal.style.transform = 'translateY(20px)';
+        modal.style.display = 'block'; // Ensure visible
+        setTimeout(() => {
+            modal.style.opacity = '1';
+            modal.style.transform = 'translateY(0)';
+        }, 10);
+    }
+
+    function closeChatForm() {
+        modal.style.opacity = '0';
+        modal.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            backdrop.style.display = 'none'; // 👈 Hide backdrop
+            modal.style.display = 'none';
+        }, 300);
+    }
+
+    chatBtn.addEventListener('click', openChatForm);
+    backdrop.addEventListener('click', function(e) {
+        if (e.target === backdrop) closeChatForm();
+    });
+    backBtn.addEventListener('click', closeChatForm);
+    minimizeBtn.addEventListener('click', closeChatForm);
+
+    // AJAX form submission (unchanged)
+    form?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                form.reset();
+                closeChatForm();
+            } else {
+                let errors = Object.values(data.errors).flat().join('\n');
+                alert('Error:\n' + errors);
+            }
+        })
+        .catch(error => {
+            alert('An unexpected error occurred. Please try again.');
+            console.error('Error:', error);
+        });
+    });
+});
+</script>
 </body>
 </html>

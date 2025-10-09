@@ -13,6 +13,8 @@ use App\Http\Controllers\WaitingController;
 use App\Http\Controllers\ReEvaluationController;
 use App\Http\Controllers\CancelledController;
 use App\Http\Controllers\CollegeAssessmentController;
+use App\Http\Controllers\ConcernController;
+
 
 
 
@@ -30,6 +32,9 @@ Route::get('/', function () {
 Route::get('/two', function () {
     return view('website.two');
 })->name('two');
+
+// CONCERN SUBMISSION
+Route::post('/concerns', [ConcernController::class, 'store'])->name('concerns.store');
 
 // ===================================================
 // === 📝 Assessment & Enrollment Modals ===
@@ -241,12 +246,9 @@ Route::prefix('modules')->middleware(['auth'])->group(function () {
     ->name('modules.reevaluation.shs');
 
      // Concerns Route
-     Route::get('/concerns', function () {
-      if (request()->ajax()) {
-          return view('modules.Concerns')->render();
-      }
-      return view('modules.Concerns');
-      })->name('modules.concerns');
+     // Concerns Route
+     Route::get('/concerns', [ConcernController::class, 'index'])->name('modules.concerns');
+     Route::get('/concerns/{id}', [ConcernController::class, 'show'])->name('modules.concerns.show'); // 👈 NEW
 
 
     // Parents Notification
