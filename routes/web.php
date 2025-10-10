@@ -153,9 +153,8 @@ Route::get('/verify-otp', [RegisteredUserController::class, 'showOtpForm'])->nam
 Route::post('/verify-otp', [RegisteredUserController::class, 'verifyOtp'])->name('verify.otp.post');
 
 // Dashboard & Documents
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+use App\Http\Controllers\DashboardController;
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 // Staff OIC Dashboard
 Route::get('/dashboard-staff', function () {
