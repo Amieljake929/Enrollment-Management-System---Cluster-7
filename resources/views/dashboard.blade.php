@@ -16,6 +16,198 @@
         </div>
     @endif
 
+    {{-- Dashboard Statistics --}}
+    <div class="mb-5">
+        <div class="card bg-primary text-white mb-4 shadow">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <h3 class="card-title h5 mb-1">Total Enrolled Students</h3>
+                    <p class="display-4 mb-0">{{ $totalStudents ?? 0 }}</p>
+                </div>
+                <i class="bi bi-people-fill fs-1 opacity-75"></i>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card bg-warning text-white shadow h-100">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title">Pending Admissions</h5>
+                            <p class="display-6 mb-0">{{ $pendingPercentage ?? 0 }}%</p>
+                        </div>
+                        <i class="bi bi-clock-history fs-2 opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card bg-success text-white shadow h-100">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title">Waiting List</h5>
+                            <p class="display-6 mb-0">{{ $validatedPercentage ?? 0 }}%</p>
+                        </div>
+                        <i class="bi bi-hourglass-split fs-2 opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card bg-danger text-white shadow h-100">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title">Cancelled Admissions</h5>
+                            <p class="display-6 mb-0">{{ $cancelledPercentage ?? 0 }}%</p>
+                        </div>
+                        <i class="bi bi-x-circle fs-2 opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card bg-warning text-white shadow h-100" style="background: linear-gradient(135deg, #fd7e14, #e8590c) !important;">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title">Re-evaluation</h5>
+                            <p class="display-6 mb-0">{{ $reEvaluatePercentage ?? 0 }}%</p>
+                        </div>
+                        <i class="bi bi-arrow-repeat fs-2 opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Enrollment Status Horizontal Bar Chart --}}
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <h2 class="card-title text-center mb-4">Enrollment Status Distribution</h2>
+            <div class="d-flex justify-content-center">
+                <canvas id="statusPieChart" width="400" height="200" class="img-fluid"></canvas>
+            </div>
+        </div>
+    </div>
+
+    {{-- Campus Distribution Horizontal Bar Chart --}}
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <h2 class="card-title text-center mb-4">Campus Distribution</h2>
+            <div class="d-flex justify-content-center">
+                <canvas id="campusPieChart" width="400" height="200" class="img-fluid"></canvas>
+            </div>
+        </div>
+    </div>
+
+    {{-- Student Type Horizontal Bar Chart --}}
+    <div class="card shadow">
+        <div class="card-body">
+            <h2 class="card-title text-center mb-4">Student Type Distribution</h2>
+            <div class="d-flex justify-content-center">
+                <canvas id="typePieChart" width="400" height="200" class="img-fluid"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Enrollment Status Chart
+        const statusCtx = document.getElementById('statusPieChart').getContext('2d');
+        new Chart(statusCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Pending Admissions', 'Waiting List', 'Cancelled Admissions', 'Re-evaluation'],
+                datasets: [{
+                    label: 'Percentage (%)',
+                    data: [{{ $pendingPercentage ?? 0 }}, {{ $validatedPercentage ?? 0 }}, {{ $cancelledPercentage ?? 0 }}, {{ $reEvaluatePercentage ?? 0 }}],
+                    backgroundColor: [
+                        'rgba(245, 158, 11, 0.8)',
+                        'rgba(34, 197, 94, 0.8)',
+                        'rgba(239, 68, 68, 0.8)',
+                        'rgba(251, 146, 60, 0.8)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                plugins: {
+                    legend: { position: 'top' },
+                    title: { display: true, text: 'Status (%)' }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // Campus Chart
+        const campusCtx = document.getElementById('campusPieChart').getContext('2d');
+        new Chart(campusCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Main Campus', 'Bulacan'],
+                datasets: [{
+                    label: 'Percentage (%)',
+                    data: [{{ $mainCampusPercentage ?? 0 }}, {{ $bulacanPercentage ?? 0 }}],
+                    backgroundColor: [
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(168, 85, 247, 0.8)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                plugins: {
+                    legend: { position: 'top' },
+                    title: { display: true, text: 'Campus (%)' }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // Student Type Chart
+        const typeCtx = document.getElementById('typePieChart').getContext('2d');
+        new Chart(typeCtx, {
+            type: 'bar',
+            data: {
+                labels: ['New Regular', 'Transferee', 'Returnee'],
+                datasets: [{
+                    label: 'Percentage (%)',
+                    data: [{{ $newRegularPercentage ?? 0 }}, {{ $transfereePercentage ?? 0 }}, {{ $returneePercentage ?? 0 }}],
+                    backgroundColor: [
+                        'rgba(16, 185, 129, 0.8)',
+                        'rgba(245, 158, 11, 0.8)',
+                        'rgba(147, 51, 234, 0.8)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                plugins: {
+                    legend: { position: 'top' },
+                    title: { display: true, text: 'Type (%)' }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+    </script>
+
 </div>
 
 <!-- TERMS MODAL -->

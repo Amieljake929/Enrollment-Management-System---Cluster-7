@@ -14,6 +14,12 @@ use App\Http\Controllers\ReEvaluationController;
 use App\Http\Controllers\CancelledController;
 use App\Http\Controllers\CollegeAssessmentController;
 use App\Http\Controllers\ConcernController;
+use App\Http\Controllers\StaffPendingAdmissionController;
+use App\Http\Controllers\StaffWaitingController;
+use App\Http\Controllers\StaffCancelledController;
+use App\Http\Controllers\StaffReEvaluationController;
+use App\Http\Controllers\StaffConcernController;
+use App\Http\Controllers\ArchiveController;
 
 
 
@@ -153,14 +159,12 @@ Route::get('/verify-otp', [RegisteredUserController::class, 'showOtpForm'])->nam
 Route::post('/verify-otp', [RegisteredUserController::class, 'verifyOtp'])->name('verify.otp.post');
 
 // Dashboard & Documents
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\StaffDashboardController;
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 // Staff OIC Dashboard
-Route::get('/dashboard-staff', function () {
-    return view('DashboardStaff');
-})->middleware(['auth', 'verified'])->name('dashboard.staff'); // ⚠️ Removed 'verified' for now
+Route::get('/dashboard-staff', [StaffDashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard.staff'); // ⚠️ Removed 'verified' for now
 
 
 ////////////////////
@@ -250,6 +254,11 @@ Route::prefix('modules')->middleware(['auth'])->group(function () {
      Route::get('/concerns', [ConcernController::class, 'index'])->name('modules.concerns');
      Route::get('/concerns/{id}', [ConcernController::class, 'show'])->name('modules.concerns.show'); // 👈 NEW
 
+     // Archive Module
+     Route::get('/archive', [ArchiveController::class, 'index'])->name('modules.archive');
+     Route::post('/archive', [ArchiveController::class, 'store'])->name('modules.archive.store');
+     Route::post('/archive/{id}/restore', [ArchiveController::class, 'restore'])->name('modules.archive.restore');
+     Route::get('/archive/{id}', [ArchiveController::class, 'show'])->name('modules.archive.show');
 
     // Parents Notification
     Route::get('/parents/college', function () {
@@ -265,6 +274,82 @@ Route::prefix('modules')->middleware(['auth'])->group(function () {
         }
         return view('modules.parentsShs');
     })->name('modules.parents.shs');
+});
+
+// Staff Modules Routes (Dedicated for Staff)
+Route::prefix('staff/modules')->middleware(['auth'])->group(function () {
+
+    // Pending Admissions
+    Route::get('/pending/college', [StaffPendingAdmissionController::class, 'index'])->name('staff.modules.pending.college');
+    Route::get('/pending/college/download-pdf', [StaffPendingAdmissionController::class, 'downloadPdf'])
+        ->name('staff.modules.pending.college.download.pdf');
+    Route::get('/pending/shs/download-pdf', [StaffPendingAdmissionController::class, 'downloadShsPdf'])
+        ->name('staff.modules.pending.shs.download.pdf');
+    Route::get('/pending/college/{id}', [StaffPendingAdmissionController::class, 'show'])->name('staff.modules.pending.college.show');
+    Route::get('/pending/shs', [StaffPendingAdmissionController::class, 'shsIndex'])->name('staff.modules.pending.shs');
+    Route::delete('/pending/college/{id}', [StaffPendingAdmissionController::class, 'destroy'])->name('staff.modules.pending.college.destroy');
+    Route::get('/pending/shs/{id}', [StaffPendingAdmissionController::class, 'showShs'])->name('staff.modules.pending.shs.show');
+    Route::delete('/pending/shs/{id}', [StaffPendingAdmissionController::class, 'destroyShs'])->name('staff.modules.pending.shs.destroy');
+    Route::post('/pending/college/{id}/validate', [StaffPendingAdmissionController::class, 'validate'])->name('staff.modules.pending.college.validate');
+    Route::post('/pending/college/{id}/cancel', [StaffPendingAdmissionController::class, 'cancel'])->name('staff.modules.pending.college.cancel');
+    Route::post('/pending/college/{id}/reevaluate', [StaffPendingAdmissionController::class, 'reevaluate'])->name('staff.modules.pending.college.reevaluate');
+    Route::post('/pending/shs/{id}/validate', [StaffPendingAdmissionController::class, 'validateShs'])->name('staff.modules.pending.shs.validate');
+    Route::post('/pending/shs/{id}/cancel', [StaffPendingAdmissionController::class, 'cancelShs'])->name('staff.modules.pending.shs.cancel');
+    Route::post('/pending/shs/{id}/reevaluate', [StaffPendingAdmissionController::class, 'reevaluateShs'])->name('staff.modules.pending.shs.reevaluate');
+
+    // Waiting List
+    Route::get('/waiting/college', [StaffWaitingController::class, 'index'])->name('staff.modules.waiting.college');
+    Route::get('/waiting/shs', [StaffWaitingController::class, 'shsIndex'])->name('staff.modules.waiting.shs');
+    Route::post('/college/payment/update/{studentId}', [StaffWaitingController::class, 'updateCollegePaymentStatus'])
+        ->name('staff.college.payment.update');
+    Route::post('/shs/payment/update/{studentId}', [StaffWaitingController::class, 'updateShsPaymentStatus'])
+        ->name('staff.shs.payment.update');
+
+    // Student Records
+    Route::get('/records/college', function () {
+        if (request()->ajax()) {
+            return view('modules.staff.recordsCollege')->render();
+        }
+        return view('modules.staff.recordsCollege');
+    })->name('staff.modules.records.college');
+
+    Route::get('/records/shs', function () {
+        if (request()->ajax()) {
+            return view('modules.staff.recordsShs')->render();
+        }
+        return view('modules.staff.recordsShs');
+    })->name('staff.modules.records.shs');
+
+    // Cancelled Admissions
+    Route::get('/cancelled/college', [StaffCancelledController::class, 'index'])->name('staff.modules.cancelled.college');
+    Route::get('/cancelled/college/{id}', [StaffCancelledController::class, 'show'])->name('staff.modules.cancelled.college.show');
+    Route::get('/cancelled/shs', [StaffCancelledController::class, 'shsIndex'])->name('staff.modules.cancelled.shs');
+    Route::get('/cancelled/shs/{id}', [StaffCancelledController::class, 'showShs'])->name('staff.modules.cancelled.shs.show');
+
+    // Re-Evaluation
+    Route::get('/reevaluation/college', [StaffReEvaluationController::class, 'index'])
+        ->name('staff.modules.reevaluation.college');
+    Route::get('/reevaluation/shs', [StaffReEvaluationController::class, 'shsIndex'])
+        ->name('staff.modules.reevaluation.shs');
+
+    // Concerns
+    Route::get('/concerns', [StaffConcernController::class, 'index'])->name('staff.modules.concerns');
+    Route::get('/concerns/{id}', [StaffConcernController::class, 'show'])->name('staff.modules.concerns.show');
+
+    // Parents Notification
+    Route::get('/parents/college', function () {
+        if (request()->ajax()) {
+            return view('modules.staff.parentsCollege')->render();
+        }
+        return view('modules.staff.parentsCollege');
+    })->name('staff.modules.parents.college');
+
+    Route::get('/parents/shs', function () {
+        if (request()->ajax()) {
+            return view('modules.staff.parentsShs')->render();
+        }
+        return view('modules.staff.parentsShs');
+    })->name('staff.modules.parents.shs');
 });
 
 // Profile Routes

@@ -34,8 +34,10 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
 
 /* Sidebar */
 .sidebar {
+    display: flex;
+    flex-direction: column;
     width: 280px;
-    min-height: 100vh;
+    height: 100vh;
     background-color: #1e3a8a;
     transition: margin-left 0.3s ease-in-out;
     position: fixed; /* Keep sidebar fixed */
@@ -224,6 +226,12 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Nav Container for Scrolling */
+.sidebar .nav-container {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
     </style>
 </head>
 <body>
@@ -247,10 +255,8 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
     </div>
     
 
-    <ul class="nav nav-pills flex-column mb-auto">
-
-        <br>
-
+    <div class="nav-container">
+    <ul class="nav nav-pills flex-column">
 
         <!-- Modules Header -->
         <li class="nav-item px-3 mt-3 mb-2">
@@ -371,18 +377,22 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
     </ul>
 </li>
 
-<!-- Concerns -->
+        <!-- Concerns -->
 <li class="nav-item mb-2">
     <a href="{{ route('modules.concerns') }}" class="nav-link" data-load>
         <i class="bi bi-exclamation-circle me-2"></i> Concerns
     </a>
 </li>
 
+        <!-- Archive Module -->
+        <li class="nav-item mb-2">
+            <a href="{{ route('modules.archive') }}" class="nav-link" title="Contains all archived admissions and re-evaluation records.">
+                <i class="bi bi-archive me-2"></i> Archive Module
+            </a>
+        </li>
+
     
     </ul>
-
-    <div class="p-3">
-        <!-- Placeholder -->
     </div>
 </div>
 

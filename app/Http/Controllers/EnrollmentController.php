@@ -87,8 +87,11 @@ class EnrollmentController extends Controller
             'preferredCourse' => 'required|exists:college_courses,course_id',
             'yearLevelStep4' => 'required|exists:college_year_levels,level_id',
             'primarySchool' => 'required',
+            'primaryYearGraduated' => 'required|integer|min:1900|max:2099',
             'secondarySchool' => 'required',
+            'secondaryYearGraduated' => 'required|integer|min:1900|max:2099',
             'lastSchoolAttended' => 'required',
+            'lastSchoolYearGraduated' => 'required|integer|min:1900|max:2099',
             'indigenous' => 'required|exists:college_shs_indigenous,indigenous_id',
             'disability' => 'required|exists:college_shs_disability,disability_id',
             'documents.*' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120', // 5MB max per file
