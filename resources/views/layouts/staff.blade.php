@@ -255,35 +255,33 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
             <small class="text-white text-uppercase fw-bold">Modules</small>
         </li>
 
-        <!-- Pending Admissions Dropdown -->
-<li class="nav-item mb-2">
-    
-
-    <!-- Dashboard -->
+        <!-- Dashboard -->
         <li class="nav-item mb-2">
             <a href="{{ route('dashboard.staff') }}" class="nav-link {{ request()->routeIs('dashboard.staff') ? 'active' : '' }}">
                 <i class="bi bi-speedometer2"></i> Staff Dashboard
             </a>
         </li>
 
-    <a class="nav-link d-flex align-items-center sidebar-dropdown-toggle" href="#pending-admissions-submenu" data-bs-toggle="collapse" role="button" aria-expanded="false">
-        <i class="bi bi-clock-history me-2"></i>
-        <span class="flex-grow-1">Pending Admissions</span>
-        <i class="bi bi-chevron-down toggle-icon fs-small"></i>
-    </a>
-    <ul class="nav collapse ms-3 flex-column" id="pending-admissions-submenu">
-        <li class="mb-1">
-            <a href="#" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
-                <i class="bi bi-building me-2"></i> College
+        <!-- Pending Admissions Dropdown -->
+        <li class="nav-item mb-2">
+            <a class="nav-link d-flex align-items-center sidebar-dropdown-toggle" href="#pending-admissions-submenu" data-bs-toggle="collapse" role="button" aria-expanded="false">
+                <i class="bi bi-clock-history me-2"></i>
+                <span class="flex-grow-1">Pending Admissions</span>
+                <i class="bi bi-chevron-down toggle-icon fs-small"></i>
             </a>
+            <ul class="nav collapse ms-3 flex-column" id="pending-admissions-submenu">
+                <li class="mb-1">
+                    <a href="{{ route('staff.modules.pending.college') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                        <i class="bi bi-building me-2"></i> College
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="{{ route('staff.modules.pending.shs') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                        <i class="bi bi-mortarboard me-2"></i> SHS
+                    </a>
+                </li>
+            </ul>
         </li>
-        <li class="mb-1">
-            <a href="#" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
-                <i class="bi bi-mortarboard me-2"></i> SHS
-            </a>
-        </li>
-    </ul>
-</li>
 
         <!-- Waiting List Dropdown -->
         <li class="nav-item mb-2">
@@ -294,12 +292,12 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
             </a>
             <ul class="nav collapse ms-3 flex-column" id="waiting-list-submenu">
                 <li class="mb-1">
-                    <a href="#" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                    <a href="{{ route('staff.modules.waiting.college') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
                         <i class="bi bi-building me-2"></i> College
                     </a>
                 </li>
                 <li class="mb-1">
-                    <a href="#" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                    <a href="{{ route('staff.modules.waiting.shs') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
                         <i class="bi bi-mortarboard me-2"></i> SHS
                     </a>
                 </li>
@@ -315,58 +313,65 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
             </a>
             <ul class="nav collapse ms-3 flex-column" id="student-records-submenu">
                 <li class="mb-1">
-                    <a href="#" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                    <a href="{{ route('staff.modules.records.college') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
                         <i class="bi bi-building me-2"></i> College
                     </a>
                 </li>
                 <li class="mb-1">
-                    <a href="#" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                    <a href="{{ route('staff.modules.records.shs') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
                         <i class="bi bi-mortarboard me-2"></i> SHS
                     </a>
                 </li>
             </ul>
         </li>
 
-        <!-- Uploaded Documents Dropdown -->
+        <!-- Cancelled Admissions Dropdown -->
         <li class="nav-item mb-2">
             <a class="nav-link d-flex align-items-center sidebar-dropdown-toggle" href="#uploaded-docs-submenu" data-bs-toggle="collapse" role="button" aria-expanded="false">
                 <i class="bi bi-file-earmark-arrow-up me-2"></i>
-                <span class="flex-grow-1">Uploaded Documents</span>
+                <span class="flex-grow-1">Cancelled Admissions</span>
                 <i class="bi bi-chevron-down toggle-icon fs-small"></i>
             </a>
             <ul class="nav collapse ms-3 flex-column" id="uploaded-docs-submenu">
                 <li class="mb-1">
-                    <a href="#" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                    <a href="{{ route('staff.modules.cancelled.college') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
                         <i class="bi bi-building me-2"></i> College
                     </a>
                 </li>
                 <li class="mb-1">
-                    <a href="#" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                    <a href="{{ route('staff.modules.cancelled.shs') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
                         <i class="bi bi-mortarboard me-2"></i> SHS
                     </a>
                 </li>
             </ul>
         </li>
 
-        <!-- Parents Notification Dropdown -->
+        <!-- Re-Evaluation Dropdown -->
         <li class="nav-item mb-2">
-            <a class="nav-link d-flex align-items-center sidebar-dropdown-toggle" href="#parents-notification-submenu" data-bs-toggle="collapse" role="button" aria-expanded="false">
-                <i class="bi bi-envelope-paper me-2"></i>
-                <span class="flex-grow-1">Parents Notification</span>
+            <a class="nav-link d-flex align-items-center sidebar-dropdown-toggle" href="#reevaluation-submenu" data-bs-toggle="collapse" role="button" aria-expanded="false">
+                <i class="bi bi-arrow-repeat me-2"></i>
+                <span class="flex-grow-1">Re-Evaluation</span>
                 <i class="bi bi-chevron-down toggle-icon fs-small"></i>
             </a>
-            <ul class="nav collapse ms-3 flex-column" id="parents-notification-submenu">
+            <ul class="nav collapse ms-3 flex-column" id="reevaluation-submenu">
                 <li class="mb-1">
-                    <a href="#" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                    <a href="{{ route('staff.modules.reevaluation.college') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
                         <i class="bi bi-building me-2"></i> College
                     </a>
                 </li>
                 <li class="mb-1">
-                    <a href="#" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                    <a href="{{ route('staff.modules.reevaluation.shs') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
                         <i class="bi bi-mortarboard me-2"></i> SHS
                     </a>
                 </li>
             </ul>
+        </li>
+
+        <!-- Concerns -->
+        <li class="nav-item mb-2">
+            <a href="{{ route('staff.modules.concerns') }}" class="nav-link" data-load>
+                <i class="bi bi-exclamation-circle me-2"></i> Concerns
+            </a>
         </li>
 
     </ul>
