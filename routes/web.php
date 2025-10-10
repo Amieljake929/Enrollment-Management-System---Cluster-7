@@ -19,6 +19,7 @@ use App\Http\Controllers\StaffWaitingController;
 use App\Http\Controllers\StaffCancelledController;
 use App\Http\Controllers\StaffReEvaluationController;
 use App\Http\Controllers\StaffConcernController;
+use App\Http\Controllers\ArchiveController;
 
 
 
@@ -253,6 +254,11 @@ Route::prefix('modules')->middleware(['auth'])->group(function () {
      Route::get('/concerns', [ConcernController::class, 'index'])->name('modules.concerns');
      Route::get('/concerns/{id}', [ConcernController::class, 'show'])->name('modules.concerns.show'); // 👈 NEW
 
+     // Archive Module
+     Route::get('/archive', [ArchiveController::class, 'index'])->name('modules.archive');
+     Route::post('/archive', [ArchiveController::class, 'store'])->name('modules.archive.store');
+     Route::post('/archive/{id}/restore', [ArchiveController::class, 'restore'])->name('modules.archive.restore');
+     Route::get('/archive/{id}', [ArchiveController::class, 'show'])->name('modules.archive.show');
 
     // Parents Notification
     Route::get('/parents/college', function () {
