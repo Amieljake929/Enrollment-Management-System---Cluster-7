@@ -386,7 +386,7 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
 
         <!-- Archive Module -->
         <li class="nav-item mb-2">
-            <a href="{{ route('modules.archive') }}" class="nav-link" data-load title="Contains all archived admissions and re-evaluation records.">
+            <a href="{{ route('modules.archive') }}" class="nav-link" title="Contains all archived admissions and re-evaluation records.">
                 <i class="bi bi-archive me-2"></i> Archive Module
             </a>
         </li>

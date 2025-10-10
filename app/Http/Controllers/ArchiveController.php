@@ -51,18 +51,58 @@ class ArchiveController extends BaseController
         return view('modules.archive', compact('archivedRecords'));
     }
 
-    public function store(Request $request)
-    {
+public function store(Request $request)
+{
+    $request->validate([
+        'password' => 'required',
+    ]);
+
+    if (!Hash::check($request->password, Auth::user()->password)) {
+        return response()->json(['error' => 'Incorrect password.'], 400);
+    }
+
+    $eligibleStatuses = ['Pending', 'Cancelled', 'Validated', 'Re-Evaluate'];
+
+    if ($request->filled('student_id') && $request->filled('category')) {
+        // Individual archiving
         $request->validate([
-            'password' => 'required',
+            'student_id' => 'required|integer',
+            'category' => 'required|in:College,SHS',
+            'student_name' => 'required|string|max:255',
+            'archive_date' => 'required|date',
+            'attached_by' => 'required|string|max:255',
         ]);
 
-        if (!Hash::check($request->password, Auth::user()->password)) {
-            return response()->json(['error' => 'Incorrect password.'], 400);
+        $originalStatus = null;
+        if ($request->category === 'College') {
+            $status = CollegeStatus::where('student_id', $request->student_id)->firstOrFail();
+            if (!in_array($status->info_status, $eligibleStatuses)) {
+                return response()->json(['error' => 'Student not eligible for archiving.'], 400);
+            }
+            $originalStatus = $status->info_status;
+            $status->update(['info_status' => 'Archived']);
+        } else {
+            $status = ShsStatus::where('student_id', $request->student_id)->firstOrFail();
+            if (!in_array($status->info_status, $eligibleStatuses)) {
+                return response()->json(['error' => 'Student not eligible for archiving.'], 400);
+            }
+            $originalStatus = $status->info_status;
+            $status->update(['info_status' => 'Archived']);
         }
 
-        $eligibleStatuses = ['Pending', 'Cancelled', 'Waiting', 'Re-Evaluation'];
+        ArchiveLog::create([
+            'admin_name' => $request->attached_by,
+            'student_name' => $request->student_name,
+            'record_id' => $request->student_id,
+            'action' => 'Archive',
+            'category' => $request->category,
+            'original_status' => $originalStatus,
+            // Note: archive_date validated but not stored in model (use created_at auto-timestamp)
+        ]);
 
+        return response()->json(['success' => 'Record archived successfully.']);
+    } else {
+        // Bulk archiving
         // Archive College
         $collegeRecords = CollegeStatus::whereIn('info_status', $eligibleStatuses)->with('student')->get();
         foreach ($collegeRecords as $record) {
@@ -105,6 +145,7 @@ class ArchiveController extends BaseController
 
         return response()->json(['success' => 'Records archived successfully.']);
     }
+}
 
     public function restore(Request $request, $id)
     {
