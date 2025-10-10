@@ -159,12 +159,11 @@ Route::post('/verify-otp', [RegisteredUserController::class, 'verifyOtp'])->name
 
 // Dashboard & Documents
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\StaffDashboardController;
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 // Staff OIC Dashboard
-Route::get('/dashboard-staff', function () {
-    return view('DashboardStaff');
-})->middleware(['auth', 'verified'])->name('dashboard.staff'); // ⚠️ Removed 'verified' for now
+Route::get('/dashboard-staff', [StaffDashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard.staff'); // ⚠️ Removed 'verified' for now
 
 
 ////////////////////
