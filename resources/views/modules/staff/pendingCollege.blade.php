@@ -281,9 +281,9 @@ function generateStudentDetailsHTML(student) {
             </div>
             <div class="col-md-6">
                 <h6 class="fw-bold">Uploaded Documents</h6>
-                ${student.uploadedDocuments && student.uploadedDocuments.length > 0 ? `
+                ${student.documents && student.documents.length > 0 ? `
                     <ul>
-                        ${student.uploadedDocuments.map(doc => `
+                        ${student.documents.map(doc => `
                             <li>${doc.document ? doc.document.document_name : 'Unknown'}: <a href="/storage/${doc.file_path}" target="_blank">View</a></li>
                         `).join('')}
                     </ul>
