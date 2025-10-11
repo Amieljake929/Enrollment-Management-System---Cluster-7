@@ -147,12 +147,12 @@
     "options": [
       {
         "label": "A",
-        "text": "Analyzing people’s behavior, exploring culture, and communicating ideas through teaching, law, psychology, or journalism (HUMSS)",
+        "text": "Analyzing people’s behavior, exploring culture, and communicating ideas through teaching, law, psychology, or journalism",
         "strand": "HUMSS"
       },
       {
         "label": "B",
-        "text": "Assisting customers, solving problems, and providing professional support in service-oriented industries (ICT CCS)",
+        "text": "Assisting customers, solving problems, and providing professional support in service-oriented industries",
         "strand": "ICT-CCS"
       }
     ],
@@ -271,17 +271,17 @@
     "options": [
       {
         "label": "A",
-        "text": "Designing experiments, solving equations, and applying science/math in fields like engineering, medicine, or research (STEM)",
+        "text": "Designing experiments, solving equations, and applying science/math in fields like engineering, medicine, or research ",
         "strand": "STEM"
       },
       {
         "label": "B",
-        "text": "Creating programs, coding apps, and developing digital solutions for real-world problems (ICT-CP)",
+        "text": "Creating programs, coding apps, and developing digital solutions for real-world problems ",
         "strand": "ICT-CP"
       },
       {
         "label": "C",
-        "text": "Assembling, repairing, and troubleshooting computers, gadgets, and hardware systems (ICT-HW)",
+        "text": "Assembling, repairing, and troubleshooting computers, gadgets, and hardware systems ",
         "strand": "ICT-HW"
       }
     ],
@@ -365,12 +365,12 @@
     "options": [
       {
         "label": "A",
-        "text": "Bringing characters, stories, and visuals to life through animation and motion design (ICT Animation)",
+        "text": "Bringing characters, stories, and visuals to life through animation and motion design ",
         "strand": "ICT-Animation"
       },
       {
         "label": "B",
-        "text": "Designing layouts, logos, posters, and visual branding materials for creative projects (ICT Visual Graphics)",
+        "text": "Designing layouts, logos, posters, and visual branding materials for creative projects ",
         "strand": "ICT-VisualGraphics"
       }
     ],
@@ -524,22 +524,22 @@
     "options": [
       {
         "label": "A",
-        "text": "Preparing meals, experimenting with flavors, and building a career in the culinary arts (HECF)",
+        "text": "Preparing meals, experimenting with flavors, and building a career in the culinary arts ",
         "strand": "HECF"
       },
       {
         "label": "B",
-        "text": "Assisting guests, serving food, and providing excellent hospitality in hotels and restaurants (HEHRS)",
+        "text": "Assisting guests, serving food, and providing excellent hospitality in hotels and restaurants ",
         "strand": "HEHRS"
       },
       {
         "label": "C",
-        "text": "Managing hotel rooms, ensuring cleanliness, and organizing hotel operations (HEHO)",
+        "text": "Managing hotel rooms, ensuring cleanliness, and organizing hotel operations ",
         "strand": "HEHO"
       },
       {
         "label": "D",
-        "text": "Planning tours, organizing events, and creating memorable travel experiences (HETEM)",
+        "text": "Planning tours, organizing events, and creating memorable travel experiences ",
         "strand": "HETEM"
       }
     ],
