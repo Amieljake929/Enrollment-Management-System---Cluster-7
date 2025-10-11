@@ -257,6 +257,8 @@ Route::prefix('modules')->middleware(['auth'])->group(function () {
      // Archive Module
      Route::get('/archive', [ArchiveController::class, 'index'])->name('modules.archive');
      Route::post('/archive', [ArchiveController::class, 'store'])->name('modules.archive.store');
+     Route::post('/archive/authenticate', [ArchiveController::class, 'authenticate'])->name('modules.archive.authenticate');
+     Route::post('/archive/clear-access', [ArchiveController::class, 'clearAccess'])->name('modules.archive.clear-access');
      Route::post('/archive/{id}/restore', [ArchiveController::class, 'restore'])->name('modules.archive.restore');
      Route::get('/archive/{id}', [ArchiveController::class, 'show'])->name('modules.archive.show');
 

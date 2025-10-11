@@ -30,25 +30,29 @@ class ArchiveController extends BaseController
 
     public function index(Request $request)
     {
-        $query = ArchiveLog::with(['collegeStudent', 'shsStudent'])->where('action', 'Archive');
+        if ($request->has('content') && session('archive_access')) {
+            $query = ArchiveLog::with(['collegeStudent', 'shsStudent'])->where('action', 'Archive');
 
-        // Search by name
-        if ($request->has('search') && $request->search) {
-            $query->where('student_name', 'like', '%' . $request->search . '%');
+            // Search by name
+            if ($request->has('search') && $request->search) {
+                $query->where('student_name', 'like', '%' . $request->search . '%');
+            }
+
+            // Filter by original_status (repurposed from category for task categories)
+            if ($request->has('category') && $request->category) {
+                $query->where('original_status', $request->category);
+            }
+
+            // Sort by date archived (created_at)
+            $sort = $request->get('sort', 'desc');
+            $query->orderBy('created_at', $sort);
+
+            $archivedRecords = $query->paginate(10);
+
+            return view('modules.archive', compact('archivedRecords'));
+        } else {
+            return view('modules.archive-auth');
         }
-
-        // Filter by original_status (repurposed from category for task categories)
-        if ($request->has('category') && $request->category) {
-            $query->where('original_status', $request->category);
-        }
-
-        // Sort by date archived (created_at)
-        $sort = $request->get('sort', 'desc');
-        $query->orderBy('created_at', $sort);
-
-        $archivedRecords = $query->paginate(10);
-
-        return view('modules.archive', compact('archivedRecords'));
     }
 
 public function store(Request $request)
@@ -175,6 +179,10 @@ public function store(Request $request)
 
     public function show($id)
     {
+        if (!session('archive_access')) {
+            return redirect()->route('modules.archive')->with('error', 'Access denied. Please authenticate to access archived records.');
+        }
+
         $log = ArchiveLog::findOrFail($id);
 
         if ($log->category === 'College') {
@@ -184,5 +192,26 @@ public function store(Request $request)
         }
 
         return view('modules.archive-show', compact('student', 'log'));
+    }
+
+    public function authenticate(Request $request)
+    {
+        $request->validate([
+            'password' => 'required',
+        ]);
+
+        if (!Hash::check($request->password, Auth::user()->password)) {
+            return response()->json(['error' => 'Incorrect password.'], 400);
+        }
+
+        session(['archive_access' => true]);
+
+        return response()->json(['success' => 'Access granted.']);
+    }
+
+    public function clearAccess()
+    {
+        session()->forget('archive_access');
+        return response()->json(['success' => 'Access cleared.']);
     }
 }

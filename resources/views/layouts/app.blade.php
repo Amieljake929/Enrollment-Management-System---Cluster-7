@@ -386,7 +386,7 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
 
         <!-- Archive Module -->
         <li class="nav-item mb-2">
-            <a href="{{ route('modules.archive') }}" class="nav-link" title="Contains all archived admissions and re-evaluation records.">
+            <a href="{{ route('modules.archive') }}" class="nav-link" data-load title="Contains all archived admissions and re-evaluation records.">
                 <i class="bi bi-archive me-2"></i> Archive Module
             </a>
         </li>
@@ -522,6 +522,24 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         oldScript.parentNode.replaceChild(newScript, oldScript);
     });
+
+    // Clear archive access after successful load if not archive module
+    if (!url.includes('/archive')) {
+        clearArchiveAccess();
+    }
+
+    function clearArchiveAccess() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '{{ route("modules.archive.clear-access") }}', false); // synchronous
+        xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Accept', 'application/json');
+        xhr.send();
+        if (xhr.status !== 200) {
+            console.error('Failed to clear archive access:', xhr.responseText);
+        }
+    }
+
 } else {
     contentArea.innerHTML = '<p>Error loading content.</p>';
 }
@@ -535,7 +553,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div class="alert alert-danger">Failed to load content. Please try again.</div>
                 `;
             });
-        });
     });
 
     // Clock Functionality (nandito na)
