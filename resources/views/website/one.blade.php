@@ -431,6 +431,7 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#aboutus">About Us</a></li>
                     <li class="nav-item"><a class="nav-link" href="#campuses">Campuses</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#programs">Programs</a></li>
                     <li class="nav-item"><a class="nav-link" href="#future">Mission & Vision</a></li>
                     <li class="nav-item"><a class="nav-link" href="#admission">Admission</a></li>
                     <li class="nav-item"><a class="nav-link" href="#bcpnews">BCP News</a></li>
@@ -736,6 +737,188 @@
              <p class="text-start" style="font-size: 1rem; text-align: left;">
                 Students start their journey at Bestlink College, where they complete their freshman and sophomore education under our faculty of international professors and industry experts. Following this foundation in the Philippines, students are presented with the opportunity to transfer to the University of Hawai'i West O'ahu for their junior and senior years.
             </p>
+        </div>
+    </div>
+</section>
+
+<!-- PROGRAMS SECTION (Enhanced Design) -->
+<section id="programs" class="section py-5">
+    <div class="container">
+        <div class="row justify-content-center text-center mb-5 reveal-up">
+            <h2 class="fw-bold display-6" style="color: var(--primary-color); font-size: 2rem; letter-spacing: -0.5px;">
+                <i class="fas fa-book-open me-2"></i> Academic Programs
+            </h2>
+            <p class="text-muted mx-auto" style="max-width: 700px; font-size: 1.05rem; line-height: 1.6;">
+                Explore our diverse range of College and Senior High School programs across our campuses.
+            </p>
+        </div>
+
+        <!-- College Programs -->
+        <div id="collegeprograms" class="mb-5">
+            <div class="text-center mb-4">
+                <h3 class="fw-bold" style="color: var(--primary-color);"> College Programs</h3>
+            </div>
+
+            <!-- Main Branch -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4 reveal">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="mb-0 fw-bold d-flex align-items-center">
+                        <i class="fas fa-building me-2"></i> MAIN BRANCH
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        @php
+                            $collegeMain = [
+                                'BPED - Bachelor in Physical Education',
+                                'BEED - Bachelor of Elementary Education',
+                                'BSAIS - BS in Accounting Information System',
+                                'BSBA FM - BSBA major in Financial Management',
+                                'BSBA HRM - BSBA major in Human Resource Management',
+                                'BSBA MM - BSBA major in Marketing Management',
+                                'BSCPE - BS in Computer Engineering',
+                                'BSCRIM - BS in Criminology',
+                                'BSENTREP - BS in Entrepreneurship',
+                                'BSHM - BS in Hospitality Management',
+                                'BSIT - BS in Information Technology',
+                                'BSOA - BS in Office Administration',
+                                'BSP - BS in Psychology',
+                                'BSTM - BS in Tourism Management',
+                                'BSED english - BSEd major in English',
+                                'BSED filipino - BSEd major in Filipino',
+                                'BSED math - BSEd major in Mathematics',
+                                'BSED science - BSEd major in Science',
+                                'BSED social studies - BSEd major in Social Studies',
+                                'BSED values - BSEd major in Values',
+                                'BTLED - Bachelor of Technology and Livelihood Education',
+                                'CPE - Certificate of Professional Education'
+                            ];
+                        @endphp
+                        @foreach($collegeMain as $program)
+                            <div class="col-md-6 col-lg-4">
+                                <div class="d-flex align-items-start p-2 rounded hover-opacity-100 transition-opacity">
+                                    <i class="fas fa-check-circle text-success mt-1 me-2"></i>
+                                    <span class="text-muted">{{ $program }}</span>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bulacan Branch -->
+            <div class="card border-0 shadow-sm rounded-4 reveal-up">
+                <div class="card-header bg-info text-white py-3">
+                    <h4 class="mb-0 fw-bold d-flex align-items-center">
+                        <i class="fas fa-building me-2"></i> BULACAN BRANCH
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        @php
+                            $collegeBulacan = [
+                                'Bulacan BTVTED - BTVTED major in Food Service Management',
+                                'Bulacan BPE - Bachelor of Physical Education major in School PE',
+                                'Bulacan BSAIS - Bachelor of Science in Accounting Information System',
+                                'Bulacan BSCPE - Bachelor of Science in Computer Engineering',
+                                'Bulacan BSCRIM - Bachelor of Science in Criminology',
+                                'Bulacan BSENTREP - Bachelor of Science in Entrepreneurship',
+                                'Bulacan BSIS - Bachelor of Science in Information System',
+                                'Bulacan BSP - Bachelor of Science in Psychology',
+                                'Bulacan BSTM - Bachelor of Science in Tourism Management'
+                            ];
+                        @endphp
+                        @foreach($collegeBulacan as $program)
+                            <div class="col-md-6 col-lg-4">
+                                <div class="d-flex align-items-start p-2 rounded hover-opacity-100 transition-opacity">
+                                    <i class="fas fa-check-circle text-success mt-1 me-2"></i>
+                                    <span class="text-muted">{{ $program }}</span>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SHS Programs -->
+        <div id="shsprograms" class="mt-5">
+            <div class="text-center mb-4">
+                <h3 class="fw-bold" style="color: var(--primary-color);">Senior High School (SHS) Programs</h3>
+            </div>
+
+            <!-- Main Branch -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4 reveal">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="mb-0 fw-bold d-flex align-items-center">
+                        <i class="fas fa-school me-2"></i> MAIN BRANCH
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        @php
+                            $shsMain = [
+                                'ABM - Accountancy, Business and Management',
+                                'GAS - General Academic Strand',
+                                'HECT - Home Economics - Culinary Arts and Food Services',
+                                'HEHRS - Home Economics Hotel and Restaurant Services',
+                                'HEHO - Home Economics Hotel Operation',
+                                'HETEM - Home Economics Tourism and Event Management',
+                                'HUMSS - Humanities and Social Sciences',
+                                'ICT-HW - ICT Hardware',
+                                'JCT-CP - ICT-Programming',
+                                'ICT Animation - ICT Animation',
+                                'ICT CCS - ICT-Contact Center Services',
+                                'ICT Visual Graphics - ICT Visual Graphics',
+                                'STEM - Science, Technology, Engineering and Mathematics',
+                                'STEM PBM - STEM-Pre-Baccalaureate Maritime'
+                            ];
+                        @endphp
+                        @foreach($shsMain as $program)
+                            <div class="col-md-6 col-lg-4">
+                                <div class="d-flex align-items-start p-2 rounded hover-opacity-100 transition-opacity">
+                                    <i class="fas fa-check-circle text-success mt-1 me-2"></i>
+                                    <span class="text-muted">{{ $program }}</span>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bulacan Branch -->
+            <div class="card border-0 shadow-sm rounded-4 reveal-up">
+                <div class="card-header bg-info text-white py-3">
+                    <h4 class="mb-0 fw-bold d-flex align-items-center">
+                        <i class="fas fa-school me-2"></i> BULACAN BRANCH
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        @php
+                            $shsBulacan = [
+                                'Bulacan ARM - Accountancy, Business and Management',
+                                'Bulacan HUMSS - Humanities and Social Sciences',
+                                'Bulacan GAS - General Academic Strand',
+                                'Bulacan SMAW - Shielded Metal Arc Welding',
+                                'Bulacan SPORTS - Sport Track',
+                                'Bulacan AUTO - Automotive',
+                                'Bulacan ICT - Information and Communications Technology',
+                                'Bulacan HE - Home Economics',
+                                'Bulacan STEM - Science, Technology, Engineering and Mathematics'
+                            ];
+                        @endphp
+                        @foreach($shsBulacan as $program)
+                            <div class="col-md-6 col-lg-4">
+                                <div class="d-flex align-items-start p-2 rounded hover-opacity-100 transition-opacity">
+                                    <i class="fas fa-check-circle text-success mt-1 me-2"></i>
+                                    <span class="text-muted">{{ $program }}</span>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
