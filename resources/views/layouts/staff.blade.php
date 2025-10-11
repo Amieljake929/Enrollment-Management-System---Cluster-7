@@ -442,23 +442,23 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
         <div class="sidebar-overlay"></div>
 
         <!-- Session Invalid Modal -->
-        <div id="sessionInvalidModal" class="modal-overlay" style="display: none;">
-            <div class="modal-content">
-                <div class="text-center mb-6">
-                    <i class="bi bi-exclamation-triangle text-warning" style="font-size: 30px;"></i>
-                    <h5 class="modal-title d-flex align-items-center justify-content-center">
-                        Session Invalidated
-                    </h5>
-                    <div class="modal-underline"></div>
-                </div>
-                <div class="modal-body text-center">
-                    <p>Your session has been invalidated because you logged in from another device or browser.</p>
-                    <p>Please log in again to continue.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="logoutBtn" class="btn-custom-primary">
-                        OK
-                    </button>
+        <div id="sessionInvalidModal" class="modal fade" tabindex="-1" aria-labelledby="sessionInvalidModalLabel" aria-hidden="true" style="display: none;" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="sessionInvalidModalLabel">Session Invalidated</h5>
+                    </div>
+                    <div class="modal-body text-center">
+                        <i class="bi bi-exclamation-triangle text-warning" style="font-size: 30px;"></i>
+                        <p class="mt-3">Your session has been invalidated because you logged in from another device or browser.</p>
+                        <p>Please log in again to continue.</p>
+                        <p class="text-muted mt-2">You will be automatically logged out in <span id="countdown">5</span> seconds.</p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" id="logoutBtn" class="btn btn-primary">
+                            Logout Now
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -537,7 +537,27 @@ document.addEventListener('DOMContentLoaded', function () {
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const logoutBtn = document.getElementById('logoutBtn');
-    const sessionInvalidModal = document.getElementById('sessionInvalidModal');
+    const sessionInvalidModalEl = document.getElementById('sessionInvalidModal');
+    const sessionInvalidModal = new bootstrap.Modal(sessionInvalidModalEl, {
+        backdrop: 'static',
+        keyboard: false
+    });
+
+    let countdownInterval;
+
+    // Function to perform logout
+    function performLogout() {
+        fetch("{{ route('logout') }}", {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        }).then(() => {
+            window.location.href = "{{ route('login') }}";
+        });
+    }
 
     // Polling function to check if session is still valid
     async function checkSession() {
@@ -551,8 +571,40 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!data.authenticated) {
                 // Show modal if session invalidated
                 if (sessionInvalidModal) {
-                    sessionInvalidModal.style.display = 'flex';
-                    document.body.classList.add('modal-open');
+                    const modalBody = sessionInvalidModalEl.querySelector('.modal-body');
+                    const countdownEl = modalBody.querySelector('#countdown');
+                    if (data.logged_out_due_to_other_device) {
+                        // Show specific message for logout due to other device login
+                        modalBody.innerHTML = `
+                            <i class="bi bi-exclamation-triangle text-danger" style="font-size: 30px;"></i>
+                            <p class="mt-3">You have been logged out because your account was logged in from another device.</p>
+                            <p>Please log in again to continue.</p>
+                            <p class="text-muted mt-2">You will be automatically logged out in <span id="countdown">5</span> seconds.</p>
+                        `;
+                    } else {
+                        // Default message
+                        modalBody.innerHTML = `
+                            <i class="bi bi-exclamation-triangle text-warning" style="font-size: 30px;"></i>
+                            <p class="mt-3">Your session has been invalidated.</p>
+                            <p>Please log in again to continue.</p>
+                            <p class="text-muted mt-2">You will be automatically logged out in <span id="countdown">5</span> seconds.</p>
+                        `;
+                    }
+                    sessionInvalidModal.show();
+
+                    // Start countdown
+                    let countdown = 5;
+                    countdownInterval = setInterval(() => {
+                        countdown--;
+                        const countdownEl = modalBody.querySelector('#countdown');
+                        if (countdownEl) {
+                            countdownEl.textContent = countdown;
+                        }
+                        if (countdown <= 0) {
+                            clearInterval(countdownInterval);
+                            performLogout();
+                        }
+                    }, 1000);
                 }
             }
         } catch (error) {
@@ -565,10 +617,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function() {
-            // Redirect to logout route to clear session and redirect to login
-            window.location.href = "{{ route('logout') }}";
+            clearInterval(countdownInterval);
+            performLogout();
         });
     }
+
+    // Prevent modal from closing
+    sessionInvalidModalEl.addEventListener('hide.bs.modal', function (e) {
+        e.preventDefault();
+    });
 });
 </script>
 
