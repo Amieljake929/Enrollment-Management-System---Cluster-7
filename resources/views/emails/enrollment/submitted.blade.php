@@ -49,21 +49,8 @@ Please keep note of your temporary details:
 - **Year Level:** {{ $get($student, 'level_id') }}
 - **Branch:** Main {{ $get($student, 'branch_id') }}
 
-**Uploaded Documents ✅**
-@forelse ($uploadedDocs as $doc)
-- {{ $doc }}
-@empty
-- None
-@endforelse
 
-**To Follow:**
-@forelse ($pendingDocs as $doc)
-- {{ $doc }}
-@empty
-- None
-@endforelse
-
-**Enrollment Status:** {{ strtoupper($get($student, 'info_status')) }}
+**Enrollment Status: Pending**
 
 ---
 
