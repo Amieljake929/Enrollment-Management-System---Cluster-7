@@ -1,2 +1,4 @@
-- [x] Modified archive.blade.php to use AJAX for dropdown filtering, mimicking the archive button's behavior
-- [ ] Test the fix: confirm password, then interact with dropdowns to ensure AJAX update without redirecting to auth
+- [x] Edit resources/views/modules/recordsShs.blade.php to add sample data table for SHS Admin OIC
+- [x] Edit resources/views/modules/recordsCollege.blade.php to add sample data table for College Admin OIC (already had data)
+- [x] Edit resources/views/modules/staff/recordsShs.blade.php to add sample data table for SHS Staff OIC
+- [x] Edit resources/views/modules/staff/recordsCollege.blade.php to add sample data table for College Staff OIC
