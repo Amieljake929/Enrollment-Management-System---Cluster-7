@@ -200,7 +200,37 @@
                         successMsg.textContent = data.success;
                         successMsg.style.display = 'block';
                         setTimeout(function() {
-                            location.reload();
+                            // Fetch updated archive content
+                            fetch('/modules/archive?content=1', {
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                },
+                            })
+                            .then(response => response.text())
+                            .then(html => {
+                                const parser = new DOMParser();
+                                const doc = parser.parseFromString(html, 'text/html');
+                                const newContent = doc.querySelector('#page-content')?.innerHTML;
+                                if (newContent) {
+                                    document.getElementById('page-content').innerHTML = newContent;
+                                    // Execute scripts
+                                    const scripts = document.querySelectorAll('#page-content script');
+                                    scripts.forEach(oldScript => {
+                                        const newScript = document.createElement('script');
+                                        if (oldScript.src) {
+                                            newScript.src = oldScript.src;
+                                            newScript.async = true;
+                                        } else {
+                                            newScript.textContent = oldScript.textContent;
+                                        }
+                                        oldScript.parentNode.replaceChild(newScript, oldScript);
+                                    });
+                                }
+                            })
+                            .catch(err => {
+                                console.error('Error reloading archive:', err);
+                                location.reload(); // fallback
+                            });
                         }, 1500);
                     } else {
                         errorMsg.textContent = 'Unexpected response.';
@@ -227,18 +257,48 @@
                 });
             });
 
-            // Search and filter (vanilla)
-            function updateUrl() {
+            // Search and filter (vanilla) - mimic archive button's AJAX reload
+            function updateContent() {
                 var search = searchInput ? encodeURIComponent(searchInput.value) : '';
                 var category = categorySelect ? encodeURIComponent(categorySelect.value) : '';
                 var sort = sortSelect ? sortSelect.value : 'desc';
-                var url = '{{ route("modules.archive") }}?search=' + search + '&category=' + category + '&sort=' + sort;
-                window.location.href = url;
+                var url = '{{ route("modules.archive") }}?content=1&search=' + search + '&category=' + category + '&sort=' + sort;
+                fetch(url, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                })
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const newContent = doc.querySelector('#page-content')?.innerHTML;
+                    if (newContent) {
+                        document.getElementById('page-content').innerHTML = newContent;
+                        // Execute scripts
+                        const scripts = document.querySelectorAll('#page-content script');
+                        scripts.forEach(oldScript => {
+                            const newScript = document.createElement('script');
+                            if (oldScript.src) {
+                                newScript.src = oldScript.src;
+                                newScript.async = true;
+                            } else {
+                                newScript.textContent = oldScript.textContent;
+                            }
+                            oldScript.parentNode.replaceChild(newScript, oldScript);
+                        });
+                        // Update URL without reload
+                        window.history.pushState({}, '', '{{ route("modules.archive") }}?search=' + search + '&category=' + category + '&sort=' + sort);
+                    }
+                })
+                .catch(err => {
+                    console.error('Error updating content:', err);
+                });
             }
 
-            if (searchInput) searchInput.addEventListener('keyup', updateUrl);
-            if (categorySelect) categorySelect.addEventListener('change', updateUrl);
-            if (sortSelect) sortSelect.addEventListener('change', updateUrl);
+            if (searchInput) searchInput.addEventListener('keyup', updateContent);
+            if (categorySelect) categorySelect.addEventListener('change', updateContent);
+            if (sortSelect) sortSelect.addEventListener('change', updateContent);
         });
     }
 
