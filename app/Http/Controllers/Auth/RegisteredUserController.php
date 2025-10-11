@@ -31,7 +31,7 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => ['required', 'in:Administrator (OIC),Staff OIC'], // <-- VALIDATE ROLE
+            'role' => ['required', 'in:Administrator (OIC),Admission Staff'], // <-- VALIDATE ROLE
         ]);
 
         // Generate 6-digit OTP

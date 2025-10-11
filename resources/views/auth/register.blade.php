@@ -61,7 +61,7 @@
                         <select id="role" class="form-select @error('role') is-invalid @enderror" name="role" required>
                             <option value="" disabled selected>Select Role</option>
                             <option value="Administrator (OIC)" {{ old('role') == 'Administrator (OIC)' ? 'selected' : '' }}>Administrator (OIC)</option>
-                            <option value="Staff OIC" {{ old('role') == 'Staff OIC' ? 'selected' : '' }}>Staff OIC</option>
+                            <option value="Admission Staff" {{ old('role') == 'Admission Staff' ? 'selected' : '' }}>Admission Staff</option>
                         </select>
                         @error('role')
                             <div class="invalid-feedback">{{ $message }}</div>

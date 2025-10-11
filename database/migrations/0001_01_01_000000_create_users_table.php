@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role', ['Administrator (OIC)', 'Staff OIC']); // <-- ADDED ROLE COLUMN
+            $table->enum('role', ['Administrator (OIC)', 'Admission Staff']); // <-- ADDED ROLE COLUMN
             $table->string('has_agree_term')->default('pending'); // <-- ADDED
             $table->rememberToken();
             $table->timestamps();

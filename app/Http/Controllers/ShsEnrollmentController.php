@@ -20,6 +20,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use App\Mail\ShsEnrollmentConfirmation;
+use Illuminate\Support\Facades\Mail;
 
 class ShsEnrollmentController extends Controller
 {
@@ -320,6 +322,16 @@ DB::table('shs_student_number')->insert([
     'updated_at' => now(),
 ]);
 
+
+// Fetch enrollee number again (or reuse $enrolleeNo)
+$enrolleeNo = $enrolleeNo; // already generated above
+
+// Optionally, load the course name to pass (optional improvement)
+$course = \App\Models\ShsCourse::find($request->preferredCourse);
+$student->load('enrollmentPreference'); // if you have the relationship
+
+// Send email
+Mail::to($student->email)->send(new ShsEnrollmentConfirmation($student, $enrolleeNo));
 
             DB::commit();
             $success = true;

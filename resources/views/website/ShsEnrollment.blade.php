@@ -424,7 +424,7 @@
                     </label>
                     <select class="form-select" id="studentType" name="studentType" required aria-describedby="studentTypeHelp">
                       <option value="" selected disabled>Choose student type</option>
-                      <option value="New Regular">New Regular</option>
+                      <option value="New Regular">New Student</option>
                       <option value="Transferee">Transferee</option>
                       <option value="Returnee">Returnee</option>
                     </select>
@@ -1154,7 +1154,7 @@
     <div class="container">
       <div class="row g-4">
         <div class="col-md-4">
-          <h4 class="mb-4"><i class="fas fa-graduation-cap me-2"></i>Bestlink College</h4>
+          <h4 class="mb-4"><i class="fas fa-graduation-cap me-2"></i>Bestlink College Of The Philippines</h4>
           <p>Providing quality education and holistic development for students since 1999.</p>
           <div class="mt-3">
             <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>

@@ -92,7 +92,7 @@
                             @foreach($questions as $q)
                                 @if($q['type'] === 'tie_breaker')
                                     <div class="question-card mb-4 p-4 bg-white border rounded shadow-sm" data-question-id="{{ $q['id'] }}" style="display: none;">
-                                        <h5 class="mb-3 text-dark">Tie Breaker: {{ $q['question'] }}</h5>
+                                        <h5 class="mb-3 text-dark">{{ $q['question'] }}</h5>
                                         <div class="row g-3">
                                             @foreach($q['options'] as $opt)
                                                 <div class="col-12">

@@ -127,7 +127,7 @@ public function verifyMfa(Request $request)
 
     if ($user->role === 'Administrator (OIC)') {
         $redirect = redirect()->intended('/dashboard');
-    } elseif ($user->role === 'Staff OIC') {
+    } elseif ($user->role === 'Admission Staff') {
         $redirect = redirect()->intended('/dashboard-staff');
     }
 
