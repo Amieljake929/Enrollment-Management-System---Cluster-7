@@ -468,19 +468,18 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
         </div>
     </div>
 
-     <script>
-// Prevent full page reload and load content via AJAX
+   <script>
 document.addEventListener('DOMContentLoaded', function () {
     const contentArea = document.getElementById('page-content');
 
     // Listen to all links with [data-load]
     document.querySelectorAll('a[data-load]').forEach(link => {
         link.addEventListener('click', function (e) {
-            e.preventDefault(); // Huwag mag-refresh
+            e.preventDefault(); // prevent full reload
 
             const url = this.getAttribute('href');
 
-            // Add loading state
+            // Add loading spinner
             contentArea.innerHTML = `
                 <div class="d-flex justify-content-center align-items-center" style="height: 50vh;">
                     <div class="text-center">
@@ -492,59 +491,68 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
             `;
 
-            // Fetch the page content
+            // ✅ Capture parent dropdown para ma-restore mamaya
+            const parentCollapse = this.closest('.collapse');
+            const parentToggle = parentCollapse
+                ? document.querySelector(`[href="#${parentCollapse.id}"]`)
+                : null;
+
+            // Fetch content via AJAX
             fetch(url, {
                 headers: {
-                    'X-Requested-With': 'XMLHttpRequest', // Laravel detects AJAX
+                    'X-Requested-With': 'XMLHttpRequest',
                 },
             })
             .then(response => response.text())
             .then(html => {
-                // Extract the body content (remove <html>, <head>, etc.)
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, 'text/html');
-
-                // Kunin lang ang #page-content mula sa response
                 const newContent = doc.querySelector('#page-content')?.innerHTML;
 
-               if (newContent) {
-    contentArea.innerHTML = newContent;
+                if (newContent) {
+                    contentArea.innerHTML = newContent;
 
-    // ✅ Manually execute all script tags in the new content
-    const scripts = contentArea.querySelectorAll('script');
-    scripts.forEach(oldScript => {
-        const newScript = document.createElement('script');
-        if (oldScript.src) {
-            newScript.src = oldScript.src;
-            newScript.async = true;
-        } else {
-            newScript.textContent = oldScript.textContent;
-        }
-        oldScript.parentNode.replaceChild(newScript, oldScript);
-    });
+                    // ✅ Re-run all scripts in loaded content
+                    const scripts = contentArea.querySelectorAll('script');
+                    scripts.forEach(oldScript => {
+                        const newScript = document.createElement('script');
+                        if (oldScript.src) {
+                            newScript.src = oldScript.src;
+                            newScript.async = true;
+                        } else {
+                            newScript.textContent = oldScript.textContent;
+                        }
+                        oldScript.parentNode.replaceChild(newScript, oldScript);
+                    });
 
-    // Clear archive access after successful load if not archive module
-    if (!url.includes('/archive')) {
-        clearArchiveAccess();
-    }
+                    // ✅ Restore dropdown open state
+                    if (parentCollapse && parentToggle) {
+                        parentCollapse.classList.add('show');
+                        parentToggle.setAttribute('aria-expanded', 'true');
+                    }
 
-    function clearArchiveAccess() {
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '{{ route("modules.archive.clear-access") }}', false); // synchronous
-        xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.setRequestHeader('Accept', 'application/json');
-        xhr.send();
-        if (xhr.status !== 200) {
-            console.error('Failed to clear archive access:', xhr.responseText);
-        }
-    }
+                    // ✅ Clear archive access if not archive
+                    if (!url.includes('/archive')) {
+                        clearArchiveAccess();
+                    }
 
-} else {
-    contentArea.innerHTML = '<p>Error loading content.</p>';
-}
+                    function clearArchiveAccess() {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('POST', '{{ route("modules.archive.clear-access") }}', false);
+                        xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+                        xhr.setRequestHeader('Content-Type', 'application/json');
+                        xhr.setRequestHeader('Accept', 'application/json');
+                        xhr.send();
+                        if (xhr.status !== 200) {
+                            console.error('Failed to clear archive access:', xhr.responseText);
+                        }
+                    }
 
-                // Update URL sa browser (para back button gumana)
+                } else {
+                    contentArea.innerHTML = '<p>Error loading content.</p>';
+                }
+
+                // Update URL
                 window.history.pushState({}, '', url);
             })
             .catch(err => {
@@ -553,21 +561,24 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div class="alert alert-danger">Failed to load content. Please try again.</div>
                 `;
             });
+        });
     });
 
-    // Clock Functionality (nandito na)
+    // 🕒 Clock
     function updateTime() {
         const timeElement = document.getElementById('current-time');
         if (timeElement) {
             const now = new Date();
-            timeElement.textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+            timeElement.textContent = now.toLocaleTimeString('en-US', {
+                hour: '2-digit', minute: '2-digit', hour12: true
+            });
         }
     }
     setInterval(updateTime, 1000);
     updateTime();
-
 });
 </script>
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
