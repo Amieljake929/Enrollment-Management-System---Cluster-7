@@ -370,7 +370,7 @@
 <nav class="navbar navbar-expand-lg bg-white shadow-sm">
     <div class="container">
         <a class="navbar-brand" href="#">
-            <img src="{{ asset('images/pcb.png') }}" alt="Bestlink College Logo" style="width: 80px; height: 80px;">
+            <img src="{{ asset('images/bcp.png') }}" alt="Bestlink College Logo" style="width: 60px; height: 70px;">
             <div>
                     <span class="d-block" style="font-size:1rem;">Bestlink College</span>
                     <span class="d-block" style="font-size:.75rem;">of the Philippines</span>

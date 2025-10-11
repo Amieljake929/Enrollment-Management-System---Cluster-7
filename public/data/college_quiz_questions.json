@@ -112,17 +112,17 @@
     "options": [
       {
         "label": "A",
-        "text": "Working with software and systems to help businesses run smoothly (BSIT)",
+        "text": "Working with software and systems to help businesses run smoothly",
         "course": "BSIT"
       },
       {
         "label": "B",
-        "text": "Creating and improving computer hardware and devices (BSCPE)",
+        "text": "Creating and improving computer hardware and devices",
         "course": "BSCPE"
       },
       {
         "label": "C",
-        "text": "Handling financial data using technology to keep records accurate (BSAIS)",
+        "text": "Handling financial data using technology to keep records accurate",
         "course": "BSAIS"
       }
     ],
@@ -311,27 +311,27 @@
     "options": [
       {
         "label": "A",
-        "text": "Creating marketing campaigns and promoting products to customers (BSBA MM)",
+        "text": "Creating marketing campaigns and promoting products to customers",
         "course": "BSBA MM"
       },
       {
         "label": "B",
-        "text": "Managing budgets, analyzing investments, and making financial decisions (BSBA FM)",
+        "text": "Managing budgets, analyzing investments, and making financial decisions",
         "course": "BSBA FM"
       },
       {
         "label": "C",
-        "text": "Organizing recruitment, training, and employee relations in a company (BSBA HRM)",
+        "text": "Organizing recruitment, training, and employee relations in a company",
         "course": "BSBA HRM"
       },
       {
         "label": "D",
-        "text": "Launching your own business and making independent decisions as an entrepreneur (BSEntrep)",
+        "text": "Launching your own business and making independent decisions as an entrepreneur",
         "course": "BSEntrep"
       },
       {
         "label": "E",
-        "text": "Handling office records, correspondence, and administrative tasks to support operations (BSOA)",
+        "text": "Handling office records, correspondence, and administrative tasks to support operations",
         "course": "BSOA"
       }
     ],
@@ -660,47 +660,47 @@
     "options": [
       {
         "label": "A",
-        "text": "Sports, fitness, and physical activities (BPED)",
+        "text": "Sports, fitness, and physical activities ",
         "course": "BPED"
       },
       {
         "label": "B",
-        "text": "Young children in early education settings (BEED)",
+        "text": "Young children in early education settings ",
         "course": "BEED"
       },
       {
         "label": "C",
-        "text": "English language, literature, and communication (BSED English)",
+        "text": "English language, literature, and communication ",
         "course": "BSED English"
       },
       {
         "label": "D",
-        "text": "Filipino language, literature, and cultural works (BSED Filipino)",
+        "text": "Filipino language, literature, and cultural works ",
         "course": "BSED Filipino"
       },
       {
         "label": "E",
-        "text": "Mathematics and problem-solving skills (BSED Math)",
+        "text": "Mathematics and problem-solving skills ",
         "course": "BSED Math"
       },
       {
         "label": "F",
-        "text": "Science experiments and scientific concepts (BSED Science)",
+        "text": "Science experiments and scientific concepts ",
         "course": "BSED Science"
       },
       {
         "label": "G",
-        "text": "History, culture, and current events (BSED Social Studies)",
+        "text": "History, culture, and current events ",
         "course": "BSED Social Studies"
       },
       {
         "label": "H",
-        "text": "Ethics, values, and personal development (BSED Values)",
+        "text": "Ethics, values, and personal development",
         "course": "BSED Values"
       },
       {
         "label": "I",
-        "text": "Technical and livelihood skills like cooking, electronics, or crafts (BTLED)",
+        "text": "Technical and livelihood skills like cooking, electronics, or crafts ",
         "course": "BTLED"
       }
     ],
@@ -819,17 +819,17 @@
     "options": [
       {
         "label": "A",
-        "text": "Organizing books, managing digital archives, and helping people find information (BLIS)",
+        "text": "Organizing books, managing digital archives, and helping people find information ",
         "course": "BLIS"
       },
       {
         "label": "B",
-        "text": "Teaching English language and literature, and helping students improve communication skills (BSED English)",
+        "text": "Teaching English language and literature, and helping students improve communication skills ",
         "course": "BSED English"
       },
       {
         "label": "C",
-        "text": "Teaching Filipino language and culture, and guiding students in creative expression and national identity (BSED Filipino)",
+        "text": "Teaching Filipino language and culture, and guiding students in creative expression and national identity ",
         "course": "BSED Filipino"
       }
     ],
@@ -913,12 +913,12 @@
     "options": [
       {
         "label": "A",
-        "text": "Helping individuals understand and manage their thoughts, emotions, and behavior (BSP)",
+        "text": "Helping individuals understand and manage their thoughts, emotions, and behavior ",
         "course": "BSP"
       },
       {
         "label": "B",
-        "text": "Investigating crimes, enforcing laws, and promoting public safety through discipline and justice (BSCRIM)",
+        "text": "Investigating crimes, enforcing laws, and promoting public safety through discipline and justice ",
         "course": "BSCRIM"
       }
     ],
@@ -1002,12 +1002,12 @@
     "options": [
       {
         "label": "A",
-        "text": "Managing hotels, restaurants, or events to provide excellent service and guest experiences (BSHM)",
+        "text": "Managing hotels, restaurants, or events to provide excellent service and guest experiences ",
         "course": "BSHM"
       },
       {
         "label": "B",
-        "text": "Organizing tours, promoting travel destinations, and helping people explore new places and cultures (BSTM)",
+        "text": "Organizing tours, promoting travel destinations, and helping people explore new places and cultures ",
         "course": "BSTM"
       }
     ],

@@ -356,7 +356,7 @@
 <nav class="navbar navbar-expand-lg bg-white shadow-sm">
     <div class="container">
         <a class="navbar-brand" href="#">
-            <img src="{{ asset('images/pcb.png') }}" alt="Bestlink College Logo" style="width: 80px; height: 80px;">
+            <img src="{{ asset('images/bcp.png') }}" alt="Bestlink College Logo" style="width: 60px; height: 70px;">
             <div>
                     <span class="d-block" style="font-size:1rem;">Bestlink College</span>
                     <span class="d-block" style="font-size:.75rem;">of the Philippines</span>
@@ -368,13 +368,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Home</a>
+                    <a class="nav-link active" href="{{ route('one') }}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Career</a>
+                    <a class="nav-link active" href="#process">Process</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Roadmaps</a>
+                    <a class="nav-link active" href="#programs">Explore Our Courses</a>
                 </li>
             </ul>
         </div>
@@ -422,7 +422,7 @@
     <span id="typing-text"></span>
 </h1>
             <p id="hero-subtitle" class="hero-subtitle" style="opacity: 0; transform: translateY(20px);">
-    Explore our interactive learning roadmaps, premium code marketplace, and in-depth tech blogs to master the skills that matter in today's tech industry.
+    Take our AI-powered assessment and discover the program that matches your strengths, passions, and future goals.
 </p>
 
 <div id="hero-button" class="d-flex justify-content-center gap-3 mt-4 animate-on-scroll" style="opacity: 0; transform: translateY(20px);">
@@ -487,7 +487,7 @@
             </div>
         </div>
         <div class="section2-content animate-on-scroll">
-            <h3>Why Choose Bestlink College?</h3>
+            <h3>Why use our Assessment?</h3>
             <p>Our comprehensive tech education platform combines industry-relevant curriculum with practical learning experiences. We bridge the gap between academic knowledge and real-world tech skills through our innovative assessment-driven approach.</p>
         </div>
     </div>
@@ -497,13 +497,14 @@
 <section class="section3 gradient-bg text-white">
     <div class="container">
         <div class="hero-text">
-            <h2 class="display-5 fw-bold mb-3 animate-on-scroll">Ready to Launch Your Career?</h2>
+            <h2 class="display-5 fw-bold mb-3 animate-on-scroll">Already decided on your course?</h2>
             <p class="lead mb-4 animate-on-scroll">
-                Take the first step today. Find your ideal tech path, build in-demand skills, and join thousands of successful tech professionals.
+                Take the first step and enroll with confidence.
+Secure your future today by completing your enrollment and becoming part of a community that inspires growth, learning, and success.
             </p>
             <div class="d-flex justify-content-center gap-3 mt-4 animate-on-scroll">
-                <a href="#" class="btn btn-outline-white">
-                    <i class="fas fa-map-marker-alt me-2"></i> Find Your Path
+                <a href="{{ route('two') }}" class="btn btn-outline-white">
+                    <i class="fas fa-map-marker-alt me-2"></i> Enroll Now
                 </a>
             </div>
             <div class="mt-4 d-flex justify-content-center gap-4 small animate-on-scroll">
@@ -516,41 +517,41 @@
 </section>
 
 <!-- How It Works Section -->
-<section class="section4 bg-white">
+<section id="process" class="section4 bg-white">
     <div class="container">
         <div class="text-center mb-4 animate-on-scroll">
             <span class="badge-custom">🚀 The Process</span>
         </div>
-        <h2 class="text-center mb-3 animate-on-scroll">How Bestlink College Works</h2>
-        <p class="text-center text-muted mb-5 animate-on-scroll">Your journey to a tech career in four simple steps</p>
+        <h2 class="text-center mb-3 animate-on-scroll">The Future of Learning Assessment</h2>
+        <p class="text-center text-muted mb-5 animate-on-scroll">AI-Powered and Done in Minutes</p>
 
         <div class="row g-4">
             <div class="col-md-3 process-step animate-on-scroll">
                 <div class="step-icon step-1">1</div>
-                <h4>Take the Assessment</h4>
+                <h4>10–20 Mins</h4>
                 <p class="text-muted mt-2">
-                    Complete our interactive assessment to discover your ideal tech career based on your interests and strengths.
+                    Get essential feedback and results quickly, designed for efficiency and minimal time commitment.
                 </p>
             </div>
             <div class="col-md-3 process-step animate-on-scroll">
                 <div class="step-icon step-2">2</div>
-                <h4>Get Your Roadmap</h4>
+                <h4>AI-Powered</h4>
                 <p class="text-muted mt-2">
-                    Receive a personalized learning path tailored to your career goals, skills, and experience level.
+                    Utilizes advanced Artificial Intelligence to ensure accurate scoring, personalized insights, and fair evaluation.
                 </p>
             </div>
             <div class="col-md-3 process-step animate-on-scroll">
                 <div class="step-icon step-3">3</div>
-                <h4>Learn Skills</h4>
+                <h4>Simple & Easy</h4>
                 <p class="text-muted mt-2">
-                    Access structured modules with hands-on projects and track your progress as you build in-demand tech skills.
+                    Features an intuitive interface and clear instructions for a hassle-free and stress-free assessment experience.
                 </p>
             </div>
             <div class="col-md-3 process-step animate-on-scroll">
                 <div class="step-icon step-4">4</div>
-                <h4>Launch Career</h4>
+                <h4>Informative</h4>
                 <p class="text-muted mt-2">
-                    Create your portfolio, build your professional network, and confidently apply for jobs in your chosen field.
+                    Delivers comprehensive reports that offer deep insights into your strengths and areas for improvement.
                 </p>
             </div>
         </div>
@@ -563,72 +564,110 @@
     </div>
 </section>
 
-<!-- Career Paths Section -->
-<section class="section bg-light">
+<!-- Explore our courses Section -->
+<section id="programs" class="section bg-light">
     <div class="container">
-        <div class="text-center mb-4 animate-on-scroll">
-            <span class="badge-custom">💼 Career Options</span>
+        <div class="text-center mb-5 animate-on-scroll">
+            <span class="badge-custom">🎓 Explore Our Programs</span>
         </div>
-        <h2 class="text-center mb-3 animate-on-scroll">Explore Top Career Paths</h2>
-        <p class="text-center text-muted mb-5 animate-on-scroll">Discover high-demand, well-paying tech careers suited to different skills and interests</p>
+        <h2 class="text-center mb-2 animate-on-scroll">Explore Our Courses</h2>
+        <p class="text-center text-muted mb-5 animate-on-scroll">
+            Choose a path that aligns with your passion and career goals.
+        </p>
 
-        <div class="row g-4">
-            <div class="col-md-4 animate-on-scroll">
-                <div class="career-card">
-                    <div class="career-icon career-web">
-                        <i class="fas fa-code"></i>
+        <!-- College Programs -->
+        <div class="mb-5">
+            <h3 class="text-center mb-4 text-primary-custom fw-bold">College Programs</h3>
+            <div class="row g-4">
+                @php
+                    $collegeCourses = [
+                        ['code' => 'BPED', 'name' => 'Bachelor in Physical Education', 'desc' => 'Train future educators in sports, health, and physical development.', 'icon' => 'fas fa-running', 'color' => '#4cd964'],
+                        ['code' => 'BEED', 'name' => 'Bachelor of Elementary Education', 'desc' => 'Prepare teachers for foundational learning in elementary schools.', 'icon' => 'fas fa-chalkboard-teacher', 'color' => '#5044e4'],
+                        ['code' => 'BSAIS', 'name' => 'BS in Accounting Information System', 'desc' => 'Merge accounting principles with modern information systems.', 'icon' => 'fas fa-calculator', 'color' => '#a051e0'],
+                        ['code' => 'BSBA FM', 'name' => 'BSBA major in Financial Management', 'desc' => 'Master financial analysis, investment, and corporate finance.', 'icon' => 'fas fa-chart-pie', 'color' => '#1e3a8a'],
+                        ['code' => 'BSBA HRM', 'name' => 'BSBA major in Human Resource Management', 'desc' => 'Develop skills in talent management and organizational behavior.', 'icon' => 'fas fa-users', 'color' => '#e74c3c'],
+                        ['code' => 'BSBA MM', 'name' => 'BSBA major in Marketing Management', 'desc' => 'Learn branding, consumer behavior, and digital marketing strategies.', 'icon' => 'fas fa-bullhorn', 'color' => '#f39c12'],
+                        ['code' => 'BSCPE', 'name' => 'BS in Computer Engineering', 'desc' => 'Design hardware and software systems for computing devices.', 'icon' => 'fas fa-microchip', 'color' => '#2ecc71'],
+                        ['code' => 'BSCRIM', 'name' => 'BS in Criminology', 'desc' => 'Study crime prevention, law enforcement, and justice systems.', 'icon' => 'fas fa-gavel', 'color' => '#34495e'],
+                        ['code' => 'BSENTREP', 'name' => 'BS in Entrepreneurship', 'desc' => 'Build skills to launch and manage your own business ventures.', 'icon' => 'fas fa-lightbulb', 'color' => '#9b59b6'],
+                        ['code' => 'BSHM', 'name' => 'BS in Hospitality Management', 'desc' => 'Excel in hotel, restaurant, and tourism operations.', 'icon' => 'fas fa-hotel', 'color' => '#1abc9c'],
+                        ['code' => 'BSIT', 'name' => 'BS in Information Technology', 'desc' => 'Develop, manage, and secure IT infrastructure and applications.', 'icon' => 'fas fa-laptop-code', 'color' => '#2980b9'],
+                        ['code' => 'BSOA', 'name' => 'BS in Office Administration', 'desc' => 'Master administrative support, communication, and office tech.', 'icon' => 'fas fa-building', 'color' => '#d35400'],
+                        ['code' => 'BSP', 'name' => 'BS in Psychology', 'desc' => 'Understand human behavior and mental processes for diverse careers.', 'icon' => 'fas fa-brain', 'color' => '#8e44ad'],
+                        ['code' => 'BSTM', 'name' => 'BS in Tourism Management', 'desc' => 'Lead in travel, tour operations, and destination marketing.', 'icon' => 'fas fa-plane', 'color' => '#16a085'],
+                        ['code' => 'BSED English', 'name' => 'BSEd major in English', 'desc' => 'Teach language, literature, and communication effectively.', 'icon' => 'fas fa-book', 'color' => '#27ae60'],
+                        ['code' => 'BSED Filipino', 'name' => 'BSEd major in Filipino', 'desc' => 'Promote Filipino language, culture, and national identity.', 'icon' => 'fas fa-flag', 'color' => '#c0392b'],
+                        ['code' => 'BSED Math', 'name' => 'BSEd major in Mathematics', 'desc' => 'Inspire future generations in logical and quantitative thinking.', 'icon' => 'fas fa-square-root-alt', 'color' => '#f1c40f'],
+                        ['code' => 'BSED Science', 'name' => 'BSEd major in Science', 'desc' => 'Foster scientific inquiry and environmental awareness.', 'icon' => 'fas fa-flask', 'color' => '#2c3e50'],
+                        ['code' => 'BSED Social Studies', 'name' => 'BSEd major in Social Studies', 'desc' => 'Teach history, geography, and civic responsibility.', 'icon' => 'fas fa-globe-asia', 'color' => '#e67e22'],
+                        ['code' => 'BSED Values', 'name' => 'BSEd major in Values', 'desc' => 'Instill moral, ethical, and spiritual development in learners.', 'icon' => 'fas fa-heart', 'color' => '#9b59b6'],
+                        ['code' => 'BTLED', 'name' => 'Bachelor of Technology and Livelihood Education', 'desc' => 'Train educators in practical and technical-vocational fields.', 'icon' => 'fas fa-tools', 'color' => '#3498db'],
+                        ['code' => 'CPE', 'name' => 'Certificate of Professional Education', 'desc' => 'Qualify non-education graduates to teach in basic education.', 'icon' => 'fas fa-graduation-cap', 'color' => '#1e3a8a'],
+                    ];
+                @endphp
+
+                @foreach($collegeCourses as $course)
+                <div class="col-md-6 col-lg-4 animate-on-scroll">
+                    <div class="career-card">
+                        <div class="career-icon" style="background-color: {{ $course['color'] }};">
+                            <i class="{{ $course['icon'] }}"></i>
+                        </div>
+                        <h5 class="fw-bold">{{ $course['code'] }}</h5>
+                        <h6 class="text-primary-custom">{{ $course['name'] }}</h6>
+                        <p class="text-muted small">{{ $course['desc'] }}</p>
+                        <a href="#" class="text-decoration-none small">
+                            Learn more <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
                     </div>
-                    <h4>Web Development</h4>
-                    <p class="text-muted">Create websites and web applications</p>
-                    <ul class="list-unstyled">
-                        <li><i class="fas fa-check text-success me-2"></i>Frontend and backend development</li>
-                        <li><i class="fas fa-check text-success me-2"></i>HTML, CSS, JavaScript, frameworks</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Build interactive web experiences</li>
-                    </ul>
-                    <a href="#" class="text-decoration-none">
-                        Explore Web Development Roadmap <i class="fas fa-arrow-right ms-1"></i>
-                    </a>
                 </div>
-            </div>
-            <div class="col-md-4 animate-on-scroll">
-                <div class="career-card">
-                    <div class="career-icon career-data">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h4>Data Science</h4>
-                    <p class="text-muted">Analyze and interpret complex data</p>
-                    <ul class="list-unstyled">
-                        <li><i class="fas fa-check text-success me-2"></i>Statistical analysis and visualization</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Python, R, SQL, machine learning</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Extract insights from large datasets</li>
-                    </ul>
-                    <a href="#" class="text-decoration-none">
-                        Explore Data Science Roadmap <i class="fas fa-arrow-right ms-1"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-4 animate-on-scroll">
-                <div class="career-card">
-                    <div class="career-icon career-mobile">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <h4>Mobile App Development</h4>
-                    <p class="text-muted">Build iOS and Android applications</p>
-                    <ul class="list-unstyled">
-                        <li><i class="fas fa-check text-success me-2"></i>Native and cross-platform development</li>
-                        <li><i class="fas fa-check text-success me-2"></i>React Native, Flutter, Swift, Kotlin</li>
-                        <li><i class="fas fa-check text-success me-2"></i>Create responsive mobile interfaces</li>
-                    </ul>
-                    <a href="#" class="text-decoration-none">
-                        Explore Mobile App Development Roadmap <i class="fas fa-arrow-right ms-1"></i>
-                    </a>
-                </div>
+                @endforeach
             </div>
         </div>
 
-        <div class="text-center mt-4 animate-on-scroll">
-            <a href="#" class="btn btn-outline-primary">
-                Explore All Technology Career Paths <i class="fas fa-arrow-right ms-1"></i>
+        <!-- SHS Programs -->
+        <div>
+            <h3 class="text-center mb-4 text-primary-custom fw-bold">Senior High School (SHS) Tracks</h3>
+            <div class="row g-4">
+                @php
+                    $shsCourses = [
+                        ['code' => 'ABM', 'name' => 'Accountancy, Business and Management', 'desc' => 'Focus on business, finance, and entrepreneurship fundamentals.', 'icon' => 'fas fa-money-check-alt', 'color' => '#2980b9'],
+                        ['code' => 'GAS', 'name' => 'General Academic Strand', 'desc' => 'Flexible track for diverse college pathways.', 'icon' => 'fas fa-book-open', 'color' => '#8e44ad'],
+                        ['code' => 'HECT', 'name' => 'Home Economics - Culinary Arts and Food Services', 'desc' => 'Train in cooking, baking, and food service operations.', 'icon' => 'fas fa-utensils', 'color' => '#e67e22'],
+                        ['code' => 'HEHRS', 'name' => 'Home Economics Hotel and Restaurant Services', 'desc' => 'Prepare for careers in hospitality and food service.', 'icon' => 'fas fa-concierge-bell', 'color' => '#16a085'],
+                        ['code' => 'HEHO', 'name' => 'Home Economics Hotel Operation', 'desc' => 'Specialize in hotel front office and housekeeping management.', 'icon' => 'fas fa-bed', 'color' => '#27ae60'],
+                        ['code' => 'HETEM', 'name' => 'Home Economics Tourism and Event Management', 'desc' => 'Plan tours, events, and travel experiences.', 'icon' => 'fas fa-map-marked-alt', 'color' => '#f39c12'],
+                        ['code' => 'HUMSS', 'name' => 'Humanities and Social Sciences', 'desc' => 'Explore society, culture, politics, and human behavior.', 'icon' => 'fas fa-landmark', 'color' => '#c0392b'],
+                        ['code' => 'ICT-HW', 'name' => 'ICT Hardware', 'desc' => 'Assemble, maintain, and troubleshoot computer systems.', 'icon' => 'fas fa-hdd', 'color' => '#2c3e50'],
+                        ['code' => 'JCT-CP', 'name' => 'ICT-Programming', 'desc' => 'Develop software applications and coding skills.', 'icon' => 'fas fa-code', 'color' => '#2ecc71'],
+                        ['code' => 'ICT Animation', 'name' => 'ICT Animation', 'desc' => 'Create 2D/3D animations and visual effects.', 'icon' => 'fas fa-film', 'color' => '#9b59b6'],
+                        ['code' => 'ICT CCS', 'name' => 'ICT-Contact Center Services', 'desc' => 'Train in customer service and call center operations.', 'icon' => 'fas fa-headset', 'color' => '#1abc9c'],
+                        ['code' => 'ICT Visual Graphics', 'name' => 'ICT Visual Graphics', 'desc' => 'Design digital graphics, layouts, and multimedia content.', 'icon' => 'fas fa-palette', 'color' => '#f1c40f'],
+                        ['code' => 'STEM', 'name' => 'Science, Technology, Engineering and Mathematics', 'desc' => 'Build strong foundation in science and math for tech careers.', 'icon' => 'fas fa-atom', 'color' => '#e74c3c'],
+                        ['code' => 'STEM PBM', 'name' => 'STEM-Pre-Baccalaureate Maritime', 'desc' => 'Pathway to maritime and naval engineering programs.', 'icon' => 'fas fa-ship', 'color' => '#3498db'],
+                    ];
+                @endphp
+
+                @foreach($shsCourses as $course)
+                <div class="col-md-6 col-lg-4 animate-on-scroll">
+                    <div class="career-card">
+                        <div class="career-icon" style="background-color: {{ $course['color'] }};">
+                            <i class="{{ $course['icon'] }}"></i>
+                        </div>
+                        <h5 class="fw-bold">{{ $course['code'] }}</h5>
+                        <h6 class="text-primary-custom">{{ $course['name'] }}</h6>
+                        <p class="text-muted small">{{ $course['desc'] }}</p>
+                        <a href="#" class="text-decoration-none small">
+                            Learn more <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <div class="text-center mt-5 animate-on-scroll">
+            <a href="{{ route('two') }}" class="btn btn-outline-primary">
+                View All Programs <i class="fas fa-arrow-right ms-1"></i>
             </a>
         </div>
     </div>
@@ -665,8 +704,8 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const titleText = "Your Course, Your Way\nwith expert roadmaps";
-    const subtitleText = "Explore our interactive learning roadmaps, premium code marketplace, and in-depth tech blogs to master the skills that matter in today's tech industry.";
+    const titleText = "Discover the course made for you";
+    const subtitleText = "Take our AI-powered assessment and discover the program that matches your strengths, passions, and future goals.";
     const typingElement = document.getElementById('typing-text');
     const subtitleElement = document.getElementById('hero-subtitle');
     const buttonElement = document.getElementById('hero-button');
