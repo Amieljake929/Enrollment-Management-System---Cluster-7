@@ -384,10 +384,9 @@
   <div class="step active" data-step="1">Step 1: Student Info & Address</div>
   <div class="step disabled" data-step="2">Step 2: Parents & Health Info</div>
   <div class="step disabled" data-step="3">Step 3: Preferences</div>
-  <div class="step disabled" data-step="4">Step 4: Educational Background</div>
+  <div class="step disabled" data-step="4">Step 4: Educational Background & Referral</div>
   <div class="step disabled" data-step="5">Step 5: Documents</div>
-  <div class="step disabled" data-step="6">Step 6: How did you hear about us?</div>
-  <div class="step disabled" data-step="7">Step 7: Summary</div>
+  <div class="step disabled" data-step="6">Step 6: Summary</div>
 </div>
             <!-- FORM with proper Laravel integration -->
             <form id="registrationForm" novalidate>
@@ -756,7 +755,7 @@
               </section>
               <!-- STEP 4 -->
               <section class="form-section" data-step="4">
-                <h3 class="stepper-header mb-4">Step 4: Educational Background</h3>
+                <h3 class="stepper-header mb-4">Step 4: Educational Background & Referral</h3>
                 <div class="row g-3">
                   <div class="col-md-6">
                     <label for="primarySchool" class="form-label">Primary School<span class="required-star">*</span><span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter the name of the school where you completed your elementary education. Example: Maligaya Elementary School"><i class="fas fa-info-circle text-primary"></i></span></label>
@@ -788,11 +787,30 @@
                     <input type="number" class="form-control" id="lastSchoolYearGraduated" name="lastSchoolYearGraduated" min="1900" max="2099" step="1" required />
                     <div class="invalid-feedback">Please enter a valid year graduated.</div>
                   </div>
+                  <div class="col-md-12">
+                    <label for="referralSource" class="form-label">Referral Source<span class="required-star">*</span></label>
+                    <select class="form-select" id="referralSource" name="referralSource" required>
+                      <option value="" selected disabled>Select an option</option>
+                      <option value="Social Media Account">Social Media Account</option>
+                      <option value="Adviser/Referral/Others">Adviser/Referral/Others</option>
+                      <option value="Walk-in/No Referral">Walk-in/No Referral</option>
+                    </select>
+                    <div class="invalid-feedback">Please select how you heard about us.</div>
+                  </div>
+
+                  <div class="col-md-6" id="referralNameField" style="display: none;">
+                    <label for="referralName" class="form-label">Referral Name</label>
+                    <input type="text" class="form-control" id="referralName" name="referralName" placeholder="e.g., Mrs. Dela Cruz" />
+                  </div>
+                  <div class="col-md-6" id="referralRelationField" style="display: none;">
+                    <label for="referralRelation" class="form-label">Referral Relation</label>
+                    <input type="text" class="form-control" id="referralRelation" name="referralRelation" placeholder="e.g., Former Teacher, Friend, etc." />
+                  </div>
                 </div>
               </section>
               <!-- STEP 5 -->
               <section class="form-section" data-step="5">
-                <h3 class="stepper-header mb-4">Step 5: Softcopy of Document Submission</h3>
+                <h3 class="stepper-header mb-4">Step 5: Documents</h3>
                 <p class="mb-4 text-muted">Please upload clear and legible scanned copies of the following required documents. Acceptable formats: PDF, JPG, PNG (max 5MB each).</p>
                 <div id="documentUploadList">
                   <!-- Dynamically populated -->
@@ -807,34 +825,10 @@
                 </div>
               </section>
 
-<!-- STEP 6: Referral -->
-<section class="form-section" data-step="6">
-  <h3 class="stepper-header mb-4">Step 6: How did you hear about our school?</h3>
-  <div class="row g-3">
-    <div class="col-md-12">
-      <label for="referralSource" class="form-label">Referral Source<span class="required-star">*</span></label>
-      <select class="form-select" id="referralSource" name="referralSource" required>
-        <option value="" selected disabled>Select an option</option>
-        <option value="Social Media Account">Social Media Account</option>
-        <option value="Adviser/Referral/Others">Adviser/Referral/Others</option>
-        <option value="Walk-in/No Referral">Walk-in/No Referral</option>
-      </select>
-      <div class="invalid-feedback">Please select how you heard about us.</div>
-    </div>
 
-    <div class="col-md-6" id="referralNameField" style="display: none;">
-      <label for="referralName" class="form-label">Referral Name</label>
-      <input type="text" class="form-control" id="referralName" name="referralName" placeholder="e.g., Mrs. Dela Cruz" />
-    </div>
-    <div class="col-md-6" id="referralRelationField" style="display: none;">
-      <label for="referralRelation" class="form-label">Referral Relation</label>
-      <input type="text" class="form-control" id="referralRelation" name="referralRelation" placeholder="e.g., Former Teacher, Friend, etc." />
-    </div>
-  </div>
-</section>
-<!-- STEP 7 -->
-<section class="form-section" data-step="7">
-  <h3 class="stepper-header mb-4">Step 7: Summary</h3>
+              <!-- STEP 6 -->
+              <section class="form-section" data-step="6">
+                <h3 class="stepper-header mb-4">Step 6: Summary</h3>
   
   <!-- Info Banner -->
   <div class="alert alert-info mb-4 d-flex align-items-center">
@@ -1334,7 +1328,7 @@ notLivingWithParentsCheckbox.addEventListener('change', () => {
           ? '<i class="fas fa-paper-plane me-2"></i>Submit'
           : 'Next<i class="fas fa-arrow-right ms-2"></i>';
         currentStep = index;
-        if (index === 5 || index === steps.length - 1) { // Update summary on Step 6 (Referral) and last step
+        if (index === 3 || index === steps.length - 1) { // Update summary on Step 4 (Educational Background & Referral) and last step
           populateSummary();
         }
         setTimeout(() => document.querySelector('.card').scrollIntoView({ behavior: 'smooth' }), 100);
@@ -1503,7 +1497,7 @@ function populateSummary() {
 
           if (currentStep < steps.length - 1) {
             showStep(currentStep + 1);
-            if (currentStep === 5) {
+            if (currentStep === 3) {
               populateSummary();
             }
           } else {
@@ -1534,9 +1528,8 @@ function populateSummary() {
                       else if (key.startsWith('parent')) firstErrorStep = 2;
                       else if (key.startsWith('health')) firstErrorStep = 3;
                       else if (key.startsWith('preference')) firstErrorStep = 4;
-                      else if (key.startsWith('background')) firstErrorStep = 5;
+                      else if (key.startsWith('background') || key.startsWith('referral')) firstErrorStep = 5;
                       else if (key.startsWith('document')) firstErrorStep = 6;
-                      else if (key.startsWith('referral')) firstErrorStep = 7;
                       if (firstErrorStep !== null) break;
                     }
                   }
