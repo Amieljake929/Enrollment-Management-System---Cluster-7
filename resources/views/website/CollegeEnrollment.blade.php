@@ -382,13 +382,12 @@
             <!-- Stepper -->
             <div id="stepper" class="stepper">
   <div class="step active" data-step="1">Step 1: Student Info & Address</div>
-  <div class="step disabled" data-step="2">Step 2: Parents Info</div>
-  <div class="step disabled" data-step="3">Step 3: Health Info</div>
-  <div class="step disabled" data-step="4">Step 4: Preferences</div>
-  <div class="step disabled" data-step="5">Step 5: Educational Background</div>
-  <div class="step disabled" data-step="6">Step 6: Documents</div>
-  <div class="step disabled" data-step="7">Step 7: How did you hear about us?</div>
-  <div class="step disabled" data-step="8">Step 8: Summary</div>
+  <div class="step disabled" data-step="2">Step 2: Parents & Health Info</div>
+  <div class="step disabled" data-step="3">Step 3: Preferences</div>
+  <div class="step disabled" data-step="4">Step 4: Educational Background</div>
+  <div class="step disabled" data-step="5">Step 5: Documents</div>
+  <div class="step disabled" data-step="6">Step 6: How did you hear about us?</div>
+  <div class="step disabled" data-step="7">Step 7: Summary</div>
 </div>
             <!-- FORM with proper Laravel integration -->
             <form id="registrationForm" novalidate>
@@ -567,9 +566,9 @@
                   </div>
                 </div>
               </section>
-              <!-- STEP 2 -->
+              <!-- STEP 2: Parents & Health Info -->
               <section class="form-section" data-step="2">
-                <h3 class="stepper-header mb-4">Step 2: Parents Information</h3>
+                <h3 class="stepper-header mb-4">Step 2: Parents & Health Info</h3>
                 <div class="row g-3">
                   <h5 class="mb-3" style="color: red; font-weight: 700;">Mother's Maiden Information</h5>
                   <div class="col-md-4">
@@ -684,57 +683,51 @@
     </span>
   </div>
 </div>
+                  <h5 class="mb-3 mt-4" style="color: var(--primary-dark); font-weight: 700;">Health Information</h5>
+                  <div class="col-12">
+                    <label class="form-label">Do you have any of the following medical conditions?<span class="required-star">*</span></label>
+                    <div class="row">
+                      @php
+                        $conditions = [
+                          'Asthma', 'Allergies', 'Heart Disease', 'Hypertension',
+                          'Diabeties Type 2', 'Kidney Disease', 'Pneumonia', 'Tuberculosis',
+                          'Bleeding Disorders', 'Psychiatric Disorder', 'Cancer', 'Others'
+                        ];
+                      @endphp
+                      @foreach($conditions as $cond)
+                        <div class="col-md-6 col-lg-4 mb-2">
+                          <div class="form-check">
+                            <input class="form-check-input health-condition" type="radio" name="healthCondition" id="cond{{ str_replace(' ', '', $cond) }}" value="{{ $cond }}" required>
+                            <label class="form-check-label" for="cond{{ str_replace(' ', '', $cond) }}">
+                              {{ $cond }}
+                            </label>
+                          </div>
+                        </div>
+                      @endforeach
+                    </div>
+                    <div class="invalid-feedback d-block" id="healthConditionFeedback">Please select a condition.</div>
+                  </div>
+
+                  <div class="col-md-12" id="othersField" style="display: none;">
+                    <label for="healthConditionOthers" class="form-label">Please specify the condition:</label>
+                    <input type="text" class="form-control" id="healthConditionOthers" name="healthConditionOthers" placeholder="e.g., Epilepsy, Arthritis, etc." />
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="weightKg" class="form-label">Weight (kg)<span class="required-star">*</span></label>
+                    <input type="number" step="0.01" min="0" max="300" class="form-control" id="weightKg" name="weightKg" required />
+                    <div class="invalid-feedback">Please enter your weight in kilograms.</div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="heightCm" class="form-label">Height (cm)<span class="required-star">*</span></label>
+                    <input type="number" step="0.01" min="0" max="300" class="form-control" id="heightCm" name="heightCm" required />
+                    <div class="invalid-feedback">Please enter your height in centimeters.</div>
+                  </div>
                 </div>
               </section>
-
-              <!-- STEP 3: Health Info -->
-<section class="form-section" data-step="3">
-  <h3 class="stepper-header mb-4">Step 3: Health Information</h3>
-  <div class="row g-3">
-    <div class="col-12">
-      <label class="form-label">Do you have any of the following medical conditions?<span class="required-star">*</span></label>
-      <div class="row">
-        @php
-          $conditions = [
-            'Asthma', 'Allergies', 'Heart Disease', 'Hypertension',
-            'Diabeties Type 2', 'Kidney Disease', 'Pneumonia', 'Tuberculosis',
-            'Bleeding Disorders', 'Psychiatric Disorder', 'Cancer', 'Others'
-          ];
-        @endphp
-        @foreach($conditions as $cond)
-          <div class="col-md-6 col-lg-4 mb-2">
-            <div class="form-check">
-              <input class="form-check-input health-condition" type="radio" name="healthCondition" id="cond{{ str_replace(' ', '', $cond) }}" value="{{ $cond }}" required>
-              <label class="form-check-label" for="cond{{ str_replace(' ', '', $cond) }}">
-                {{ $cond }}
-              </label>
-            </div>
-          </div>
-        @endforeach
-      </div>
-      <div class="invalid-feedback d-block" id="healthConditionFeedback">Please select a condition.</div>
-    </div>
-
-    <div class="col-md-12" id="othersField" style="display: none;">
-      <label for="healthConditionOthers" class="form-label">Please specify the condition:</label>
-      <input type="text" class="form-control" id="healthConditionOthers" name="healthConditionOthers" placeholder="e.g., Epilepsy, Arthritis, etc." />
-    </div>
-
-    <div class="col-md-6">
-      <label for="weightKg" class="form-label">Weight (kg)<span class="required-star">*</span></label>
-      <input type="number" step="0.01" min="0" max="300" class="form-control" id="weightKg" name="weightKg" required />
-      <div class="invalid-feedback">Please enter your weight in kilograms.</div>
-    </div>
-    <div class="col-md-6">
-      <label for="heightCm" class="form-label">Height (cm)<span class="required-star">*</span></label>
-      <input type="number" step="0.01" min="0" max="300" class="form-control" id="heightCm" name="heightCm" required />
-      <div class="invalid-feedback">Please enter your height in centimeters.</div>
-    </div>
-  </div>
-</section>
-              <!-- STEP 4 -->
-              <section class="form-section" data-step="4">
-                <h3 class="stepper-header mb-4">Step 4: Preferences</h3>
+              <!-- STEP 3 -->
+              <section class="form-section" data-step="3">
+                <h3 class="stepper-header mb-4">Step 3: Preferences</h3>
                 <div class="row g-3">
                   <div class="col-md-6">
                     <label for="preferredBranch" class="form-label">Preferred Branch<span class="required-star">*</span><span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Choose the campus you prefer to attend. Main Branch is in Bayan Novaliches Quezon City, Bulacan Branch is in Bulacan."><i class="fas fa-info-circle text-primary"></i></span></label>
@@ -761,9 +754,9 @@
                   </div>
                 </div>
               </section>
-              <!-- STEP 5 -->
-              <section class="form-section" data-step="5">
-                <h3 class="stepper-header mb-4">Step 5: Educational Background</h3>
+              <!-- STEP 4 -->
+              <section class="form-section" data-step="4">
+                <h3 class="stepper-header mb-4">Step 4: Educational Background</h3>
                 <div class="row g-3">
                   <div class="col-md-6">
                     <label for="primarySchool" class="form-label">Primary School<span class="required-star">*</span><span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter the name of the school where you completed your elementary education. Example: Maligaya Elementary School"><i class="fas fa-info-circle text-primary"></i></span></label>
@@ -797,9 +790,9 @@
                   </div>
                 </div>
               </section>
-              <!-- STEP 6 -->
-              <section class="form-section" data-step="6">
-                <h3 class="stepper-header mb-4">Step 6: Softcopy of Document Submission</h3>
+              <!-- STEP 5 -->
+              <section class="form-section" data-step="5">
+                <h3 class="stepper-header mb-4">Step 5: Softcopy of Document Submission</h3>
                 <p class="mb-4 text-muted">Please upload clear and legible scanned copies of the following required documents. Acceptable formats: PDF, JPG, PNG (max 5MB each).</p>
                 <div id="documentUploadList">
                   <!-- Dynamically populated -->
@@ -814,9 +807,9 @@
                 </div>
               </section>
 
-              <!-- STEP 7: Referral -->
-<section class="form-section" data-step="7">
-  <h3 class="stepper-header mb-4">Step 7: How did you hear about our school?</h3>
+<!-- STEP 6: Referral -->
+<section class="form-section" data-step="6">
+  <h3 class="stepper-header mb-4">Step 6: How did you hear about our school?</h3>
   <div class="row g-3">
     <div class="col-md-12">
       <label for="referralSource" class="form-label">Referral Source<span class="required-star">*</span></label>
@@ -839,9 +832,9 @@
     </div>
   </div>
 </section>
-<!-- STEP 8 -->
-<section class="form-section" data-step="8">
-  <h3 class="stepper-header mb-4">Step 8: Summary</h3>
+<!-- STEP 7 -->
+<section class="form-section" data-step="7">
+  <h3 class="stepper-header mb-4">Step 7: Summary</h3>
   
   <!-- Info Banner -->
   <div class="alert alert-info mb-4 d-flex align-items-center">
@@ -1341,7 +1334,7 @@ notLivingWithParentsCheckbox.addEventListener('change', () => {
           ? '<i class="fas fa-paper-plane me-2"></i>Submit'
           : 'Next<i class="fas fa-arrow-right ms-2"></i>';
         currentStep = index;
-        if (index === steps.length - 1) { // Update summary only on last step
+        if (index === 5 || index === steps.length - 1) { // Update summary on Step 6 (Referral) and last step
           populateSummary();
         }
         setTimeout(() => document.querySelector('.card').scrollIntoView({ behavior: 'smooth' }), 100);
@@ -1359,8 +1352,8 @@ notLivingWithParentsCheckbox.addEventListener('change', () => {
     }
   });
 
-  // Special handling for Step 7: Document Uploads
-  if (index === 6) {
+  // Special handling for Step 5: Document Uploads
+  if (index === 4) {
     const fileInputs = document.querySelectorAll('#documentUploadList input[type="file"]');
     fileInputs.forEach(input => {
       const docId = input.dataset.docId;
@@ -1510,7 +1503,7 @@ function populateSummary() {
 
           if (currentStep < steps.length - 1) {
             showStep(currentStep + 1);
-            if (currentStep === 6) {
+            if (currentStep === 5) {
               populateSummary();
             }
           } else {

@@ -1,26 +1,8 @@
-- [x] Add date_from and date_to filters to index() method in PendingAdmissionController.php
-- [x] Modify query to filter by created_at between date_from and date_to
-- [x] Add date input fields to filter form in pendingCollege.blade.php
-- [x] Update downloadPdf() method to include date filters
-- [x] Test date filter functionality (server running, but browser tool disabled)
-x`- [x] Add date filters to shsIndex() method in PendingAdmissionController.php
-- [x] Add date filters to downloadShsPdf() method
-- [x] Add date input fields to pendingShs.blade.php
-- [x] Remove Validate, Re-Evaluate, Cancel buttons from table in pendingCollege.blade.php
-- [x] Add these buttons inside the View modal
-- [x] Update JavaScript for modal actions
-- [x] Remove Validate, Re-Evaluate, Cancel buttons from table in pendingShs.blade.php
-- [x] Add these buttons inside the SHS View modal
-- [x] Update JavaScript for SHS modal actions
-- [x] Add date filters to StaffPendingAdmissionController index() method
-- [x] Add date filters to StaffPendingAdmissionController shsIndex() method
-- [x] Add date filters to StaffPendingAdmissionController downloadPdf() method
-- [x] Add date filters to StaffPendingAdmissionController downloadShsPdf() method
-- [x] Add date input fields to staff pendingCollege.blade.php
-- [x] Add date input fields to staff pendingShs.blade.php
-- [x] Remove Validate, Re-Evaluate, Cancel buttons from table in staff pendingCollege.blade.php
-- [x] Add these buttons inside the View modal in staff pendingCollege.blade.php
-- [x] Update JavaScript for modal actions in staff pendingCollege.blade.php
-- [x] Remove Validate, Re-Evaluate, Cancel buttons from table in staff pendingShs.blade.php
-- [x] Add these buttons inside the SHS View modal in staff pendingShs.blade.php
-- [x] Update JavaScript for SHS modal actions in staff pendingShs.blade.php
+# TODO: Merge Step 2 and Step 3 in CollegeEnrollment.blade.php
+
+## Tasks
+- [x] Update the stepper div to have 7 steps, renaming Step 2 to "Parents & Health Info" and renumbering subsequent steps.
+- [x] Merge the HTML content of Step 2 (Parents Info) and Step 3 (Health Info) into a single section with data-step="2" and header "Step 2: Parents & Health Info".
+- [x] Update data-step attributes of subsequent form sections (Preferences to 3, Educational Background to 4, Documents to 5, Referral to 6, Summary to 7).
+- [x] Update JavaScript references: change document upload validation from index === 6 to index === 4, update error step mapping for merged steps, remove redundant populateSummary call.
+- [x] Test the form navigation and validation to ensure 7 steps work correctly.
