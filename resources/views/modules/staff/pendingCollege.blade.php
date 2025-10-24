@@ -283,30 +283,62 @@ function generateStudentDetailsHTML(student) {
         <div class="row">
             <div class="col-md-6">
                 <h6 class="fw-bold">Parent/Guardian Information</h6>
-                ${student.parentInfo && Array.isArray(student.parentInfo) && student.parentInfo.length > 0 ? student.parentInfo.map(parent => `
-                    <div class="mb-3">
-                        <p><strong>Name:</strong> ${parent.last_name}, ${parent.first_name} ${parent.middle_name ? parent.middle_name + '.' : ''}</p>
-                        <p><strong>Relationship:</strong> ${parent.parent_type || 'N/A'}</p>
-                        <p><strong>Contact:</strong> ${parent.contact_number || 'N/A'}</p>
-                        <p><strong>Email:</strong> ${parent.email || 'N/A'}</p>
-                        <p><strong>Occupation:</strong> ${parent.occupation || 'N/A'}</p>
-                    </div>
-                `).join('') : '<p>No parent information available.</p>'}
+${student.parentInfo && Array.isArray(student.parentInfo) && student.parentInfo.length > 0 ? student.parentInfo.map(parent => `
+    <div class="mb-3">
+        <p><strong>Name:</strong> ${parent.last_name}, ${parent.first_name} ${parent.middle_name ? parent.middle_name + '.' : ''}</p>
+        <p><strong>Relationship:</strong> ${parent.parent_type || 'N/A'}</p>
+        <p><strong>Contact:</strong> ${parent.contact_number || 'N/A'}</p>
+        <p><strong>Email:</strong> ${parent.email || 'N/A'}</p>
+        <p><strong>Occupation:</strong> ${parent.occupation || 'N/A'}</p>
+    </div>
+`).join('') : '<p>No parent information available.</p>'}
                 ${student.guardian ? `
                     <h6 class="fw-bold mt-3">Guardian</h6>
                     <p><strong>Name:</strong> ${student.guardian.last_name}, ${student.guardian.first_name} ${student.guardian.middle_name || ''}</p>
                     <p><strong>Contact:</strong> ${student.guardian.contact_number || 'N/A'}</p>
                 ` : ''}
             </div>
-            <div class="col-md-6">
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12">
                 <h6 class="fw-bold">Uploaded Documents</h6>
                 ${student.documents && student.documents.length > 0 ? `
-                    <ul>
-                        ${student.documents.map(doc => `
-                            <li>${doc.document ? doc.document.document_name : 'Unknown'}: <a href="/storage/${doc.file_path}" target="_blank">View</a></li>
-                        `).join('')}
-                    </ul>
-                ` : '<p>No documents uploaded.</p>'}
+    <div class="row">
+        ${student.documents.map(doc => {
+            const filePath = doc.file_path; // e.g., "enrollment_documents/xxx.jpg"
+            const url = `/storage/${filePath}`; // ✅ Correct public URL
+            const ext = filePath.split('.').pop().toLowerCase();
+            const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+            const docName = doc.document ? doc.document.document_name : 'Unknown';
+            if (imageExts.includes(ext)) {
+                return `
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h6 class="card-title">${docName}</h6>
+                                <img src="${url}" alt="${docName}" class="img-fluid" style="max-height: 200px; object-fit: contain; cursor: pointer;" onclick="openFullSizeModal('${url}', '${docName}')">
+                                <br><button type="button" class="btn btn-sm btn-outline-primary mt-2" onclick="openFullSizeModal('${url}', '${docName}')">View Full Size</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                return `
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h6 class="card-title">${docName}</h6>
+                                <p class="card-text">Document File</p>
+                                <a href="${url}" target="_blank" class="btn btn-primary">View Document</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }).join('')}
+    </div>
+` : '<p>No documents uploaded.</p>'}
             </div>
         </div>
     `;
@@ -411,4 +443,35 @@ function handleReevaluateClick(e) {
 
 document.addEventListener('click', handleReevaluateClick);
 </script>
+
+<!-- Full Size Image Modal -->
+<div class="modal fade" id="fullSizeModal" tabindex="-1" aria-labelledby="fullSizeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="fullSizeModalLabel">Document Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="fullSizeImage" src="" alt="" style="max-width: 100%; max-height: 80vh; object-fit: contain;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function openFullSizeModal(url, alt) {
+    const modalElement = document.getElementById('fullSizeModal');
+    const modal = new bootstrap.Modal(modalElement);
+    const img = document.getElementById('fullSizeImage');
+    img.src = url;
+    img.alt = alt;
+    document.getElementById('fullSizeModalLabel').textContent = alt;
+    modal.show();
+}
+</script>
+
 @endsection

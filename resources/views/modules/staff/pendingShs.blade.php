@@ -303,20 +303,91 @@ function generateShsStudentDetailsHTML(student) {
                     <p><strong>Email:</strong> ${student.guardian.email || 'N/A'}</p>
                 ` : ''}
             </div>
-            <div class="col-md-6">
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12">
                 <h6 class="fw-bold">Uploaded Documents</h6>
                 ${student.documents && student.documents.length > 0 ? `
-                    <ul>
-                        ${student.documents.map(doc => {
-                            const url = '/storage/' + doc.file_path;
-                            return `<li>${doc.document ? doc.document.document_name : 'Unknown'}: <a href="${url}" target="_blank">View</a></li>`;
-                        }).join('')}
-                    </ul>
-                ` : '<p>No documents uploaded.</p>'}
+    <div class="row">
+        ${student.documents.map(doc => {
+            const filePath = doc.file_path; // e.g., "enrollment_documents/xxx.jpg"
+            const url = `/storage/${filePath}`; // ✅ Correct public URL
+            const ext = filePath.split('.').pop().toLowerCase();
+            const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+            const docName = doc.document ? doc.document.document_name : 'Unknown';
+            if (imageExts.includes(ext)) {
+                return `
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h6 class="card-title">${docName}</h6>
+                                <img src="${url}" alt="${docName}" class="img-fluid" style="max-height: 200px; object-fit: contain; cursor: pointer;" data-url="${url}" data-alt="${docName}" class="view-full-size-img">
+                                <br><button type="button" class="btn btn-sm btn-outline-primary mt-2 view-full-size-btn" data-url="${url}" data-alt="${docName}">View Full Size</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                return `
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h6 class="card-title">${docName}</h6>
+                                <p class="card-text">Document File</p>
+                                <a href="${url}" target="_blank" class="btn btn-primary">View Document</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }).join('')}
+    </div>
+` : '<p>No documents uploaded.</p>'}
             </div>
+        </div>
         </div>
     `;
 }
+</script>
+
+<!-- Full Size Image Modal for SHS -->
+<div class="modal fade" id="shsFullSizeModal" tabindex="-1" aria-labelledby="shsFullSizeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="shsFullSizeModalLabel">Document Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="shsFullSizeImage" src="" alt="" style="max-width: 100%; max-height: 80vh; object-fit: contain;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function openShsFullSizeModal(url, alt) {
+    const modalElement = document.getElementById('shsFullSizeModal');
+    const modal = new bootstrap.Modal(modalElement);
+    const img = document.getElementById('shsFullSizeImage');
+    img.src = url;
+    img.alt = alt;
+    document.getElementById('shsFullSizeModalLabel').textContent = alt;
+    modal.show();
+}
+
+// Event listeners for full size modal
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('view-full-size-img') || e.target.classList.contains('view-full-size-btn')) {
+        const url = e.target.getAttribute('data-url');
+        const alt = e.target.getAttribute('data-alt');
+        openShsFullSizeModal(url, alt);
+    }
+});
 </script>
 
 <script>
