@@ -1,4 +1,26 @@
-- [x] Edit resources/views/modules/recordsShs.blade.php to add sample data table for SHS Admin OIC
-- [x] Edit resources/views/modules/recordsCollege.blade.php to add sample data table for College Admin OIC (already had data)
-- [x] Edit resources/views/modules/staff/recordsShs.blade.php to add sample data table for SHS Staff OIC
-- [x] Edit resources/views/modules/staff/recordsCollege.blade.php to add sample data table for College Staff OIC
+- [x] Add date_from and date_to filters to index() method in PendingAdmissionController.php
+- [x] Modify query to filter by created_at between date_from and date_to
+- [x] Add date input fields to filter form in pendingCollege.blade.php
+- [x] Update downloadPdf() method to include date filters
+- [x] Test date filter functionality (server running, but browser tool disabled)
+x`- [x] Add date filters to shsIndex() method in PendingAdmissionController.php
+- [x] Add date filters to downloadShsPdf() method
+- [x] Add date input fields to pendingShs.blade.php
+- [x] Remove Validate, Re-Evaluate, Cancel buttons from table in pendingCollege.blade.php
+- [x] Add these buttons inside the View modal
+- [x] Update JavaScript for modal actions
+- [x] Remove Validate, Re-Evaluate, Cancel buttons from table in pendingShs.blade.php
+- [x] Add these buttons inside the SHS View modal
+- [x] Update JavaScript for SHS modal actions
+- [x] Add date filters to StaffPendingAdmissionController index() method
+- [x] Add date filters to StaffPendingAdmissionController shsIndex() method
+- [x] Add date filters to StaffPendingAdmissionController downloadPdf() method
+- [x] Add date filters to StaffPendingAdmissionController downloadShsPdf() method
+- [x] Add date input fields to staff pendingCollege.blade.php
+- [x] Add date input fields to staff pendingShs.blade.php
+- [x] Remove Validate, Re-Evaluate, Cancel buttons from table in staff pendingCollege.blade.php
+- [x] Add these buttons inside the View modal in staff pendingCollege.blade.php
+- [x] Update JavaScript for modal actions in staff pendingCollege.blade.php
+- [x] Remove Validate, Re-Evaluate, Cancel buttons from table in staff pendingShs.blade.php
+- [x] Add these buttons inside the SHS View modal in staff pendingShs.blade.php
+- [x] Update JavaScript for SHS modal actions in staff pendingShs.blade.php

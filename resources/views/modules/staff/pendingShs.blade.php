@@ -52,6 +52,16 @@
                placeholder="Enter student name or course..." value="{{ request('search') }}">
     </div>
 
+    <div class="col-md-3">
+        <label for="date_from" class="form-label">Date From</label>
+        <input type="date" name="date_from" id="date_from" class="form-control" value="{{ request('date_from') }}">
+    </div>
+
+    <div class="col-md-3">
+        <label for="date_to" class="form-label">Date To</label>
+        <input type="date" name="date_to" id="date_to" class="form-control" value="{{ request('date_to') }}">
+    </div>
+
     <div class="col-12 d-flex justify-content-end">
         <button type="submit" class="btn btn-primary">Filter</button>
     </div>
@@ -112,28 +122,6 @@
         title="View">
         View
     </button>
-
-    <!-- Validate Button -->
-    <button type="button" class="btn btn-sm btn-success validate-shs-btn me-2"
-        data-student-id="{{ $student->student_id }}"
-        title="Validate">
-        Validate
-    </button>
-
-    <!-- Re-Evaluate Button (NEW) -->
-    <button type="button" class="btn btn-sm btn-warning reevaluate-shs-btn me-2"
-        data-student-id="{{ $student->student_id }}"
-        title="Re-Evaluate">
-        Re-Evaluate
-    </button>
-
-    <!-- Cancel Button -->
-    <button type="button" class="btn btn-sm btn-danger cancel-shs-btn"
-        data-student-id="{{ $student->student_id }}"
-        data-student-name="{{ $student->last_name }}, {{ $student->first_name }}"
-        title="Cancel">
-        Cancel
-    </button>
 </td>
                                 </td>
                             </tr>
@@ -175,7 +163,23 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success validate-shs-btn me-2"
+                    data-student-id=""
+                    title="Validate">
+                    Validate
+                </button>
+                <button type="button" class="btn btn-warning reevaluate-shs-btn me-2"
+                    data-student-id=""
+                    title="Re-Evaluate">
+                    Re-Evaluate
+                </button>
+                <button type="button" class="btn btn-danger cancel-shs-btn me-2"
+                    data-student-id=""
+                    data-student-name=""
+                    title="Cancel">
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-secondary ms-auto" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -207,6 +211,12 @@ document.addEventListener('click', function(e) {
             .then(response => response.json())
             .then(data => {
                 modalBody.innerHTML = generateShsStudentDetailsHTML(data);
+
+                // Set student ID and name for action buttons
+                document.querySelector('.validate-shs-btn').setAttribute('data-student-id', studentId);
+                document.querySelector('.reevaluate-shs-btn').setAttribute('data-student-id', studentId);
+                document.querySelector('.cancel-shs-btn').setAttribute('data-student-id', studentId);
+                document.querySelector('.cancel-shs-btn').setAttribute('data-student-name', `${data.last_name}, ${data.first_name}`);
             })
             .catch(error => {
                 modalBody.innerHTML = '<div class="alert alert-danger">Error loading student details.</div>';
