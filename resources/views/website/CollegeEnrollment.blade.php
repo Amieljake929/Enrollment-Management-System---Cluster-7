@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -381,15 +381,14 @@
           <div class="card-body p-4 p-md-5">
             <!-- Stepper -->
             <div id="stepper" class="stepper">
-  <div class="step active" data-step="1">Step 1: Student Info</div>
-  <div class="step disabled" data-step="2">Step 2: Address</div>
-  <div class="step disabled" data-step="3">Step 3: Parents Info</div>
-  <div class="step disabled" data-step="4">Step 4: Health Info</div>
-  <div class="step disabled" data-step="5">Step 5: Preferences</div>
-  <div class="step disabled" data-step="6">Step 6: Backgrounds</div>
-  <div class="step disabled" data-step="7">Step 7: Documents</div>
-  <div class="step disabled" data-step="8">Step 8: How did you hear about us?</div>
-  <div class="step disabled" data-step="9">Step 9: Summary</div>
+  <div class="step active" data-step="1">Step 1: Student Info & Address</div>
+  <div class="step disabled" data-step="2">Step 2: Parents Info</div>
+  <div class="step disabled" data-step="3">Step 3: Health Info</div>
+  <div class="step disabled" data-step="4">Step 4: Preferences</div>
+  <div class="step disabled" data-step="5">Step 5: Educational Background</div>
+  <div class="step disabled" data-step="6">Step 6: Documents</div>
+  <div class="step disabled" data-step="7">Step 7: How did you hear about us?</div>
+  <div class="step disabled" data-step="8">Step 8: Summary</div>
 </div>
             <!-- FORM with proper Laravel integration -->
             <form id="registrationForm" novalidate>
@@ -502,12 +501,7 @@
                     <input type="text" class="form-control" id="nationality" name="nationality" required />
                     <div class="invalid-feedback">Please enter your nationality.</div>
                   </div>
-                </div>
-              </section>
-              <!-- STEP 2 -->
-              <section class="form-section" data-step="2">
-                <h3 class="stepper-header mb-4">Step 2: Address</h3>
-                <div class="row g-3">
+                  <!-- Address Fields -->
                   <div class="col-md-12">
                     <label for="currentAddress" class="form-label">Current Address<span class="required-star">*</span><span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter your complete current address including house number, street, barangay, and city. Example: 123 Anonas St., Brgy. Maligaya, Quezon City"><i class="fas fa-info-circle text-primary"></i></span></label>
                     <input type="text" class="form-control" id="currentAddress" name="currentAddress" required />
@@ -573,9 +567,9 @@
                   </div>
                 </div>
               </section>
-              <!-- STEP 3 -->
-              <section class="form-section" data-step="3">
-                <h3 class="stepper-header mb-4">Step 3: Parents Information</h3>
+              <!-- STEP 2 -->
+              <section class="form-section" data-step="2">
+                <h3 class="stepper-header mb-4">Step 2: Parents Information</h3>
                 <div class="row g-3">
                   <h5 class="mb-3" style="color: red; font-weight: 700;">Mother's Maiden Information</h5>
                   <div class="col-md-4">
@@ -693,9 +687,9 @@
                 </div>
               </section>
 
-              <!-- STEP 4: Health Info -->
-<section class="form-section" data-step="4">
-  <h3 class="stepper-header mb-4">Step 4: Health Information</h3>
+              <!-- STEP 3: Health Info -->
+<section class="form-section" data-step="3">
+  <h3 class="stepper-header mb-4">Step 3: Health Information</h3>
   <div class="row g-3">
     <div class="col-12">
       <label class="form-label">Do you have any of the following medical conditions?<span class="required-star">*</span></label>
@@ -739,8 +733,8 @@
   </div>
 </section>
               <!-- STEP 4 -->
-              <section class="form-section" data-step="5">
-                <h3 class="stepper-header mb-4">Step 5: Preferences</h3>
+              <section class="form-section" data-step="4">
+                <h3 class="stepper-header mb-4">Step 4: Preferences</h3>
                 <div class="row g-3">
                   <div class="col-md-6">
                     <label for="preferredBranch" class="form-label">Preferred Branch<span class="required-star">*</span><span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Choose the campus you prefer to attend. Main Branch is in Bayan Novaliches Quezon City, Bulacan Branch is in Bulacan."><i class="fas fa-info-circle text-primary"></i></span></label>
@@ -768,8 +762,8 @@
                 </div>
               </section>
               <!-- STEP 5 -->
-              <section class="form-section" data-step="6">
-                <h3 class="stepper-header mb-4">Step 6: Educational Background</h3>
+              <section class="form-section" data-step="5">
+                <h3 class="stepper-header mb-4">Step 5: Educational Background</h3>
                 <div class="row g-3">
                   <div class="col-md-6">
                     <label for="primarySchool" class="form-label">Primary School<span class="required-star">*</span><span class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Enter the name of the school where you completed your elementary education. Example: Maligaya Elementary School"><i class="fas fa-info-circle text-primary"></i></span></label>
@@ -804,8 +798,8 @@
                 </div>
               </section>
               <!-- STEP 6 -->
-              <section class="form-section" data-step="7">
-                <h3 class="stepper-header mb-4">Step 7: Softcopy of Document Submission</h3>
+              <section class="form-section" data-step="6">
+                <h3 class="stepper-header mb-4">Step 6: Softcopy of Document Submission</h3>
                 <p class="mb-4 text-muted">Please upload clear and legible scanned copies of the following required documents. Acceptable formats: PDF, JPG, PNG (max 5MB each).</p>
                 <div id="documentUploadList">
                   <!-- Dynamically populated -->
@@ -820,9 +814,9 @@
                 </div>
               </section>
 
-              <!-- STEP 8: Referral -->
-<section class="form-section" data-step="8">
-  <h3 class="stepper-header mb-4">Step 8: How did you hear about our school?</h3>
+              <!-- STEP 7: Referral -->
+<section class="form-section" data-step="7">
+  <h3 class="stepper-header mb-4">Step 7: How did you hear about our school?</h3>
   <div class="row g-3">
     <div class="col-md-12">
       <label for="referralSource" class="form-label">Referral Source<span class="required-star">*</span></label>
@@ -845,9 +839,9 @@
     </div>
   </div>
 </section>
-<!-- STEP 9 -->
-<section class="form-section" data-step="9">
-  <h3 class="stepper-header mb-4">Step 9: Summary</h3>
+<!-- STEP 8 -->
+<section class="form-section" data-step="8">
+  <h3 class="stepper-header mb-4">Step 8: Summary</h3>
   
   <!-- Info Banner -->
   <div class="alert alert-info mb-4 d-flex align-items-center">
