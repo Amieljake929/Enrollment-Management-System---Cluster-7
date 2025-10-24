@@ -333,10 +333,13 @@ ${student.parent_info && Array.isArray(student.parent_info) && student.parent_in
                     <p><strong>Contact:</strong> ${student.guardian.contact_number || 'N/A'}</p>
                 ` : ''}
             </div>
-            <div class="col-md-6">
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12">
                 <h6 class="fw-bold">Uploaded Documents</h6>
                 ${student.documents && student.documents.length > 0 ? `
-    <div class="mb-3">
+    <div class="row">
         ${student.documents.map(doc => {
             const filePath = doc.file_path; // e.g., "enrollment_documents/xxx.jpg"
             const url = `/storage/${filePath}`; // ✅ Correct public URL
@@ -345,14 +348,28 @@ ${student.parent_info && Array.isArray(student.parent_info) && student.parent_in
             const docName = doc.document ? doc.document.document_name : 'Unknown';
             if (imageExts.includes(ext)) {
                 return `
-                    <div class="mb-3">
-                        <p><strong>${docName}:</strong></p>
-                        <img src="${url}" alt="${docName}" style="max-width: 100%; max-height: 300px; object-fit: contain; border: 1px solid #ddd; padding: 5px; cursor: pointer;" onclick="openFullSizeModal('${url}', '${docName}')">
-                        <br><button type="button" class="btn btn-sm btn-outline-primary mt-1" onclick="openFullSizeModal('${url}', '${docName}')">View Full Size</button>
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h6 class="card-title">${docName}</h6>
+                                <img src="${url}" alt="${docName}" class="img-fluid" style="max-height: 200px; object-fit: contain; cursor: pointer;" onclick="openFullSizeModal('${url}', '${docName}')">
+                                <br><button type="button" class="btn btn-sm btn-outline-primary mt-2" onclick="openFullSizeModal('${url}', '${docName}')">View Full Size</button>
+                            </div>
+                        </div>
                     </div>
                 `;
             } else {
-                return `<p><strong>${docName}:</strong> <a href="${url}" target="_blank">View</a></p>`;
+                return `
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h6 class="card-title">${docName}</h6>
+                                <p class="card-text">Document File</p>
+                                <a href="${url}" target="_blank" class="btn btn-primary">View Document</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
             }
         }).join('')}
     </div>
