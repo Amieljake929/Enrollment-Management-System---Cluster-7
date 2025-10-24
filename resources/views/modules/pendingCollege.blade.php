@@ -195,6 +195,24 @@
     </div>
 </div>
 
+<!-- Full Size Image Modal -->
+<div class="modal fade" id="fullSizeModal" tabindex="-1" aria-labelledby="fullSizeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="fullSizeModalLabel">Document Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="fullSizeImage" src="" alt="" style="max-width: 100%; max-height: 80vh; object-fit: contain;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script>
 document.addEventListener('click', function(e) {
@@ -318,17 +336,40 @@ ${student.parent_info && Array.isArray(student.parent_info) && student.parent_in
             <div class="col-md-6">
                 <h6 class="fw-bold">Uploaded Documents</h6>
                 ${student.documents && student.documents.length > 0 ? `
-    <ul>
+    <div class="mb-3">
         ${student.documents.map(doc => {
             const filePath = doc.file_path; // e.g., "enrollment_documents/xxx.jpg"
             const url = `/storage/${filePath}`; // ✅ Correct public URL
-            return `<li>${doc.document ? doc.document.document_name : 'Unknown'}: <a href="${url}" target="_blank">View</a></li>`;
+            const ext = filePath.split('.').pop().toLowerCase();
+            const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+            const docName = doc.document ? doc.document.document_name : 'Unknown';
+            if (imageExts.includes(ext)) {
+                return `
+                    <div class="mb-3">
+                        <p><strong>${docName}:</strong></p>
+                        <img src="${url}" alt="${docName}" style="max-width: 100%; max-height: 300px; object-fit: contain; border: 1px solid #ddd; padding: 5px; cursor: pointer;" onclick="openFullSizeModal('${url}', '${docName}')">
+                        <br><button type="button" class="btn btn-sm btn-outline-primary mt-1" onclick="openFullSizeModal('${url}', '${docName}')">View Full Size</button>
+                    </div>
+                `;
+            } else {
+                return `<p><strong>${docName}:</strong> <a href="${url}" target="_blank">View</a></p>`;
+            }
         }).join('')}
-    </ul>
+    </div>
 ` : '<p>No documents uploaded.</p>'}
             </div>
         </div>
     `;
+}
+
+function openFullSizeModal(url, alt) {
+    const modalElement = document.getElementById('fullSizeModal');
+    const modal = new bootstrap.Modal(modalElement);
+    const img = document.getElementById('fullSizeImage');
+    img.src = url;
+    img.alt = alt;
+    document.getElementById('fullSizeModalLabel').textContent = alt;
+    modal.show();
 }
 
 </script>
