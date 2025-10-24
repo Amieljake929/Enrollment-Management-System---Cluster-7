@@ -184,7 +184,8 @@
 </div>
 
 <script>
-document.addEventListener('click', function(e) {
+// Define event handlers as named functions so they can be removed
+function handleViewStudentClick(e) {
     const link = e.target.closest('.view-student');
     if (link) {
         e.preventDefault();
@@ -227,7 +228,9 @@ document.addEventListener('click', function(e) {
                 console.error('Fetch error:', error);
             });
     }
-});
+}
+
+document.addEventListener('click', handleViewStudentClick);
 
 function generateStudentDetailsHTML(student) {
     return `
@@ -310,7 +313,7 @@ function generateStudentDetailsHTML(student) {
 }
 
 // Validate Button
-document.addEventListener('click', function(e) {
+function handleValidateClick(e) {
     const validateBtn = e.target.closest('.validate-btn');
     if (validateBtn) {
         e.preventDefault();
@@ -338,10 +341,12 @@ document.addEventListener('click', function(e) {
             alert('An error occurred.');
         });
     }
-});
+}
+
+document.addEventListener('click', handleValidateClick);
 
 // Cancel Button
-document.addEventListener('click', function(e) {
+function handleCancelClick(e) {
     const cancelBtn = e.target.closest('.cancel-btn');
     if (cancelBtn) {
         e.preventDefault();
@@ -370,10 +375,12 @@ document.addEventListener('click', function(e) {
             alert('An error occurred.');
         });
     }
-});
+}
+
+document.addEventListener('click', handleCancelClick);
 
 // Re-Evaluate Button
-document.addEventListener('click', function(e) {
+function handleReevaluateClick(e) {
     const reevaluateBtn = e.target.closest('.reevaluate-btn');
     if (reevaluateBtn) {
         e.preventDefault();
@@ -400,6 +407,8 @@ document.addEventListener('click', function(e) {
             alert('An error occurred while updating the status.');
         });
     }
-});
+}
+
+document.addEventListener('click', handleReevaluateClick);
 </script>
 @endsection

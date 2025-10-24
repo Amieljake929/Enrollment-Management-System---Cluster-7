@@ -188,7 +188,7 @@
 
 <script>
 // View SHS Student
-document.addEventListener('click', function(e) {
+function handleViewShsClick(e) {
     const viewBtn = e.target.closest('.view-shs-btn');
     if (viewBtn) {
         e.preventDefault();
@@ -223,9 +223,9 @@ document.addEventListener('click', function(e) {
                 console.error('Fetch error:', error);
             });
     }
+}
 
-
-});
+document.addEventListener('click', handleViewShsClick);
 
 // Generate SHS Student Details HTML
 function generateShsStudentDetailsHTML(student) {
@@ -321,7 +321,7 @@ function generateShsStudentDetailsHTML(student) {
 
 <script>
 // Validate SHS
-document.addEventListener('click', function(e) {
+function handleValidateShsClick(e) {
     const btn = e.target.closest('.validate-shs-btn');
     if (btn) {
         e.preventDefault();
@@ -342,10 +342,12 @@ document.addEventListener('click', function(e) {
         })
         .catch(() => alert('An error occurred.'));
     }
-});
+}
+
+document.addEventListener('click', handleValidateShsClick);
 
 // Cancel SHS
-document.addEventListener('click', function(e) {
+function handleCancelShsClick(e) {
     const btn = e.target.closest('.cancel-shs-btn');
     if (btn) {
         e.preventDefault();
@@ -367,12 +369,14 @@ document.addEventListener('click', function(e) {
         })
         .catch(() => alert('An error occurred.'));
     }
-});
+}
+
+document.addEventListener('click', handleCancelShsClick);
 </script>
 
 <!-- Re-Evaluate SHS Button -->
 <script>
-document.addEventListener('click', function(e) {
+function handleReevaluateShsClick(e) {
     const reevaluateBtn = e.target.closest('.reevaluate-shs-btn');
     if (reevaluateBtn) {
         e.preventDefault();
@@ -400,7 +404,9 @@ document.addEventListener('click', function(e) {
             alert('An error occurred while updating the status.');
         });
     }
-});
+}
+
+document.addEventListener('click', handleReevaluateShsClick);
 </script>
 
 @endsection
