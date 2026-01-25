@@ -16,196 +16,372 @@
         </div>
     @endif
 
-    {{-- Dashboard Statistics --}}
-    <div class="mb-5">
-        <div class="card bg-primary text-white mb-4 shadow">
-            <div class="card-body d-flex justify-content-between align-items-center">
-                <div>
-                    <h3 class="card-title h5 mb-1">Total Enrolled Students</h3>
-                    <p class="display-4 mb-0">{{ $totalStudents ?? 0 }}</p>
+    {{-- Top Stats Cards (Same as Image Style) --}}
+    <div class="row g-3 mb-4">
+        <div class="col-md-2 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="text-muted mb-1">Total Enrollee</h6>
+                            <h3 class="fw-bold">{{ $totalStudents ?? 0 }}</h3>
+                        </div>
+                        <i class="bi bi-people-fill text-primary fs-3"></i>
+                    </div>
+                    <div class="mt-auto">
+                        <span class="badge bg-success-subtle text-success-emphasis">+4% from last week</span>
+                    </div>
                 </div>
-                <i class="bi bi-people-fill fs-1 opacity-75"></i>
             </div>
         </div>
 
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-3">
-                <div class="card bg-warning text-white shadow h-100">
-                    <div class="card-body d-flex justify-content-between align-items-center">
+        <div class="col-md-2 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <h5 class="card-title">Pending Admissions</h5>
-                            <p class="display-6 mb-0">{{ $pendingPercentage ?? 0 }}%</p>
+                            <h6 class="text-muted mb-1">Pending Admissions</h6>
+                            <h3 class="fw-bold">{{ $pendingCount ?? 0 }}</h3>
                         </div>
-                        <i class="bi bi-clock-history fs-2 opacity-75"></i>
+                        <i class="bi bi-clock-history text-warning fs-3"></i>
+                    </div>
+                    <div class="mt-auto">
+                        <span class="badge bg-success-subtle text-success-emphasis">+3% from last week</span>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="card bg-success text-white shadow h-100">
-                    <div class="card-body d-flex justify-content-between align-items-center">
+        </div>
+
+        <div class="col-md-2 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <h5 class="card-title">Waiting List</h5>
-                            <p class="display-6 mb-0">{{ $validatedPercentage ?? 0 }}%</p>
+                            <h6 class="text-muted mb-1">Waiting List</h6>
+                            <h3 class="fw-bold">{{ $waitingListCount ?? 0 }}</h3>
                         </div>
-                        <i class="bi bi-hourglass-split fs-2 opacity-75"></i>
+                        <i class="bi bi-hourglass-split text-success fs-3"></i>
+                    </div>
+                    <div class="mt-auto">
+                        <span class="badge bg-danger-subtle text-danger-emphasis">-12% from last week</span>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="card bg-danger text-white shadow h-100">
-                    <div class="card-body d-flex justify-content-between align-items-center">
+        </div>
+
+        <div class="col-md-2 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <h5 class="card-title">Cancelled Admissions</h5>
-                            <p class="display-6 mb-0">{{ $cancelledPercentage ?? 0 }}%</p>
+                            <h6 class="text-muted mb-1">Cancelled Admissions</h6>
+                            <h3 class="fw-bold">{{ $cancelledCount ?? 0 }}</h3>
                         </div>
-                        <i class="bi bi-x-circle fs-2 opacity-75"></i>
+                        <i class="bi bi-x-circle text-danger fs-3"></i>
+                    </div>
+                    <div class="mt-auto">
+                        <span class="badge bg-success-subtle text-success-emphasis">+34% from last week</span>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="card bg-warning text-white shadow h-100" style="background: linear-gradient(135deg, #fd7e14, #e8590c) !important;">
-                    <div class="card-body d-flex justify-content-between align-items-center">
+        </div>
+
+        <div class="col-md-2 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <h5 class="card-title">Re-evaluation</h5>
-                            <p class="display-6 mb-0">{{ $reEvaluatePercentage ?? 0 }}%</p>
+                            <h6 class="text-muted mb-1">Main Branch</h6>
+                            <h3 class="fw-bold">{{ $mainBranchCount ?? 0 }}</h3>
                         </div>
-                        <i class="bi bi-arrow-repeat fs-2 opacity-75"></i>
+                        <i class="bi bi-arrow-repeat text-info fs-3"></i>
+                    </div>
+                    <div class="mt-auto">
+                        <span class="badge bg-success-subtle text-success-emphasis">+34% from last week</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="text-muted mb-1">Bulacan Branch</h6>
+                            <h3 class="fw-bold">{{ $bulacanBranchCount ?? 0 }}</h3>
+                        </div>
+                        <i class="bi bi-building text-secondary fs-3"></i>
+                    </div>
+                    <div class="mt-auto">
+                        <span class="badge bg-success-subtle text-success-emphasis">+34% from last week</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- Enrollment Status Horizontal Bar Chart --}}
-    <div class="card shadow mb-4">
+    {{-- Main Area Chart: Enrollment Status Distribution --}}
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Enrollment Status Weekly Trend</h5>
+            <div class="btn-group btn-group-sm">
+                <button type="button" class="btn btn-outline-secondary">{{ $dateRange ?? 'Current Week' }}</button>
+            </div>
+        </div>
         <div class="card-body">
-            <h2 class="card-title text-center mb-4">Enrollment Status Distribution</h2>
-            <div class="d-flex justify-content-center">
-                <canvas id="statusPieChart" width="400" height="200" class="img-fluid"></canvas>
-            </div>
+            <canvas id="statusAreaChart" width="100%" height="20"></canvas>
         </div>
     </div>
 
-    {{-- Campus Distribution Horizontal Bar Chart --}}
-    <div class="card shadow mb-4">
-        <div class="card-body">
-            <h2 class="card-title text-center mb-4">Campus Distribution</h2>
-            <div class="d-flex justify-content-center">
-                <canvas id="campusPieChart" width="400" height="200" class="img-fluid"></canvas>
+    {{-- Two Columns Layout for Bar Charts and Gauge --}}
+    <div class="row g-4">
+
+        {{-- Left Column: Enrolled Students by Course/Strand --}}
+        <div class="col-lg-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Enrolled Students by Course/Strand</h5>
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" class="btn btn-outline-secondary"><i class="bi bi-arrows-angle-expand"></i></button>
+                        <button type="button" class="btn btn-outline-secondary"><i class="bi bi-x"></i></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="fw-medium">Total Enrolled Students: {{ $totalStudents ?? 0 }}</span>
+                    </div>
+
+                    <!-- Tabs for College and SHS -->
+                    <ul class="nav nav-tabs" id="courseStrandTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="college-tab" data-bs-toggle="tab" data-bs-target="#college" type="button" role="tab" aria-controls="college" aria-selected="true">College</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="shs-tab" data-bs-toggle="tab" data-bs-target="#shs" type="button" role="tab" aria-controls="shs" aria-selected="false">SHS</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-3" id="courseStrandTabContent">
+                        <!-- College Tab -->
+                        <div class="tab-pane fade show active" id="college" role="tabpanel" aria-labelledby="college-tab">
+                            @if($collegeCourses->isNotEmpty())
+                                @foreach($collegeCourses as $course)
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="me-2">{{ $course['name'] }}</span>
+                                        <div class="flex-grow-1">
+                                            <div class="progress" style="height: 8px;">
+                                                <div class="progress-bar bg-primary" role="progressbar" style="width: {{ $totalStudents > 0 ? ($course['count'] / $totalStudents) * 100 : 0 }}%;" aria-valuenow="{{ $course['count'] }}" aria-valuemin="0" aria-valuemax="{{ $totalStudents }}"></div>
+                                            </div>
+                                        </div>
+                                        <span class="ms-2">{{ $course['count'] }}</span>
+                                    </div>
+                                @endforeach
+                            @else
+                                <p class="text-muted">No college courses data available.</p>
+                            @endif
+                        </div>
+                        <!-- SHS Tab -->
+                        <div class="tab-pane fade" id="shs" role="tabpanel" aria-labelledby="shs-tab">
+                            @if($shsStrands->isNotEmpty())
+                                @foreach($shsStrands as $strand)
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="me-2">{{ $strand['name'] }}</span>
+                                        <div class="flex-grow-1">
+                                            <div class="progress" style="height: 8px;">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: {{ $totalStudents > 0 ? ($strand['count'] / $totalStudents) * 100 : 0 }}%;" aria-valuenow="{{ $strand['count'] }}" aria-valuemin="0" aria-valuemax="{{ $totalStudents }}"></div>
+                                            </div>
+                                        </div>
+                                        <span class="ms-2">{{ $strand['count'] }}</span>
+                                    </div>
+                                @endforeach
+                            @else
+                                <p class="text-muted">No SHS strands data available.</p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    {{-- Student Type Horizontal Bar Chart --}}
-    <div class="card shadow">
-        <div class="card-body">
-            <h2 class="card-title text-center mb-4">Student Type Distribution</h2>
-            <div class="d-flex justify-content-center">
-                <canvas id="typePieChart" width="400" height="200" class="img-fluid"></canvas>
+        {{-- Middle Column: Top Team Volunteer (Student Type) --}}
+        <div class="col-lg-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Student Type Distribution</h5>
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" class="btn btn-outline-secondary"><i class="bi bi-arrows-angle-expand"></i></button>
+                        <button type="button" class="btn btn-outline-secondary"><i class="bi bi-x"></i></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-borderless table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Count</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><i class="bi bi-person-plus me-2 text-success"></i>New Regular</td>
+                                    <td>{{ $newRegularPercentage ?? 0 }}%</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-arrow-left-right me-2 text-warning"></i>Transferee</td>
+                                    <td>{{ $transfereePercentage ?? 0 }}%</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-arrow-counterclockwise me-2 text-info"></i>Returnee</td>
+                                    <td>{{ $returneePercentage ?? 0 }}%</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-question-circle me-2 text-muted"></i>Unassigned</td>
+                                    <td>0%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
+
+        {{-- Right Column: Active Member Online (Gauge Chart) --}}
+        <div class="col-lg-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Active Enrollment Sessions</h5>
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" class="btn btn-outline-secondary"><i class="bi bi-arrows-angle-expand"></i></button>
+                        <button type="button" class="btn btn-outline-secondary"><i class="bi bi-x"></i></button>
+                    </div>
+                </div>
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                    <div class="gauge-container position-relative" style="width: 150px; height: 150px;">
+                        <canvas id="activeGauge" width="150" height="150"></canvas>
+                        <div class="position-absolute top-50 start-50 translate-middle text-center">
+                            <div class="h4 fw-bold mb-0" id="gaugeValue">3,160%</div>
+                            <small class="text-muted">of capacity</small>
+                        </div>
+                    </div>
+                    <div class="mt-3 w-100">
+                        <div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
+    {{-- CHART.JS SCRIPTS --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Enrollment Status Chart
-        const statusCtx = document.getElementById('statusPieChart').getContext('2d');
-        new Chart(statusCtx, {
-            type: 'bar',
+        // Area Chart for Enrollment Status
+        const statusAreaCtx = document.getElementById('statusAreaChart').getContext('2d');
+        new Chart(statusAreaCtx, {
+            type: 'line',
             data: {
-                labels: ['Pending Admissions', 'Waiting List', 'Cancelled Admissions', 'Re-evaluation'],
-                datasets: [{
-                    label: 'Percentage (%)',
-                    data: [{{ $pendingPercentage ?? 0 }}, {{ $validatedPercentage ?? 0 }}, {{ $cancelledPercentage ?? 0 }}, {{ $reEvaluatePercentage ?? 0 }}],
-                    backgroundColor: [
-                        'rgba(245, 158, 11, 0.8)',
-                        'rgba(34, 197, 94, 0.8)',
-                        'rgba(239, 68, 68, 0.8)',
-                        'rgba(251, 146, 60, 0.8)'
-                    ],
-                    borderWidth: 2
-                }]
+                labels: @json($dates ?? []),
+                datasets: [
+                    {
+                        label: 'Pending Admissions',
+                        data: @json($pendingWeekly ?? []),
+                        borderColor: 'rgba(245, 158, 11, 0.8)',
+                        backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Waiting List',
+                        data: @json($waitingListWeekly ?? []),
+                        borderColor: 'rgba(34, 197, 94, 0.8)',
+                        backgroundColor: 'rgba(34, 197, 94, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Cancelled Admissions',
+                        data: @json($cancelledWeekly ?? []),
+                        borderColor: 'rgba(239, 68, 68, 0.8)',
+                        backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Main Branch',
+                        data: @json($mainBranchWeekly ?? []),
+                        borderColor: 'rgba(251, 146, 60, 0.8)',
+                        backgroundColor: 'rgba(251, 146, 60, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
             },
             options: {
-                indexAxis: 'y',
                 responsive: true,
                 plugins: {
                     legend: { position: 'top' },
-                    title: { display: true, text: 'Status (%)' }
+                    tooltip: { mode: 'index', intersect: false }
                 },
                 scales: {
-                    x: {
-                        beginAtZero: true,
-                        max: 100
+                    x: { grid: { display: false } },
+                    y: {
+                        beginAtZero: true
                     }
                 }
             }
         });
 
-        // Campus Chart
-        const campusCtx = document.getElementById('campusPieChart').getContext('2d');
-        new Chart(campusCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Main Campus', 'Bulacan'],
-                datasets: [{
-                    label: 'Percentage (%)',
-                    data: [{{ $mainCampusPercentage ?? 0 }}, {{ $bulacanPercentage ?? 0 }}],
-                    backgroundColor: [
-                        'rgba(59, 130, 246, 0.8)',
-                        'rgba(168, 85, 247, 0.8)'
-                    ],
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                plugins: {
-                    legend: { position: 'top' },
-                    title: { display: true, text: 'Campus (%)' }
-                },
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        max: 100
-                    }
-                }
-            }
-        });
+        // Gauge Chart for Active Members
+        const gaugeCtx = document.getElementById('activeGauge').getContext('2d');
+        let gaugeValue = 3160; // Example value
+        let gaugeMax = 10000;
 
-        // Student Type Chart
-        const typeCtx = document.getElementById('typePieChart').getContext('2d');
-        new Chart(typeCtx, {
-            type: 'bar',
-            data: {
-                labels: ['New Regular', 'Transferee', 'Returnee'],
-                datasets: [{
-                    label: 'Percentage (%)',
-                    data: [{{ $newRegularPercentage ?? 0 }}, {{ $transfereePercentage ?? 0 }}, {{ $returneePercentage ?? 0 }}],
-                    backgroundColor: [
-                        'rgba(16, 185, 129, 0.8)',
-                        'rgba(245, 158, 11, 0.8)',
-                        'rgba(147, 51, 234, 0.8)'
-                    ],
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                plugins: {
-                    legend: { position: 'top' },
-                    title: { display: true, text: 'Type (%)' }
-                },
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        max: 100
-                    }
-                }
-            }
-        });
+        function drawGauge(ctx, value, max) {
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            const centerX = ctx.canvas.width / 2;
+            const centerY = ctx.canvas.height / 2;
+            const radius = Math.min(centerX, centerY) - 10;
+
+            // Draw background arc
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+            ctx.strokeStyle = '#e5e7eb';
+            ctx.lineWidth = 10;
+            ctx.stroke();
+
+            // Draw filled arc
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, -Math.PI / 2, -Math.PI / 2 + (value / max) * 2 * Math.PI);
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 10;
+            ctx.stroke();
+
+            // Draw needle
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            const angle = (-Math.PI / 2) + (value / max) * 2 * Math.PI;
+            ctx.lineTo(
+                centerX + Math.cos(angle) * (radius - 20),
+                centerY + Math.sin(angle) * (radius - 20)
+            );
+            ctx.strokeStyle = '#374151';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Draw center circle
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 5, 0, 2 * Math.PI);
+            ctx.fillStyle = '#374151';
+            ctx.fill();
+        }
+
+        drawGauge(gaugeCtx, gaugeValue, gaugeMax);
+
+        // Update gauge value dynamically if needed
+        document.getElementById('gaugeValue').textContent = `${gaugeValue}%`;
     </script>
 
 </div>

@@ -1,230 +1,299 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
+<div class="container-fluid px-4 py-4">
 
     {{-- Header --}}
-    <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-800">Enrollment Dashboard</h1>
-        <p class="text-gray-600">Welcome back, {{ Auth::user()->name }}! You are logged in as <strong>{{ Auth::user()->role }}</strong>.</p>
+    <div class="mb-4">
+        <h1 class="h2 fw-bold text-gray-800">Enrollment Dashboard</h1>
+        <p class="text-muted">Welcome back, {{ Auth::user()->name }}! You are logged in as <strong>{{ Auth::user()->role }}</strong>.</p>
     </div>
 
     {{-- Flash Message --}}
     @if(session('message'))
-        <div class="mb-4 p-4 bg-blue-100 border border-blue-400 text-blue-700 rounded">
+        <div class="alert alert-info alert-dismissible fade show mb-4" role="alert">
             {{ session('message') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
 
-    {{-- Dashboard Statistics --}}
-    <div class="mb-5">
-        <div class="card bg-primary text-white mb-4 shadow">
-            <div class="card-body d-flex justify-content-between align-items-center">
-                <div>
-                    <h3 class="card-title h5 mb-1">Total Enrolled Students</h3>
-                    <p class="display-4 mb-0">{{ $totalStudents ?? 0 }}</p>
+    {{-- Top Stats Cards (Same as Image Style) --}}
+    <div class="row g-3 mb-4">
+        <div class="col-md-2 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="text-muted mb-1">Total Enrollee</h6>
+                            <h3 class="fw-bold">{{ $totalStudents ?? 0 }}</h3>
+                        </div>
+                        <i class="bi bi-people-fill text-primary fs-3"></i>
+                    </div>
+                    <div class="mt-auto">
+                        <span class="badge bg-success-subtle text-success-emphasis">+4% from last week</span>
+                    </div>
                 </div>
-                <i class="bi bi-people-fill fs-1 opacity-75"></i>
             </div>
         </div>
 
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-3">
-                <div class="card bg-warning text-white shadow h-100">
-                    <div class="card-body d-flex justify-content-between align-items-center">
+        <div class="col-md-2 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <h5 class="card-title">Pending Admissions</h5>
-                            <p class="display-6 mb-0">{{ $pendingPercentage ?? 0 }}%</p>
+                            <h6 class="text-muted mb-1">Pending Admissions</h6>
+                            <h3 class="fw-bold">{{ $pendingCount ?? 0 }}</h3>
                         </div>
-                        <i class="bi bi-clock-history fs-2 opacity-75"></i>
+                        <i class="bi bi-clock-history text-warning fs-3"></i>
+                    </div>
+                    <div class="mt-auto">
+                        <span class="badge bg-success-subtle text-success-emphasis">+3% from last week</span>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="card bg-success text-white shadow h-100">
-                    <div class="card-body d-flex justify-content-between align-items-center">
+        </div>
+
+        <div class="col-md-2 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <h5 class="card-title">Waiting List</h5>
-                            <p class="display-6 mb-0">{{ $validatedPercentage ?? 0 }}%</p>
+                            <h6 class="text-muted mb-1">Waiting List</h6>
+                            <h3 class="fw-bold">{{ $waitingListCount ?? 0 }}</h3>
                         </div>
-                        <i class="bi bi-hourglass-split fs-2 opacity-75"></i>
+                        <i class="bi bi-hourglass-split text-success fs-3"></i>
+                    </div>
+                    <div class="mt-auto">
+                        <span class="badge bg-danger-subtle text-danger-emphasis">-12% from last week</span>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="card bg-danger text-white shadow h-100">
-                    <div class="card-body d-flex justify-content-between align-items-center">
+        </div>
+
+        <div class="col-md-2 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <h5 class="card-title">Cancelled Admissions</h5>
-                            <p class="display-6 mb-0">{{ $cancelledPercentage ?? 0 }}%</p>
+                            <h6 class="text-muted mb-1">Cancelled Admissions</h6>
+                            <h3 class="fw-bold">{{ $cancelledCount ?? 0 }}</h3>
                         </div>
-                        <i class="bi bi-x-circle fs-2 opacity-75"></i>
+                        <i class="bi bi-x-circle text-danger fs-3"></i>
+                    </div>
+                    <div class="mt-auto">
+                        <span class="badge bg-success-subtle text-success-emphasis">+34% from last week</span>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="card bg-warning text-white shadow h-100" style="background: linear-gradient(135deg, #fd7e14, #e8590c) !important;">
-                    <div class="card-body d-flex justify-content-between align-items-center">
+        </div>
+
+        <div class="col-md-2 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <h5 class="card-title">Re-evaluation</h5>
-                            <p class="display-6 mb-0">{{ $reEvaluatePercentage ?? 0 }}%</p>
+                            <h6 class="text-muted mb-1">Main Branch</h6>
+                            <h3 class="fw-bold">{{ $mainBranchCount ?? 0 }}</h3>
                         </div>
-                        <i class="bi bi-arrow-repeat fs-2 opacity-75"></i>
+                        <i class="bi bi-arrow-repeat text-info fs-3"></i>
+                    </div>
+                    <div class="mt-auto">
+                        <span class="badge bg-success-subtle text-success-emphasis">+34% from last week</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2 col-sm-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="text-muted mb-1">Bulacan Branch</h6>
+                            <h3 class="fw-bold">{{ $bulacanBranchCount ?? 0 }}</h3>
+                        </div>
+                        <i class="bi bi-building text-secondary fs-3"></i>
+                    </div>
+                    <div class="mt-auto">
+                        <span class="badge bg-success-subtle text-success-emphasis">+34% from last week</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- Enrollment Status Horizontal Bar Chart --}}
-    <div class="card shadow mb-4">
+    {{-- Main Area Chart: Enrollment Status Distribution --}}
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Enrollment Status Weekly Trend</h5>
+            <div class="btn-group btn-group-sm">
+                <button type="button" class="btn btn-outline-secondary">{{ $dateRange ?? 'Current Week' }}</button>
+            </div>
+        </div>
         <div class="card-body">
-            <h2 class="card-title text-center mb-4">Enrollment Status Distribution</h2>
-            <div class="d-flex justify-content-center">
-                <canvas id="statusPieChart" width="400" height="200" class="img-fluid"></canvas>
-            </div>
+            <canvas id="statusAreaChart" width="100%" height="20"></canvas>
         </div>
     </div>
 
-    {{-- Campus Distribution Horizontal Bar Chart --}}
-    <div class="card shadow mb-4">
-        <div class="card-body">
-            <h2 class="card-title text-center mb-4">Campus Distribution</h2>
-            <div class="d-flex justify-content-center">
-                <canvas id="campusPieChart" width="400" height="200" class="img-fluid"></canvas>
+    {{-- Two Columns Layout for Bar Charts and Gauge --}}
+    <div class="row g-4">
+
+        {{-- Left Column: Enrolled Students by Course/Strand --}}
+        <div class="col-lg-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Enrolled Students by Course/Strand</h5>
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" class="btn btn-outline-secondary"><i class="bi bi-arrows-angle-expand"></i></button>
+                        <button type="button" class="btn btn-outline-secondary"><i class="bi bi-x"></i></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="fw-medium">Total Enrolled Students: {{ $totalStudents ?? 0 }}</span>
+                    </div>
+
+                    <!-- Tabs for College and SHS -->
+                    <ul class="nav nav-tabs" id="courseStrandTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="college-tab" data-bs-toggle="tab" data-bs-target="#college" type="button" role="tab" aria-controls="college" aria-selected="true">College</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="shs-tab" data-bs-toggle="tab" data-bs-target="#shs" type="button" role="tab" aria-controls="shs" aria-selected="false">SHS</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-3" id="courseStrandTabContent">
+                        <!-- College Tab -->
+                        <div class="tab-pane fade show active" id="college" role="tabpanel" aria-labelledby="college-tab">
+                            @if($collegeCourses->isNotEmpty())
+                                @foreach($collegeCourses as $course)
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="me-2">{{ $course['name'] }}</span>
+                                        <div class="flex-grow-1">
+                                            <div class="progress" style="height: 8px;">
+                                                <div class="progress-bar bg-primary" role="progressbar" style="width: {{ $totalStudents > 0 ? ($course['count'] / $totalStudents) * 100 : 0 }}%;" aria-valuenow="{{ $course['count'] }}" aria-valuemin="0" aria-valuemax="{{ $totalStudents }}"></div>
+                                            </div>
+                                        </div>
+                                        <span class="ms-2">{{ $course['count'] }}</span>
+                                    </div>
+                                @endforeach
+                            @else
+                                <p class="text-muted">No college courses data available.</p>
+                            @endif
+                        </div>
+                        <!-- SHS Tab -->
+                        <div class="tab-pane fade" id="shs" role="tabpanel" aria-labelledby="shs-tab">
+                            @if($shsStrands->isNotEmpty())
+                                @foreach($shsStrands as $strand)
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="me-2">{{ $strand['name'] }}</span>
+                                        <div class="flex-grow-1">
+                                            <div class="progress" style="height: 8px;">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: {{ $totalStudents > 0 ? ($strand['count'] / $totalStudents) * 100 : 0 }}%;" aria-valuenow="{{ $strand['count'] }}" aria-valuemin="0" aria-valuemax="{{ $totalStudents }}"></div>
+                                            </div>
+                                        </div>
+                                        <span class="ms-2">{{ $strand['count'] }}</span>
+                                    </div>
+                                @endforeach
+                            @else
+                                <p class="text-muted">No SHS strands data available.</p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    {{-- Student Type Horizontal Bar Chart --}}
-    <div class="card shadow">
-        <div class="card-body">
-            <h2 class="card-title text-center mb-4">Student Type Distribution</h2>
-            <div class="d-flex justify-content-center">
-                <canvas id="typePieChart" width="400" height="200" class="img-fluid"></canvas>
+        {{-- Middle Column: Top Team Volunteer (Student Type) --}}
+        <div class="col-lg-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Student Type Distribution</h5>
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" class="btn btn-outline-secondary"><i class="bi bi-arrows-angle-expand"></i></button>
+                        <button type="button" class="btn btn-outline-secondary"><i class="bi bi-x"></i></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-borderless table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Count</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><i class="bi bi-person-plus me-2 text-success"></i>New Regular</td>
+                                    <td>{{ $newRegularPercentage ?? 0 }}%</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-arrow-left-right me-2 text-warning"></i>Transferee</td>
+                                    <td>{{ $transfereePercentage ?? 0 }}%</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-arrow-counterclockwise me-2 text-info"></i>Returnee</td>
+                                    <td>{{ $returneePercentage ?? 0 }}%</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-question-circle me-2 text-muted"></i>Unassigned</td>
+                                    <td>0%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
+
+        {{-- Right Column: Active Member Online (Gauge Chart) --}}
+        <div class="col-lg-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Active Enrollment Sessions</h5>
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" class="btn btn-outline-secondary"><i class="bi bi-arrows-angle-expand"></i></button>
+                        <button type="button" class="btn btn-outline-secondary"><i class="bi bi-x"></i></button>
+                    </div>
+                </div>
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                    <div class="gauge-container position-relative" style="width: 150px; height: 150px;">
+                        <canvas id="activeGauge" width="150" height="150"></canvas>
+                        <div class="position-absolute top-50 start-50 translate-middle text-center">
+                            <div class="h4 fw-bold mb-0" id="gaugeValue">3,160%</div>
+                            <small class="text-muted">of capacity</small>
+                        </div>
+                    </div>
+                    <div class="mt-3 w-100">
+                        <div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        // Enrollment Status Chart
-        const statusCtx = document.getElementById('statusPieChart').getContext('2d');
-        new Chart(statusCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Pending Admissions', 'Waiting List', 'Cancelled Admissions', 'Re-evaluation'],
-                datasets: [{
-                    label: 'Percentage (%)',
-                    data: [{{ $pendingPercentage ?? 0 }}, {{ $validatedPercentage ?? 0 }}, {{ $cancelledPercentage ?? 0 }}, {{ $reEvaluatePercentage ?? 0 }}],
-                    backgroundColor: [
-                        'rgba(245, 158, 11, 0.8)',
-                        'rgba(34, 197, 94, 0.8)',
-                        'rgba(239, 68, 68, 0.8)',
-                        'rgba(251, 146, 60, 0.8)'
-                    ],
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                plugins: {
-                    legend: { position: 'top' },
-                    title: { display: true, text: 'Status (%)' }
-                },
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        max: 100
-                    }
-                }
-            }
-        });
 
-        // Campus Chart
-        const campusCtx = document.getElementById('campusPieChart').getContext('2d');
-        new Chart(campusCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Main Campus', 'Bulacan'],
-                datasets: [{
-                    label: 'Percentage (%)',
-                    data: [{{ $mainCampusPercentage ?? 0 }}, {{ $bulacanPercentage ?? 0 }}],
-                    backgroundColor: [
-                        'rgba(59, 130, 246, 0.8)',
-                        'rgba(168, 85, 247, 0.8)'
-                    ],
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                plugins: {
-                    legend: { position: 'top' },
-                    title: { display: true, text: 'Campus (%)' }
-                },
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        max: 100
-                    }
-                }
-            }
-        });
-
-        // Student Type Chart
-        const typeCtx = document.getElementById('typePieChart').getContext('2d');
-        new Chart(typeCtx, {
-            type: 'bar',
-            data: {
-                labels: ['New Regular', 'Transferee', 'Returnee'],
-                datasets: [{
-                    label: 'Percentage (%)',
-                    data: [{{ $newRegularPercentage ?? 0 }}, {{ $transfereePercentage ?? 0 }}, {{ $returneePercentage ?? 0 }}],
-                    backgroundColor: [
-                        'rgba(16, 185, 129, 0.8)',
-                        'rgba(245, 158, 11, 0.8)',
-                        'rgba(147, 51, 234, 0.8)'
-                    ],
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                plugins: {
-                    legend: { position: 'top' },
-                    title: { display: true, text: 'Type (%)' }
-                },
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        max: 100
-                    }
-                }
-            }
-        });
-    </script>
 
 </div>
 
-<!-- TERMS MODAL -->
+<!-- TERMS MODAL (Same as before but with improved styling) -->
 @if(Auth::user()->has_agree_term == 'pending' && session('just_logged_in'))
 <div id="termsModal" class="modal-overlay">
     <div class="modal-content">
        
-        <div class="text-center mb-6">
-                <i class="bi bi-shield-lock me-2"></i>
-
+        <div class="text-center mb-4">
+            <i class="bi bi-shield-lock me-2 fs-2 text-primary"></i>
             <h5 class="modal-title d-flex align-items-center justify-content-center">
                 Terms and Conditions for Administrators
             </h5>
             <div class="modal-underline"></div>
         </div>
 
-        <div class="modal-body" style="max-height: 40vh; overflow-y: auto; text-align: left; padding-right: 10px;">
+        <div class="modal-body" style="max-height: 40vh; overflow-y: auto; padding: 1rem 1.5rem;">
 
             <p class="lead"><strong>1. Introduction & Acceptance</strong></p>
             <p><strong>Agreement to Terms</strong><br>
@@ -233,7 +302,7 @@
             <p><strong>Effective Date</strong><br>
             This Agreement is effective as of September 1, 2025.</p>
 
-            <hr class="my-4">
+            <hr class="my-3">
 
             <p class="lead"><strong>2. Administrator Access & Responsibilities</strong></p>
             <p><strong>Access Granted</strong><br>
@@ -255,7 +324,7 @@
             <p><strong>Maintain Accurate Information</strong><br>
             You agree to provide and maintain only true, accurate, current, and complete information when managing administrative settings.</p>
 
-            <hr class="my-4">
+            <hr class="my-3">
 
             <p class="lead"><strong>3. Data Access & Privacy</strong></p>
             <p><strong>Access to End-User Data</strong><br>
@@ -267,7 +336,7 @@
             <p><strong>Third-Party Disclosure</strong><br>
             No student or system data may be disclosed to third parties without explicit written authorization from Bestlink College of the Philippines, unless required by law.</p>
 
-            <hr class="my-4">
+            <hr class="my-3">
 
             <p class="lead"><strong>4. Confidentiality & Security</strong></p>
             <p><strong>Confidential Information</strong><br>
@@ -287,7 +356,7 @@
                 <li>Adherence to institutional security protocols</li>
             </ul>
 
-            <hr class="my-4">
+            <hr class="my-3">
 
             <p class="lead"><strong>5. Prohibited Activities & Acceptable Use</strong></p>
             <p><strong>Prohibited Conduct</strong><br>
@@ -302,7 +371,7 @@
             <p><strong>No Reverse Engineering</strong><br>
             You agree not to decompile, reverse engineer, or disassemble the Platform’s software or any of its components.</p>
 
-            <hr class="my-4">
+            <hr class="my-3">
 
             <p class="lead"><strong>6. Consequences of Violation</strong></p>
             <p><strong>Suspension or Termination</strong><br>
@@ -311,22 +380,22 @@
             <p><strong>Liability for Damages</strong><br>
             You may be held liable for any losses or damages incurred by Bestlink College of the Philippines as a result of your misuse of administrative access or violation of this Agreement.</p>
 
-            <hr class="my-4">
+            <hr class="my-3">
 
             <p class="lead"><strong>7. Audit & Monitoring</strong></p>
             <p>Administrator activities may be logged and monitored for compliance, security, and audit purposes. Logs may be reviewed periodically or in response to suspected violations.</p>
 
-            <hr class="my-4">
+            <hr class="my-3">
 
             <p class="lead"><strong>8. Training & Compliance</strong></p>
             <p>Administrators must complete any required training modules or compliance briefings related to data privacy, system usage, and institutional policies.</p>
 
-            <hr class="my-4">
+            <hr class="my-3">
 
             <p class="lead"><strong>9. Dispute Resolution</strong></p>
             <p>Any disputes arising from this Agreement shall be resolved through internal administrative procedures of Bestlink College of the Philippines before resorting to external legal remedies.</p>
 
-            <hr class="my-4">
+            <hr class="my-3">
 
             <p class="lead"><strong>10. Changes to Terms & Governing Law</strong></p>
             <p><strong>Right to Change Terms</strong><br>
@@ -335,18 +404,18 @@
             <p><strong>Governing Law</strong><br>
             This Agreement shall be governed by and construed in accordance with the laws of the Republic of the Philippines, including the Data Privacy Act of 2012.</p>
 
-            <hr class="my-4">
+            <hr class="my-3">
 
             <p class="lead"><strong>11. Acceptance Mechanism</strong></p>
             <p>By logging into the Platform or performing administrative functions, you acknowledge that you have read, understood, and accepted these Terms and Conditions for Administrators.</p>
 
         </div>
 
-        <div class="modal-footer">
-            <button type="button" id="cancelTerms" class="btn-custom-secondary">
+        <div class="modal-footer p-3">
+            <button type="button" id="cancelTerms" class="btn btn-outline-secondary rounded-pill px-4">
                 Cancel
             </button>
-            <button type="button" id="agreeTerms" class="btn-custom-primary" disabled>
+            <button type="button" id="agreeTerms" class="btn btn-primary rounded-pill px-4" disabled>
                 Agree
             </button>
         </div>
@@ -372,10 +441,9 @@
 
     .modal-content {
         background: white;
-        padding: 2.5rem;
+        padding: 1.5rem;
         border-radius: 1rem;
-        width: 75%;
-        height: 60%;
+        width: 90%;
         max-width: 520px;
         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
         transform: scale(0.95);
@@ -392,11 +460,6 @@
             opacity: 1;
             transform: scale(1);
         }
-    }
-    .bi-shield-lock{
-
-        font-size: 30px;
-
     }
 
     .modal-title {
@@ -416,21 +479,20 @@
     }
 
     .modal-body {
-        font-size: 0.75rem;
+        font-size: 0.85rem;
         line-height: 1.7;
         color: #4b5563;
-        text-align: center;
+        text-align: left;
     }
 
     .modal-footer {
         display: flex;
         justify-content: center;
         gap: 1rem;
-        margin-top: 2rem;
+        margin-top: 1rem;
         flex-wrap: wrap;
     }
 
-    /* Custom Button Styles — Compatible with Bootstrap */
     .btn-custom-primary {
         background-color: #5044e4;
         border: none;
@@ -478,24 +540,19 @@
         overflow: hidden;
     }
 
-    /* Prevent closing by clicking backdrop */
-    .modal-overlay {
-        animation: fadeIn 0.4s ease forwards;
-    }
-
-    @keyframes fadeIn {
-        to {
-            opacity: 1;
-            pointer-events: auto;
-        }
-    }
     .btn-custom-primary:disabled {
-    background-color: #d1d5db;
-    color: #6b7280;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-    opacity: 0.7;
+        background-color: #d1d5db;
+        color: #6b7280;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+        opacity: 0.7;
+    }
+    .chart-canvas {
+    width: 100% !important;
+    height: 180px !important; /* Pwedeng baguhin: 150px, 120px, 100px */
+    max-width: 400px;
+    margin: 0 auto;
 }
 </style>
 
@@ -514,7 +571,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // >>>>>>>>>> NEW: Enable Agree button only when scrolled to bottom <<<<<<<<<<
+    // Enable Agree button only when scrolled to bottom
     const modalBody = document.querySelector('.modal-body');
     if (modalBody && agreeBtn) {
         modalBody.addEventListener('scroll', function() {
@@ -528,7 +585,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function closeModal() {
         if (modal) {
             modal.style.opacity = '0';
-            modal.style.pointerEvents = 'none';
+            modal.style.pointer-events = 'none';
             setTimeout(() => {
                 modal.style.display = 'none';
                 document.body.classList.remove('modal-open');
@@ -583,4 +640,138 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 @endif
+
+{{-- CHART.JS SCRIPTS --}}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Area Chart for Enrollment Status
+    const statusAreaCtx = document.getElementById('statusAreaChart').getContext('2d');
+    new Chart(statusAreaCtx, {
+        type: 'line',
+        data: {
+            labels: @json($dates ?? []),
+            datasets: [
+                {
+                    label: 'Pending Admissions',
+                    data: @json($pendingWeekly ?? []),
+                    borderColor: 'rgba(245, 158, 11, 0.8)',
+                    backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                },
+                {
+                    label: 'Waiting List',
+                    data: @json($waitingListWeekly ?? []),
+                    borderColor: 'rgba(34, 197, 94, 0.8)',
+                    backgroundColor: 'rgba(34, 197, 94, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                },
+                {
+                    label: 'Cancelled Admissions',
+                    data: @json($cancelledWeekly ?? []),
+                    borderColor: 'rgba(239, 68, 68, 0.8)',
+                    backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                },
+                {
+                    label: 'Main Branch',
+                    data: @json($mainBranchWeekly ?? []),
+                    borderColor: 'rgba(251, 146, 60, 0.8)',
+                    backgroundColor: 'rgba(251, 146, 60, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' },
+                tooltip: { mode: 'index', intersect: false }
+            },
+            scales: {
+                x: { grid: { display: false } },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Campus Pie Chart
+    const campusPieCtx = document.getElementById('campusPieChart').getContext('2d');
+    new Chart(campusPieCtx, {
+        type: 'pie',
+        data: {
+            labels: ['Main Campus', 'Bulacan'],
+            datasets: [{
+                data: [{{ $mainCampusPercentage ?? 0 }}, {{ $bulacanPercentage ?? 0 }}],
+                backgroundColor: [
+                    'rgba(59, 130, 246, 0.8)',
+                    'rgba(168, 85, 247, 0.8)'
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom' },
+                tooltip: { callbacks: { label: (ctx) => `${ctx.label}: ${ctx.raw}%` } }
+            }
+        }
+    });
+
+    // Gauge Chart for Active Members
+    const gaugeCtx = document.getElementById('activeGauge').getContext('2d');
+    let gaugeValue = 3160; // Example value
+    let gaugeMax = 10000;
+
+    function drawGauge(ctx, value, max) {
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        const centerX = ctx.canvas.width / 2;
+        const centerY = ctx.canvas.height / 2;
+        const radius = Math.min(centerX, centerY) - 10;
+
+        // Draw background arc
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+        ctx.strokeStyle = '#e5e7eb';
+        ctx.lineWidth = 10;
+        ctx.stroke();
+
+        // Draw filled arc
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, -Math.PI / 2, -Math.PI / 2 + (value / max) * 2 * Math.PI);
+        ctx.strokeStyle = '#10b981';
+        ctx.lineWidth = 10;
+        ctx.stroke();
+
+        // Draw needle
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        const angle = (-Math.PI / 2) + (value / max) * 2 * Math.PI;
+        ctx.lineTo(
+            centerX + Math.cos(angle) * (radius - 20),
+            centerY + Math.sin(angle) * (radius - 20)
+        );
+        ctx.strokeStyle = '#374151';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        // Draw center circle
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 5, 0, 2 * Math.PI);
+        ctx.fillStyle = '#374151';
+        ctx.fill();
+    }
+
+    drawGauge(gaugeCtx, gaugeValue, gaugeMax);
+
+    // Update gauge value dynamically if needed
+    document.getElementById('gaugeValue').textContent = `${gaugeValue}%`;
+</script>
+
 @endsection
