@@ -6,9 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\CollegeStatus;
 use App\Models\ShsStatus;
 use App\Models\CollegeEnrollmentPreference;
+use App\Models\ShsEnrollmentPreference;
 use App\Models\CollegeStudent;
 use App\Models\CollegeStudentType;
 use App\Models\CollegeBranch;
+use App\Models\CollegeCourse;
+use App\Models\ShsCourse;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -34,11 +38,10 @@ class DashboardController extends Controller
 
         $totalStudents = $totalPending + $totalValidated + $totalCancelled + $totalReEvaluate;
 
-        // Percentages for status
-        $pendingPercentage = $totalStudents > 0 ? round(($totalPending / $totalStudents) * 100, 1) : 0;
-        $validatedPercentage = $totalStudents > 0 ? round(($totalValidated / $totalStudents) * 100, 1) : 0;
-        $cancelledPercentage = $totalStudents > 0 ? round(($totalCancelled / $totalStudents) * 100, 1) : 0;
-        $reEvaluatePercentage = $totalStudents > 0 ? round(($totalReEvaluate / $totalStudents) * 100, 1) : 0;
+        // Counts for status (no percentages)
+        $pendingCount = $totalPending;
+        $waitingListCount = $totalValidated; // Assuming Validated = Waiting List
+        $cancelledCount = $totalCancelled;
 
         // Campus counts (assuming branch names 'Main Campus' and 'Bulacan')
         $mainCampusCollege = CollegeEnrollmentPreference::whereHas('branch', function($q) {
@@ -48,9 +51,13 @@ class DashboardController extends Controller
             $q->where('branch_name', 'like', '%Bulacan%');
         })->count();
 
-        // For SHS, assuming similar ShsBranch model
-        $mainCampusShs = 0; // Placeholder - adjust if ShsBranch exists
-        $bulacanShs = 0; // Placeholder - adjust if ShsBranch exists
+        // For SHS branches
+        $mainCampusShs = ShsEnrollmentPreference::whereHas('branch', function($q) {
+            $q->where('branch_name', 'like', '%Main%');
+        })->count();
+        $bulacanShs = ShsEnrollmentPreference::whereHas('branch', function($q) {
+            $q->where('branch_name', 'like', '%Bulacan%');
+        })->count();
 
         $totalMainCampus = $mainCampusCollege + $mainCampusShs;
         $totalBulacan = $bulacanCollege + $bulacanShs;
@@ -58,6 +65,10 @@ class DashboardController extends Controller
 
         $mainCampusPercentage = $totalCampus > 0 ? round(($totalMainCampus / $totalCampus) * 100, 1) : 0;
         $bulacanPercentage = $totalCampus > 0 ? round(($totalBulacan / $totalCampus) * 100, 1) : 0;
+
+        // Branch counts for cards
+        $mainBranchCount = $totalMainCampus;
+        $bulacanBranchCount = $totalBulacan;
 
         // Student type counts (New Regular, Transferee, Returnee)
         $newRegularCollege = CollegeStudent::whereHas('type', function($q) {
@@ -84,17 +95,102 @@ class DashboardController extends Controller
         $transfereePercentage = $totalTypes > 0 ? round(($totalTransferee / $totalTypes) * 100, 1) : 0;
         $returneePercentage = $totalTypes > 0 ? round(($totalReturnee / $totalTypes) * 100, 1) : 0;
 
+        // Weekly trend data for the past 7 days
+        $dates = [];
+        $pendingWeekly = [];
+        $waitingListWeekly = [];
+        $cancelledWeekly = [];
+        $mainBranchWeekly = [];
+
+        $startDate = Carbon::now()->subDays(6)->format('M d');
+        $endDate = Carbon::now()->format('M d');
+        $dateRange = $startDate . ' - ' . $endDate;
+
+        for ($i = 6; $i >= 0; $i--) {
+            $date = Carbon::now()->subDays($i)->toDateString();
+            $dates[] = Carbon::now()->subDays($i)->format('M d');
+
+            // Pending counts for the day
+            $collegePendingDay = CollegeStatus::where('info_status', 'Pending')
+                ->whereDate('created_at', $date)
+                ->count();
+            $shsPendingDay = ShsStatus::where('info_status', 'Pending')
+                ->whereDate('created_at', $date)
+                ->count();
+            $pendingWeekly[] = $collegePendingDay + $shsPendingDay;
+
+            // Waiting List (Validated) counts for the day
+            $collegeWaitingDay = CollegeStatus::where('info_status', 'Validated')
+                ->whereDate('created_at', $date)
+                ->count();
+            $shsWaitingDay = ShsStatus::where('info_status', 'Validated')
+                ->whereDate('created_at', $date)
+                ->count();
+            $waitingListWeekly[] = $collegeWaitingDay + $shsWaitingDay;
+
+            // Cancelled counts for the day
+            $collegeCancelledDay = CollegeStatus::where('info_status', 'Cancelled')
+                ->whereDate('created_at', $date)
+                ->count();
+            $shsCancelledDay = ShsStatus::where('info_status', 'Cancelled')
+                ->whereDate('created_at', $date)
+                ->count();
+            $cancelledWeekly[] = $collegeCancelledDay + $shsCancelledDay;
+
+            // Main Branch counts for the day
+            $collegeMainDay = CollegeEnrollmentPreference::whereHas('branch', function($q) {
+                $q->where('branch_name', 'like', '%Main%');
+            })->whereDate('created_at', $date)->count();
+            $shsMainDay = ShsEnrollmentPreference::whereHas('branch', function($q) {
+                $q->where('branch_name', 'like', '%Main%');
+            })->whereDate('created_at', $date)->count();
+            $mainBranchWeekly[] = $collegeMainDay + $shsMainDay;
+        }
+
+        // Get course counts for College, sorted by popularity (highest first)
+        $collegeCourses = CollegeEnrollmentPreference::selectRaw('course_id, COUNT(*) as count')
+            ->groupBy('course_id')
+            ->with('course')
+            ->orderBy('count', 'desc')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'name' => $item->course->course_name ?? 'Unknown',
+                    'count' => $item->count
+                ];
+            });
+
+        // Get strand counts for SHS, sorted by popularity (highest first)
+        $shsStrands = ShsEnrollmentPreference::selectRaw('course_id, COUNT(*) as count')
+            ->groupBy('course_id')
+            ->with('course')
+            ->orderBy('count', 'desc')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'name' => $item->course->course_name ?? 'Unknown',
+                    'count' => $item->count
+                ];
+            });
+
         return view('dashboard', compact(
-            'pendingPercentage',
-            'validatedPercentage',
-            'cancelledPercentage',
-            'reEvaluatePercentage',
+            'pendingCount',
+            'waitingListCount',
+            'cancelledCount',
             'totalStudents',
-            'mainCampusPercentage',
-            'bulacanPercentage',
+            'mainBranchCount',
+            'bulacanBranchCount',
             'newRegularPercentage',
             'transfereePercentage',
-            'returneePercentage'
+            'returneePercentage',
+            'dates',
+            'pendingWeekly',
+            'waitingListWeekly',
+            'cancelledWeekly',
+            'mainBranchWeekly',
+            'dateRange',
+            'collegeCourses',
+            'shsStrands'
         ));
     }
 }

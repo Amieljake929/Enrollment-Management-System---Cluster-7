@@ -22,7 +22,7 @@
         </div>
 
 
-        <p>If you have questions, contact us at: <a href="mailto:bestlink092@gmail.com">info@bestlinkcollege.edu.ph</a></p>
+        <p>If you have questions, contact us at: <a href="mailto:bestlinkcollegeofph@gmail.com">info@bestlinkcollege.edu.ph</a></p>
 
         <hr style="margin: 30px 0;">
         <p style="font-size: 0.9em; color: #777;">
