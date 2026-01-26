@@ -1,5 +1,11 @@
 @extends('layouts.app')
 @section('content')
+@if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>College Waiting List - SHS (Validated Admissions)</h2>
@@ -68,7 +74,7 @@
                     <tbody>
                         @forelse($students as $student)
                             <tr>
-                                <td>{{ $student->student_id_number }}</td>
+                                <td>{{ $student->studentNumber?->student_id_number ?? $student->student_id }}</td>
                                 <td class="text-muted">—</td> {{-- Placeholder --}}
                                 <td>
                                     {{ $student->last_name }}, {{ $student->first_name }}
@@ -110,7 +116,12 @@
                                 </td>
                                 <td class="text-center">
                                     <button type="button" class="btn btn-sm btn-primary me-2" disabled>View</button>
-                                    <button type="button" class="btn btn-sm btn-danger" disabled>Cancel</button>
+                                    <button type="button" class="btn btn-sm btn-danger me-2" disabled>Cancel</button>
+                                    <form method="POST" action="{{ route('shs.payment.update', $student->student_id) }}" style="display: inline;">
+                                        @csrf
+                                        <input type="hidden" name="payment" value="Paid">
+                                        <button type="submit" class="btn btn-sm btn-success">Paid</button>
+                                    </form>
                                 </td>
                             </tr>
                         @empty

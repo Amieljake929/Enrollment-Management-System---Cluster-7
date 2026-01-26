@@ -66,4 +66,9 @@ public function status()
     return $this->hasOne(ShsStatus::class, 'student_id', 'student_id');
 }
 
+public function studentNumber()
+{
+    return $this->hasOne(ShsStudentNumber::class, 'student_id', 'student_id');
+}
+
 }

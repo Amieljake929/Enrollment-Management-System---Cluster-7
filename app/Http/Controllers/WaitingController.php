@@ -86,7 +86,8 @@ class WaitingController extends Controller
             'enrollmentPreference.course',
             'enrollmentPreference.branch',
             'enrollmentPreference.level',
-            'enrolleeNumber'
+            'enrolleeNumber',
+            'studentNumber'
         ])
         ->whereHas('status', function ($q) {
             $q->where('info_status', 'Validated'); // Only Validated
@@ -144,13 +145,15 @@ class WaitingController extends Controller
         );
 
         if (empty($studentNumber->student_id_number)) {
-            $latest = CollegeStudentNumber::max('student_id_number');
+            $collegeLatest = CollegeStudentNumber::max('student_id_number');
+            $shsLatest = ShsStudentNumber::max('student_id_number');
+            $latest = max($collegeLatest, $shsLatest);
             $newId = $latest ? intval($latest) + 1 : 22000001;
             $studentNumber->update(['student_id_number' => $newId]);
         }
     }
 
-    return response()->json(['success' => true, 'message' => 'College payment status updated']);
+    return redirect()->back()->with('success', 'College payment status updated successfully.');
 }
 
 public function updateShsPaymentStatus(Request $request, $studentId)
@@ -166,13 +169,15 @@ public function updateShsPaymentStatus(Request $request, $studentId)
         );
 
         if (empty($studentNumber->student_id_number)) {
-            $latest = ShsStudentNumber::max('student_id_number');
+            $collegeLatest = CollegeStudentNumber::max('student_id_number');
+            $shsLatest = ShsStudentNumber::max('student_id_number');
+            $latest = max($collegeLatest, $shsLatest);
             $newId = $latest ? intval($latest) + 1 : 22000001;
             $studentNumber->update(['student_id_number' => $newId]);
         }
     }
 
-    return response()->json(['success' => true, 'message' => 'SHS payment status updated']);
+    return redirect()->back()->with('success', 'SHS payment status updated successfully.');
 }
 
 
