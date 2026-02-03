@@ -71,4 +71,9 @@ public function status()
     return $this->hasOne(CollegeStatus::class, 'student_id', 'student_id');
 }
 
+public function studentNumber()
+{
+    return $this->hasOne(CollegeStudentNumber::class, 'student_id', 'student_id');
+}
+
 }
