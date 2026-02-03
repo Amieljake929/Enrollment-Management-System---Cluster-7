@@ -3,10 +3,8 @@
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>College Waiting List (Validated Admissions)</h2>
-        {{-- Optional: Add PDF download later if needed --}}
     </div>
 
-    <!-- Filter & Search Form (same as pending) -->
     <div class="card mb-4 shadow-sm">
         <div class="card-body p-4">
             <form method="GET" action="{{ route('staff.modules.waiting.college') }}" class="row g-3">
@@ -51,7 +49,6 @@
         </div>
     </div>
 
-    <!-- Student Table -->
     <div class="card shadow-sm">
         <div class="card-body">
             <div class="table-responsive">
@@ -59,7 +56,6 @@
                     <thead class="table-light">
                         <tr>
                             <th>Student ID Number</th>
-                            <th>Assigned Sections</th>
                             <th>Student Names</th>
                             <th>Course / Year Level / Branch / Admission Date</th>
                             <th>Status</th>
@@ -70,16 +66,13 @@
                     <tbody>
                         @forelse($students as $student)
                             <tr>
-                                <td>{{ $student->student_id_number }}</td>
-                                <td class="text-muted">—</td> {{-- Placeholder for Assigned Sections --}}
+                                <td class="fw-bold {{ $student->studentNumber?->student_id_number ? 'text-primary' : 'text-danger' }}">
+                                    {{ $student->studentNumber?->student_id_number ?? 'PENDING' }}
+                                </td>
                                 <td>
                                     {{ $student->last_name }}, {{ $student->first_name }}
-                                    @if($student->middle_name)
-                                        {{ substr($student->middle_name, 0, 1) }}.
-                                    @endif
-                                    @if($student->extension_name)
-                                        {{ $student->extension_name }}
-                                    @endif
+                                    @if($student->middle_name) {{ substr($student->middle_name, 0, 1) }}. @endif
+                                    {{ $student->extension_name }}
                                     <div class="text-muted small mt-1">
                                         <strong>Enrollee No:</strong> {{ $student->enrolleeNumber->enrollee_no ?? 'N/A' }}
                                     </div>
@@ -95,38 +88,36 @@
                                     </div>
                                 </td>
                                 <td>
-                                    @if($student->status)
-                                        <span class="badge bg-success">{{ $student->status->info_status }}</span>
-                                    @else
-                                        <span class="text-muted">N/A</span>
-                                    @endif
+                                    <span class="badge bg-success">{{ $student->status->info_status ?? 'N/A' }}</span>
                                 </td>
                                 <td>
-                                    @if($student->status)
-                                        <span class="badge {{ $student->status->payment === 'Paid' ? 'bg-success' : 'bg-warning text-dark' }}">
-                                            {{ $student->status->payment }}
-                                        </span>
-                                    @else
-                                        <span class="text-muted">N/A</span>
-                                    @endif
+                                    <span class="badge {{ ($student->status->payment ?? '') === 'Paid' ? 'bg-success' : 'bg-warning text-dark' }}">
+                                        {{ $student->status->payment ?? 'Unpaid' }}
+                                    </span>
                                 </td>
                                 <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-primary me-2" disabled>View</button>
-                                    <button type="button" class="btn btn-sm btn-danger" disabled>Cancel</button>
+                                    <button type="button" class="btn btn-sm btn-primary" disabled>View</button>
+                                    
+                                    {{-- Paid Button Function Hidden/Commented Out but preserved --}}
+                                    {{-- 
+                                    @if(($student->status->payment ?? '') !== 'Paid')
+                                    <form method="POST" action="{{ route('staff.college.payment.update', $student->student_id) }}" style="display: inline;">
+                                        @csrf
+                                        <input type="hidden" name="payment" value="Paid">
+                                        <button type="submit" class="btn btn-sm btn-success">Paid</button>
+                                    </form>
+                                    @endif 
+                                    --}}
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center text-muted py-4">
-                                    <i class="bi bi-hourglass-split fs-3"></i>
-                                    <p class="mt-2 mb-0">No validated admissions in waiting list.</p>
-                                </td>
+                                <td colspan="6" class="text-center text-muted py-4">No validated admissions found.</td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
-
             <div class="d-flex justify-content-end mt-3">
                 {{ $students->links('pagination::bootstrap-5') }}
             </div>

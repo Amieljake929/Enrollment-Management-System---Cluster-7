@@ -12,8 +12,6 @@ use App\Models\ShsStudent;
 use App\Models\ShsStatus;
 
 use Illuminate\Support\Facades\DB;
-
-
 use Illuminate\Http\Request;
 
 class WaitingController extends Controller
@@ -98,7 +96,7 @@ class WaitingController extends Controller
               ->whereNotNull('level_id');
         });
 
-        // Apply filters (same as pendingShs)
+        // Apply filters
         if ($request->filled('branch')) {
             $query->whereHas('enrollmentPreference', function ($q) use ($request) {
                 $q->where('branch_id', $request->branch);
@@ -132,53 +130,64 @@ class WaitingController extends Controller
 
         return view('modules.waitingShs', compact('students', 'studentTypes'));
     }
+
     public function updateCollegePaymentStatus(Request $request, $studentId)
-{
-    $status = CollegeStatus::where('student_id', $studentId)->firstOrFail();
-    $status->payment = $request->payment; // e.g., "Paid"
-    $status->save();
+    {
+        $status = CollegeStatus::where('student_id', $studentId)->firstOrFail();
+        $status->payment = $request->payment; // e.g., "Paid"
+        $status->save();
 
-    if ($status->payment === 'Paid') {
-        $studentNumber = CollegeStudentNumber::firstOrCreate(
-            ['student_id' => $studentId],
-            ['student_id_number' => null]
-        );
+        if ($status->payment === 'Paid') {
+            $studentNumber = CollegeStudentNumber::firstOrCreate(
+                ['student_id' => $studentId],
+                ['student_id_number' => null]
+            );
 
-        if (empty($studentNumber->student_id_number)) {
-            $collegeLatest = CollegeStudentNumber::max('student_id_number');
-            $shsLatest = ShsStudentNumber::max('student_id_number');
-            $latest = max($collegeLatest, $shsLatest);
-            $newId = $latest ? intval($latest) + 1 : 22000001;
-            $studentNumber->update(['student_id_number' => $newId]);
+            if (empty($studentNumber->student_id_number)) {
+                // Loop hanggang makakuha ng unique na random ID
+                do {
+                    $newId = '26' . mt_rand(100000, 999999);
+                    
+                    // Siguraduhin na wala sa kahit anong table ang generated ID
+                    $exists = CollegeStudentNumber::where('student_id_number', $newId)->exists() || 
+                             ShsStudentNumber::where('student_id_number', $newId)->exists();
+
+                } while ($exists);
+
+                $studentNumber->update(['student_id_number' => $newId]);
+            }
         }
+
+        return redirect()->back()->with('success', 'College payment status updated successfully.');
     }
 
-    return redirect()->back()->with('success', 'College payment status updated successfully.');
-}
+    public function updateShsPaymentStatus(Request $request, $studentId)
+    {
+        $status = ShsStatus::where('student_id', $studentId)->firstOrFail();
+        $status->payment = $request->payment;
+        $status->save();
 
-public function updateShsPaymentStatus(Request $request, $studentId)
-{
-    $status = ShsStatus::where('student_id', $studentId)->firstOrFail();
-    $status->payment = $request->payment;
-    $status->save();
+        if ($status->payment === 'Paid') {
+            $studentNumber = ShsStudentNumber::firstOrCreate(
+                ['student_id' => $studentId],
+                ['student_id_number' => null]
+            );
 
-    if ($status->payment === 'Paid') {
-        $studentNumber = ShsStudentNumber::firstOrCreate(
-            ['student_id' => $studentId],
-            ['student_id_number' => null]
-        );
+            if (empty($studentNumber->student_id_number)) {
+                // Loop hanggang makakuha ng unique na random ID
+                do {
+                    $newId = '26' . mt_rand(100000, 999999);
 
-        if (empty($studentNumber->student_id_number)) {
-            $collegeLatest = CollegeStudentNumber::max('student_id_number');
-            $shsLatest = ShsStudentNumber::max('student_id_number');
-            $latest = max($collegeLatest, $shsLatest);
-            $newId = $latest ? intval($latest) + 1 : 22000001;
-            $studentNumber->update(['student_id_number' => $newId]);
+                    // Siguraduhin na wala sa kahit anong table ang generated ID
+                    $exists = CollegeStudentNumber::where('student_id_number', $newId)->exists() || 
+                             ShsStudentNumber::where('student_id_number', $newId)->exists();
+
+                } while ($exists);
+
+                $studentNumber->update(['student_id_number' => $newId]);
+            }
         }
+
+        return redirect()->back()->with('success', 'SHS payment status updated successfully.');
     }
-
-    return redirect()->back()->with('success', 'SHS payment status updated successfully.');
-}
-
-
 }
