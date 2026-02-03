@@ -398,22 +398,19 @@
           <div class="card-body p-4 p-md-5">
             <!-- Stepper -->
             <div id="stepper" class="stepper">
-  <div class="step active" data-step="1">Step 1: Student Info</div>
-  <div class="step disabled" data-step="2">Step 2: Address</div>
-  <div class="step disabled" data-step="3">Step 3: Parents Info</div>
-  <div class="step disabled" data-step="4">Step 4: Health Info</div>
-  <div class="step disabled" data-step="5">Step 5: Preferences</div>
-  <div class="step disabled" data-step="6">Step 6: Backgrounds</div>
-  <div class="step disabled" data-step="7">Step 7: Documents</div>
-  <div class="step disabled" data-step="8">Step 8: How did you hear about us?</div>
-  <div class="step disabled" data-step="9">Step 9: Summary</div>
+  <div class="step active" data-step="1">Step 1: Student Info & Address</div>
+  <div class="step disabled" data-step="2">Step 2: Parents & Health Info</div>
+  <div class="step disabled" data-step="3">Step 3: Preferences</div>
+  <div class="step disabled" data-step="4">Step 4: Educational Background & Referral</div>
+  <div class="step disabled" data-step="5">Step 5: Documents</div>
+  <div class="step disabled" data-step="6">Step 6: Summary</div>
 </div>
             <!-- FORM -->
             <form id="registrationForm" novalidate>
               @csrf
               <!-- STEP 1 -->
               <section class="form-section active" data-step="1">
-                <h3 class="stepper-header mb-4">Step 1: Student Information</h3>
+                <h3 class="stepper-header mb-4">Step 1: Student Info & Address</h3>
                 <div class="row g-3">
                   <div class="col-md-6">
                     <label for="studentType" class="form-label">
@@ -596,10 +593,7 @@
                     <div class="invalid-feedback">Please enter a valid 12-digit LRN.</div>
                   </div>
                 </div>
-              </section>
-              <!-- STEP 2 -->
-              <section class="form-section" data-step="2">
-                <h3 class="stepper-header mb-4">Step 2: Address</h3>
+                <h5 class="mb-3 mt-4" style="color: var(--primary-dark); font-weight: 700;">Address Information</h5>
                 <div class="row g-3">
                   <div class="col-md-12">
                     <label for="currentAddress" class="form-label">
@@ -711,9 +705,9 @@
                   </div>
                 </div>
               </section>
-              <!-- STEP 3 -->
-              <section class="form-section" data-step="3">
-                <h3 class="stepper-header mb-4">Step 3: Parents Information</h3>
+              <!-- STEP 2 -->
+              <section class="form-section" data-step="2">
+                <h3 class="stepper-header mb-4">Step 2: Parents & Health Info</h3>
                 <div class="row g-3">
                   <h5 class="mb-3" style="color: red; font-weight: 700;">Mother's Maiden Information</h5>
                   <div class="col-md-4">
@@ -915,56 +909,52 @@
   </div>
 </div>
                 </div>
+                <h5 class="mb-3 mt-4" style="color: var(--primary-dark); font-weight: 700;">Health Information</h5>
+                <div class="row g-3">
+                  <div class="col-12">
+                    <label class="form-label">Do you have any of the following medical conditions?<span class="required-star">*</span></label>
+                    <div class="row">
+                      @php
+                        $conditions = [
+                          'Asthma', 'Allergies', 'Heart Disease', 'Hypertension',
+                          'Diabeties Type 2', 'Kidney Disease', 'Pneumonia', 'Tuberculosis',
+                          'Bleeding Disorders', 'Psychiatric Disorder', 'Cancer', 'Others'
+                        ];
+                      @endphp
+                      @foreach($conditions as $cond)
+                        <div class="col-md-6 col-lg-4 mb-2">
+                          <div class="form-check">
+                            <input class="form-check-input health-condition" type="radio" name="healthCondition" id="cond{{ str_replace(' ', '', $cond) }}" value="{{ $cond }}" required>
+                            <label class="form-check-label" for="cond{{ str_replace(' ', '', $cond) }}">
+                              {{ $cond }}
+                            </label>
+                          </div>
+                        </div>
+                      @endforeach
+                    </div>
+                    <div class="invalid-feedback d-block" id="healthConditionFeedback">Please select a condition.</div>
+                  </div>
+
+                  <div class="col-md-12" id="othersField" style="display: none;">
+                    <label for="healthConditionOthers" class="form-label">Please specify the condition:</label>
+                    <input type="text" class="form-control" id="healthConditionOthers" name="healthConditionOthers" placeholder="e.g., Epilepsy, Arthritis, etc." />
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="weightKg" class="form-label">Weight (kg)<span class="required-star">*</span></label>
+                    <input type="number" step="0.01" min="0" max="300" class="form-control" id="weightKg" name="weightKg" required />
+                    <div class="invalid-feedback">Please enter your weight in kilograms.</div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="heightCm" class="form-label">Height (cm)<span class="required-star">*</span></label>
+                    <input type="number" step="0.01" min="0" max="300" class="form-control" id="heightCm" name="heightCm" required />
+                    <div class="invalid-feedback">Please enter your height in centimeters.</div>
+                  </div>
+                </div>
               </section>
-
-              <!-- STEP 4: Health Info -->
-<section class="form-section" data-step="4">
-  <h3 class="stepper-header mb-4">Step 4: Health Information</h3>
-  <div class="row g-3">
-    <div class="col-12">
-      <label class="form-label">Do you have any of the following medical conditions?<span class="required-star">*</span></label>
-      <div class="row">
-        @php
-          $conditions = [
-            'Asthma', 'Allergies', 'Heart Disease', 'Hypertension',
-            'Diabeties Type 2', 'Kidney Disease', 'Pneumonia', 'Tuberculosis',
-            'Bleeding Disorders', 'Psychiatric Disorder', 'Cancer', 'Others'
-          ];
-        @endphp
-        @foreach($conditions as $cond)
-          <div class="col-md-6 col-lg-4 mb-2">
-            <div class="form-check">
-              <input class="form-check-input health-condition" type="radio" name="healthCondition" id="cond{{ str_replace(' ', '', $cond) }}" value="{{ $cond }}" required>
-              <label class="form-check-label" for="cond{{ str_replace(' ', '', $cond) }}">
-                {{ $cond }}
-              </label>
-            </div>
-          </div>
-        @endforeach
-      </div>
-      <div class="invalid-feedback d-block" id="healthConditionFeedback">Please select a condition.</div>
-    </div>
-
-    <div class="col-md-12" id="othersField" style="display: none;">
-      <label for="healthConditionOthers" class="form-label">Please specify the condition:</label>
-      <input type="text" class="form-control" id="healthConditionOthers" name="healthConditionOthers" placeholder="e.g., Epilepsy, Arthritis, etc." />
-    </div>
-
-    <div class="col-md-6">
-      <label for="weightKg" class="form-label">Weight (kg)<span class="required-star">*</span></label>
-      <input type="number" step="0.01" min="0" max="300" class="form-control" id="weightKg" name="weightKg" required />
-      <div class="invalid-feedback">Please enter your weight in kilograms.</div>
-    </div>
-    <div class="col-md-6">
-      <label for="heightCm" class="form-label">Height (cm)<span class="required-star">*</span></label>
-      <input type="number" step="0.01" min="0" max="300" class="form-control" id="heightCm" name="heightCm" required />
-      <div class="invalid-feedback">Please enter your height in centimeters.</div>
-    </div>
-  </div>
-</section>
-              <!-- STEP 5 -->
-              <section class="form-section" data-step="5">
-                <h3 class="stepper-header mb-4">Step 5: Preferences</h3>
+              <!-- STEP 3 -->
+              <section class="form-section" data-step="3">
+                <h3 class="stepper-header mb-4">Step 3: Preferences</h3>
                 <div class="row g-3">
                   <div class="col-md-6">
                     <label for="preferredBranch" class="form-label">
@@ -1006,9 +996,9 @@
                   </div>
                 </div>
               </section>
-              <!-- STEP 6 -->
-              <section class="form-section" data-step="6">
-                <h3 class="stepper-header mb-4">Step 6: Educational Background</h3>
+              <!-- STEP 4 -->
+              <section class="form-section" data-step="4">
+                <h3 class="stepper-header mb-4">Step 4: Educational Background & Referral</h3>
                 <div class="row g-3">
                   <div class="col-md-6">
                     <label for="primarySchool" class="form-label">
@@ -1070,11 +1060,30 @@
                     <input type="number" class="form-control" id="lastSchoolYearGraduated" name="lastSchoolYearGraduated" min="1900" max="2099" step="1" required />
                     <div class="invalid-feedback">Please enter a valid year graduated (1900-2099).</div>
                   </div>
+                  <div class="col-md-12">
+                    <label for="referralSource" class="form-label">Referral Source<span class="required-star">*</span></label>
+                    <select class="form-select" id="referralSource" name="referralSource" required>
+                      <option value="" selected disabled>Select an option</option>
+                      <option value="Social Media Account">Social Media Account</option>
+                      <option value="Adviser/Referral/Others">Adviser/Referral/Others</option>
+                      <option value="Walk-in/No Referral">Walk-in/No Referral</option>
+                    </select>
+                    <div class="invalid-feedback">Please select how you heard about us.</div>
+                  </div>
+
+                  <div class="col-md-6" id="referralNameField" style="display: none;">
+                    <label for="referralName" class="form-label">Referral Name</label>
+                    <input type="text" class="form-control" id="referralName" name="referralName" placeholder="e.g., Mrs. Dela Cruz" />
+                  </div>
+                  <div class="col-md-6" id="referralRelationField" style="display: none;">
+                    <label for="referralRelation" class="form-label">Referral Relation</label>
+                    <input type="text" class="form-control" id="referralRelation" name="referralRelation" placeholder="e.g., Former Teacher, Friend, etc." />
+                  </div>
                 </div>
               </section>
-              <!-- STEP 6 -->
-              <section class="form-section" data-step="7">
-                <h3 class="stepper-header mb-4">Step 6: Softcopy of Document Submission</h3>
+              <!-- STEP 5 -->
+              <section class="form-section" data-step="5">
+                <h3 class="stepper-header mb-4">Step 5: Documents</h3>
                 <p class="mb-4 text-muted">Please upload clear and legible scanned copies of the following required documents. Acceptable formats: PDF, JPG, PNG (max 5MB each).</p>
                 <div id="documentUploadList">
                   <!-- Dynamically populated -->
@@ -1089,34 +1098,10 @@
                 </div>
               </section>
 
-              <!-- STEP 8: Referral -->
-<section class="form-section" data-step="8">
-  <h3 class="stepper-header mb-4">Step 8: How did you hear about our school?</h3>
-  <div class="row g-3">
-    <div class="col-md-12">
-      <label for="referralSource" class="form-label">Referral Source<span class="required-star">*</span></label>
-      <select class="form-select" id="referralSource" name="referralSource" required>
-        <option value="" selected disabled>Select an option</option>
-        <option value="Social Media Account">Social Media Account</option>
-        <option value="Adviser/Referral/Others">Adviser/Referral/Others</option>
-        <option value="Walk-in/No Referral">Walk-in/No Referral</option>
-      </select>
-      <div class="invalid-feedback">Please select how you heard about us.</div>
-    </div>
 
-    <div class="col-md-6" id="referralNameField" style="display: none;">
-      <label for="referralName" class="form-label">Referral Name</label>
-      <input type="text" class="form-control" id="referralName" name="referralName" placeholder="e.g., Mrs. Dela Cruz" />
-    </div>
-    <div class="col-md-6" id="referralRelationField" style="display: none;">
-      <label for="referralRelation" class="form-label">Referral Relation</label>
-      <input type="text" class="form-control" id="referralRelation" name="referralRelation" placeholder="e.g., Former Teacher, Friend, etc." />
-    </div>
-  </div>
-</section>
-              <!-- STEP 9 -->
-<section class="form-section" data-step="9">
-  <h3 class="stepper-header mb-4">Step 9: Summary</h3>
+              <!-- STEP 6 -->
+<section class="form-section" data-step="6">
+  <h3 class="stepper-header mb-4">Step 6: Summary</h3>
   <div class="alert alert-info mb-4">
     <strong><i class="fas fa-info-circle me-2"></i>Please review your information carefully before submitting.</strong>
   </div>
@@ -1442,7 +1427,7 @@
         }
       });
       // Validate years and order
-      if (index === 5) { // Step 6: Educational Background
+      if (index === 3) { // Step 4: Educational Background & Referral
         const primaryYear = parseInt(document.getElementById('primaryYearGraduated').value);
         const secondaryYear = parseInt(document.getElementById('secondaryYearGraduated').value);
         const lastSchoolYear = parseInt(document.getElementById('lastSchoolYearGraduated').value);
@@ -1463,8 +1448,8 @@
         }
       }
       // Validate documents
-      // Validate documents (Step 7)
-if (index === 6) {
+      // Validate documents (Step 5)
+if (index === 4) {
   const fileInputs = document.querySelectorAll('#documentUploadList .document-file-input');
   fileInputs.forEach(input => {
     const docId = parseInt(input.dataset.docId);
@@ -1519,8 +1504,8 @@ if (index === 6) {
   html += `<div class="col-md-6"><span class="summary-label">Social Media:</span> ${data.get('socialMedia') || ''}</div>`;
   html += '</div></div></div>';
 
-  // Parents Information Card
-  html += '<div class="card mb-3"><div class="card-header-custom">Parents Information</div><div class="card-body"><div class="row g-3">';
+  // Parents & Health Information Card
+  html += '<div class="card mb-3"><div class="card-header-custom">Parents & Health Information</div><div class="card-body"><div class="row g-3">';
   html += `<div class="col-md-4"><span class="summary-label">Mother's First Name:</span> ${data.get('motherFirstName') || ''}</div>`;
   html += `<div class="col-md-4"><span class="summary-label">Middle Name:</span> ${data.get('motherMiddleName') || ''}</div>`;
   html += `<div class="col-md-4"><span class="summary-label">Last Name:</span> ${data.get('motherLastName') || ''}</div>`;
@@ -1533,10 +1518,6 @@ if (index === 6) {
   html += `<div class="col-md-4"><span class="summary-label">Occupation:</span> ${data.get('fatherOccupation') || ''}</div>`;
   html += `<div class="col-md-4"><span class="summary-label">Contact Number:</span> ${data.get('fatherContact') || ''}</div>`;
   html += `<div class="col-md-4"><span class="summary-label">Email:</span> ${data.get('fatherEmail') || ''}</div>`;
-  html += '</div></div></div>';
-
-  // Additional Information Card
-  html += '<div class="card mb-3"><div class="card-header-custom">Additional Information</div><div class="card-body"><div class="row g-3">';
   html += `<div class="col-md-6"><span class="summary-label">4Ps Member:</span> ${data.get('isFourPs') ? 'Yes' : 'No'}</div>`;
   html += `<div class="col-md-6"><span class="summary-label">Not living with parents:</span> ${data.get('notLivingWithParents') ? 'Yes' : 'No'}</div>`;
   if (data.get('notLivingWithParents')) {
@@ -1548,6 +1529,12 @@ if (index === 6) {
     html += `<div class="col-md-6"><span class="summary-label">Contact Number:</span> ${data.get('guardianContact') || ''}</div>`;
     html += `<div class="col-md-3"><span class="summary-label">Email:</span> ${data.get('guardianEmail') || ''}</div>`;
   }
+  html += `<div class="col-md-6"><span class="summary-label">Medical Condition:</span> ${data.get('healthCondition') || ''}</div>`;
+  if (data.get('healthCondition') === 'Others') {
+    html += `<div class="col-md-6"><span class="summary-label">Specified Condition:</span> ${data.get('healthConditionOthers') || ''}</div>`;
+  }
+  html += `<div class="col-md-6"><span class="summary-label">Weight (kg):</span> ${data.get('weightKg') || ''}</div>`;
+  html += `<div class="col-md-6"><span class="summary-label">Height (cm):</span> ${data.get('heightCm') || ''}</div>`;
   html += '</div></div></div>';
 
   // Preferences Card
@@ -1557,7 +1544,7 @@ if (index === 6) {
   html += `<div class="col-md-6"><span class="summary-label">Year Level:</span> ${document.querySelector('#yearLevelStep4 option:checked')?.text || ''}</div>`;
   html += '</div></div></div>';
 
-  // Health Information Card
+  // Health Information Card (now part of Parents & Health Info)
   html += '<div class="card mb-3"><div class="card-header-custom">Health Information</div><div class="card-body"><div class="row g-3">';
   html += `<div class="col-md-6"><span class="summary-label">Medical Condition:</span> ${data.get('healthCondition') || ''}</div>`;
   if (data.get('healthCondition') === 'Others') {
@@ -1599,7 +1586,7 @@ if (index === 6) {
     }
 
     if (currentStep < steps.length - 1) {
-      if (currentStep + 1 === 8) {
+      if (currentStep + 1 === 5) {
         populateSummary();
       }
       showStep(currentStep + 1);
@@ -1694,13 +1681,13 @@ if (index === 6) {
     const formElements = form.querySelectorAll('input, select, textarea');
     formElements.forEach(element => {
       element.addEventListener('change', () => {
-        if (currentStep === 8) { // Step 9 (0-indexed)
+        if (currentStep === 5) { // Step 6 (0-indexed)
           populateSummary();
         }
       });
       if (element.type === 'text' || element.type === 'email' || element.type === 'tel' || element.type === 'number' || element.tagName === 'TEXTAREA') {
         element.addEventListener('input', () => {
-          if (currentStep === 8) {
+          if (currentStep === 5) {
             populateSummary();
           }
         });

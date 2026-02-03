@@ -54,6 +54,18 @@
                placeholder="Enter student name or course..." value="{{ request('search') }}">
     </div>
 
+    <div class="col-md-3">
+        <label for="date_from" class="form-label">From Date</label>
+        <input type="date" name="date_from" id="date_from" class="form-control"
+               value="{{ request('date_from') }}">
+    </div>
+
+    <div class="col-md-3">
+        <label for="date_to" class="form-label">To Date</label>
+        <input type="date" name="date_to" id="date_to" class="form-control"
+               value="{{ request('date_to') }}">
+    </div>
+
     <div class="col-12 d-flex justify-content-end">
         <button type="submit" class="btn btn-primary">Filter</button>
     </div>
@@ -112,31 +124,10 @@
                                 <td>{{ $student->created_at->format('M d, Y \a\t h:i A') }}</td>
                                 
                                 <td class="text-center">
-    <button type="button" class="btn btn-sm btn-primary me-2 view-student" 
-        data-student-id="{{ $student->student_id }}" 
+    <button type="button" class="btn btn-sm btn-primary view-student"
+        data-student-id="{{ $student->student_id }}"
         title="View">
         View
-    </button>
-    <!-- Validate Button -->
-    <button type="button" class="btn btn-sm btn-success validate-btn me-2"
-        data-student-id="{{ $student->student_id }}"
-        title="Validate">
-        Validate
-    </button>
-
-    <!-- Re-Evaluate Button (NEW) -->
-    <button type="button" class="btn btn-sm btn-warning reevaluate-btn me-2"
-        data-student-id="{{ $student->student_id }}"
-        title="Re-Evaluate">
-        Re-Evaluate
-    </button>
-
-    <!-- Cancel Button -->
-    <button type="button" class="btn btn-sm btn-danger cancel-btn"
-        data-student-id="{{ $student->student_id }}"
-        data-student-name="{{ $student->last_name }}, {{ $student->first_name }}"
-        title="Cancel">
-        Cancel
     </button>
 </td>
                                 </td>
@@ -178,6 +169,42 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <div>
+                    <button type="button" class="btn btn-success validate-btn me-2"
+                        data-student-id=""
+                        title="Validate">
+                        Validate
+                    </button>
+                    <button type="button" class="btn btn-warning reevaluate-btn me-2"
+                        data-student-id=""
+                        title="Re-Evaluate">
+                        Re-Evaluate
+                    </button>
+                    <button type="button" class="btn btn-danger cancel-btn"
+                        data-student-id=""
+                        data-student-name=""
+                        title="Cancel">
+                        Cancel
+                    </button>
+                </div>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Full Size Image Modal -->
+<div class="modal fade" id="fullSizeModal" tabindex="-1" aria-labelledby="fullSizeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="fullSizeModalLabel">Document Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="fullSizeImage" src="" alt="" style="max-width: 100%; max-height: 80vh; object-fit: contain;">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -221,6 +248,16 @@ document.addEventListener('click', function(e) {
             .then(data => {
                 console.log('Student data received:', data);
                 modalBody.innerHTML = generateStudentDetailsHTML(data);
+
+                // Set student ID and name for action buttons
+                const validateBtn = document.querySelector('.validate-btn');
+                const reevaluateBtn = document.querySelector('.reevaluate-btn');
+                const cancelBtn = document.querySelector('.cancel-btn');
+
+                validateBtn.setAttribute('data-student-id', studentId);
+                reevaluateBtn.setAttribute('data-student-id', studentId);
+                cancelBtn.setAttribute('data-student-id', studentId);
+                cancelBtn.setAttribute('data-student-name', `${data.last_name}, ${data.first_name}`);
             })
             .catch(error => {
                 modalBody.innerHTML = '<div class="alert alert-danger">Error loading student details: ' + error.message + '</div>';
@@ -296,20 +333,60 @@ ${student.parent_info && Array.isArray(student.parent_info) && student.parent_in
                     <p><strong>Contact:</strong> ${student.guardian.contact_number || 'N/A'}</p>
                 ` : ''}
             </div>
-            <div class="col-md-6">
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12">
                 <h6 class="fw-bold">Uploaded Documents</h6>
                 ${student.documents && student.documents.length > 0 ? `
-    <ul>
+    <div class="row">
         ${student.documents.map(doc => {
             const filePath = doc.file_path; // e.g., "enrollment_documents/xxx.jpg"
             const url = `/storage/${filePath}`; // ✅ Correct public URL
-            return `<li>${doc.document ? doc.document.document_name : 'Unknown'}: <a href="${url}" target="_blank">View</a></li>`;
+            const ext = filePath.split('.').pop().toLowerCase();
+            const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+            const docName = doc.document ? doc.document.document_name : 'Unknown';
+            if (imageExts.includes(ext)) {
+                return `
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h6 class="card-title">${docName}</h6>
+                                <img src="${url}" alt="${docName}" class="img-fluid" style="max-height: 200px; object-fit: contain; cursor: pointer;" onclick="openFullSizeModal('${url}', '${docName}')">
+                                <br><button type="button" class="btn btn-sm btn-outline-primary mt-2" onclick="openFullSizeModal('${url}', '${docName}')">View Full Size</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                return `
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h6 class="card-title">${docName}</h6>
+                                <p class="card-text">Document File</p>
+                                <a href="${url}" target="_blank" class="btn btn-primary">View Document</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
         }).join('')}
-    </ul>
+    </div>
 ` : '<p>No documents uploaded.</p>'}
             </div>
         </div>
     `;
+}
+
+function openFullSizeModal(url, alt) {
+    const modalElement = document.getElementById('fullSizeModal');
+    const modal = new bootstrap.Modal(modalElement);
+    const img = document.getElementById('fullSizeImage');
+    img.src = url;
+    img.alt = alt;
+    document.getElementById('fullSizeModalLabel').textContent = alt;
+    modal.show();
 }
 
 </script>

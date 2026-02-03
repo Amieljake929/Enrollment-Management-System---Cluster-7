@@ -52,6 +52,18 @@
                placeholder="Enter student name or course..." value="{{ request('search') }}">
     </div>
 
+    <div class="col-md-3">
+        <label for="date_from" class="form-label">From Date</label>
+        <input type="date" name="date_from" id="date_from" class="form-control"
+               value="{{ request('date_from') }}">
+    </div>
+
+    <div class="col-md-3">
+        <label for="date_to" class="form-label">To Date</label>
+        <input type="date" name="date_to" id="date_to" class="form-control"
+               value="{{ request('date_to') }}">
+    </div>
+
     <div class="col-12 d-flex justify-content-end">
         <button type="submit" class="btn btn-primary">Filter</button>
     </div>
@@ -107,32 +119,10 @@
                                 <td>{{ $student->created_at->format('M d, Y \a\t h:i A') }}</td>
                                
                                 <td class="text-center">
-    <button type="button" class="btn btn-sm btn-primary view-shs-btn" 
-        data-student-id="{{ $student->student_id }}" 
+    <button type="button" class="btn btn-sm btn-primary view-shs-btn"
+        data-student-id="{{ $student->student_id }}"
         title="View">
         View
-    </button>
-
-    <!-- Validate Button -->
-    <button type="button" class="btn btn-sm btn-success validate-shs-btn me-2"
-        data-student-id="{{ $student->student_id }}"
-        title="Validate">
-        Validate
-    </button>
-
-    <!-- Re-Evaluate Button (NEW) -->
-    <button type="button" class="btn btn-sm btn-warning reevaluate-shs-btn me-2"
-        data-student-id="{{ $student->student_id }}"
-        title="Re-Evaluate">
-        Re-Evaluate
-    </button>
-
-    <!-- Cancel Button -->
-    <button type="button" class="btn btn-sm btn-danger cancel-shs-btn"
-        data-student-id="{{ $student->student_id }}"
-        data-student-name="{{ $student->last_name }}, {{ $student->first_name }}"
-        title="Cancel">
-        Cancel
     </button>
 </td>
                                 </td>
@@ -174,6 +164,42 @@
                     </div>
                 </div>
             </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <div>
+                    <button type="button" class="btn btn-success validate-shs-btn me-2"
+                        data-student-id=""
+                        title="Validate">
+                        Validate
+                    </button>
+                    <button type="button" class="btn btn-warning reevaluate-shs-btn me-2"
+                        data-student-id=""
+                        title="Re-Evaluate">
+                        Re-Evaluate
+                    </button>
+                    <button type="button" class="btn btn-danger cancel-shs-btn"
+                        data-student-id=""
+                        data-student-name=""
+                        title="Cancel">
+                        Cancel
+                    </button>
+                </div>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Full Size Image Modal for SHS -->
+<div class="modal fade" id="shsFullSizeModal" tabindex="-1" aria-labelledby="shsFullSizeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="shsFullSizeModalLabel">Document Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="shsFullSizeImage" src="" alt="" style="max-width: 100%; max-height: 80vh; object-fit: contain;">
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
@@ -207,6 +233,16 @@ document.addEventListener('click', function(e) {
             .then(response => response.json())
             .then(data => {
                 modalBody.innerHTML = generateShsStudentDetailsHTML(data);
+
+                // Set student ID and name for action buttons
+                const validateBtn = document.querySelector('.validate-shs-btn');
+                const reevaluateBtn = document.querySelector('.reevaluate-shs-btn');
+                const cancelBtn = document.querySelector('.cancel-shs-btn');
+
+                validateBtn.setAttribute('data-student-id', studentId);
+                reevaluateBtn.setAttribute('data-student-id', studentId);
+                cancelBtn.setAttribute('data-student-id', studentId);
+                cancelBtn.setAttribute('data-student-name', `${data.last_name}, ${data.first_name}`);
             })
             .catch(error => {
                 modalBody.innerHTML = '<div class="alert alert-danger">Error loading student details.</div>';
@@ -293,20 +329,70 @@ function generateShsStudentDetailsHTML(student) {
                     <p><strong>Email:</strong> ${student.guardian.email || 'N/A'}</p>
                 ` : ''}
             </div>
-            <div class="col-md-6">
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12">
                 <h6 class="fw-bold">Uploaded Documents</h6>
                 ${student.documents && student.documents.length > 0 ? `
-                    <ul>
-                        ${student.documents.map(doc => {
-                            const url = '/storage/' + doc.file_path;
-                            return `<li>${doc.document ? doc.document.document_name : 'Unknown'}: <a href="${url}" target="_blank">View</a></li>`;
-                        }).join('')}
-                    </ul>
-                ` : '<p>No documents uploaded.</p>'}
+    <div class="row">
+        ${student.documents.map(doc => {
+            const filePath = doc.file_path; // e.g., "enrollment_documents/xxx.jpg"
+            const url = `/storage/${filePath}`; // ✅ Correct public URL
+            const ext = filePath.split('.').pop().toLowerCase();
+            const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+            const docName = doc.document ? doc.document.document_name : 'Unknown';
+            if (imageExts.includes(ext)) {
+                return `
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h6 class="card-title">${docName}</h6>
+                                <img src="${url}" alt="${docName}" class="img-fluid" style="max-height: 200px; object-fit: contain; cursor: pointer;" data-url="${url}" data-alt="${docName}" class="view-full-size-img">
+                                <br><button type="button" class="btn btn-sm btn-outline-primary mt-2 view-full-size-btn" data-url="${url}" data-alt="${docName}">View Full Size</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                return `
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h6 class="card-title">${docName}</h6>
+                                <p class="card-text">Document File</p>
+                                <a href="${url}" target="_blank" class="btn btn-primary">View Document</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }).join('')}
+    </div>
+` : '<p>No documents uploaded.</p>'}
             </div>
         </div>
     `;
 }
+
+function openShsFullSizeModal(url, alt) {
+    const modalElement = document.getElementById('shsFullSizeModal');
+    const modal = new bootstrap.Modal(modalElement);
+    const img = document.getElementById('shsFullSizeImage');
+    img.src = url;
+    img.alt = alt;
+    document.getElementById('shsFullSizeModalLabel').textContent = alt;
+    modal.show();
+}
+
+// Event listeners for full size modal
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('view-full-size-img') || e.target.classList.contains('view-full-size-btn')) {
+        const url = e.target.getAttribute('data-url');
+        const alt = e.target.getAttribute('data-alt');
+        openShsFullSizeModal(url, alt);
+    }
+});
 </script>
 
 <script>

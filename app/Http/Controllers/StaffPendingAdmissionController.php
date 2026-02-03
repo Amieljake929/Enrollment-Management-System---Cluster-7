@@ -68,6 +68,15 @@ class StaffPendingAdmissionController extends Controller
         });
     }
 
+    // Date range filter
+    if ($request->filled('date_from')) {
+        $query->whereDate('created_at', '>=', $request->date_from);
+    }
+
+    if ($request->filled('date_to')) {
+        $query->whereDate('created_at', '<=', $request->date_to);
+    }
+
     $students = $query->paginate(10)->appends($request->query());
     $studentTypes = CollegeStudentType::orderBy('type_id')->get(['type_id','type_name']);
 
@@ -132,6 +141,15 @@ class StaffPendingAdmissionController extends Controller
                   $q2->where('course_name', 'like', "%{$search}%");
               });
         });
+    }
+
+    // Date range filter
+    if ($request->filled('date_from')) {
+        $query->whereDate('created_at', '>=', $request->date_from);
+    }
+
+    if ($request->filled('date_to')) {
+        $query->whereDate('created_at', '<=', $request->date_to);
     }
 
     $students = $query->paginate(10)->appends($request->query());

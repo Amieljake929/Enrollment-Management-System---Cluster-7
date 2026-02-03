@@ -476,6 +476,59 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const url = this.getAttribute('href');
 
+            // Close any open modals and remove all modal-related elements from DOM before loading new content
+            const openModals = document.querySelectorAll('.modal');
+            openModals.forEach(modal => {
+                const bsModal = bootstrap.Modal.getInstance(modal);
+                if (bsModal) {
+                    bsModal.hide();
+                    bsModal.dispose();
+                }
+                // Remove modal from DOM to prevent conflicts
+                modal.remove();
+            });
+
+            // Also remove any lingering modal backdrops and other Bootstrap modal elements
+            const modalBackdrops = document.querySelectorAll('.modal-backdrop');
+            modalBackdrops.forEach(backdrop => backdrop.remove());
+
+            // Remove any elements with modal-open class
+            document.body.classList.remove('modal-open');
+
+            // Force remove any remaining modal-related elements that might be causing issues
+            const allModalElements = document.querySelectorAll('[class*="modal"], [id*="modal"]');
+            allModalElements.forEach(element => {
+                if (!element.closest('#sessionInvalidModal')) { // Keep the session modal
+                    element.remove();
+                }
+            });
+
+            // Clear any existing event listeners that might interfere
+            if (typeof handleViewStudentClick !== 'undefined') {
+                document.removeEventListener('click', handleViewStudentClick);
+            }
+            if (typeof handleValidateClick !== 'undefined') {
+                document.removeEventListener('click', handleValidateClick);
+            }
+            if (typeof handleCancelClick !== 'undefined') {
+                document.removeEventListener('click', handleCancelClick);
+            }
+            if (typeof handleReevaluateClick !== 'undefined') {
+                document.removeEventListener('click', handleReevaluateClick);
+            }
+            if (typeof handleViewShsClick !== 'undefined') {
+                document.removeEventListener('click', handleViewShsClick);
+            }
+            if (typeof handleValidateShsClick !== 'undefined') {
+                document.removeEventListener('click', handleValidateShsClick);
+            }
+            if (typeof handleCancelShsClick !== 'undefined') {
+                document.removeEventListener('click', handleCancelShsClick);
+            }
+            if (typeof handleReevaluateShsClick !== 'undefined') {
+                document.removeEventListener('click', handleReevaluateShsClick);
+            }
+
             // Add loading state
             contentArea.innerHTML = `
                 <div class="d-flex justify-content-center align-items-center" style="height: 50vh;">
@@ -505,6 +558,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 if (newContent) {
                     contentArea.innerHTML = newContent;
+
+                    // Execute any scripts in the new content
+                    const scripts = doc.querySelectorAll('#page-content script');
+                    scripts.forEach(script => {
+                        const newScript = document.createElement('script');
+                        if (script.src) {
+                            newScript.src = script.src;
+                        } else {
+                            newScript.textContent = script.textContent;
+                        }
+                        document.head.appendChild(newScript);
+                        document.head.removeChild(newScript); // Clean up
+                    });
                 } else {
                     contentArea.innerHTML = '<p>Error loading content.</p>';
                 }
