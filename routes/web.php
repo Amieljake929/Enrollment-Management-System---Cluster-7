@@ -20,6 +20,10 @@ use App\Http\Controllers\StaffCancelledController;
 use App\Http\Controllers\StaffReEvaluationController;
 use App\Http\Controllers\StaffConcernController;
 use App\Http\Controllers\ArchiveController;
+use App\Http\Controllers\CollegeRecordsController;
+use App\Http\Controllers\ShsRecordsController;
+use App\Http\Controllers\StaffCollegeRecordsController;
+use App\Http\Controllers\StaffShsRecordsController;
 
 
 
@@ -218,19 +222,10 @@ Route::prefix('modules')->middleware(['auth'])->group(function () {
 
 
     // Student Records
-    Route::get('/records/college', function () {
-        if (request()->ajax()) {
-            return view('modules.recordsCollege')->render();
-        }
-        return view('modules.recordsCollege');
-    })->name('modules.records.college');
+    Route::get('/records/college', [CollegeRecordsController::class, 'index'])->name('modules.records.college');
 
-    Route::get('/records/shs', function () {
-        if (request()->ajax()) {
-            return view('modules.recordsShs')->render();
-        }
-        return view('modules.recordsShs');
-    })->name('modules.records.shs');
+    // Palitan ang dating Route::get('/records/shs', ...) ng ganito:
+    Route::get('/records/shs', [ShsRecordsController::class, 'index'])->name('modules.records.shs');
 
      // ✅ CANCELLED ADMISSIONS - COLLEGE
      Route::get('/cancelled/college', [CancelledController::class, 'index'])->name('modules.cancelled.college');
@@ -307,20 +302,9 @@ Route::prefix('staff/modules')->middleware(['auth'])->group(function () {
     Route::post('/shs/payment/update/{studentId}', [StaffWaitingController::class, 'updateShsPaymentStatus'])
         ->name('staff.shs.payment.update');
 
-    // Student Records
-    Route::get('/records/college', function () {
-        if (request()->ajax()) {
-            return view('modules.staff.recordsCollege')->render();
-        }
-        return view('modules.staff.recordsCollege');
-    })->name('staff.modules.records.college');
-
-    Route::get('/records/shs', function () {
-        if (request()->ajax()) {
-            return view('modules.staff.recordsShs')->render();
-        }
-        return view('modules.staff.recordsShs');
-    })->name('staff.modules.records.shs');
+    // Staff Student Records
+    Route::get('/staff/records/college', [StaffCollegeRecordsController::class, 'index'])->name('staff.modules.records.college');
+    Route::get('/staff/records/shs', [StaffShsRecordsController::class, 'index'])->name('staff.modules.records.shs');
 
     // Cancelled Admissions
     Route::get('/cancelled/college', [StaffCancelledController::class, 'index'])->name('staff.modules.cancelled.college');

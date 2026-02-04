@@ -110,43 +110,61 @@ class StudentApiController extends Controller
     }
 
     /**
-     * API ENDPOINT: I-update ang payment status at MAG-GENERATE ng Student ID
+     * API ENDPOINT: I-update ang payment status gamit ang EMAIL at MAG-GENERATE ng Student ID
      */
     public function updatePaymentStatus(Request $request)
     {
+        // Validation: 'email' na ang kailangan natin ngayon
         $request->validate([
-            'student_id' => 'required',
+            'email' => 'required|email',
             'payment_status' => 'required|string'
         ]);
 
+        // Hanapin ang student record gamit ang email para makuha ang student_id
+        $student = CollegeStudent::where('email', $request->email)->first();
+
+        if (!$student) {
+            return response()->json([
+                'status' => 'error',
+                'message' => "Student with email: {$request->email} was not found."
+            ], 404);
+        }
+
+        $studentId = $student->student_id;
+
+        // I-check kung may record sa college_status table
         $statusRecord = DB::table('college_status')
-            ->where('student_id', $request->student_id)
+            ->where('student_id', $studentId)
             ->first();
 
         if (!$statusRecord) {
             return response()->json([
                 'status' => 'error',
-                'message' => "Student ID: {$request->student_id} not found in college_status."
+                'message' => "Student status record not found for the provided email."
             ], 404);
         }
 
+        // I-update ang payment column sa college_status table
         DB::table('college_status')
-            ->where('student_id', $request->student_id)
+            ->where('student_id', $studentId)
             ->update([
                 'payment' => $request->payment_status,
                 'updated_at' => now()
             ]);
 
         $generatedId = null;
+
+        // Kung ang payment_status ay 'Paid', mag-generate ng Student ID Number
         if ($request->payment_status === 'Paid') {
             
             $studentNumber = CollegeStudentNumber::firstOrCreate(
-                ['student_id' => $request->student_id],
+                ['student_id' => $studentId],
                 ['student_id_number' => null]
             );
 
             if (empty($studentNumber->student_id_number)) {
                 do {
+                    // Halimbawa: 26XXXXXX pattern
                     $newId = '26' . mt_rand(100000, 999999);
                     
                     $exists = CollegeStudentNumber::where('student_id_number', $newId)->exists() || 
@@ -163,7 +181,7 @@ class StudentApiController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => "Payment status updated to '{$request->payment_status}'.",
+            'message' => "Payment status updated to '{$request->payment_status}' for student {$request->email}.",
             'student_id_number' => $generatedId ?? "N/A"
         ], 200);
     }
@@ -173,12 +191,10 @@ class StudentApiController extends Controller
      */
     private function formatStudentData($student)
     {
-        // Kunin ang student_id_number
         $studentNumberRecord = DB::table('college_student_number')
             ->where('student_id', $student->student_id)
             ->first();
 
-        // KUKUNIN ANG ENROLLEE NO MULA SA TABLE: college_enrollee_number
         $enrolleeNumberRecord = DB::table('college_enrollee_number')
             ->where('student_id', $student->student_id)
             ->first();
@@ -186,7 +202,7 @@ class StudentApiController extends Controller
         return [
             'student_id'          => $student->student_id,
             'student_id_number'   => $studentNumberRecord->student_id_number ?? "N/A", 
-            'enrollee_no'         => $enrolleeNumberRecord->enrollee_no ?? "N/A", // Ito ang bagong field
+            'enrollee_no'         => $enrolleeNumberRecord->enrollee_no ?? "N/A",
             'first_name'          => $student->first_name,
             'middle_name'         => $student->middle_name,
             'last_name'           => $student->last_name,
@@ -227,8 +243,6 @@ class StudentApiController extends Controller
 
             'guardian' => $student->guardian,
             'educational_background' => $student->educationalBackground,
-            
-            // Re-checked enrollee number from relation if available
             'enrollee_number' => $enrolleeNumberRecord->enrollee_no ?? ($student->enrolleeNumber->enrollee_no ?? null),
 
             'type' => [

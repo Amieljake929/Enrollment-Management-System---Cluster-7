@@ -69,7 +69,7 @@ class ShsStudentApiController extends Controller
     }
 
     /**
-     * BAGONG FUNCTION: Kunin ang lahat ng SHS students na Not Paid o NULL
+     * Kunin ang lahat ng SHS students na Not Paid o NULL
      */
     public function getNotPaidShsStudents()
     {
@@ -104,40 +104,53 @@ class ShsStudentApiController extends Controller
     }
 
     /**
-     * API ENDPOINT: I-update ang payment status ng SHS at mag-generate ng ID
+     * API ENDPOINT: I-update ang payment status ng SHS gamit ang EMAIL
      */
     public function updateShsPaymentStatus(Request $request)
     {
+        // Pinalitan ang student_id ng email sa validation
         $request->validate([
-            'student_id' => 'required',
+            'email' => 'required|email',
             'payment_status' => 'required|string'
         ]);
 
-        // 1. Check sa shs_status table
+        // 1. Hanapin muna ang SHS student gamit ang email
+        $student = ShsStudent::where('email', $request->email)->first();
+
+        if (!$student) {
+            return response()->json([
+                'status' => 'error',
+                'message' => "SHS Student with email: {$request->email} not found."
+            ], 404);
+        }
+
+        $studentId = $student->student_id;
+
+        // 2. Check sa shs_status table gamit ang nakuha nating studentId
         $statusRecord = DB::table('shs_status')
-            ->where('student_id', $request->student_id)
+            ->where('student_id', $studentId)
             ->first();
 
         if (!$statusRecord) {
             return response()->json([
                 'status' => 'error',
-                'message' => "SHS Student ID: {$request->student_id} not found."
+                'message' => "Status record for SHS Student not found."
             ], 404);
         }
 
-        // 2. Update status
+        // 3. Update status sa database
         DB::table('shs_status')
-            ->where('student_id', $request->student_id)
+            ->where('student_id', $studentId)
             ->update([
                 'payment' => $request->payment_status,
                 'updated_at' => now()
             ]);
 
-        // 3. Logic Generation (Same sa WaitingController)
+        // 4. Logic Generation ng Student ID
         $generatedId = null;
         if ($request->payment_status === 'Paid') {
             $studentNumber = ShsStudentNumber::firstOrCreate(
-                ['student_id' => $request->student_id],
+                ['student_id' => $studentId],
                 ['student_id_number' => null]
             );
 
@@ -157,7 +170,7 @@ class ShsStudentApiController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => "SHS Payment status updated successfully.",
+            'message' => "SHS Payment status updated successfully for {$request->email}.",
             'student_id_number' => $generatedId ?? "N/A"
         ], 200);
     }
@@ -169,7 +182,7 @@ class ShsStudentApiController extends Controller
             ->where('student_id', $student->student_id)
             ->first();
 
-        // BAGONG DAGDAG: Kunin ang enrollee_no mula sa shs_enrollee_number table base sa image
+        // Kunin ang enrollee_no mula sa shs_enrollee_number table
         $shsEnrolleeNumber = DB::table('shs_enrollee_number')
             ->where('student_id', $student->student_id)
             ->first();
@@ -177,7 +190,7 @@ class ShsStudentApiController extends Controller
         return [
             'student_id'          => $student->student_id,
             'student_id_number'   => $shsNumber->student_id_number ?? "N/A",
-            'enrollee_no'         => $shsEnrolleeNumber->enrollee_no ?? "N/A", // Bagong field rito
+            'enrollee_no'         => $shsEnrolleeNumber->enrollee_no ?? "N/A",
             'first_name'          => $student->first_name,
             'middle_name'         => $student->middle_name,
             'last_name'           => $student->last_name,
@@ -223,8 +236,6 @@ class ShsStudentApiController extends Controller
 
             'guardian' => $student->guardian,
             'educational_background' => $student->educationalBackground,
-            
-            // Priority ang database record pero fallback sa relationship
             'enrollee_number' => $shsEnrolleeNumber->enrollee_no ?? ($student->enrolleeNumber->enrollee_no ?? "N/A"),
             
             'type' => [
