@@ -1,4 +1,3 @@
-<!-- resources/views/modules/staff/pendingShs.blade.php -->
 @extends('layouts.staff')
 
 @section('content')
@@ -11,7 +10,6 @@
 </a>
     </div>
 
-    <!-- Filter & Search Form -->
     <div class="card mb-4 shadow-sm">
         <div class="card-body p-4">
             <form method="GET" action="{{ route('staff.modules.pending.shs') }}" class="row g-3">
@@ -70,7 +68,6 @@
         </div>
     </div>
 
-    <!-- Student Table -->
     <div class="card shadow-sm">
         <div class="card-body">
             <div class="table-responsive">
@@ -99,7 +96,7 @@
                                         {{ $student->extension_name }}
                                     @endif
                                      <div class="text-muted small mt-1">
-                                          <strong>Enrollee Number:</strong> {{ $student->enrolleeNumber->enrollee_no ?? 'N/A' }}
+                                         <strong>Enrollee Number:</strong> {{ $student->enrolleeNumber->enrollee_no ?? 'N/A' }}
                                      </div>
                                 </td>
                                 <td>{{ $student->enrollmentPreference->course->course_name ?? 'N/A' }}</td>
@@ -137,7 +134,6 @@
                 </table>
             </div>
 
-            <!-- Pagination -->
             <div class="d-flex justify-content-end mt-3">
                 {{ $students->links('pagination::bootstrap-5') }}
             </div>
@@ -145,7 +141,6 @@
     </div>
 </div>
 
-<!-- SHS Student Details Modal -->
 <div class="modal fade" id="shsStudentModal" tabindex="-1" aria-labelledby="shsStudentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -168,11 +163,16 @@
                     title="Validate">
                     Validate
                 </button>
+                
+                {{-- RE-EVALUATE BUTTON COMMENTED OUT --}}
+                {{-- 
                 <button type="button" class="btn btn-warning reevaluate-shs-btn me-2"
                     data-student-id=""
                     title="Re-Evaluate">
                     Re-Evaluate
-                </button>
+                </button> 
+                --}}
+
                 <button type="button" class="btn btn-danger cancel-shs-btn me-2"
                     data-student-id=""
                     data-student-name=""
@@ -214,7 +214,12 @@ function handleViewShsClick(e) {
 
                 // Set student ID and name for action buttons
                 document.querySelector('.validate-shs-btn').setAttribute('data-student-id', studentId);
-                document.querySelector('.reevaluate-shs-btn').setAttribute('data-student-id', studentId);
+                
+                // Commented out re-evaluate logic
+                // if (document.querySelector('.reevaluate-shs-btn')) {
+                //    document.querySelector('.reevaluate-shs-btn').setAttribute('data-student-id', studentId);
+                // }
+
                 document.querySelector('.cancel-shs-btn').setAttribute('data-student-id', studentId);
                 document.querySelector('.cancel-shs-btn').setAttribute('data-student-name', `${data.last_name}, ${data.first_name}`);
             })
@@ -351,7 +356,6 @@ function generateShsStudentDetailsHTML(student) {
 }
 </script>
 
-<!-- Full Size Image Modal for SHS -->
 <div class="modal fade" id="shsFullSizeModal" tabindex="-1" aria-labelledby="shsFullSizeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -445,7 +449,8 @@ function handleCancelShsClick(e) {
 document.addEventListener('click', handleCancelShsClick);
 </script>
 
-<!-- Re-Evaluate SHS Button -->
+{{-- RE-EVALUATE SCRIPT COMMENTED OUT --}}
+{{-- 
 <script>
 function handleReevaluateShsClick(e) {
     const reevaluateBtn = e.target.closest('.reevaluate-shs-btn');
@@ -478,6 +483,7 @@ function handleReevaluateShsClick(e) {
 }
 
 document.addEventListener('click', handleReevaluateShsClick);
-</script>
+</script> 
+--}}
 
 @endsection

@@ -30,7 +30,12 @@ class WaitingController extends Controller
             'enrolleeNumber'
         ])
         ->whereHas('status', function ($q) {
-            $q->where('info_status', 'Validated'); // Only Validated
+            // Only Validated and NOT Paid
+            $q->where('info_status', 'Validated')
+              ->where(function($sub) {
+                  $sub->where('payment', '!=', 'Paid')
+                      ->orWhereNull('payment');
+              });
         })
         ->whereHas('preference', function ($q) {
             $q->whereNotNull('course_id')
@@ -88,7 +93,12 @@ class WaitingController extends Controller
             'studentNumber'
         ])
         ->whereHas('status', function ($q) {
-            $q->where('info_status', 'Validated'); // Only Validated
+            // Only Validated and NOT Paid
+            $q->where('info_status', 'Validated')
+              ->where(function($sub) {
+                  $sub->where('payment', '!=', 'Paid')
+                      ->orWhereNull('payment');
+              });
         })
         ->whereHas('enrollmentPreference', function ($q) {
             $q->whereNotNull('course_id')
@@ -144,14 +154,10 @@ class WaitingController extends Controller
             );
 
             if (empty($studentNumber->student_id_number)) {
-                // Loop hanggang makakuha ng unique na random ID
                 do {
                     $newId = '26' . mt_rand(100000, 999999);
-                    
-                    // Siguraduhin na wala sa kahit anong table ang generated ID
                     $exists = CollegeStudentNumber::where('student_id_number', $newId)->exists() || 
                              ShsStudentNumber::where('student_id_number', $newId)->exists();
-
                 } while ($exists);
 
                 $studentNumber->update(['student_id_number' => $newId]);
@@ -174,14 +180,10 @@ class WaitingController extends Controller
             );
 
             if (empty($studentNumber->student_id_number)) {
-                // Loop hanggang makakuha ng unique na random ID
                 do {
                     $newId = '26' . mt_rand(100000, 999999);
-
-                    // Siguraduhin na wala sa kahit anong table ang generated ID
                     $exists = CollegeStudentNumber::where('student_id_number', $newId)->exists() || 
                              ShsStudentNumber::where('student_id_number', $newId)->exists();
-
                 } while ($exists);
 
                 $studentNumber->update(['student_id_number' => $newId]);

@@ -1,4 +1,3 @@
-<!-- resources/views/modules/pendingCollege.blade.php -->
 @extends('layouts.app')
 
 @section('content')
@@ -11,7 +10,6 @@
 </a>
     </div>
 
-    <!-- Filter & Search Form -->
     <div class="card mb-4 shadow-sm">
         <div class="card-body p-4">
             <form method="GET" action="{{ route('modules.pending.college') }}" class="row g-3">
@@ -74,7 +72,6 @@
         </div>
     </div>
 
-    <!-- Student Table -->
     <div class="card shadow-sm">
         <div class="card-body">
             <div class="table-responsive">
@@ -144,7 +141,6 @@
                 </table>
             </div>
 
-            <!-- Pagination -->
             <div class="d-flex justify-content-end mt-3">
                 {{ $students->links('pagination::bootstrap-5') }}
             </div>
@@ -152,7 +148,6 @@
     </div>
 </div>
 
-<!-- Student Details Modal -->
 <div class="modal fade" id="studentModal" tabindex="-1" aria-labelledby="studentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -162,7 +157,6 @@
             </div>
             <div class="modal-body">
                 <div id="student-details">
-                    <!-- Student details will be loaded here -->
                     <div class="text-center">
                         <div class="spinner-border text-primary" role="status">
                             <span class="visually-hidden">Loading...</span>
@@ -177,11 +171,16 @@
                         title="Validate">
                         Validate
                     </button>
+                    
+                    {{-- RE-EVALUATE BUTTON COMMENTED OUT --}}
+                    {{-- 
                     <button type="button" class="btn btn-warning reevaluate-btn me-2"
                         data-student-id=""
                         title="Re-Evaluate">
                         Re-Evaluate
-                    </button>
+                    </button> 
+                    --}}
+
                     <button type="button" class="btn btn-danger cancel-btn"
                         data-student-id=""
                         data-student-name=""
@@ -195,7 +194,6 @@
     </div>
 </div>
 
-<!-- Full Size Image Modal -->
 <div class="modal fade" id="fullSizeModal" tabindex="-1" aria-labelledby="fullSizeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -255,7 +253,12 @@ document.addEventListener('click', function(e) {
                 const cancelBtn = document.querySelector('.cancel-btn');
 
                 validateBtn.setAttribute('data-student-id', studentId);
-                reevaluateBtn.setAttribute('data-student-id', studentId);
+                
+                // Set only if the button exists in DOM
+                if(reevaluateBtn) {
+                    reevaluateBtn.setAttribute('data-student-id', studentId);
+                }
+
                 cancelBtn.setAttribute('data-student-id', studentId);
                 cancelBtn.setAttribute('data-student-name', `${data.last_name}, ${data.first_name}`);
             })
@@ -456,8 +459,8 @@ document.addEventListener('click', function(e) {
 });
 </script>
 
-<!-- Re-Evaluate Button -->
 <script>
+/*
 document.addEventListener('click', function(e) {
     const reevaluateBtn = e.target.closest('.reevaluate-btn');
     if (reevaluateBtn) {
@@ -486,6 +489,7 @@ document.addEventListener('click', function(e) {
         });
     }
 });
+*/
 </script>
 
 @endsection

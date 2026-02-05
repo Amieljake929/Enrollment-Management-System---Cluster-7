@@ -112,7 +112,10 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center text-muted py-4">No validated admissions found.</td>
+                                <td colspan="6" class="text-center text-muted py-4">
+                                    <i class="bi bi-hourglass-split fs-3"></i>
+                                    <p class="mt-2 mb-0">No validated admissions found in waiting list.</p>
+                                </td>
                             </tr>
                         @endforelse
                     </tbody>

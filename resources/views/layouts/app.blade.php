@@ -356,26 +356,27 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
             </ul>
         </li>
 
-        <!-- Re-Evaluation Dropdown -->
-<li class="nav-item mb-2">
-    <a class="nav-link d-flex align-items-center sidebar-dropdown-toggle" href="#reevaluation-submenu" data-bs-toggle="collapse" role="button" aria-expanded="false">
-        <i class="bi bi-arrow-repeat me-2"></i>
-        <span class="flex-grow-1">Re-Evaluation</span>
-        <i class="bi bi-chevron-down toggle-icon fs-small"></i>
-    </a>
-    <ul class="nav collapse ms-3 flex-column" id="reevaluation-submenu">
-        <li class="mb-1">
-            <a href="{{ route('modules.reevaluation.college') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
-                <i class="bi bi-building me-2"></i> College
+        {{-- 
+        <li class="nav-item mb-2">
+            <a class="nav-link d-flex align-items-center sidebar-dropdown-toggle" href="#reevaluation-submenu" data-bs-toggle="collapse" role="button" aria-expanded="false">
+                <i class="bi bi-arrow-repeat me-2"></i>
+                <span class="flex-grow-1">Re-Evaluation</span>
+                <i class="bi bi-chevron-down toggle-icon fs-small"></i>
             </a>
+            <ul class="nav collapse ms-3 flex-column" id="reevaluation-submenu">
+                <li class="mb-1">
+                    <a href="{{ route('modules.reevaluation.college') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                        <i class="bi bi-building me-2"></i> College
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="{{ route('modules.reevaluation.shs') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
+                        <i class="bi bi-mortarboard me-2"></i> SHS
+                    </a>
+                </li>
+            </ul>
         </li>
-        <li class="mb-1">
-            <a href="{{ route('modules.reevaluation.shs') }}" class="nav-link py-2 px-3 d-flex align-items-center" data-load>
-                <i class="bi bi-mortarboard me-2"></i> SHS
-            </a>
-        </li>
-    </ul>
-</li>
+        --}}
 
         <!-- Concerns -->
 <li class="nav-item mb-2">

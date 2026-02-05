@@ -29,7 +29,12 @@ class StaffWaitingController extends Controller
             'enrolleeNumber'
         ])
         ->whereHas('status', function ($q) {
-            $q->where('info_status', 'Validated');
+            // Filter: Validated status and NOT Paid (or NULL payment)
+            $q->where('info_status', 'Validated')
+              ->where(function($sub) {
+                  $sub->where('payment', '!=', 'Paid')
+                      ->orWhereNull('payment');
+              });
         })
         ->whereHas('preference', function ($q) {
             $q->whereNotNull('course_id')
@@ -86,7 +91,12 @@ class StaffWaitingController extends Controller
             'studentNumber'
         ])
         ->whereHas('status', function ($q) {
-            $q->where('info_status', 'Validated');
+            // Filter: Validated status and NOT Paid (or NULL payment)
+            $q->where('info_status', 'Validated')
+              ->where(function($sub) {
+                  $sub->where('payment', '!=', 'Paid')
+                      ->orWhereNull('payment');
+              });
         })
         ->whereHas('enrollmentPreference', function ($q) {
             $q->whereNotNull('course_id')
@@ -151,7 +161,11 @@ class StaffWaitingController extends Controller
             }
         }
 
-        return response()->json(['success' => true, 'message' => 'College payment status updated']);
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'message' => 'College payment status updated']);
+        }
+
+        return redirect()->back()->with('success', 'Payment status updated successfully.');
     }
 
     public function updateShsPaymentStatus(Request $request, $studentId)
@@ -177,6 +191,10 @@ class StaffWaitingController extends Controller
             }
         }
 
-        return response()->json(['success' => true, 'message' => 'SHS payment status updated']);
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'message' => 'SHS payment status updated']);
+        }
+
+        return redirect()->back()->with('success', 'Payment status updated successfully.');
     }
 }

@@ -107,7 +107,7 @@
                                 <td>
                                     @if($student->status)
                                         <span class="badge {{ $student->status->payment === 'Paid' ? 'bg-success' : 'bg-warning text-dark' }}">
-                                            {{ $student->status->payment }}
+                                            {{ $student->status->payment ?? 'Pending' }}
                                         </span>
                                     @else
                                         <span class="text-muted">N/A</span>

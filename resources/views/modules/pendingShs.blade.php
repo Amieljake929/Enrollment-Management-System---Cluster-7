@@ -1,4 +1,3 @@
-<!-- resources/views/modules/pendingShs.blade.php -->
 @extends('layouts.app')
 
 @section('content')
@@ -6,73 +5,69 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Pending Admissions - SHS</h2>
         <a href="{{ route('modules.pending.shs.download.pdf', request()->query()) }}" 
-   class="btn btn-secondary" style="background-color: #5044e4">
-    <i class="bi bi-download"></i> Download Admissions (PDF)
-</a>
+           class="btn btn-secondary" style="background-color: #5044e4">
+            <i class="bi bi-download"></i> Download Admissions (PDF)
+        </a>
     </div>
 
-    <!-- Filter & Search Form -->
     <div class="card mb-4 shadow-sm">
         <div class="card-body p-4">
             <form method="GET" action="{{ route('modules.pending.shs') }}" class="row g-3">
-    <div class="col-md-3">
-        <label for="branch" class="form-label">Filter by Branch</label>
-        <select name="branch" id="branch" class="form-select">
-            <option value="">All Branches</option>
-            <option value="1" {{ request('branch') == '1' ? 'selected' : '' }}>Main Branch</option>
-            <option value="2" {{ request('branch') == '2' ? 'selected' : '' }}>Bulacan Branch</option>
-        </select>
-    </div>
+                <div class="col-md-3">
+                    <label for="branch" class="form-label">Filter by Branch</label>
+                    <select name="branch" id="branch" class="form-select">
+                        <option value="">All Branches</option>
+                        <option value="1" {{ request('branch') == '1' ? 'selected' : '' }}>Main Branch</option>
+                        <option value="2" {{ request('branch') == '2' ? 'selected' : '' }}>Bulacan Branch</option>
+                    </select>
+                </div>
 
-    <div class="col-md-3">
-        <label for="year_level" class="form-label">Filter by Year Level</label>
-        <select name="year_level" id="year_level" class="form-select">
-            <option value="">All Levels</option>
-            <option value="11" {{ request('year_level') == '11' ? 'selected' : '' }}>Grade 11</option>
-            <option value="12" {{ request('year_level') == '12' ? 'selected' : '' }}>Grade 12</option>
-        </select>
-    </div>
+                <div class="col-md-3">
+                    <label for="year_level" class="form-label">Filter by Year Level</label>
+                    <select name="year_level" id="year_level" class="form-select">
+                        <option value="">All Levels</option>
+                        <option value="11" {{ request('year_level') == '11' ? 'selected' : '' }}>Grade 11</option>
+                        <option value="12" {{ request('year_level') == '12' ? 'selected' : '' }}>Grade 12</option>
+                    </select>
+                </div>
 
-    {{-- ✅ NEW: Student Type --}}
-    <div class="col-md-3">
-        <label for="student_type" class="form-label">Filter by Student Type</label>
-        <select name="student_type" id="student_type" class="form-select">
-            <option value="">All Types</option>
-            @foreach($studentTypes as $type)
-                <option value="{{ $type->type_id }}" {{ request('student_type') == $type->type_id ? 'selected' : '' }}>
-                    {{ $type->type_name }}
-                </option>
-            @endforeach
-        </select>
-    </div>
+                <div class="col-md-3">
+                    <label for="student_type" class="form-label">Filter by Student Type</label>
+                    <select name="student_type" id="student_type" class="form-select">
+                        <option value="">All Types</option>
+                        @foreach($studentTypes as $type)
+                            <option value="{{ $type->type_id }}" {{ request('student_type') == $type->type_id ? 'selected' : '' }}>
+                                {{ $type->type_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
-    <div class="col-md-3">
-        <label for="search" class="form-label">Search by Keywords or Course</label>
-        <input type="text" name="search" id="search" class="form-control"
-               placeholder="Enter student name or course..." value="{{ request('search') }}">
-    </div>
+                <div class="col-md-3">
+                    <label for="search" class="form-label">Search by Keywords or Course</label>
+                    <input type="text" name="search" id="search" class="form-control"
+                           placeholder="Enter student name or course..." value="{{ request('search') }}">
+                </div>
 
-    <div class="col-md-3">
-        <label for="date_from" class="form-label">From Date</label>
-        <input type="date" name="date_from" id="date_from" class="form-control"
-               value="{{ request('date_from') }}">
-    </div>
+                <div class="col-md-3">
+                    <label for="date_from" class="form-label">From Date</label>
+                    <input type="date" name="date_from" id="date_from" class="form-control"
+                           value="{{ request('date_from') }}">
+                </div>
 
-    <div class="col-md-3">
-        <label for="date_to" class="form-label">To Date</label>
-        <input type="date" name="date_to" id="date_to" class="form-control"
-               value="{{ request('date_to') }}">
-    </div>
+                <div class="col-md-3">
+                    <label for="date_to" class="form-label">To Date</label>
+                    <input type="date" name="date_to" id="date_to" class="form-control"
+                           value="{{ request('date_to') }}">
+                </div>
 
-    <div class="col-12 d-flex justify-content-end">
-        <button type="submit" class="btn btn-primary">Filter</button>
-    </div>
-</form>
-
+                <div class="col-12 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <!-- Student Table -->
     <div class="card shadow-sm">
         <div class="card-body">
             <div class="table-responsive">
@@ -101,7 +96,7 @@
                                         {{ $student->extension_name }}
                                     @endif
                                      <div class="text-muted small mt-1">
-                                          <strong>Enrollee Number:</strong> {{ $student->enrolleeNumber->enrollee_no ?? 'N/A' }}
+                                         <strong>Enrollee Number:</strong> {{ $student->enrolleeNumber->enrollee_no ?? 'N/A' }}
                                      </div>
                                 </td>
                                 <td>{{ $student->enrollmentPreference->course->course_name ?? 'N/A' }}</td>
@@ -110,21 +105,19 @@
                                     {{ $student->enrollmentPreference->branch->branch_name ?? 'N/A' }}
                                 </td>
                                  <td>
-    @if($student->status)
-        <span class="badge bg-warning text-dark">{{ $student->status->info_status }}</span>
-    @else
-        <span class="text-muted">N/A</span>
-    @endif
-</td>
+                                    @if($student->status)
+                                        <span class="badge bg-warning text-dark">{{ $student->status->info_status }}</span>
+                                    @else
+                                        <span class="text-muted">N/A</span>
+                                    @endif
+                                </td>
                                 <td>{{ $student->created_at->format('M d, Y \a\t h:i A') }}</td>
-                               
                                 <td class="text-center">
-    <button type="button" class="btn btn-sm btn-primary view-shs-btn"
-        data-student-id="{{ $student->student_id }}"
-        title="View">
-        View
-    </button>
-</td>
+                                    <button type="button" class="btn btn-sm btn-primary view-shs-btn"
+                                        data-student-id="{{ $student->student_id }}"
+                                        title="View">
+                                        View
+                                    </button>
                                 </td>
                             </tr>
                         @empty
@@ -139,7 +132,6 @@
                 </table>
             </div>
 
-            <!-- Pagination -->
             <div class="d-flex justify-content-end mt-3">
                 {{ $students->links('pagination::bootstrap-5') }}
             </div>
@@ -147,7 +139,6 @@
     </div>
 </div>
 
-<!-- SHS Student Details Modal -->
 <div class="modal fade" id="shsStudentModal" tabindex="-1" aria-labelledby="shsStudentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -171,11 +162,6 @@
                         title="Validate">
                         Validate
                     </button>
-                    <button type="button" class="btn btn-warning reevaluate-shs-btn me-2"
-                        data-student-id=""
-                        title="Re-Evaluate">
-                        Re-Evaluate
-                    </button>
                     <button type="button" class="btn btn-danger cancel-shs-btn"
                         data-student-id=""
                         data-student-name=""
@@ -189,7 +175,6 @@
     </div>
 </div>
 
-<!-- Full Size Image Modal for SHS -->
 <div class="modal fade" id="shsFullSizeModal" tabindex="-1" aria-labelledby="shsFullSizeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -206,7 +191,6 @@
         </div>
     </div>
 </div>
-
 
 <script>
 // View SHS Student
@@ -234,26 +218,24 @@ document.addEventListener('click', function(e) {
             .then(data => {
                 modalBody.innerHTML = generateShsStudentDetailsHTML(data);
 
-                // Set student ID and name for action buttons
                 const validateBtn = document.querySelector('.validate-shs-btn');
-                const reevaluateBtn = document.querySelector('.reevaluate-shs-btn');
                 const cancelBtn = document.querySelector('.cancel-shs-btn');
+                // Re-evaluate button selector commented out as it is removed from UI
+                // const reevaluateBtn = document.querySelector('.reevaluate-shs-btn');
 
                 validateBtn.setAttribute('data-student-id', studentId);
-                reevaluateBtn.setAttribute('data-student-id', studentId);
                 cancelBtn.setAttribute('data-student-id', studentId);
                 cancelBtn.setAttribute('data-student-name', `${data.last_name}, ${data.first_name}`);
+                
+                // if (reevaluateBtn) reevaluateBtn.setAttribute('data-student-id', studentId);
             })
             .catch(error => {
                 modalBody.innerHTML = '<div class="alert alert-danger">Error loading student details.</div>';
                 console.error('Fetch error:', error);
             });
     }
-
-    
 });
 
-// Generate SHS Student Details HTML
 function generateShsStudentDetailsHTML(student) {
     return `
         <div class="row">
@@ -322,12 +304,6 @@ function generateShsStudentDetailsHTML(student) {
                         <p><strong>Email:</strong> ${student.parent_info.mother_email || 'N/A'}</p>
                     </div>
                 ` : '<p>No parent information available.</p>'}
-                ${student.guardian ? `
-                    <h6 class="fw-bold mt-3">Guardian</h6>
-                    <p><strong>Name:</strong> ${student.guardian.last_name}, ${student.guardian.first_name} ${student.guardian.middle_name ? student.guardian.middle_name + '.' : ''}</p>
-                    <p><strong>Contact:</strong> ${student.guardian.contact_number || 'N/A'}</p>
-                    <p><strong>Email:</strong> ${student.guardian.email || 'N/A'}</p>
-                ` : ''}
             </div>
         </div>
         <hr>
@@ -335,41 +311,39 @@ function generateShsStudentDetailsHTML(student) {
             <div class="col-12">
                 <h6 class="fw-bold">Uploaded Documents</h6>
                 ${student.documents && student.documents.length > 0 ? `
-    <div class="row">
-        ${student.documents.map(doc => {
-            const filePath = doc.file_path; // e.g., "enrollment_documents/xxx.jpg"
-            const url = `/storage/${filePath}`; // ✅ Correct public URL
-            const ext = filePath.split('.').pop().toLowerCase();
-            const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
-            const docName = doc.document ? doc.document.document_name : 'Unknown';
-            if (imageExts.includes(ext)) {
-                return `
-                    <div class="col-md-6 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body text-center">
-                                <h6 class="card-title">${docName}</h6>
-                                <img src="${url}" alt="${docName}" class="img-fluid" style="max-height: 200px; object-fit: contain; cursor: pointer;" data-url="${url}" data-alt="${docName}" class="view-full-size-img">
-                                <br><button type="button" class="btn btn-sm btn-outline-primary mt-2 view-full-size-btn" data-url="${url}" data-alt="${docName}">View Full Size</button>
-                            </div>
-                        </div>
+                    <div class="row">
+                        ${student.documents.map(doc => {
+                            const url = `/storage/${doc.file_path}`;
+                            const ext = doc.file_path.split('.').pop().toLowerCase();
+                            const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+                            const docName = doc.document ? doc.document.document_name : 'Unknown';
+                            if (imageExts.includes(ext)) {
+                                return `
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-body text-center">
+                                                <h6 class="card-title">${docName}</h6>
+                                                <img src="${url}" class="img-fluid view-full-size-img" style="max-height: 200px; cursor: pointer;" data-url="${url}" data-alt="${docName}">
+                                                <br><button type="button" class="btn btn-sm btn-outline-primary mt-2 view-full-size-btn" data-url="${url}" data-alt="${docName}">View Full Size</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            } else {
+                                return `
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-body text-center">
+                                                <h6 class="card-title">${docName}</h6>
+                                                <a href="${url}" target="_blank" class="btn btn-primary">View Document</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            }
+                        }).join('')}
                     </div>
-                `;
-            } else {
-                return `
-                    <div class="col-md-6 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body text-center">
-                                <h6 class="card-title">${docName}</h6>
-                                <p class="card-text">Document File</p>
-                                <a href="${url}" target="_blank" class="btn btn-primary">View Document</a>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-        }).join('')}
-    </div>
-` : '<p>No documents uploaded.</p>'}
+                ` : '<p>No documents uploaded.</p>'}
             </div>
         </div>
     `;
@@ -385,7 +359,6 @@ function openShsFullSizeModal(url, alt) {
     modal.show();
 }
 
-// Event listeners for full size modal
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('view-full-size-img') || e.target.classList.contains('view-full-size-btn')) {
         const url = e.target.getAttribute('data-url');
@@ -393,10 +366,8 @@ document.addEventListener('click', function(e) {
         openShsFullSizeModal(url, alt);
     }
 });
-</script>
 
-<script>
-// Validate SHS
+// Validate Action
 document.addEventListener('click', function(e) {
     const btn = e.target.closest('.validate-shs-btn');
     if (btn) {
@@ -420,7 +391,7 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// Cancel SHS
+// Cancel Action
 document.addEventListener('click', function(e) {
     const btn = e.target.closest('.cancel-shs-btn');
     if (btn) {
@@ -444,16 +415,14 @@ document.addEventListener('click', function(e) {
         .catch(() => alert('An error occurred.'));
     }
 });
-</script>
 
-<!-- Re-Evaluate SHS Button -->
-<script>
+/* // Re-Evaluate Action (Commented Out)
 document.addEventListener('click', function(e) {
     const reevaluateBtn = e.target.closest('.reevaluate-shs-btn');
     if (reevaluateBtn) {
         e.preventDefault();
         const studentId = reevaluateBtn.getAttribute('data-student-id');
-        if (!confirm('Re-evaluate this SHS admission? This will change the status to "Re-Evaluate".')) return;
+        if (!confirm('Re-evaluate this SHS admission?')) return;
 
         fetch(`/modules/pending/shs/${studentId}/reevaluate`, {
             method: 'POST',
@@ -473,10 +442,10 @@ document.addEventListener('click', function(e) {
         })
         .catch(err => {
             console.error(err);
-            alert('An error occurred while updating the status.');
+            alert('An error occurred.');
         });
     }
 });
+*/
 </script>
-
 @endsection

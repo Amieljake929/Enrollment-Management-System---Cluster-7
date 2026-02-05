@@ -10,7 +10,6 @@
         </a>
     </div>
 
-    <!-- Filter & Search Form -->
     <div class="card mb-4 shadow-sm">
         <div class="card-body p-4">
             <form method="GET" action="{{ route('staff.modules.pending.college') }}" class="row g-3">
@@ -69,7 +68,6 @@
         </div>
     </div>
 
-    <!-- Student Table -->
     <div class="card shadow-sm">
         <div class="card-body">
             <div class="table-responsive">
@@ -134,7 +132,6 @@
                 </table>
             </div>
 
-            <!-- Pagination -->
             <div class="d-flex justify-content-end mt-3">
                 {{ $students->links('pagination::bootstrap-5') }}
             </div>
@@ -142,7 +139,6 @@
     </div>
 </div>
 
-<!-- Student Details Modal -->
 <div class="modal fade" id="studentModal" tabindex="-1" aria-labelledby="studentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -152,7 +148,6 @@
             </div>
             <div class="modal-body">
                 <div id="student-details">
-                    <!-- Student details will be loaded here -->
                     <div class="text-center">
                         <div class="spinner-border text-primary" role="status">
                             <span class="visually-hidden">Loading...</span>
@@ -166,11 +161,15 @@
                         title="Validate">
                     Validate
                 </button>
+                
+                {{-- RE-EVALUATION MODULE (COMMENTED OUT)
                 <button type="button" class="btn btn-warning reevaluate-btn me-2"
                         data-student-id=""
                         title="Re-Evaluate">
                     Re-Evaluate
                 </button>
+                --}}
+
                 <button type="button" class="btn btn-danger cancel-btn me-2"
                         data-student-id=""
                         data-student-name=""
@@ -219,7 +218,11 @@ function handleViewStudentClick(e) {
 
                 // Set student ID and name for action buttons
                 document.querySelector('.validate-btn').setAttribute('data-student-id', studentId);
-                document.querySelector('.reevaluate-btn').setAttribute('data-student-id', studentId);
+                
+                // Commented out re-evaluate button data setting
+                // const reevalBtn = document.querySelector('.reevaluate-btn');
+                // if(reevalBtn) reevalBtn.setAttribute('data-student-id', studentId);
+
                 document.querySelector('.cancel-btn').setAttribute('data-student-id', studentId);
                 document.querySelector('.cancel-btn').setAttribute('data-student-name', `${data.last_name}, ${data.first_name}`);
             })
@@ -306,8 +309,8 @@ ${student.parentInfo && Array.isArray(student.parentInfo) && student.parentInfo.
                 ${student.documents && student.documents.length > 0 ? `
     <div class="row">
         ${student.documents.map(doc => {
-            const filePath = doc.file_path; // e.g., "enrollment_documents/xxx.jpg"
-            const url = `/storage/${filePath}`; // ✅ Correct public URL
+            const filePath = doc.file_path; 
+            const url = `/storage/${filePath}`; 
             const ext = filePath.split('.').pop().toLowerCase();
             const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
             const docName = doc.document ? doc.document.document_name : 'Unknown';
@@ -411,7 +414,7 @@ function handleCancelClick(e) {
 
 document.addEventListener('click', handleCancelClick);
 
-// Re-Evaluate Button
+/* // RE-EVALUATION LOGIC (COMMENTED OUT)
 function handleReevaluateClick(e) {
     const reevaluateBtn = e.target.closest('.reevaluate-btn');
     if (reevaluateBtn) {
@@ -440,11 +443,10 @@ function handleReevaluateClick(e) {
         });
     }
 }
-
 document.addEventListener('click', handleReevaluateClick);
+*/
 </script>
 
-<!-- Full Size Image Modal -->
 <div class="modal fade" id="fullSizeModal" tabindex="-1" aria-labelledby="fullSizeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

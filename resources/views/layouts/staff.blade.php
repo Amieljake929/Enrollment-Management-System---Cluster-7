@@ -360,6 +360,7 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
             </ul>
         </li>
 
+         {{--
         <!-- Re-Evaluation Dropdown -->
         <li class="nav-item mb-2">
             <a class="nav-link d-flex align-items-center sidebar-dropdown-toggle" href="#reevaluation-submenu" data-bs-toggle="collapse" role="button" aria-expanded="false">
@@ -380,6 +381,7 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
                 </li>
             </ul>
         </li>
+        --}}
 
         <!-- Concerns -->
         <li class="nav-item mb-2">

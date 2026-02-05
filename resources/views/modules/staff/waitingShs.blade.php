@@ -96,7 +96,7 @@
                                 <td class="text-center">
                                     <button type="button" class="btn btn-sm btn-primary" disabled>View</button>
                                     
-                                    {{-- Paid Button Function Hidden/Commented Out but preserved for future use --}}
+                                    {{-- Paid Button Function Hidden/Commented Out but preserved --}}
                                     {{-- 
                                     @if(($student->status->payment ?? '') !== 'Paid')
                                     <form method="POST" action="{{ route('staff.shs.payment.update', $student->student_id) }}" style="display: inline;">
