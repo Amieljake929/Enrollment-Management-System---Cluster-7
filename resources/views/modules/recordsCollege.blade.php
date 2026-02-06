@@ -51,10 +51,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @php
-                                            $sections = $groupedData[$code] ?? collect();
-                                        @endphp
-
+                                        @php $sections = $groupedData[$code] ?? collect(); @endphp
                                         @forelse($sections as $sectionName => $data)
                                             <tr>
                                                 <td class="ps-4 py-3 fw-500 text-dark">Section {{ $sectionName }}</td>
@@ -66,17 +63,12 @@
                                                 <td class="pe-4 py-3 text-center">
                                                     <button class="btn btn-primary btn-sm rounded-pill px-4 shadow-sm" 
                                                             onclick="toggleView('{{ Str::slug($code) }}', true, 'Section {{ $sectionName }}', '{{ $sectionName }}')">
-                                                        View
+                                                        View Students
                                                     </button>
                                                 </td>
                                             </tr>
                                         @empty
-                                            <tr>
-                                                <td colspan="3" class="text-center py-5">
-                                                    <img src="https://cdn-icons-png.flaticon.com/512/7486/7486744.png" width="50" class="opacity-25 mb-2">
-                                                    <p class="text-muted mb-0">No sections found for this course.</p>
-                                                </td>
-                                            </tr>
+                                            <tr><td colspan="3" class="text-center py-5">No sections found.</td></tr>
                                         @endforelse
                                     </tbody>
                                 </table>
@@ -85,7 +77,7 @@
 
                         <div id="student-view-{{ Str::slug($code) }}" class="d-none">
                             <div class="table-responsive">
-                                <table class="table table-hover table-bordered mb-0" id="table-students-{{ Str::slug($code) }}">
+                                <table class="table table-hover table-bordered mb-0">
                                     <thead class="bg-dark text-white">
                                         <tr>
                                             <th class="ps-4 py-3 small">STUDENT ID</th>
@@ -96,7 +88,7 @@
                                             <th class="pe-4 py-3 text-center small">ACTION</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="student-list-body-{{ Str::slug($code) }}">
+                                    <tbody>
                                         @foreach($sections as $sectionName => $data)
                                             @foreach($data['students'] as $student)
                                                 <tr class="student-row-{{ Str::slug($code) }} d-none" data-section="{{ $sectionName }}">
@@ -110,7 +102,10 @@
                                                     <td class="py-3 text-center">{{ $student['Section'] }}</td>
                                                     <td class="py-3 text-muted">{{ $student['YearLevel'] }}</td>
                                                     <td class="pe-4 py-3 text-center">
-                                                        <button class="btn btn-outline-secondary btn-xs rounded-circle"><i class="fas fa-ellipsis-v"></i></button>
+                                                        <button class="btn btn-info btn-sm rounded-pill px-3 text-white shadow-sm" 
+                                                                onclick="showStudentDetails({{ json_encode($student) }})">
+                                                            <i class="fas fa-eye me-1"></i> View
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -124,6 +119,64 @@
                 </div>
             </div>
         @endforeach
+    </div>
+</div>
+
+<div class="modal fade" id="studentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow rounded-4">
+            <div class="modal-header bg-primary text-white border-0 py-3">
+                <h5 class="modal-title fw-bold"><i class="fas fa-user-circle me-2"></i> Student Information</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="row g-3">
+                    <div class="col-md-4 text-center border-end">
+                        <img src="https://ui-avatars.com/api/?name=User&background=random&size=128" id="m-avatar" class="rounded-circle mb-3 shadow-sm border" width="120">
+                        <h5 class="fw-bold mb-0" id="m-fullname"></h5>
+                        <p class="text-primary small fw-bold" id="m-id"></p>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="row small g-3">
+                            <div class="col-6">
+                                <label class="text-muted d-block">Course</label>
+                                <span class="fw-500" id="m-course"></span>
+                            </div>
+                            <div class="col-6">
+                                <label class="text-muted d-block">Year & Section</label>
+                                <span class="fw-500" id="m-year-section"></span>
+                            </div>
+                            <div class="col-6">
+                                <label class="text-muted d-block">Email Address</label>
+                                <span class="fw-500" id="m-email"></span>
+                            </div>
+                            <div class="col-6">
+                                <label class="text-muted d-block">Contact No.</label>
+                                <span class="fw-500" id="m-contact"></span>
+                            </div>
+                            <div class="col-6">
+                                <label class="text-muted d-block">Gender</label>
+                                <span class="fw-500" id="m-gender"></span>
+                            </div>
+                            <div class="col-6">
+                                <label class="text-muted d-block">Birthdate</label>
+                                <span class="fw-500" id="m-dob"></span>
+                            </div>
+                            <div class="col-12">
+                                <label class="text-muted d-block">Home Address</label>
+                                <span class="fw-500" id="m-address"></span>
+                            </div>
+                            <div class="col-12 mt-3 pt-3 border-top">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-muted">Account Balance</span>
+                                    <span class="fs-5 fw-bold text-danger">₱ <span id="m-balance"></span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -175,7 +228,6 @@
             studentDiv.classList.add('d-none');
             globalBackBtn.classList.add('d-none'); 
             subtitle.innerText = "List of available sections";
-            
             tabs.forEach(tab => tab.classList.remove('disabled-tab'));
         }
     }
@@ -184,6 +236,24 @@
         if (currentActiveSlug) {
             toggleView(currentActiveSlug, false);
         }
+    }
+
+    // Function para sa pangalawang View Button (Student Details)
+    function showStudentDetails(student) {
+        document.getElementById('m-fullname').innerText = student.FullName;
+        document.getElementById('m-id').innerText = student.StudentID;
+        document.getElementById('m-course').innerText = student.Course;
+        document.getElementById('m-year-section').innerText = `${student.YearLevel} - ${student.Section}`;
+        document.getElementById('m-email').innerText = student.Email;
+        document.getElementById('m-contact').innerText = student.Contact;
+        document.getElementById('m-gender').innerText = student.Gender;
+        document.getElementById('m-dob').innerText = student.DOB;
+        document.getElementById('m-address').innerText = student.Address;
+        document.getElementById('m-balance').innerText = student.Balance;
+        document.getElementById('m-avatar').src = `https://ui-avatars.com/api/?name=${student.FullName}&background=random&size=128`;
+
+        const modal = new bootstrap.Modal(document.getElementById('studentModal'));
+        modal.show();
     }
 </script>
 @endsection

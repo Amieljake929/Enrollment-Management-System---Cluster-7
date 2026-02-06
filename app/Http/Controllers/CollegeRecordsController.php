@@ -9,18 +9,15 @@ class CollegeRecordsController extends Controller
 {
     public function index()
     {
-        // 1. Fetch data from the new API
         $response = Http::get('https://sisreg.jampzdev.com/api/forEnrollment.php?key=RegistrarAPIKeyPass');
 
         if ($response->failed()) {
             return back()->with('error', 'API connection failed.');
         }
 
-        // 2. Kuhanin ang array sa loob ng 'data' key dahil ito ang format ng bagong JSON
         $jsonData = $response->json();
         $allRecords = collect($jsonData['data'] ?? []);
 
-        // 3. Course List (Matched exactly with JSON "EnrolledCourse")
         $courses = [
             'BLIS' => 'BLIS - Bachelor in Library Information Science',
             'BPED' => 'BPED - Bachelor in Physical Education',
@@ -59,14 +56,11 @@ class CollegeRecordsController extends Controller
         $groupedData = [];
 
         foreach ($courses as $code => $fullName) {
-            // Filter records base sa course name
             $studentsInCourse = $allRecords->filter(fn($item) => ($item['EnrolledCourse'] ?? '') === $fullName);
 
-            // Group by Section
             $groupedData[$code] = $studentsInCourse->groupBy('Section')->map(function ($group) {
                 $uniqueStudents = $group->unique('StudentID')->map(function ($student) {
                     
-                    // Logic para sa Middle Initial (e.g., "Delebosa" -> "D.")
                     $middleName = $student['MiddleName'] ?? '';
                     $middleInitial = ($middleName && strtoupper($middleName) !== 'N/A') 
                                     ? strtoupper(substr($middleName, 0, 1)) . '.' 
@@ -75,9 +69,20 @@ class CollegeRecordsController extends Controller
                     return [
                         'StudentID' => $student['StudentID'],
                         'FullName' => strtoupper("{$student['LastName']}, {$student['FirstName']} {$middleInitial}"),
-                        'EnrollmentStatus' => $student['CurrentEnrollmentStatus'] ?? 'Enrolled', // Ginamit ang CurrentEnrollmentStatus
+                        'FirstName' => $student['FirstName'],
+                        'LastName' => $student['LastName'],
+                        'MiddleName' => $student['MiddleName'],
+                        'EnrollmentStatus' => $student['CurrentEnrollmentStatus'] ?? 'Enrolled',
                         'Section' => $student['Section'],
-                        'YearLevel' => $student['EnrolledYearLevel'] ?? 'N/A'
+                        'YearLevel' => $student['EnrolledYearLevel'] ?? 'N/A',
+                        // Karagdagang details para sa Modal
+                        'Gender' => $student['Gender'] ?? 'N/A',
+                        'DOB' => $student['DateOfBirth'] ?? 'N/A',
+                        'Email' => $student['email'] ?? 'N/A',
+                        'Contact' => $student['ContactInfo'] ?? 'N/A',
+                        'Address' => $student['Address'] ?? 'N/A',
+                        'Balance' => $student['Balance'] ?? '0.00',
+                        'Course' => $student['EnrolledCourse'] ?? 'N/A',
                     ];
                 });
 

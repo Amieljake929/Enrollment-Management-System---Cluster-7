@@ -10,6 +10,8 @@ use App\Models\ShsStatus;
 use App\Models\CollegeStudentType;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\EnrollmentValidatedMail;
 
 class PendingAdmissionController extends Controller
 {
@@ -408,6 +410,11 @@ public function validate(Request $request, $id)
         ['info_status' => 'Validated']
     );
 
+    // Send email notification
+    if ($student->email) {
+        Mail::to($student->email)->send(new EnrollmentValidatedMail($student, $student->enrolleeNumber->enrollee_no ?? null, 'college'));
+    }
+
     return response()->json(['success' => true, 'message' => 'Student validated successfully.']);
 }
 
@@ -432,6 +439,11 @@ public function validateShs(Request $request, $id)
         ['student_id' => $student->student_id],
         ['info_status' => 'Validated']
     );
+
+    // Send email notification
+    if ($student->email) {
+        Mail::to($student->email)->send(new EnrollmentValidatedMail($student, $student->enrolleeNumber->enrollee_no ?? null, 'shs'));
+    }
 
     return response()->json(['success' => true, 'message' => 'SHS admission validated successfully.']);
 }
