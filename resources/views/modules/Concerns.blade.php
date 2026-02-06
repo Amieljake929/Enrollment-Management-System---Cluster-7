@@ -144,10 +144,8 @@ document.addEventListener('DOMContentLoaded', function() {
         rows.forEach(row => {
             const text = row.innerText.toLowerCase();
             const category = row.getAttribute('data-category');
-
             const matchesSearch = text.includes(searchTerm);
             const matchesCategory = (selectedCategory === 'all' || category === selectedCategory);
-
             row.style.display = (matchesSearch && matchesCategory) ? '' : 'none';
         });
     }
@@ -155,17 +153,18 @@ document.addEventListener('DOMContentLoaded', function() {
     searchInput.addEventListener('input', filterTable);
     categoryFilter.addEventListener('change', filterTable);
 
-    // View Modal Logic
     document.addEventListener('click', function(e) {
         const btn = e.target.closest('.view-concern');
         if (btn) {
             const id = btn.getAttribute('data-concern-id');
-            const modal = new bootstrap.Modal(document.getElementById('concernModal'));
+            const modalElement = document.getElementById('concernModal');
+            const modal = new bootstrap.Modal(modalElement);
             const container = document.getElementById('concern-details');
 
             container.innerHTML = `<div class="text-center py-5"><div class="spinner-border text-primary"></div></div>`;
             modal.show();
 
+            // FETCH URL must match web.php
             fetch(`/modules/concerns/${id}`)
                 .then(res => res.json())
                 .then(data => {
@@ -183,21 +182,73 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <label class="text-muted small text-uppercase fw-bold">Category</label>
                                 <p class="text-primary fw-bold mb-3">${data.concern_type}</p>
                                 <label class="text-muted small text-uppercase fw-bold">Status</label>
-                                <p><span class="badge bg-warning text-dark">${data.status}</span></p>
+                                <p><span class="badge ${data.status === 'Completed' ? 'bg-success' : 'bg-warning text-dark'}">${data.status}</span></p>
                                 <label class="text-muted small text-uppercase fw-bold">Date Received</label>
                                 <p class="small text-muted">${new Date(data.submission_date).toLocaleString()}</p>
                             </div>
                             <div class="col-12">
-                                <div class="p-3 rounded-3 bg-light border">
+                                <div class="p-3 rounded-3 bg-light border mb-3">
                                     <label class="text-muted small text-uppercase fw-bold d-block mb-2">Message Detail</label>
                                     <div style="white-space: pre-wrap;">${data.concern}</div>
                                 </div>
+
+                                ${data.status !== 'Completed' ? `
+                                    <div class="mt-3">
+                                        <label class="fw-bold small text-uppercase text-primary">Resolution Remarks (Will be emailed to student)</label>
+                                        <textarea id="adminRemarks" class="form-control border-primary" rows="3" placeholder="Enter reply here..."></textarea>
+                                    </div>
+                                ` : `
+                                    <div class="p-3 rounded-3 bg-success-subtle border border-success">
+                                        <label class="text-success small text-uppercase fw-bold d-block">Admin Remarks (Sent)</label>
+                                        <p class="mb-0 small">${data.remarks || 'No remarks recorded.'}</p>
+                                    </div>
+                                `}
                             </div>
                         </div>
                         <div class="mt-4 d-flex justify-content-end gap-2">
                             <button class="btn btn-secondary btn-sm px-4 rounded-pill" data-bs-dismiss="modal">Close</button>
+                            ${data.status !== 'Completed' ? `
+                                <button class="btn btn-success btn-sm px-4 rounded-pill shadow-sm" id="btnMarkComplete">
+                                    Mark as Completed
+                                </button>
+                            ` : ''}
                         </div>
                     `;
+
+                    // COMPLETE BUTTON LOGIC
+                    const completeBtn = document.getElementById('btnMarkComplete');
+                    if (completeBtn) {
+                        completeBtn.addEventListener('click', function() {
+                            const remarks = document.getElementById('adminRemarks').value;
+                            if (remarks.length < 5) return alert('Please enter at least 5 characters for remarks.');
+
+                            completeBtn.disabled = true;
+                            completeBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Processing...';
+
+                            fetch(`/modules/concerns/${data.id}/complete`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                                },
+                                body: JSON.stringify({ remarks: remarks })
+                            })
+                            .then(res => res.json())
+                            .then(res => {
+                                if (res.success) location.reload();
+                                else alert('Error: ' + res.message);
+                            })
+                            .catch(err => {
+                                console.error(err);
+                                completeBtn.disabled = false;
+                                completeBtn.innerHTML = 'Mark as Completed';
+                            });
+                        });
+                    }
+                })
+                .catch(err => {
+                    container.innerHTML = `<div class="alert alert-danger">Error loading data. Make sure route exists.</div>`;
+                    console.error('Fetch error:', err);
                 });
         }
     });

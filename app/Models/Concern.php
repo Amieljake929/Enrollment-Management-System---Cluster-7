@@ -17,6 +17,7 @@ class Concern extends Model
     'email',
     'concern_type', // Idagdag ito
     'concern',
+    'remarks',
     'submission_date',
     'status', // NEW
 ];

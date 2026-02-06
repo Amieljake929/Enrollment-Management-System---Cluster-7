@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Mail; // IMPORT MAIL FACADE
+use Illuminate\Support\Facades\Mail;
 use App\Models\Concern;
-use App\Mail\StudentConcernMail; // IMPORT YOUR MAILABLE CLASS
+use App\Mail\StudentConcernMail;
 
 class ConcernController extends Controller
 {
@@ -29,7 +29,6 @@ class ConcernController extends Controller
             ], 422);
         }
 
-        // 1. Save to Database
         $concern = Concern::create([
             'student_type'    => $request->student_type,
             'first_name'      => $request->first_name,
@@ -41,17 +40,15 @@ class ConcernController extends Controller
             'submission_date' => now(),
         ]);
 
-        // 2. Send Email Notification to Bestlink
         try {
             Mail::to('bestlinkcollegeofph@gmail.com')->send(new StudentConcernMail($concern));
         } catch (\Exception $e) {
-            // Ni-log natin ang error pero hindi natin i-stop ang response para alam ni student na saved ang concern niya
             \Log::error("Mail Sending Failed: " . $e->getMessage());
         }
 
         return response()->json([
             'success' => true,
-            'message' => 'Thank you! Your concern has been submitted successfully. We will get back to you soon.'
+            'message' => 'Thank you! Your concern has been submitted successfully.'
         ]);
     }
 
@@ -65,5 +62,40 @@ class ConcernController extends Controller
     {
         $concern = Concern::findOrFail($id);
         return response()->json($concern);
+    }
+
+    // NEW: Function para sa Mark as Completed
+    public function complete(Request $request, $id)
+    {
+        $request->validate([
+            'remarks' => 'required|string|min:5',
+        ]);
+
+        $concern = Concern::findOrFail($id);
+        
+        // Update the status and remarks
+        $concern->update([
+            'status' => 'Completed',
+            'remarks' => $request->remarks
+        ]);
+
+        // Send Email Notification to Student
+        try {
+            $studentName = $concern->first_name . ' ' . $concern->last_name;
+            $adminRemarks = $request->remarks;
+            $subjectType = $concern->concern_type;
+
+            Mail::raw("Hi $studentName,\n\nYour concern regarding '$subjectType' has been marked as COMPLETED.\n\nAdmin Remarks: $adminRemarks\n\nThank you!", function ($message) use ($concern) {
+                $message->to($concern->email)
+                        ->subject('Concern Resolved - Bestlink College');
+            });
+        } catch (\Exception $e) {
+            \Log::error("Student Completion Mail Failed: " . $e->getMessage());
+        }
+
+        return response()->json([
+            'success' => true, 
+            'message' => 'Concern has been marked as completed and student has been notified.'
+        ]);
     }
 }

@@ -73,9 +73,7 @@
                                     @php
                                         $statusClass = match($concern->status) {
                                             'Pending' => 'bg-warning-subtle text-warning border-warning',
-                                            'Assigned' => 'bg-info-subtle text-info border-info',
                                             'Completed' => 'bg-success-subtle text-success border-success',
-                                            'Rejected' => 'bg-danger-subtle text-danger border-danger',
                                             default => 'bg-secondary-subtle text-secondary'
                                         };
                                     @endphp
@@ -125,8 +123,6 @@
     .fw-500 { font-weight: 500; }
     .bg-warning-subtle { background-color: #fff3cd !important; color: #856404 !important; }
     .bg-success-subtle { background-color: #d4edda !important; color: #155724 !important; }
-    .bg-info-subtle { background-color: #d1ecf1 !important; color: #0c5460 !important; }
-    .bg-danger-subtle { background-color: #f8d7da !important; color: #721c24 !important; }
     .bg-primary-subtle { background-color: #e7f1ff !important; color: #0d6efd !important; }
     .form-select, .form-control { border-radius: 8px; font-size: 0.9rem; }
 </style>
@@ -137,18 +133,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const categoryFilter = document.getElementById('categoryFilter');
     const rows = document.querySelectorAll('.concern-row');
 
-    // Combine Search and Category Filter
     function applyFilters() {
         const searchTerm = searchInput.value.toLowerCase();
         const selectedCategory = categoryFilter.value;
-
         rows.forEach(row => {
             const rowText = row.innerText.toLowerCase();
             const category = row.getAttribute('data-category');
-
             const matchesSearch = rowText.includes(searchTerm);
             const matchesCategory = (selectedCategory === 'all' || category === selectedCategory);
-
             row.style.display = (matchesSearch && matchesCategory) ? '' : 'none';
         });
     }
@@ -156,7 +148,6 @@ document.addEventListener('DOMContentLoaded', function() {
     searchInput.addEventListener('input', applyFilters);
     categoryFilter.addEventListener('change', applyFilters);
 
-    // View Details Logic
     document.addEventListener('click', function(e) {
         const btn = e.target.closest('.view-concern');
         if (btn) {
@@ -169,48 +160,85 @@ document.addEventListener('DOMContentLoaded', function() {
             modal.show();
 
             fetch(`/staff/modules/concerns/${id}`)
-                .then(res => {
-                    if (!res.ok) throw new Error('Network response was not ok');
-                    return res.json();
-                })
+                .then(res => res.json())
                 .then(data => {
                     container.innerHTML = `
                         <div class="row g-4">
                             <div class="col-md-6">
                                 <label class="text-muted small text-uppercase fw-bold">Student Name</label>
-                                <p class="fw-bold mb-3">${data.last_name}, ${data.first_name} ${data.middle_name ? data.middle_name.charAt(0) + '.' : ''}</p>
-                                
-                                <label class="text-muted small text-uppercase fw-bold">Email Address</label>
+                                <p class="fw-bold mb-3">${data.last_name}, ${data.first_name}</p>
+                                <label class="text-muted small text-uppercase fw-bold">Email</label>
                                 <p class="mb-3">${data.email}</p>
-                                
-                                <label class="text-muted small text-uppercase fw-bold">Student Type</label>
+                                <label class="text-muted small text-uppercase fw-bold">Type</label>
                                 <p><span class="badge bg-primary">${data.student_type}</span></p>
                             </div>
                             <div class="col-md-6 border-start ps-4">
                                 <label class="text-muted small text-uppercase fw-bold">Concern Type</label>
                                 <p class="text-primary fw-bold mb-3">${data.concern_type}</p>
-                                
-                                <label class="text-muted small text-uppercase fw-bold">Current Status</label>
-                                <p>
-                                    <span class="badge ${data.status === 'Pending' ? 'bg-warning text-dark' : 'bg-success'}">
-                                        ${data.status}
-                                    </span>
-                                </p>
-
-                                <label class="text-muted small text-uppercase fw-bold">Date Submitted</label>
+                                <label class="text-muted small text-uppercase fw-bold">Status</label>
+                                <p><span class="badge ${data.status === 'Completed' ? 'bg-success' : 'bg-warning text-dark'}">${data.status}</span></p>
+                                <label class="text-muted small text-uppercase fw-bold">Submitted</label>
                                 <p class="small text-muted">${new Date(data.submission_date).toLocaleString()}</p>
                             </div>
                             <div class="col-12">
-                                <div class="p-3 rounded-3 bg-light border">
+                                <div class="p-3 rounded-3 bg-light border mb-3">
                                     <label class="text-muted small text-uppercase fw-bold d-block mb-2">Message</label>
                                     <div style="white-space: pre-wrap;">${data.concern}</div>
                                 </div>
+
+                                ${data.status !== 'Completed' ? `
+                                    <div class="mt-3">
+                                        <label class="fw-bold small text-uppercase text-primary">Resolution Remarks</label>
+                                        <textarea id="staffRemarks" class="form-control border-primary" rows="3" placeholder="Enter resolution details..."></textarea>
+                                    </div>
+                                ` : `
+                                    <div class="p-3 rounded-3 bg-success-subtle border border-success">
+                                        <label class="text-success small text-uppercase fw-bold d-block">Staff Remarks (Sent)</label>
+                                        <p class="mb-0 small">${data.remarks || 'No remarks recorded.'}</p>
+                                    </div>
+                                `}
                             </div>
                         </div>
                         <div class="mt-4 d-flex justify-content-end gap-2">
-                            <button class="btn btn-secondary px-4 rounded-pill" data-bs-dismiss="modal">Close</button>
+                            <button class="btn btn-secondary btn-sm px-4 rounded-pill" data-bs-dismiss="modal">Close</button>
+                            ${data.status !== 'Completed' ? `
+                                <button class="btn btn-success btn-sm px-4 rounded-pill shadow-sm" id="btnStaffComplete">
+                                    Mark as Resolved
+                                </button>
+                            ` : ''}
                         </div>
                     `;
+
+                    // Handle Completion
+                    const completeBtn = document.getElementById('btnStaffComplete');
+                    if (completeBtn) {
+                        completeBtn.addEventListener('click', function() {
+                            const remarks = document.getElementById('staffRemarks').value;
+                            if (remarks.length < 5) return alert('Please enter detailed remarks.');
+
+                            completeBtn.disabled = true;
+                            completeBtn.innerHTML = 'Saving...';
+
+                            fetch(`/staff/modules/concerns/${data.id}/complete`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                                },
+                                body: JSON.stringify({ remarks: remarks })
+                            })
+                            .then(res => res.json())
+                            .then(res => {
+                                if (res.success) location.reload();
+                                else alert('Error processing request.');
+                            })
+                            .catch(err => {
+                                console.error(err);
+                                completeBtn.disabled = false;
+                                completeBtn.innerHTML = 'Mark as Resolved';
+                            });
+                        });
+                    }
                 })
                 .catch(err => {
                     container.innerHTML = `<div class="alert alert-danger">Error: ${err.message}</div>`;

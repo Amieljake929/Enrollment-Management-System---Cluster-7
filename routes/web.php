@@ -249,6 +249,9 @@ Route::prefix('modules')->middleware(['auth'])->group(function () {
      Route::get('/concerns', [ConcernController::class, 'index'])->name('modules.concerns');
      Route::get('/concerns/{id}', [ConcernController::class, 'show'])->name('modules.concerns.show'); // 👈 NEW
 
+     // Route para sa pag-update ng status at pag-send ng email
+Route::post('/concerns/{id}/complete', [ConcernController::class, 'complete'])->name('modules.concerns.complete');
+
      // Archive Module
      Route::get('/archive', [ArchiveController::class, 'index'])->name('modules.archive');
      Route::post('/archive', [ArchiveController::class, 'store'])->name('modules.archive.store');
@@ -321,6 +324,7 @@ Route::prefix('staff/modules')->middleware(['auth'])->group(function () {
     // Concerns
     Route::get('/concerns', [StaffConcernController::class, 'index'])->name('staff.modules.concerns');
     Route::get('/concerns/{id}', [StaffConcernController::class, 'show'])->name('staff.modules.concerns.show');
+    Route::post('/concerns/{id}/complete', [StaffConcernController::class, 'complete'])->name('staff.modules.concerns.complete');
 
     // Parents Notification
     Route::get('/parents/college', function () {
