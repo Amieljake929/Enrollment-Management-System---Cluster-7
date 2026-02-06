@@ -211,7 +211,13 @@ Route::prefix('modules')->middleware(['auth'])->group(function () {
 
     // Waiting List
      Route::get('/waiting/college', [WaitingController::class, 'index'])->name('modules.waiting.college');
+     Route::get('/waiting/college/download-pdf', [WaitingController::class, 'downloadCollegePdf'])
+        ->name('modules.waiting.college.download.pdf');
+     Route::get('/waiting/college/{id}', [WaitingController::class, 'show'])->name('modules.waiting.college.show');
      Route::get('/waiting/shs', [WaitingController::class, 'shsIndex'])->name('modules.waiting.shs');
+     Route::get('/waiting/shs/download-pdf', [WaitingController::class, 'downloadShsPdf'])
+        ->name('modules.waiting.shs.download.pdf');
+     Route::get('/waiting/shs/{id}', [WaitingController::class, 'showShs'])->name('modules.waiting.shs.show');
     
    // Update payment status (auto-generate student ID number when Paid)
      Route::post('/college/payment/update/{studentId}', [WaitingController::class, 'updateCollegePaymentStatus'])

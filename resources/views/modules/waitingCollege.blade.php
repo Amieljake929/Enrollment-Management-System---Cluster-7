@@ -9,6 +9,10 @@
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>College Waiting List (Validated Admissions)</h2>
+        <a href="{{ route('modules.waiting.college.download.pdf', request()->query()) }}"
+   class="btn btn-secondary" style="background-color: #5044e4">
+    <i class="bi bi-download"></i> Download Admissions (PDF)
+</a>
     </div>
 
     <div class="card mb-4 shadow-sm">
@@ -114,20 +118,12 @@
                                     @endif
                                 </td>
                                 <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-primary me-2" disabled>View</button>
-                                    <button type="button" class="btn btn-sm btn-danger me-2" disabled>Cancel</button>
-                                    
-                                     {{-- Paid Button Function Hidden/Commented Out but preserved for future use --}}
-                                    {{-- 
-                                    @if(($student->status->payment ?? '') !== 'Paid')
-                                    <form method="POST" action="{{ route('college.payment.update', $student->student_id) }}" style="display: inline;">
-                                        @csrf
-                                        <input type="hidden" name="payment" value="Paid">
-                                        <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Mark as Paid and Generate ID?')">Paid</button>
-                                    </form>
-                                    @endif
-                                    --}}
-                                </td>
+    <button type="button" class="btn btn-sm btn-primary view-student"
+        data-student-id="{{ $student->student_id }}"
+        title="View">
+        View
+    </button>
+</td>
                             </tr>
                         @empty
                             <tr>
@@ -147,4 +143,211 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="studentModal" tabindex="-1" aria-labelledby="studentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="studentModalLabel">Student Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="student-details">
+                    <div class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="fullSizeModal" tabindex="-1" aria-labelledby="fullSizeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="fullSizeModalLabel">Document Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="fullSizeImage" src="" alt="" style="max-width: 100%; max-height: 80vh; object-fit: contain;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('click', function(e) {
+    const link = e.target.closest('.view-student');
+    if (link) {
+        e.preventDefault();
+        const studentId = link.getAttribute('data-student-id');
+        const modalElement = document.getElementById('studentModal');
+        const modal = new bootstrap.Modal(modalElement);
+        const modalBody = document.getElementById('student-details');
+
+        // Show loading
+        modalBody.innerHTML = `
+            <div class="text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p>Loading student details...</p>
+            </div>
+        `;
+        modal.show();
+
+        // Fetch student data
+        fetch(`/modules/waiting/college/${studentId}`)
+            .then(response => {
+                if (!response.ok) {
+                    console.log('Fetch failed with status:', response.status);
+                    console.log('Response text:', response.statusText);
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Student data received:', data);
+                modalBody.innerHTML = generateStudentDetailsHTML(data);
+            })
+            .catch(error => {
+                modalBody.innerHTML = '<div class="alert alert-danger">Error loading student details: ' + error.message + '</div>';
+                console.error('Fetch error:', error);
+            });
+    }
+
+});
+
+function generateStudentDetailsHTML(student) {
+    return `
+        <div class="row">
+            <div class="col-md-6">
+                <h6 class="fw-bold">Personal Information</h6>
+                <p><strong>Full Name:</strong> ${student.last_name}, ${student.first_name} ${student.middle_name ? student.middle_name.charAt(0) + '.' : ''} ${student.extension_name || ''}</p>
+                <p><strong>Gender:</strong> ${student.gender || 'N/A'}</p>
+                <p><strong>Date of Birth:</strong> ${student.dob || 'N/A'}</p>
+                <p><strong>Place of Birth:</strong> ${student.place_of_birth || 'N/A'}</p>
+                <p><strong>Nationality:</strong> ${student.nationality || 'N/A'}</p>
+                <p><strong>Civil Status:</strong> ${student.civil_status || 'N/A'}</p>
+                <p><strong>Religion:</strong> ${student.religion || 'N/A'}</p>
+                <p><strong>Indigenous Group:</strong> ${student.indigenous ? student.indigenous.indigenous_name : 'N/A'}</p>
+                <p><strong>Disability:</strong> ${student.disability ? student.disability.disability_name : 'N/A'}</p>
+            </div>
+            <div class="col-md-6">
+                <h6 class="fw-bold">Contact & Address</h6>
+                <p><strong>Contact Number:</strong> ${student.contact_number || 'N/A'}</p>
+                <p><strong>Email:</strong> ${student.email || 'N/A'}</p>
+                <p><strong>Social Media:</strong> ${student.social_media || 'N/A'}</p>
+                <p><strong>Current Address:</strong> ${student.current_address || 'N/A'}</p>
+                <p><strong>City/Municipality:</strong> ${student.city_municipality || 'N/A'}</p>
+                <p><strong>Province:</strong> ${student.province || 'N/A'}</p>
+                <p><strong>ZIP Code:</strong> ${student.zip_code || 'N/A'}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
+                <h6 class="fw-bold">Enrollment Preferences</h6>
+                <p><strong>Course:</strong> ${student.preference ? student.preference.course.course_name : 'N/A'}</p>
+                <p><strong>Year Level:</strong> ${student.preference ? student.preference.level.level_name : 'N/A'}</p>
+                <p><strong>Branch:</strong> ${student.preference ? student.preference.branch.branch_name : 'N/A'}</p>
+                <p><strong>Enrollee Number:</strong> ${student.enrollee_number ? student.enrollee_number.enrollee_no : 'N/A'}</p>
+            </div>
+            <div class="col-md-6">
+                <h6 class="fw-bold">Educational Background</h6>
+                ${student.educational_background ? `
+    <p><strong>Primary School:</strong> ${student.educational_background.primary_school || 'N/A'}</p>
+    <p><strong>Primary Year Graduated:</strong> ${student.educational_background.primary_year_graduated || 'N/A'}</p>
+    <p><strong>Secondary School:</strong> ${student.educational_background.secondary_school || 'N/A'}</p>
+    <p><strong>Secondary Year Graduated:</strong> ${student.educational_background.secondary_year_graduated || 'N/A'}</p>
+    <p><strong>Last School Attended:</strong> ${student.educational_background.last_school_attended || 'N/A'}</p>
+    <p><strong>Last School Year Graduated:</strong> ${student.educational_background.last_school_year_graduated || 'N/A'}</p>
+` : '<p>No educational background information available.</p>'}
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
+                <h6 class="fw-bold">Parent/Guardian Information</h6>
+${student.parent_info && Array.isArray(student.parent_info) && student.parent_info.length > 0 ? student.parent_info.map(parent => `
+    <div class="mb-3">
+        <p><strong>Name:</strong> ${parent.last_name}, ${parent.first_name} ${parent.middle_name ? parent.middle_name + '.' : ''}</p>
+        <p><strong>Relationship:</strong> ${parent.parent_type || 'N/A'}</p>
+        <p><strong>Contact:</strong> ${parent.contact_number || 'N/A'}</p>
+        <p><strong>Email:</strong> ${parent.email || 'N/A'}</p>
+        <p><strong>Occupation:</strong> ${parent.occupation || 'N/A'}</p>
+    </div>
+`).join('') : '<p>No parent information available.</p>'}
+                ${student.guardian ? `
+                    <h6 class="fw-bold mt-3">Guardian</h6>
+                    <p><strong>Name:</strong> ${student.guardian.last_name}, ${student.guardian.first_name} ${student.guardian.middle_name || ''}</p>
+                    <p><strong>Contact:</strong> ${student.guardian.contact_number || 'N/A'}</p>
+                ` : ''}
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12">
+                <h6 class="fw-bold">Uploaded Documents</h6>
+                ${student.documents && student.documents.length > 0 ? `
+    <div class="row">
+        ${student.documents.map(doc => {
+            const filePath = doc.file_path; // e.g., "enrollment_documents/xxx.jpg"
+            const url = `/storage/${filePath}`; // ✅ Correct public URL
+            const ext = filePath.split('.').pop().toLowerCase();
+            const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+            const docName = doc.document ? doc.document.document_name : 'Unknown';
+            if (imageExts.includes(ext)) {
+                return `
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h6 class="card-title">${docName}</h6>
+                                <img src="${url}" alt="${docName}" class="img-fluid" style="max-height: 200px; object-fit: contain; cursor: pointer;" onclick="openFullSizeModal('${url}', '${docName}')">
+                                <br><button type="button" class="btn btn-sm btn-outline-primary mt-2" onclick="openFullSizeModal('${url}', '${docName}')">View Full Size</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                return `
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h6 class="card-title">${docName}</h6>
+                                <p class="card-text">Document File</p>
+                                <a href="${url}" target="_blank" class="btn btn-primary">View Document</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }).join('')}
+    </div>
+` : '<p>No documents uploaded.</p>'}
+            </div>
+        </div>
+    `;
+}
+
+function openFullSizeModal(url, alt) {
+    const modalElement = document.getElementById('fullSizeModal');
+    const modal = new bootstrap.Modal(modalElement);
+    const img = document.getElementById('fullSizeImage');
+    img.src = url;
+    img.alt = alt;
+    document.getElementById('fullSizeModalLabel').textContent = alt;
+    modal.show();
+}
+</script>
+
 @endsection

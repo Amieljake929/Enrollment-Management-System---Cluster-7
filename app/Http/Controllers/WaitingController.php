@@ -13,6 +13,7 @@ use App\Models\ShsStatus;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class WaitingController extends Controller
 {
@@ -191,5 +192,173 @@ class WaitingController extends Controller
         }
 
         return redirect()->back()->with('success', 'SHS payment status updated successfully.');
+    }
+
+    public function downloadCollegePdf(Request $request)
+    {
+        $query = CollegeStudent::with([
+            'type',
+            'status',
+            'preference.course',
+            'preference.branch',
+            'preference.level',
+            'enrolleeNumber',
+            'studentNumber'
+        ])
+        ->whereHas('status', function ($q) {
+            // Only Validated and NOT Paid
+            $q->where('info_status', 'Validated')
+              ->where(function($sub) {
+                  $sub->where('payment', '!=', 'Paid')
+                      ->orWhereNull('payment');
+              });
+        })
+        ->whereHas('preference', function ($q) {
+            $q->whereNotNull('course_id')
+              ->whereNotNull('branch_id')
+              ->whereNotNull('level_id');
+        });
+
+        // Apply filters
+        if ($request->filled('branch')) {
+            $query->whereHas('preference', function ($q) use ($request) {
+                $q->where('branch_id', $request->branch);
+            });
+        }
+
+        if ($request->filled('year_level')) {
+            $query->whereHas('preference', function ($q) use ($request) {
+                $q->where('level_id', $request->year_level);
+            });
+        }
+
+        if ($request->filled('student_type')) {
+            $query->where('type_id', $request->student_type);
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('first_name', 'like', "%{$search}%")
+                  ->orWhere('middle_name', 'like', "%{$search}%")
+                  ->orWhere('last_name', 'like', "%{$search}%")
+                  ->orWhereHas('preference.course', function ($q2) use ($search) {
+                      $q2->where('course_name', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        $students = $query->get();
+
+        $pdf = Pdf::loadView('modules.waitingCollegePdf', compact('students'))
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->download('waiting_college_admissions_' . now()->format('Y-m-d_H-i') . '.pdf');
+    }
+
+    public function downloadShsPdf(Request $request)
+    {
+        $query = ShsStudent::with([
+            'studentType',
+            'status',
+            'enrollmentPreference.course',
+            'enrollmentPreference.branch',
+            'enrollmentPreference.level',
+            'enrolleeNumber',
+            'studentNumber'
+        ])
+        ->whereHas('status', function ($q) {
+            // Only Validated and NOT Paid
+            $q->where('info_status', 'Validated')
+              ->where(function($sub) {
+                  $sub->where('payment', '!=', 'Paid')
+                      ->orWhereNull('payment');
+              });
+        })
+        ->whereHas('enrollmentPreference', function ($q) {
+            $q->whereNotNull('course_id')
+              ->whereNotNull('branch_id')
+              ->whereNotNull('level_id');
+        });
+
+        // Apply filters
+        if ($request->filled('branch')) {
+            $query->whereHas('enrollmentPreference', function ($q) use ($request) {
+                $q->where('branch_id', $request->branch);
+            });
+        }
+
+        if ($request->filled('year_level')) {
+            $query->whereHas('enrollmentPreference', function ($q) use ($request) {
+                $q->where('level_id', $request->year_level);
+            });
+        }
+
+        if ($request->filled('student_type')) {
+            $query->where('type_id', $request->student_type);
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('first_name', 'like', "%{$search}%")
+                  ->orWhere('middle_name', 'like', "%{$search}%")
+                  ->orWhere('last_name', 'like', "%{$search}%")
+                  ->orWhereHas('enrollmentPreference.course', function ($q2) use ($search) {
+                      $q2->where('course_name', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        $students = $query->get();
+
+        $pdf = Pdf::loadView('modules.waitingShsPdf', compact('students'))
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->download('waiting_shs_admissions_' . now()->format('Y-m-d_H-i') . '.pdf');
+    }
+
+    /**
+     * Show College Student Details for Waiting List
+     */
+    public function show($id)
+    {
+        $student = CollegeStudent::with([
+            'type',
+            'parentInfo',
+            'guardian',
+            'preference.course',
+            'preference.branch',
+            'preference.level',
+            'educationalBackground',
+            'documents.document',
+            'enrolleeNumber',
+            'indigenous',
+            'disability'
+        ])->findOrFail($id);
+
+        return response()->json($student);
+    }
+
+    /**
+     * Show SHS Student Details for Waiting List
+     */
+    public function showShs($id)
+    {
+        $student = ShsStudent::with([
+            'studentType',
+            'parentInfo',
+            'guardian',
+            'enrollmentPreference.course',
+            'enrollmentPreference.branch',
+            'enrollmentPreference.level',
+            'educationalBackground',
+            'documents.document',
+            'enrolleeNumber',
+            'indigenous',
+            'disability'
+        ])->findOrFail($id);
+
+        return response()->json($student);
     }
 }
