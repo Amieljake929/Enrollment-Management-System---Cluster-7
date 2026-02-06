@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Models\Concern;
 
 class StaffConcernController extends Controller
 {
     public function index()
     {
+        // Kinukuha ang lahat ng concerns, latest first
         $concerns = Concern::orderBy('submission_date', 'desc')->get();
-        return view('modules.staff.Concerns', compact('concerns'));
+        return view('modules.staff.concerns', compact('concerns'));
     }
     
     public function show($id)

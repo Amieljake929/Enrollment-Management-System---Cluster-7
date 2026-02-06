@@ -15,6 +15,7 @@ class Concern extends Model
     'middle_name',
     'last_name',
     'email',
+    'concern_type', // Idagdag ito
     'concern',
     'submission_date',
     'status', // NEW

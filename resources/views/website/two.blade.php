@@ -1554,6 +1554,26 @@ document.addEventListener('DOMContentLoaded', function () {
         " onfocus="this.style.borderColor='#5044e4'; this.style.boxShadow='0 0 0 3px rgba(80, 68, 228, 0.1)';" onblur="this.style.borderColor='#ced4da'; this.style.boxShadow='none';">
     </div>
 
+    <div>
+    <label class="form-label fw-bold" style="font-size: 0.85rem;">Concern Type *</label>
+    <select name="concern_type" class="form-select form-select-sm" required style="
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 0.85rem;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        background-color: white;
+    " onfocus="this.style.borderColor='#5044e4'; this.style.boxShadow='0 0 0 3px rgba(80, 68, 228, 0.1)';" onblur="this.style.borderColor='#ced4da'; this.style.boxShadow='none';">
+        <option value="" selected disabled>Select concern type...</option>
+        <option value="Payment and Billing Issues">Payment and Billing Issues</option>
+        <option value="Subject Loading and Schedule Conflicts">Subject Loading and Schedule Conflicts</option>
+        <option value="Account Access and Technical Support">Account Access and Technical Support</option>
+        <option value="Credentials and Document Submission">Credentials and Document Submission</option>
+        <option value="Change of Status">Change of Status</option>
+        <option value="Others">Others</option>
+    </select>
+</div>
+
     <!-- Concern -->
     <div>
         <label class="form-label fw-bold" style="font-size: 0.85rem;">Concern *</label>

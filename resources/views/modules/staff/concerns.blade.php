@@ -1,73 +1,101 @@
 @extends('layouts.staff')
 
 @section('content')
-<div class="container-fluid">
+<div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Concerns</h2>
+        <div>
+            <h2 class="fw-bold text-secondary mb-0">Student Concerns <span class="text-primary">| Staff Panel</span></h2>
+            <p class="text-muted small mb-0">Review and manage student inquiries assigned to your department.</p>
+        </div>
     </div>
 
-    <!-- Concerns Table -->
-    <div class="card shadow-sm">
-        <div class="card-body">
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="input-group shadow-sm">
+                <span class="input-group-text bg-white border-end-0"><i class="fas fa-filter text-muted small"></i></span>
+                <select id="categoryFilter" class="form-select border-start-0 fw-500">
+                    <option value="all">All Categories</option>
+                    <option value="Payment and Billing Issues">Payment and Billing Issues</option>
+                    <option value="Subject Loading and Schedule Conflicts">Subject Loading and Schedule Conflicts</option>
+                    <option value="Account Access and Technical Support">Account Access and Technical Support</option>
+                    <option value="Credentials and Document Submission">Credentials and Document Submission</option>
+                    <option value="Change of Status">Change of Status</option>
+                    <option value="Others">Others</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="input-group shadow-sm">
+                <span class="input-group-text bg-white border-end-0"><i class="fas fa-search text-muted small"></i></span>
+                <input type="text" id="searchInput" class="form-control border-start-0 ps-0" placeholder="Search by name, email, or message...">
+            </div>
+        </div>
+        <div class="col-md-3 text-end">
+            <button class="btn btn-outline-secondary shadow-sm w-100 fw-500" onclick="location.reload()">
+                <i class="fas fa-sync-alt me-1"></i> Refresh
+            </button>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover table-striped align-middle">
-                    <thead class="table-light">
+                <table class="table table-hover align-middle mb-0" id="concernsTable">
+                    <thead class="bg-light">
                         <tr>
-                            <th>Student Type</th>
-                            <th>Full Name</th>
-                            <th>Email</th>
-                            <th>Concern</th>
-                            <th>Status</th>
-                            <th>Submitted</th>
-                            <th>Actions</th>
+                            <th class="ps-4 py-3 text-uppercase fs-7 text-muted">Student Information</th>
+                            <th class="py-3 text-uppercase fs-7 text-muted">Category</th>
+                            <th class="py-3 text-uppercase fs-7 text-muted">Concern Preview</th>
+                            <th class="py-3 text-uppercase fs-7 text-muted text-center">Status</th>
+                            <th class="py-3 text-uppercase fs-7 text-muted">Submitted</th>
+                            <th class="pe-4 py-3 text-center text-uppercase fs-7 text-muted">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($concerns as $concern)
-                            <tr>
-                                <td>{{ $concern->student_type }}</td>
-                                <td>
-                                    {{ $concern->last_name }}, {{ $concern->first_name }}
-                                    @if($concern->middle_name)
-                                        {{ substr($concern->middle_name, 0, 1) }}.
-                                    @endif
+                            <tr class="concern-row" data-category="{{ $concern->concern_type }}">
+                                <td class="ps-4 py-3">
+                                    <div class="fw-bold text-dark">{{ $concern->last_name }}, {{ $concern->first_name }}</div>
+                                    <div class="text-muted small">{{ $concern->email }}</div>
+                                    <span class="badge bg-primary-subtle text-primary mt-1" style="font-size: 0.7rem;">{{ $concern->student_type }}</span>
                                 </td>
-                                <td>{{ $concern->email }}</td>
                                 <td>
-                                    <div class="text-muted small">
-                                        {{ Str::limit($concern->concern, 60) }}
+                                    <span class="badge rounded-pill bg-light text-dark border px-3">
+                                        {{ $concern->concern_type }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="text-muted small text-truncate" style="max-width: 180px;">
+                                        {{ $concern->concern }}
                                     </div>
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     @php
-                                        $badgeClass = match($concern->status) {
-                                            'Pending' => 'bg-warning text-dark',
-                                            'Assigned' => 'bg-info',
-                                            'Completed' => 'bg-success',
-                                            'Rejected' => 'bg-danger',
-                                            default => 'bg-secondary'
+                                        $statusClass = match($concern->status) {
+                                            'Pending' => 'bg-warning-subtle text-warning border-warning',
+                                            'Assigned' => 'bg-info-subtle text-info border-info',
+                                            'Completed' => 'bg-success-subtle text-success border-success',
+                                            'Rejected' => 'bg-danger-subtle text-danger border-danger',
+                                            default => 'bg-secondary-subtle text-secondary'
                                         };
                                     @endphp
-                                    <span class="badge {{ $badgeClass }}">{{ $concern->status }}</span>
+                                    <span class="badge border px-3 {{ $statusClass }}">{{ $concern->status }}</span>
                                 </td>
                                 <td class="text-muted small">
-                                    {{ $concern->submission_date?->format('M d, Y g:i A') ?? 'N/A' }}
+                                    {{ $concern->submission_date?->format('M d, Y') ?? 'N/A' }}
                                 </td>
-                                <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-primary me-2 view-concern"
-                                            data-concern-id="{{ $concern->id }}"
-                                            title="View">
+                                <td class="pe-4 py-3 text-center">
+                                    <button class="btn btn-primary btn-sm rounded-pill px-4 shadow-sm view-concern" 
+                                            data-concern-id="{{ $concern->id }}">
                                         View
                                     </button>
-                                    <button type="button" class="btn btn-sm btn-success me-2" disabled>Assign</button>
-                                    <button type="button" class="btn btn-sm btn-danger" disabled>Reject</button>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center text-muted py-4">
-                                    <i class="bi bi-inbox fs-3"></i>
-                                    <p class="mt-2 mb-0">No concerns found.</p>
+                                <td colspan="6" class="text-center py-5">
+                                    <i class="fas fa-inbox fa-3x opacity-25 mb-3"></i>
+                                    <p class="text-muted mb-0">No student concerns found.</p>
                                 </td>
                             </tr>
                         @endforelse
@@ -78,98 +106,117 @@
     </div>
 </div>
 
-<!-- Concern Details Modal -->
-<div class="modal fade" id="concernModal" tabindex="-1" aria-labelledby="concernModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="concernModalLabel">Concern Details</h5>
+<div class="modal fade" id="concernModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header bg-light border-0 py-3">
+                <h5 class="modal-title fw-bold"><i class="fas fa-info-circle me-2 text-primary"></i>Concern Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <div id="concern-details">
-                    <div class="text-center">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
+            <div class="modal-body p-4" id="concern-details">
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
         </div>
     </div>
 </div>
 
-@endsection
+<style>
+    body { background-color: #f4f7f6; }
+    .fs-7 { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.05em; }
+    .fw-500 { font-weight: 500; }
+    .bg-warning-subtle { background-color: #fff3cd !important; color: #856404 !important; }
+    .bg-success-subtle { background-color: #d4edda !important; color: #155724 !important; }
+    .bg-info-subtle { background-color: #d1ecf1 !important; color: #0c5460 !important; }
+    .bg-danger-subtle { background-color: #f8d7da !important; color: #721c24 !important; }
+    .bg-primary-subtle { background-color: #e7f1ff !important; color: #0d6efd !important; }
+    .form-select, .form-control { border-radius: 8px; font-size: 0.9rem; }
+</style>
 
-{{-- EXACTLY LIKE pendingCollege.blade.php: JS at the END, outside @section --}}
 <script>
-document.addEventListener('click', function(e) {
-    const link = e.target.closest('.view-concern');
-    if (link) {
-        e.preventDefault();
-        const concernId = link.getAttribute('data-concern-id');
-        const modalElement = document.getElementById('concernModal');
-        const modal = new bootstrap.Modal(modalElement);
-        const modalBody = document.getElementById('concern-details');
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const rows = document.querySelectorAll('.concern-row');
 
-        // Show loading
-        modalBody.innerHTML = `
-            <div class="text-center">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-                <p>Loading concern details...</p>
-            </div>
-        `;
-        modal.show();
+    // Combine Search and Category Filter
+    function applyFilters() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const selectedCategory = categoryFilter.value;
 
-        // ✅ CORRECTED URL: /staff/modules/concerns/{id}
-        fetch(`/staff/modules/concerns/${concernId}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(concern => {
-                modalBody.innerHTML = `
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6 class="fw-bold">Student Information</h6>
-                            <p><strong>Student Type:</strong> ${concern.student_type}</p>
-                            <p><strong>Full Name:</strong> ${concern.last_name}, ${concern.first_name} ${concern.middle_name ? concern.middle_name.charAt(0) + '.' : ''}</p>
-                            <p><strong>Email:</strong> ${concern.email}</p>
-                            <p><strong>Submission Date:</strong> ${concern.submission_date ? new Date(concern.submission_date).toLocaleString() : 'N/A'}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="fw-bold">Status</h6>
-                            <p>
-                                <span class="badge ${concern.status === 'Pending' ? 'bg-warning text-dark' : 
-                                   concern.status === 'Assigned' ? 'bg-info' : 
-                                   concern.status === 'Completed' ? 'bg-success' : 'bg-danger'}">
-                                    ${concern.status}
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-12">
-                            <h6 class="fw-bold">Concern Message</h6>
-                            <div class="alert alert-light p-3 border">
-                                ${concern.concern.replace(/\n/g, '<br>')}
+        rows.forEach(row => {
+            const rowText = row.innerText.toLowerCase();
+            const category = row.getAttribute('data-category');
+
+            const matchesSearch = rowText.includes(searchTerm);
+            const matchesCategory = (selectedCategory === 'all' || category === selectedCategory);
+
+            row.style.display = (matchesSearch && matchesCategory) ? '' : 'none';
+        });
+    }
+
+    searchInput.addEventListener('input', applyFilters);
+    categoryFilter.addEventListener('change', applyFilters);
+
+    // View Details Logic
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.view-concern');
+        if (btn) {
+            const id = btn.getAttribute('data-concern-id');
+            const modalElement = document.getElementById('concernModal');
+            const modal = new bootstrap.Modal(modalElement);
+            const container = document.getElementById('concern-details');
+
+            container.innerHTML = `<div class="text-center py-5"><div class="spinner-border text-primary"></div><p class="mt-2">Fetching details...</p></div>`;
+            modal.show();
+
+            fetch(`/staff/modules/concerns/${id}`)
+                .then(res => {
+                    if (!res.ok) throw new Error('Network response was not ok');
+                    return res.json();
+                })
+                .then(data => {
+                    container.innerHTML = `
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label class="text-muted small text-uppercase fw-bold">Student Name</label>
+                                <p class="fw-bold mb-3">${data.last_name}, ${data.first_name} ${data.middle_name ? data.middle_name.charAt(0) + '.' : ''}</p>
+                                
+                                <label class="text-muted small text-uppercase fw-bold">Email Address</label>
+                                <p class="mb-3">${data.email}</p>
+                                
+                                <label class="text-muted small text-uppercase fw-bold">Student Type</label>
+                                <p><span class="badge bg-primary">${data.student_type}</span></p>
+                            </div>
+                            <div class="col-md-6 border-start ps-4">
+                                <label class="text-muted small text-uppercase fw-bold">Concern Type</label>
+                                <p class="text-primary fw-bold mb-3">${data.concern_type}</p>
+                                
+                                <label class="text-muted small text-uppercase fw-bold">Current Status</label>
+                                <p>
+                                    <span class="badge ${data.status === 'Pending' ? 'bg-warning text-dark' : 'bg-success'}">
+                                        ${data.status}
+                                    </span>
+                                </p>
+
+                                <label class="text-muted small text-uppercase fw-bold">Date Submitted</label>
+                                <p class="small text-muted">${new Date(data.submission_date).toLocaleString()}</p>
+                            </div>
+                            <div class="col-12">
+                                <div class="p-3 rounded-3 bg-light border">
+                                    <label class="text-muted small text-uppercase fw-bold d-block mb-2">Message</label>
+                                    <div style="white-space: pre-wrap;">${data.concern}</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
-            })
-            .catch(error => {
-                modalBody.innerHTML = `<div class="alert alert-danger">Error loading concern details: ${error.message}</div>`;
-                console.error('Fetch error:', error);
-            });
-    }
+                        <div class="mt-4 d-flex justify-content-end gap-2">
+                            <button class="btn btn-secondary px-4 rounded-pill" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    `;
+                })
+                .catch(err => {
+                    container.innerHTML = `<div class="alert alert-danger">Error: ${err.message}</div>`;
+                });
+        }
+    });
 });
 </script>
+@endsection
