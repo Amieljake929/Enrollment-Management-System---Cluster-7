@@ -4,10 +4,12 @@
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Pending Admissions - College</h2>
+        {{-- 
         <a href="{{ route('staff.modules.pending.college.download.pdf', request()->query()) }}" 
            class="btn btn-secondary" style="background-color: #5044e4">
             <i class="bi bi-download"></i> Download Admissions (PDF)
         </a>
+        --}}
     </div>
 
     <div class="card mb-4 shadow-sm">

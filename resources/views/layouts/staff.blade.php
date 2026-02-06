@@ -249,10 +249,10 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
                 $user = Auth::user();
                 $initials = strtoupper(substr($user->name, 0, 1) . (str_contains($user->name, ' ') ? substr(strrchr($user->name, ' '), 1, 1) : ''));
             @endphp
-            <div class="initials">{{ $initials }}</div>
-            <h5 class="mb-0">{{ $user->name }}</h5>
+            <br>
+            <div class="initials">{{ $initials }}</div><br>
             <small>{{ $user->email }}</small>
-            <p class="role">{{ Auth::user()->role }}</p>
+            <h5 class="mb-0">{{ $user->name }}</h5>
 
         @endif
     </div>

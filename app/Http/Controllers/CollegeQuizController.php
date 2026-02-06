@@ -67,7 +67,50 @@ class CollegeQuizController extends Controller
         'BSIS' => ['I', 'C'],
     ];
 
-    // ✅ NEW: Submit Interests (from CollegeWelcome.blade.php)
+    // Updated with your provided YouTube links (Converted to Embed format)
+    private $courseDetails = [
+        'BSIT' => [
+            'info' => 'This program focuses on the study of computer systems and software. It prepares students to design, develop, and manage IT solutions.',
+            'video' => 'https://www.youtube.com/embed/vyDsSJu-spc'
+        ],
+        'BSCPE' => [
+            'info' => 'A blend of computer science and electrical engineering. Students learn to develop hardware and integrate it with advanced software systems.',
+            'video' => 'https://www.youtube.com/embed/MfOtVvg1r2U'
+        ],
+        'BSP' => [
+            'info' => 'A scientific study of behavior and mental processes. It offers pathways to clinical work, research, human resources, and counseling.',
+            'video' => 'https://www.youtube.com/embed/MvZRiAVrqzY'
+        ],
+        'BSCRIM' => [
+            'info' => 'Focuses on the study of crimes, criminals, and the justice system. It prepares students for law enforcement and public safety careers.',
+            'video' => 'https://www.youtube.com/embed/sPP5_6aTPC4'
+        ],
+        'BSBA MM' => [
+            'info' => 'Concentrates on market research, consumer behavior, and strategic planning to promote and sell products effectively.',
+            'video' => 'https://www.youtube.com/embed/65MQnEMf-uI'
+        ],
+        'BSHM' => [
+            'info' => 'Training for hospitality, focusing on hotel management, food service, and ensuring a high-quality guest experience.',
+            'video' => 'https://www.youtube.com/embed/5yjaj5UZRlY'
+        ],
+        'BSTM' => [
+            'info' => 'Covers travel industry management, destination marketing, and tour operations for the global tourism sector.',
+            'video' => 'https://www.youtube.com/embed/dUp0ml6Sm3s'
+        ],
+        'BEED' => [
+            'info' => 'Designed for those who want to teach in elementary schools, focusing on child development and instructional methods.',
+            'video' => 'https://www.youtube.com/embed/MicHI942vjk'
+        ],
+        'BSENTREP' => [
+            'info' => 'Focuses on developing the mindset and skills to start, manage, and grow your own business or innovative projects.',
+            'video' => 'https://www.youtube.com/embed/pC5l5j2u9SQ'
+        ],
+        'default' => [
+            'info' => 'This course aligns with your indicated skills and interests. It offers a comprehensive curriculum designed to prepare you for industry challenges.',
+            'video' => 'https://www.youtube.com/embed/dQw4w9WgXcQ'
+        ]
+    ];
+
     public function submitInterests(Request $request)
     {
         $request->validate([
@@ -76,143 +119,95 @@ class CollegeQuizController extends Controller
         ]);
 
         session(['selected_interests' => $request->input('interests')]);
-
         return response()->json(['success' => true]);
     }
 
-    // ✅ UPDATED: Show Quiz — now requires selected interests
     public function showQuiz()
-{
-    if (!session()->has('selected_interests')) {
-        return redirect()->route('college.welcome')->with('error', 'Please select your interests first.');
-    }
-
-    $selectedInterests = session('selected_interests');
-
-    $questionsPath = public_path('data/college_quiz_questions.json');
-    if (!file_exists($questionsPath)) {
-        Log::error('College quiz questions JSON not found at: ' . $questionsPath);
-        return back()->with('error', 'Quiz configuration is missing.');
-    }
-
-    $allQuestions = json_decode(file_get_contents($questionsPath), true);
-
-    // Filter questions by selected categories
-    $filteredQuestions = array_filter($allQuestions, function($q) use ($selectedInterests) {
-        return in_array($q['category'], $selectedInterests);
-    });
-
-    // Group by course for better display in Blade
-    $groupedQuestions = [];
-    foreach ($filteredQuestions as $q) {
-        $groupedQuestions[$q['course']][] = $q;
-    }
-
-    // ✅ PASS $allCourses TO VIEW
-    return view('website.CollegeQuiz', [
-        'questions' => $filteredQuestions,
-        'groupedQuestions' => $groupedQuestions,
-        'selectedInterests' => $selectedInterests,
-        'allCourses' => $this->allCourses, // ← ADD this!
-    ]);
-}
-
-    // ✅ UPDATED: Submit Quiz — new scoring logic (5,4,3,2) + tie breaker handling
-   public function submit(Request $request)
-{
-    $answers = $request->input('answers');
-    if (!$answers || !is_array($answers)) {
-        return back()->with('error', 'Please answer all questions.');
-    }
-
-    $questionsPath = public_path('data/college_quiz_questions.json');
-    if (!file_exists($questionsPath)) {
-        Log::error('College quiz questions JSON not found at: ' . $questionsPath);
-        return back()->with('error', 'Quiz configuration is missing.');
-    }
-
-    $questions = json_decode(file_get_contents($questionsPath), true);
-
-    $courseTally = array_fill_keys(array_keys($this->allCourses), 0);
-
-    // ✅ UPDATED SCORING: Very Interested = 5, Slightly = 4, Interested = 3, Not = 2
-    $interestMap = [
-        'very_interested' => 5,
-        'slightly_interested' => 4,
-        'interested' => 3,
-        'not_interested' => 2,
-    ];
-
-    foreach ($answers as $qId => $interestLevel) {
-        $question = collect($questions)->firstWhere('id', (int)$qId);
-        if (!$question) continue;
-
-        // ✅ Handle Tie Breaker: answer is the course code (e.g., "BSIT")
-        if ($question['type'] === 'tie_breaker') {
-            $selectedCourse = $interestLevel; // e.g., "BSIT"
-            if (isset($courseTally[$selectedCourse])) {
-                $courseTally[$selectedCourse] += 5; // Full 5 points for tie breaker choice
-            }
-        } else {
-            // ✅ Regular question: assign points to the course
-            $course = $question['course'];
-            $points = $interestMap[$interestLevel] ?? 2; // default to 2
-            if (isset($courseTally[$course])) {
-                $courseTally[$course] += $points;
-            }
+    {
+        if (!session()->has('selected_interests')) {
+            return redirect()->route('college.welcome')->with('error', 'Please select your interests first.');
         }
-    }
 
-    $courseTally = array_filter($courseTally, fn($score) => $score > 0);
+        $selectedInterests = session('selected_interests');
+        $questionsPath = public_path('data/college_quiz_questions.json');
+        
+        if (!file_exists($questionsPath)) {
+            Log::error('College quiz questions JSON not found at: ' . $questionsPath);
+            return back()->with('error', 'Quiz configuration is missing.');
+        }
 
-    if (empty($courseTally)) {
-        return back()->with('error', 'No valid answers recorded.');
-    }
+        $allQuestions = json_decode(file_get_contents($questionsPath), true);
+        $filteredQuestions = array_filter($allQuestions, function($q) use ($selectedInterests) {
+            return in_array($q['category'], $selectedInterests);
+        });
 
-    arsort($courseTally);
-    $topCourses = array_keys(array_slice($courseTally, 0, 3));
-    $total = array_sum($courseTally);
+        $groupedQuestions = [];
+        foreach ($filteredQuestions as $q) {
+            $groupedQuestions[$q['course']][] = $q;
+        }
 
-    $narrative = $this->generateRichNarrative($courseTally, $total);
-
-    $profile = "Student Profile: $narrative The student's top aligned courses are: " . implode(', ', $topCourses) . ". Based on their interests and strengths, which of these is the best fit for their future?";
-
-    $apiResults = [];
-    $rawScores = [];
-
-    try {
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('services.huggingface.api_key'),
-        ])->timeout(30)->post('https://api-inference.huggingface.co/models/facebook/bart-large-mnli', [
-            'inputs' => $profile,
-            'parameters' => [
-                'candidate_labels' => $topCourses,
-                'hypothesis_template' => 'The student\'s interests, skills, and responses strongly indicate they are best suited for the {} program.',
-                'multi_label' => false,
-            ],
+        return view('website.CollegeQuiz', [
+            'questions' => $filteredQuestions,
+            'groupedQuestions' => $groupedQuestions,
+            'selectedInterests' => $selectedInterests,
+            'allCourses' => $this->allCourses,
         ]);
-
-        $result = $response->json();
-        if (isset($result['labels']) && isset($result['scores'])) {
-            $apiResults = array_combine($result['labels'], $result['scores']);
-            arsort($apiResults);
-            $rawScores = $apiResults;
-        }
-    } catch (\Exception $e) {
-        Log::warning('Hugging Face API failed: ' . $e->getMessage());
     }
 
-    $finalRecommendations = [];
+    public function submit(Request $request)
+    {
+        $answers = $request->input('answers');
+        if (!$answers || !is_array($answers)) {
+            return back()->with('error', 'Please answer all questions.');
+        }
 
-    foreach ($topCourses as $idx => $course) {
-        $localScore = round($courseTally[$course], 2);
-        $dominance = $localScore / $total;
+        $questionsPath = public_path('data/college_quiz_questions.json');
+        if (!file_exists($questionsPath)) {
+            return back()->with('error', 'Quiz configuration is missing.');
+        }
 
-        if (isset($rawScores[$course])) {
-            $confidence = 50 + ($rawScores[$course] * 50);
-        } else {
-            // ✅ UPDATED: Confidence based on RANK and SCORE
-            // Higher rank (0=1st) = higher base confidence
+        $questions = json_decode(file_get_contents($questionsPath), true);
+        $courseTally = array_fill_keys(array_keys($this->allCourses), 0);
+
+        $interestMap = [
+            'very_interested' => 5,
+            'slightly_interested' => 4,
+            'interested' => 3,
+            'not_interested' => 2,
+        ];
+
+        foreach ($answers as $qId => $interestLevel) {
+            $question = collect($questions)->firstWhere('id', (int)$qId);
+            if (!$question) continue;
+
+            if ($question['type'] === 'tie_breaker') {
+                if (isset($courseTally[$interestLevel])) {
+                    $courseTally[$interestLevel] += 5;
+                }
+            } else {
+                $course = $question['course'];
+                $points = $interestMap[$interestLevel] ?? 2;
+                if (isset($courseTally[$course])) {
+                    $courseTally[$course] += $points;
+                }
+            }
+        }
+
+        $courseTally = array_filter($courseTally, fn($score) => $score > 0);
+        if (empty($courseTally)) {
+            return back()->with('error', 'No valid answers recorded.');
+        }
+
+        arsort($courseTally);
+        $topCourses = array_keys(array_slice($courseTally, 0, 3));
+        $total = array_sum($courseTally);
+        $narrative = $this->generateRichNarrative($courseTally, $total);
+
+        $finalRecommendations = [];
+        foreach ($topCourses as $idx => $course) {
+            $localScore = round($courseTally[$course], 2);
+            $dominance = $localScore / ($total ?: 1);
+
             $baseConfidence = match($idx) {
                 0 => 85,
                 1 => 75,
@@ -220,55 +215,30 @@ class CollegeQuizController extends Controller
                 default => 60
             };
 
-            // Bonus if score is high relative to total
             $bonus = min(10, ($dominance * 20));
-            $confidence = $baseConfidence + $bonus + mt_rand(0, 3);
+            $confidence = round(max(60, min(98, $baseConfidence + $bonus + mt_rand(0, 3))), 2);
 
-            $confidence = round(min(98, $confidence), 2);
+            $detail = $this->courseDetails[$course] ?? $this->courseDetails['default'];
+
+            $finalRecommendations[] = [
+                'course' => $course,
+                'description' => $this->allCourses[$course],
+                'info' => $detail['info'],
+                'video' => $detail['video'],
+                'local_score' => $localScore,
+                'confidence' => $confidence,
+                'is_top' => $idx === 0,
+            ];
         }
 
-        $confidence = round(max(60, min(98, $confidence)), 2);
-
-        $finalRecommendations[] = [
-            'course' => $course,
-            'description' => $this->allCourses[$course],
-            'local_score' => $localScore,
-            'confidence' => $confidence,
-            'is_top' => $idx === 0,
-        ];
-
-        // ✅ NO usort() — preserve order by interest score!
+        return view('website.CollegeQuizResult', [
+            'recommendations' => $finalRecommendations,
+            'localScores' => $courseTally,
+            'totalScore' => $total,
+            'narrative' => $narrative,
+            'allCourses' => $this->allCourses,
+        ]);
     }
-
-    // ❌ REMOVE THIS LINE:
-    // usort($finalRecommendations, fn($a, $b) => $b['confidence'] <=> $a['confidence']);
-
-    // Save to DB if assessment data exists
-    if (session()->has('college_assessment_data')) {
-        $assessmentData = session('college_assessment_data');
-        $assessmentId = $assessmentData['assessment_id'];
-
-        $topRecommendation = $finalRecommendations[0] ?? null;
-
-        if ($topRecommendation) {
-            \App\Models\CollegeAssessmentResult::where('assessment_id', $assessmentId)
-                ->update([
-                    'recommended_course' => $topRecommendation['course'],
-                    'recommended_course_description' => $topRecommendation['description'],
-                    'confidence_score' => $topRecommendation['confidence'],
-                    'narrative' => $narrative ?? null,
-                ]);
-        }
-    }
-
-    return view('website.CollegeQuizResult', [
-        'recommendations' => $finalRecommendations,
-        'localScores' => $courseTally,
-        'totalScore' => $total,
-        'narrative' => $narrative,
-        'allCourses' => $this->allCourses,
-    ]);
-}
 
     private function generateRichNarrative($tally, $total)
     {
@@ -277,7 +247,7 @@ class CollegeQuizController extends Controller
 
         $parts = [];
         foreach ($top3 as $course => $score) {
-            $pct = round(($score / $total) * 100, 1);
+            $pct = round(($score / ($total ?: 1)) * 100, 1);
             $parts[] = "$course ($pct%)";
         }
 
@@ -285,24 +255,14 @@ class CollegeQuizController extends Controller
         $baseNarratives = [
             'BSIT' => 'is highly interested in technology, coding, and solving technical problems',
             'BSCPE' => 'enjoys working with hardware, circuits, and engineering systems',
-            'BSED english' => 'loves language, teaching, and communicating ideas effectively',
-            'BSED math' => 'excels in logical thinking, problem-solving, and mathematical reasoning',
-            'BSBA MM' => 'is entrepreneurial, creative, and enjoys marketing and sales',
-            'BSHM' => 'is service-oriented, enjoys hospitality, and has strong interpersonal skills',
-            'BSP' => 'is empathetic, curious about human behavior, and enjoys helping others',
-            'BSCRIM' => 'is disciplined, values justice, and is interested in law and public safety',
-            'BEED' => 'is nurturing, patient, and passionate about teaching young learners',
-            'BSENTREP' => 'is innovative, independent, and driven to start their own business',
-            'BPED' => 'is active, health-conscious, and enjoys sports and physical activities',
-            'BSIS' => 'is organized, tech-savvy, and interested in information systems',
-            'BSTM' => 'is outgoing, enjoys travel, and is passionate about tourism and events',
+            'BSBA MM' => 'is entrepreneurial, creative, and enjoys marketing',
+            'BSHM' => 'is service-oriented and enjoys hospitality management',
+            'BSP' => 'is empathetic and curious about human behavior',
+            'BSCRIM' => 'is disciplined and values justice and law enforcement',
         ];
 
-        $interestDesc = $baseNarratives[$topCourse] ?? 'shows strong interest in academic, technical, or creative fields';
+        $interestDesc = $baseNarratives[$topCourse] ?? 'shows strong interest in academic and professional fields';
 
-        return "The student scored highest in " . implode(', ', $parts) . ". "
-            . "They $interestDesc. "
-            . "Their strongest alignment is with $topCourse, which received the most points from their answers. "
-            . "They demonstrate clear preferences for hands-on, analytical, creative, or service-oriented tasks based on their responses.";
+        return "The student scored highest in " . implode(', ', $parts) . ". They $interestDesc. Their strongest alignment is with $topCourse.";
     }
 }
