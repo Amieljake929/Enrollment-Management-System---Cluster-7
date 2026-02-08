@@ -138,4 +138,42 @@ public function verifyMfa(Request $request)
 
     return $redirect;
 }
+
+/**
+ * Resend MFA OTP
+ */
+public function resendMfa(Request $request)
+{
+    $userId = session('mfa_user_id');
+
+    if (!$userId) {
+        return response()->json(['success' => false, 'message' => 'Session expired, please login again.'], 401);
+    }
+
+    $user = User::find($userId);
+
+    if (!$user) {
+        return response()->json(['success' => false, 'message' => 'User not found.'], 404);
+    }
+
+    // Delete all unused OTPs for this user to invalidate old ones
+    LoginOtp::where('user_id', $userId)
+            ->where('used', false)
+            ->delete();
+
+    // Generate new OTP
+    $otp = rand(100000, 999999);
+
+    LoginOtp::create([
+        'user_id' => $userId,
+        'otp_code' => $otp,
+        'expires_at' => Carbon::now()->addMinutes(2),
+        'used' => false,
+    ]);
+
+    // Send OTP via email
+    Mail::to($user->email)->send(new OtpMail($otp));
+
+    return response()->json(['success' => true, 'message' => 'New OTP sent to your email.']);
+}
 }

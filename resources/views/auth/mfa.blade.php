@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>MFA Verification</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -125,6 +126,14 @@
                     Verify Code
                 </button>
             </form>
+
+            <!-- Resend OTP Button -->
+            <div class="text-center mt-3">
+                <button type="button" class="btn btn-link" id="resendBtn">
+                    Resend OTP
+                </button>
+                <div id="resendMessage" class="mt-2" style="display: none;"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -188,6 +197,66 @@ document.addEventListener('DOMContentLoaded', function () {
             return false;
         }
     });
+
+    // Resend OTP functionality
+    const resendBtn = document.getElementById('resendBtn');
+    const resendMessage = document.getElementById('resendMessage');
+    let resendCooldown = false;
+
+    resendBtn.addEventListener('click', function () {
+        if (resendCooldown) return;
+
+        resendBtn.disabled = true;
+        resendBtn.textContent = 'Sending...';
+        resendMessage.style.display = 'none';
+
+        fetch('{{ route("mfa.resend") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            resendMessage.style.display = 'block';
+            if (data.success) {
+                resendMessage.innerHTML = '<div class="alert alert-success">' + data.message + '</div>';
+                // Clear OTP inputs
+                inputs.forEach(input => input.value = '');
+                hiddenInput.value = '';
+                verifyBtn.disabled = true;
+                // Start cooldown
+                startResendCooldown();
+            } else {
+                resendMessage.innerHTML = '<div class="alert alert-danger">' + data.message + '</div>';
+                resendBtn.disabled = false;
+                resendBtn.textContent = 'Resend OTP';
+            }
+        })
+        .catch(error => {
+            resendMessage.style.display = 'block';
+            resendMessage.innerHTML = '<div class="alert alert-danger">An error occurred. Please try again.</div>';
+            resendBtn.disabled = false;
+            resendBtn.textContent = 'Resend OTP';
+        });
+    });
+
+    function startResendCooldown() {
+        resendCooldown = true;
+        let countdown = 30;
+        resendBtn.textContent = `Resend in ${countdown}s`;
+        const interval = setInterval(() => {
+            countdown--;
+            resendBtn.textContent = `Resend in ${countdown}s`;
+            if (countdown <= 0) {
+                clearInterval(interval);
+                resendBtn.textContent = 'Resend OTP';
+                resendBtn.disabled = false;
+                resendCooldown = false;
+            }
+        }, 1000);
+    }
 });
 </script>
 

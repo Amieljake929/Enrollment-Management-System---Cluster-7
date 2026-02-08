@@ -141,6 +141,7 @@ Route::post('/login', [LoginController::class, 'login']);
 
 Route::get('/mfa', [LoginController::class, 'showMfaForm'])->name('mfa.form');
 Route::post('/mfa', [LoginController::class, 'verifyMfa'])->name('mfa.verify');
+Route::post('/mfa/resend', [LoginController::class, 'resendMfa'])->name('mfa.resend');
 
 // Check session for polling
 use Illuminate\Support\Facades\Session;
