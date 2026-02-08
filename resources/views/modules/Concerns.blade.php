@@ -165,7 +165,12 @@ document.addEventListener('DOMContentLoaded', function() {
             modal.show();
 
             // FETCH URL must match web.php
-            fetch(`/modules/concerns/${id}`)
+            fetch(`/modules/concerns/${id}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
                 .then(res => res.json())
                 .then(data => {
                     container.innerHTML = `

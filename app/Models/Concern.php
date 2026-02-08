@@ -26,4 +26,9 @@ protected $casts = [
     'submission_date' => 'datetime',
 ];
 
+public static function getPendingCount()
+{
+    return self::where('status', 'Pending')->where('is_read', 0)->count();
+}
+
 }

@@ -61,7 +61,14 @@ class ConcernController extends Controller
     public function show($id)
     {
         $concern = Concern::findOrFail($id);
-        return response()->json($concern);
+        
+        // Check if it's an AJAX request (from the notification dropdown)
+        if (request()->ajax()) {
+            return response()->json($concern);
+        }
+        
+        // For regular page requests, return the view
+        return view('modules.Concerns.show', compact('concern'));
     }
 
     // NEW: Function para sa Mark as Completed
@@ -96,6 +103,76 @@ class ConcernController extends Controller
         return response()->json([
             'success' => true, 
             'message' => 'Concern has been marked as completed and student has been notified.'
+        ]);
+    }
+
+    /**
+     * Get notifications for the notification dropdown
+     * Returns pending concerns with unread status
+     */
+    public function getNotifications()
+    {
+        $concerns = Concern::where('status', 'Pending')
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get()
+            ->map(function($concern) {
+                return [
+                    'id' => $concern->id,
+                    'subject' => $concern->concern_type,
+                    'message' => $concern->concern,
+                    'student_name' => $concern->first_name . ' ' . $concern->last_name,
+                    'created_at' => $concern->created_at,
+                    'is_read' => $concern->is_read ?? 0,
+                ];
+            });
+
+        return response()->json([
+            'success' => true,
+            'concerns' => $concerns,
+            'count' => $concerns->count()
+        ]);
+    }
+
+    /**
+     * Mark a specific concern as read
+     */
+    public function markAsRead($id)
+    {
+        $concern = Concern::find($id);
+        if ($concern) {
+            $concern->is_read = 1;
+            $concern->save();
+        }
+        
+        return response()->json(['success' => true]);
+    }
+
+    /**
+     * Mark all concerns as read
+     */
+    public function markAllRead()
+    {
+        Concern::where('is_read', 0)
+            ->where('status', 'Pending')
+            ->update(['is_read' => 1]);
+        
+        return response()->json(['success' => true]);
+    }
+
+    /**
+     * Get count of unread pending concerns
+     * For the notification badge counter
+     */
+    public function getUnreadCount()
+    {
+        $count = Concern::where('status', 'Pending')
+            ->where('is_read', 0)
+            ->count();
+
+        return response()->json([
+            'success' => true,
+            'count' => $count
         ]);
     }
 }

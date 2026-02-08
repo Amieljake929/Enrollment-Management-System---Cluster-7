@@ -45,6 +45,11 @@ Route::get('/two', function () {
 
 // CONCERN SUBMISSION
 Route::post('/concerns', [ConcernController::class, 'store'])->name('concerns.store');
+// Concern Notification Routes
+Route::get('/modules/concerns/notifications', [ConcernController::class, 'getNotifications'])->name('modules.concerns.notifications');
+Route::post('/modules/concerns/mark-all-read', [ConcernController::class, 'markAllRead'])->name('modules.concerns.mark-all-read');
+Route::post('/modules/concerns/{id}/mark-read', [ConcernController::class, 'markAsRead'])->name('modules.concerns.mark-read');
+Route::get('/modules/concerns/unread-count', [ConcernController::class, 'getUnreadCount'])->name('modules.concerns.unread-count');
 
 // ===================================================
 // === 📝 Assessment & Enrollment Modals ===
