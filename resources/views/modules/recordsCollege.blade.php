@@ -73,15 +73,34 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </div><br>
 
                         <div id="student-view-{{ Str::slug($code) }}" class="d-none">
+                            <div class="d-flex justify-content-between align-items-center mb-3 px-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="input-group" style="width: 300px;">
+                                        <span class="input-group-text bg-light border-end-0">
+                                            <i class="fas fa-search text-muted"></i>
+                                        </span>
+                                        <input type="text" class="form-control border-start-0 ps-0" id="search-{{ Str::slug($code) }}" placeholder="Search students..." onkeyup="filterStudents('{{ Str::slug($code) }}')">
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <label for="gender-filter-{{ Str::slug($code) }}" class="form-label mb-0 fw-500">Gender:</label>
+                                        <select class="form-select" id="gender-filter-{{ Str::slug($code) }}" style="width: 120px;" onchange="filterStudents('{{ Str::slug($code) }}')">
+                                            <option value="">All</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-hover table-bordered mb-0">
                                     <thead class="bg-dark text-white">
                                         <tr>
                                             <th class="ps-4 py-3 small">STUDENT ID</th>
                                             <th class="py-3 small">FULL NAME</th>
+                                            <th class="py-3 small">GENDER</th>
                                             <th class="py-3 small">STATUS</th>
                                             <th class="py-3 small text-center">SECTION</th>
                                             <th class="py-3 small">YEAR LEVEL</th>
@@ -93,7 +112,8 @@
                                             @foreach($data['students'] as $student)
                                                 <tr class="student-row-{{ Str::slug($code) }} d-none" data-section="{{ $sectionName }}">
                                                     <td class="ps-4 py-3 text-primary fw-bold">{{ $student['StudentID'] }}</td>
-                                                    <td class="py-3 fw-500 text-dark">{{ $student['FullName'] }}</td> 
+                                                    <td class="py-3 fw-500 text-dark">{{ $student['FullName'] }}</td>
+                                                    <td class="py-3">{{ $student['Gender'] }}</td>
                                                     <td class="py-3">
                                                         <span class="badge rounded-pill bg-success-subtle text-success border border-success px-3">
                                                             {{ $student['EnrollmentStatus'] }}
@@ -102,7 +122,7 @@
                                                     <td class="py-3 text-center">{{ $student['Section'] }}</td>
                                                     <td class="py-3 text-muted">{{ $student['YearLevel'] }}</td>
                                                     <td class="pe-4 py-3 text-center">
-                                                        <button class="btn btn-info btn-sm rounded-pill px-3 text-white shadow-sm" 
+                                                        <button class="btn btn-info btn-sm rounded-pill px-3 text-white shadow-sm"
                                                                 onclick="showStudentDetails({{ json_encode($student) }})">
                                                             <i class="fas fa-eye me-1"></i> View
                                                         </button>
@@ -236,6 +256,38 @@
         if (currentActiveSlug) {
             toggleView(currentActiveSlug, false);
         }
+    }
+
+    function filterStudents(slug) {
+        const searchInput = document.getElementById(`search-${slug}`).value.toLowerCase();
+        const genderFilter = document.getElementById(`gender-filter-${slug}`).value;
+        const rows = document.querySelectorAll(`.student-row-${slug}`);
+
+        rows.forEach(row => {
+            const isVisible = !row.classList.contains('d-none');
+            if (!isVisible) return; // Skip rows not in current section
+
+            const studentId = row.cells[0].textContent.toLowerCase();
+            const fullName = row.cells[1].textContent.toLowerCase();
+            const gender = row.cells[2].textContent.toLowerCase();
+            const status = row.cells[3].textContent.toLowerCase();
+            const section = row.cells[4].textContent.toLowerCase();
+            const yearLevel = row.cells[5].textContent.toLowerCase();
+
+            const matchesSearch = studentId.includes(searchInput) ||
+                                  fullName.includes(searchInput) ||
+                                  status.includes(searchInput) ||
+                                  section.includes(searchInput) ||
+                                  yearLevel.includes(searchInput);
+
+            const matchesGender = genderFilter === '' || gender === genderFilter.toLowerCase();
+
+            if (matchesSearch && matchesGender) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
     }
 
     // Function para sa pangalawang View Button (Student Details)
