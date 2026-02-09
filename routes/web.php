@@ -172,6 +172,7 @@ Route::post('/verify-otp', [RegisteredUserController::class, 'verifyOtp'])->name
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StaffDashboardController;
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::post('/dashboard/download-all', [DashboardController::class, 'downloadAll'])->middleware(['auth'])->name('dashboard.download.all');
 
 // Staff OIC Dashboard
 Route::get('/dashboard-staff', [StaffDashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard.staff'); // ⚠️ Removed 'verified' for now

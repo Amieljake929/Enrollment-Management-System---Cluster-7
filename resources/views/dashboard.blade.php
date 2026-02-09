@@ -4,9 +4,14 @@
 <div class="container-fluid px-4 py-4">
 
     {{-- Header --}}
-    <div class="mb-4">
-        <h1 class="h2 fw-bold text-gray-800">Enrollment Dashboard</h1>
-        <p class="text-muted">Welcome back, {{ Auth::user()->name }}! You are logged in as <strong>{{ Auth::user()->role }}</strong>.</p>
+    <div class="mb-4 d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="h2 fw-bold text-gray-800">Enrollment Dashboard</h1>
+            <p class="text-muted">Welcome back, {{ Auth::user()->name }}! You are logged in as <strong>{{ Auth::user()->role }}</strong>.</p>
+        </div>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#downloadModal">
+            <i class="bi bi-download me-2"></i>Download All Data
+        </button>
     </div>
 
     {{-- Flash Message --}}
@@ -276,8 +281,6 @@
 
     </div>
 
-
-
 </div>
 
 <!-- TERMS MODAL (Same as before but with improved styling) -->
@@ -433,7 +436,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        z-index: 9999;
+        z-index: 1051; /* 👈 Changed from 9999 to 1051 (above Bootstrap modal's 1050) */
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -549,11 +552,11 @@
         opacity: 0.7;
     }
     .chart-canvas {
-    width: 100% !important;
-    height: 180px !important; /* Pwedeng baguhin: 150px, 120px, 100px */
-    max-width: 400px;
-    margin: 0 auto;
-}
+        width: 100% !important;
+        height: 180px !important;
+        max-width: 400px;
+        margin: 0 auto;
+    }
 </style>
 
 <script>
@@ -563,7 +566,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const cancelBtn = document.getElementById('cancelTerms');
 
     if (modal) {
+        // Show modal
+        modal.style.opacity = '1';
+        modal.style.pointer-events = 'auto';
         document.body.classList.add('modal-open');
+
         modal.addEventListener('click', function(e) {
             if (e.target === modal) {
                 e.stopPropagation();
@@ -587,7 +594,6 @@ document.addEventListener('DOMContentLoaded', function() {
             modal.style.opacity = '0';
             modal.style.pointer-events = 'none';
             setTimeout(() => {
-                modal.style.display = 'none';
                 document.body.classList.remove('modal-open');
             }, 400);
         }
@@ -644,134 +650,212 @@ document.addEventListener('DOMContentLoaded', function() {
 {{-- CHART.JS SCRIPTS --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Area Chart for Enrollment Status
-    const statusAreaCtx = document.getElementById('statusAreaChart').getContext('2d');
-    new Chart(statusAreaCtx, {
-        type: 'line',
-        data: {
-            labels: @json($dates ?? []),
-            datasets: [
-                {
-                    label: 'Pending Admissions',
-                    data: @json($pendingWeekly ?? []),
-                    borderColor: 'rgba(245, 158, 11, 0.8)',
-                    backgroundColor: 'rgba(245, 158, 11, 0.2)',
-                    fill: true,
-                    tension: 0.4
-                },
-                {
-                    label: 'Waiting List',
-                    data: @json($waitingListWeekly ?? []),
-                    borderColor: 'rgba(34, 197, 94, 0.8)',
-                    backgroundColor: 'rgba(34, 197, 94, 0.2)',
-                    fill: true,
-                    tension: 0.4
-                },
-                {
-                    label: 'Cancelled Admissions',
-                    data: @json($cancelledWeekly ?? []),
-                    borderColor: 'rgba(239, 68, 68, 0.8)',
-                    backgroundColor: 'rgba(239, 68, 68, 0.2)',
-                    fill: true,
-                    tension: 0.4
-                },
-                {
-                    label: 'Main Branch',
-                    data: @json($mainBranchWeekly ?? []),
-                    borderColor: 'rgba(251, 146, 60, 0.8)',
-                    backgroundColor: 'rgba(251, 146, 60, 0.2)',
-                    fill: true,
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { position: 'top' },
-                tooltip: { mode: 'index', intersect: false }
+    document.addEventListener('DOMContentLoaded', function() {
+        // Area Chart for Enrollment Status
+        const statusAreaCtx = document.getElementById('statusAreaChart').getContext('2d');
+        new Chart(statusAreaCtx, {
+            type: 'line',
+            data: {
+                labels: @json($dates ?? []),
+                datasets: [
+                    {
+                        label: 'Pending Admissions',
+                        data: @json($pendingWeekly ?? []),
+                        borderColor: 'rgba(245, 158, 11, 0.8)',
+                        backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Waiting List',
+                        data: @json($waitingListWeekly ?? []),
+                        borderColor: 'rgba(34, 197, 94, 0.8)',
+                        backgroundColor: 'rgba(34, 197, 94, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Cancelled Admissions',
+                        data: @json($cancelledWeekly ?? []),
+                        borderColor: 'rgba(239, 68, 68, 0.8)',
+                        backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Main Branch',
+                        data: @json($mainBranchWeekly ?? []),
+                        borderColor: 'rgba(251, 146, 60, 0.8)',
+                        backgroundColor: 'rgba(251, 146, 60, 0.2)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
             },
-            scales: {
-                x: { grid: { display: false } },
-                y: {
-                    beginAtZero: true
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: { mode: 'index', intersect: false }
+                },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: {
+                        beginAtZero: true
+                    }
                 }
             }
+        });
+
+        // Gauge Chart for Active Members
+        const gaugeCtx = document.getElementById('activeGauge').getContext('2d');
+        let gaugeValue = 3160;
+        let gaugeMax = 10000;
+
+        function drawGauge(ctx, value, max) {
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            const centerX = ctx.canvas.width / 2;
+            const centerY = ctx.canvas.height / 2;
+            const radius = Math.min(centerX, centerY) - 10;
+
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+            ctx.strokeStyle = '#e5e7eb';
+            ctx.lineWidth = 10;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, -Math.PI / 2, -Math.PI / 2 + (value / max) * 2 * Math.PI);
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 10;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            const angle = (-Math.PI / 2) + (value / max) * 2 * Math.PI;
+            ctx.lineTo(
+                centerX + Math.cos(angle) * (radius - 20),
+                centerY + Math.sin(angle) * (radius - 20)
+            );
+            ctx.strokeStyle = '#374151';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 5, 0, 2 * Math.PI);
+            ctx.fillStyle = '#374151';
+            ctx.fill();
         }
+
+        drawGauge(gaugeCtx, gaugeValue, gaugeMax);
+        document.getElementById('gaugeValue').textContent = `${gaugeValue}%`;
     });
+</script>
 
-    // Campus Pie Chart
-    const campusPieCtx = document.getElementById('campusPieChart').getContext('2d');
-    new Chart(campusPieCtx, {
-        type: 'pie',
-        data: {
-            labels: ['Main Campus', 'Bulacan'],
-            datasets: [{
-                data: [{{ $mainCampusPercentage ?? 0 }}, {{ $bulacanPercentage ?? 0 }}],
-                backgroundColor: [
-                    'rgba(59, 130, 246, 0.8)',
-                    'rgba(168, 85, 247, 0.8)'
-                ],
-                borderWidth: 2
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { position: 'bottom' },
-                tooltip: { callbacks: { label: (ctx) => `${ctx.label}: ${ctx.raw}%` } }
-            }
-        }
-    });
+<!-- Download Modal -->
+<div class="modal fade" id="downloadModal" tabindex="-1" aria-labelledby="downloadModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="downloadModalLabel">Download All Data</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="downloadForm" action="{{ route('dashboard.download.all') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="student_type" class="form-label">Student Type</label>
+                                <select class="form-select" id="student_type" name="student_type">
+                                    <option value="">All Types</option>
+                                    <option value="college">College</option>
+                                    <option value="shs">SHS</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="classification" class="form-label">Classification</label>
+                                <select class="form-select" id="classification" name="classification">
+                                    <option value="">All Classifications</option>
+                                    <option value="New Regular">New Regular</option>
+                                    <option value="Transferee">Transferee</option>
+                                    <option value="Returnee">Returnee</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="status" class="form-label">Status</label>
+                                <select class="form-select" id="status" name="status">
+                                    <option value="">All Statuses</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Validated">Validated</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="date_from" class="form-label">Date From</label>
+                                <input type="date" class="form-control" id="date_from" name="date_from">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="date_to" class="form-label">Date To</label>
+                                <input type="date" class="form-control" id="date_to" name="date_to">
+                            </div>
+                        </div>
+                        <div class="col-md-6 d-flex align-items-end">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="download_all" name="download_all" value="1">
+                                <label class="form-check-label" for="download_all">
+                                    Download All (Ignore Filters)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-download me-2"></i>Download PDF
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-    // Gauge Chart for Active Members
-    const gaugeCtx = document.getElementById('activeGauge').getContext('2d');
-    let gaugeValue = 3160; // Example value
-    let gaugeMax = 10000;
-
-    function drawGauge(ctx, value, max) {
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        const centerX = ctx.canvas.width / 2;
-        const centerY = ctx.canvas.height / 2;
-        const radius = Math.min(centerX, centerY) - 10;
-
-        // Draw background arc
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-        ctx.strokeStyle = '#e5e7eb';
-        ctx.lineWidth = 10;
-        ctx.stroke();
-
-        // Draw filled arc
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, -Math.PI / 2, -Math.PI / 2 + (value / max) * 2 * Math.PI);
-        ctx.strokeStyle = '#10b981';
-        ctx.lineWidth = 10;
-        ctx.stroke();
-
-        // Draw needle
-        ctx.beginPath();
-        ctx.moveTo(centerX, centerY);
-        const angle = (-Math.PI / 2) + (value / max) * 2 * Math.PI;
-        ctx.lineTo(
-            centerX + Math.cos(angle) * (radius - 20),
-            centerY + Math.sin(angle) * (radius - 20)
-        );
-        ctx.strokeStyle = '#374151';
-        ctx.lineWidth = 3;
-        ctx.stroke();
-
-        // Draw center circle
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, 5, 0, 2 * Math.PI);
-        ctx.fillStyle = '#374151';
-        ctx.fill();
+{{-- Ensure Bootstrap modals are above custom overlays --}}
+<style>
+    .modal {
+        z-index: 1060 !important;
     }
+    .modal-backdrop {
+        z-index: 1055 !important;
+    }
+</style>
 
-    drawGauge(gaugeCtx, gaugeValue, gaugeMax);
-
-    // Update gauge value dynamically if needed
-    document.getElementById('gaugeValue').textContent = `${gaugeValue}%`;
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle "Download All" checkbox
+    const downloadAllCheckbox = document.getElementById('download_all');
+    if (downloadAllCheckbox) {
+        downloadAllCheckbox.addEventListener('change', function() {
+            const filters = document.querySelectorAll('#downloadForm select, #downloadForm input[type="date"]');
+            filters.forEach(filter => {
+                filter.disabled = this.checked;
+            });
+        });
+    }
+});
 </script>
 
 @endsection

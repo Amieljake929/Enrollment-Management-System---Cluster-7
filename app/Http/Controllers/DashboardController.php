@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\CollegeStatus;
 use App\Models\ShsStatus;
 use App\Models\CollegeEnrollmentPreference;
@@ -192,5 +193,109 @@ class DashboardController extends Controller
             'collegeCourses',
             'shsStrands'
         ));
+    }
+
+    public function downloadAll(Request $request)
+    {
+        // If download all is checked, get all students
+        if ($request->filled('download_all')) {
+            $collegeStudents = \App\Models\CollegeStudent::with([
+                'type', 'status', 'preference.course', 'preference.branch', 'preference.level', 'enrolleeNumber'
+            ])->get();
+
+            $shsStudents = \App\Models\ShsStudent::with([
+                'studentType', 'status', 'enrollmentPreference.course', 'enrollmentPreference.branch', 'enrollmentPreference.level', 'enrolleeNumber'
+            ])->get();
+
+            $students = $collegeStudents->merge($shsStudents);
+        } else {
+            // Apply filters
+            $collegeQuery = \App\Models\CollegeStudent::with([
+                'type', 'status', 'preference.course', 'preference.branch', 'preference.level', 'enrolleeNumber'
+            ]);
+
+            $shsQuery = \App\Models\ShsStudent::with([
+                'studentType', 'status', 'enrollmentPreference.course', 'enrollmentPreference.branch', 'enrollmentPreference.level', 'enrolleeNumber'
+            ]);
+
+            // Classification filter (New Regular, Transferee, Returnee)
+            if ($request->filled('classification')) {
+                $collegeQuery->whereHas('type', function($q) use ($request) {
+                    $q->where('type_name', $request->classification);
+                });
+                $shsQuery->whereHas('studentType', function($q) use ($request) {
+                    $q->where('type_name', $request->classification);
+                });
+            }
+
+            // Status filter
+            if ($request->filled('status')) {
+                // Handle College status filter
+                if ($request->status === 'Pending') {
+                    // Include students with status='Pending' OR students with NO status record
+                    $collegeQuery->where(function($q) {
+                        $q->whereHas('status', function($sub) {
+                            $sub->where('info_status', 'Pending');
+                        })
+                        ->orWhereDoesntHave('status');
+                    });
+                } else {
+                    // For Validated, Cancelled, etc. — only include those WITH matching status
+                    $collegeQuery->whereHas('status', function($q) use ($request) {
+                        $q->where('info_status', $request->status);
+                    });
+                }
+
+                // Handle SHS status filter
+                if ($request->status === 'Pending') {
+                    // Include students with status='Pending' OR students with NO status record
+                    $shsQuery->where(function($q) {
+                        $q->whereHas('status', function($sub) {
+                            $sub->where('info_status', 'Pending');
+                        })
+                        ->orWhereDoesntHave('status');
+                    });
+                } else {
+                    // For Validated, Cancelled, etc. — only include those WITH matching status
+                    $shsQuery->whereHas('status', function($q) use ($request) {
+                        $q->where('info_status', $request->status);
+                    });
+                }
+            }
+
+            // Date range filter
+            if ($request->filled('date_from')) {
+                $collegeQuery->whereDate('created_at', '>=', $request->date_from);
+                $shsQuery->whereDate('created_at', '>=', $request->date_from);
+            }
+            if ($request->filled('date_to')) {
+                $collegeQuery->whereDate('created_at', '<=', $request->date_to);
+                $shsQuery->whereDate('created_at', '<=', $request->date_to);
+            }
+
+            // Student Type filter
+            if ($request->filled('student_type')) {
+                if ($request->student_type === 'college') {
+                    $collegeStudents = $collegeQuery->get();
+                    $shsStudents = collect();
+                } elseif ($request->student_type === 'shs') {
+                    $collegeStudents = collect();
+                    $shsStudents = $shsQuery->get();
+                } else {
+                    $collegeStudents = $collegeQuery->get();
+                    $shsStudents = $shsQuery->get();
+                }
+            } else {
+                $collegeStudents = $collegeQuery->get();
+                $shsStudents = $shsQuery->get();
+            }
+
+            $students = $collegeStudents->merge($shsStudents);
+        }
+
+        $pdf = Pdf::loadView('dashboard.download-all-pdf', compact('students', 'request'))
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->download('all_students_data_' . now()->format('Y-m-d_H-i-s') . '.pdf');
     }
 }
